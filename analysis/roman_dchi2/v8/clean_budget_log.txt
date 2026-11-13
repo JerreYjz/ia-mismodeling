@@ -1,0 +1,53 @@
+[7s] truth S1: 122 tent responses; sum vs xi_IA 6.6e-10
+  S1 none      verify below GI k 0.100 eps 0.0193: full (-0.323, -0.149) linear (-0.300, -0.089)
+  S1 none      verify below II k 0.100 eps 0.0210: full (-0.310, -0.148) linear (-0.300, -0.149)
+  S1 none      verify above GI k 1.000 eps 0.0159: full (+0.096, +0.267) linear (+0.113, +0.300)
+  S1 none      verify above II k 1.000 eps 0.0356: full (+0.279, -0.107) linear (+0.300, -0.088)
+  S1 none      verify bump  GI k 0.032 eps 0.0440: full (-0.321, -0.130) linear (-0.300, -0.077)
+  S1 none      verify bump  GI k 1.000 eps 0.0814: full (-0.299, +0.116) linear (-0.300, +0.189)
+  S1 none      bump  GI: 0.143 0.062 0.044 0.051 0.169 0.095 0.060 0.153 0.081 0.040 0.029 0.039 0.134
+  S1 none      bump  II: 0.120 0.055 0.043 0.072 0.128 0.085 0.109 0.113 0.091 0.057 0.101 0.228 1.000
+  S1 none      below GI: 0.278 0.081 0.037 0.024 0.019 0.020 0.025 0.031 0.029 0.023 0.024 0.027 0.022
+  S1 none      below II: 0.236 0.070 0.034 0.023 0.021 0.024 0.029 0.034 0.044 0.081 0.062 0.048 0.043
+  S1 none      above GI: 0.021 0.020 0.019 0.017 0.016 0.015 0.015 0.015 0.016 0.020 0.032 0.064 0.257
+  S1 none      above II: 0.044 0.050 0.029 0.021 0.019 0.021 0.025 0.029 0.036 0.058 0.136 0.378 1.000
+  S1 none      NLA  fit: chi2 2133.8; dOm +10.64 sigma, dS8 -16.43 sigma
+  S1 none      TATT fit: chi2 2845.9; dOm +12.22 sigma, dS8 -27.91 sigma
+  S1 K0/D 0.3  verify below GI k 0.100 eps 0.0549: full (-0.294, -0.054) linear (-0.300, -0.047)
+  S1 K0/D 0.3  verify below II k 0.100 eps 0.9189: full (-0.278, -0.715) linear (+0.226, -0.300)
+  S1 K0/D 0.3  verify bump  GI k 0.032 eps 0.1092: full (-0.295, -0.075) linear (-0.300, -0.063)
+  S1 K0/D 0.3  bump  GI: 0.113 0.062 0.109 0.165 0.095 0.172 0.378 0.496 1.000 1.000 1.000 1.000 1.000
+  S1 K0/D 0.3  bump  II: 0.107 0.078 0.442 0.062 0.081 0.253 0.351 0.937 1.000 1.000 1.000 1.000 1.000
+  S1 K0/D 0.3  below GI: 0.230 0.075 0.044 0.042 0.055 0.083 0.096 0.092 0.092 0.092 0.092 0.092 0.092
+  S1 K0/D 0.3  below II: 0.226 0.082 0.062 0.108 0.919 0.158 0.156 0.189 0.187 0.187 0.187 0.187 0.187
+  S1 K0/D 0.3  above GI: 0.153 0.311 0.084 0.079 0.137 0.364 1.000 1.000 1.000 1.000 1.000 1.000 1.000
+  S1 K0/D 0.3  above II: 0.102 0.057 0.046 0.069 0.220 1.000 0.955 1.000 1.000 1.000 1.000 1.000 1.000
+  S1 K0/D 0.3  NLA  fit: chi2 1.7; dOm -0.29 sigma, dS8 -0.05 sigma
+  S1 K0/D 0.3  TATT fit: chi2 1.7; dOm -0.22 sigma, dS8 -0.03 sigma
+[222s] truth prod: 122 tent responses; sum vs xi_IA 3.9e-10
+  prod none      verify below GI k 0.100 eps 0.0187: full (-0.325, -0.136) linear (-0.300, -0.085)
+  prod none      verify below II k 0.100 eps 0.0197: full (-0.311, -0.162) linear (-0.300, -0.147)
+  prod none      verify above GI k 1.000 eps 0.0154: full (+0.085, +0.290) linear (+0.117, +0.300)
+  prod none      verify above II k 1.000 eps 0.0356: full (+0.280, -0.083) linear (+0.300, -0.075)
+  prod none      verify bump  GI k 0.032 eps 0.0430: full (-0.321, -0.127) linear (-0.300, -0.073)
+  prod none      verify bump  GI k 1.000 eps 0.0834: full (-0.294, +0.123) linear (-0.300, +0.199)
+  prod none      bump  GI: 0.142 0.062 0.043 0.048 0.152 0.094 0.059 0.145 0.083 0.039 0.028 0.038 0.132
+  prod none      bump  II: 0.118 0.053 0.040 0.063 0.104 0.070 0.091 0.103 0.098 0.058 0.098 0.249 1.000
+  prod none      below GI: 0.277 0.081 0.037 0.023 0.019 0.019 0.024 0.029 0.028 0.023 0.023 0.026 0.022
+  prod none      below II: 0.231 0.068 0.032 0.022 0.020 0.022 0.028 0.034 0.043 0.073 0.058 0.046 0.042
+  prod none      above GI: 0.020 0.020 0.019 0.017 0.016 0.015 0.015 0.015 0.015 0.019 0.031 0.062 0.252
+  prod none      above II: 0.043 0.049 0.028 0.020 0.018 0.020 0.025 0.029 0.036 0.056 0.131 0.413 1.000
+  prod none      NLA  fit: chi2 2399.2; dOm +11.70 sigma, dS8 -20.99 sigma
+  prod none      TATT fit: chi2 3466.0; dOm +13.29 sigma, dS8 -33.42 sigma
+  prod K0/D 0.3  verify below GI k 0.100 eps 0.0543: full (-0.294, -0.048) linear (-0.300, -0.041)
+  prod K0/D 0.3  verify below II k 0.100 eps 0.6225: full (-0.243, -0.513) linear (+0.017, -0.300)
+  prod K0/D 0.3  verify bump  GI k 0.032 eps 0.1086: full (-0.295, -0.070) linear (-0.300, -0.061)
+  prod K0/D 0.3  bump  GI: 0.115 0.063 0.109 0.191 0.094 0.161 0.385 0.486 1.000 1.000 1.000 1.000 1.000
+  prod K0/D 0.3  bump  II: 0.108 0.078 0.407 0.066 0.075 0.218 0.312 0.756 1.000 1.000 1.000 1.000 1.000
+  prod K0/D 0.3  below GI: 0.234 0.076 0.044 0.042 0.054 0.083 0.096 0.093 0.093 0.093 0.093 0.093 0.093
+  prod K0/D 0.3  below II: 0.229 0.082 0.061 0.101 0.623 0.159 0.152 0.190 0.189 0.189 0.189 0.189 0.189
+  prod K0/D 0.3  above GI: 0.153 0.339 0.086 0.078 0.131 0.374 1.000 1.000 1.000 1.000 1.000 1.000 1.000
+  prod K0/D 0.3  above II: 0.103 0.057 0.046 0.066 0.192 1.000 0.777 1.000 1.000 1.000 1.000 1.000 1.000
+  prod K0/D 0.3  NLA  fit: chi2 1.7; dOm +0.04 sigma, dS8 +0.24 sigma
+  prod K0/D 0.3  TATT fit: chi2 1.5; dOm -0.06 sigma, dS8 +0.24 sigma
+done (432s)

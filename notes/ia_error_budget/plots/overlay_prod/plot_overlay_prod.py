@@ -1,14 +1,15 @@
-"""Redraw tolerance_bands_nla.pdf and tolerance_bands_nla.png from data.json alone.
+"""Redraw overlay_prod.pdf and overlay_prod.png from data.json alone.
 
-How wrong may the IA power spectra be, scale by scale, before Roman cosmic
-shear shifts (Omega_m, S8) by 0.3 sigma, with NLA refitted? Horizontal: k;
-vertical: the fractional change eps of the spectrum, the same at every
-redshift. Light band with markers: the tolerance of one node when every
-other node is exact. Dark band: the guaranteed box, inside which every
-combination of changes at all nodes stays below 0.3. Panels: GI, II, and
-both changed by the same eps. Production mask k_UV = 0.3/D(z), case A.
+How wrong NLA and TATT are against the production FLAMINGO truth, over the error budget. Gray:
+the budget for one k range wrong (Omega_m and S8 each within 0.3 sigma;
+model agnostic). Lines with markers: P^model/P^truth - 1 of each model fitted
+at the fiducial cosmology (IA parameters only), the mean over the core
+snapshots 0.2 <= z <= 2; thin lines in the model's color: its smallest and
+largest value over those snapshots. Panels: GI and II, with no cut and with the cut k_UV = 0.3/D(z),
+each model fitted with the same cut. Symmetric logarithmic y axis (linear
+within +-1%; the panel edges are +-100%).
 
-Run from any folder: python plot_tolerance_bands_nla.py
+Run from any folder: python plot_overlay_prod.py
 """
 import json
 import os
@@ -201,45 +202,57 @@ def shared_ylabel(fig, axes, text, pad_pt=4.0, fontsize=11):
 
 
 from matplotlib.patches import Patch  # noqa: E402
+from scipy.interpolate import PchipInterpolator  # noqa: E402
 
-PANELS = [('GI', 'GI'), ('II', 'II'), ('both', 'GI and II')]
+PANELS = [('none', 'GI', 'GI, no cut'), ('none', 'II', 'II, no cut'),
+          ('K0/D 0.3', 'GI', r'GI, $K_0 = 0.3$'), ('K0/D 0.3', 'II', r'II, $K_0 = 0.3$')]
+BAND = '0.72'
+
+
+def smooth(k, kf, v):
+    return np.clip(PchipInterpolator(np.log(k), v)(np.log(kf)), 0.0, 1.0)
 
 
 def draw(data):
-    model = data['model']
-    st = MODEL_STYLE[model]
-    k = as_array(data['nodes'])
-    fig, axes = plt.subplots(3, 1, figsize=(WIDTH, 3*PANEL_HEIGHT + 0.4), sharex=True,
-                             sharey=True, gridspec_kw={'hspace': 0.06})
-    for ax, (key, name) in zip(axes, PANELS):
-        r = data['bands'][key]
-        one, joint = as_array(r['single']), as_array(r['joint'])
-        ax.fill_between(k, -one, one, color=st['color'], alpha=0.18, lw=0, zorder=1)
-        ax.fill_between(k, -joint, joint, color=st['color'], alpha=0.75, lw=0, zorder=2)
-        for sgn in (1, -1):
-            ax.plot(k, sgn*one, color=st['color'], lw=1.0, marker=st['marker'], ms=MARKER_SIZE,
-                    mfc='white', mec=st['color'], clip_on=False, zorder=3)
+    k = as_array(data['k'])
+    kf = np.geomspace(k[0], k[-1], 300)
+    kd = as_array(data['k_dense'])
+    fig, axes = plt.subplots(4, 1, figsize=(WIDTH, 4*1.3 + 0.9), sharex=True, sharey=True,
+                             gridspec_kw={'hspace': 0.06})
+    for ax, (cut, X, name) in zip(axes, PANELS):
+        b = data['bands'][cut][X]
+        ax.fill_between(kf, -smooth(k, kf, as_array(b['down'])), smooth(k, kf, as_array(b['up'])),
+                        color=BAND, lw=0, zorder=1)
+        for model in ('NLA', 'TATT'):
+            st = MODEL_STYLE[model]
+            e = np.array(data['errors'][cut][model][X])          # (n core z, k_dense)
+            for edge in (e.min(0), e.max(0)):
+                ax.plot(kd, edge, color=st['color'], lw=0.6, zorder=2)
+            ax.plot(kd, e.mean(0), markevery=3, clip_on=False, zorder=3, **line_style(model, 'base'))
         ax.axhline(0.0, **THRESHOLD_STYLE)
         ax.set_xscale('log')
+        ax.set_yscale('symlog', linthresh=0.01, linscale=0.6)
+        ax.set_ylim(-1.15, 1.15)
+        ax.set_yticks([-0.1, -0.01, 0.0, 0.01, 0.1])
+        ax.set_yticklabels(['-10%', '-1%', '0', '1%', '10%'], fontsize=7.5)
+        ax.minorticks_off()
         ax.grid(False, axis='x')
         ax.yaxis.set_label_position('right')
-        ax.set_ylabel(name, rotation=90, fontsize=10, labelpad=5)
+        ax.set_ylabel(name, rotation=90, fontsize=8.5, labelpad=5)
     axes[-1].set_xlim(0.0085, 11.5)
-    axes[-1].set_ylim(-1.0, 1.0)
-    axes[-1].set_yticks([-1.0, -0.5, 0.0, 0.5, 1.0])
-    axes[-1].set_yticklabels(['-1', '-0.5', '0', '0.5', '1'])
-    trim_top_tick(axes)
     axes[-1].set_xticks([0.01, 0.1, 1.0, 10.0])
     axes[-1].set_xticklabels(['0.01', '0.1', '1', '10'])
     axes[-1].set_xlabel(r'$k$ [$h\,{\rm Mpc}^{-1}$]')
-    handles = [(Patch(color=st['color'], alpha=0.18, lw=0),
-                Line2D([], [], color=st['color'], lw=1.0, marker=st['marker'], ms=MARKER_SIZE,
-                       mfc='white', mec=st['color'])),
-               Patch(color=st['color'], alpha=0.75, lw=0)]
-    labels = ['one node perturbed', 'all nodes perturbed']
-    place_legend(fig, axes[0], handles, labels, list(axes), above_ncol=2, fontsize=8,
+    handles = [Patch(color=BAND, lw=0)]
+    for m in ('TATT', 'NLA'):
+        st = MODEL_STYLE[m]
+        handles.append((Line2D([], [], color=st['color'], lw=0.6),
+                        Line2D([], [], **line_style(m, 'base'))))
+    labels = [r'budget, one $k$ range wrong', 'TATT error (mean, range over $z$)',
+              'NLA error (mean, range over $z$)']
+    place_legend(fig, axes[0], handles, labels, list(axes), above_ncol=1, fontsize=7.5,
                  max_headroom=0, handler_map={tuple: HandlerTuple(ndivide=1)})
-    shared_ylabel(fig, axes, r'allowed fractional change $\varepsilon$')
+    shared_ylabel(fig, axes, r'fractional error')
     return fig
 
 

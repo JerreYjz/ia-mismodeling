@@ -1,14 +1,16 @@
-"""Redraw tolerance_bands_tatt.pdf and tolerance_bands_tatt.png from data.json alone.
+"""Redraw bands_s1.pdf and bands_s1.png from data.json alone.
 
-How wrong may the IA power spectra be, scale by scale, before Roman cosmic
-shear shifts (Omega_m, S8) by 0.3 sigma, with TATT refitted? Horizontal: k;
-vertical: the fractional change eps of the spectrum, the same at every
-redshift. Light band with markers: the tolerance of one node when every
-other node is exact. Dark band: the guaranteed box, inside which every
-combination of changes at all nodes stays below 0.3. Panels: GI, II, and
-both changed by the same eps. Production mask k_UV = 0.3/D(z), case A.
+The IA error budget of Roman cosmic shear as bands, for the stitched FLAMINGO truth (NLA below k_t(z), FLAMINGO above): the range of
+fractional error eps (positive: the spectrum too high; negative: too low),
+the same at every redshift, that keeps Omega_m and S8 each within 0.3 of
+their marginalised errors. Shaded, with markers at the nodes: one k range
+around k wrong. Lines: every scale larger than k wrong (black, dashed) and
+every scale smaller than k wrong (vermillion, dash-dot). Panels: GI and II,
+with no cut and with the cut k_UV = 0.3/D(z). Symmetric logarithmic y axis
+(linear within +-1%; the panel edges are +-100%, no limit). Model agnostic (the truth with a free IA amplitude and
+evolution as the analysis model).
 
-Run from any folder: python plot_tolerance_bands_tatt.py
+Run from any folder: python plot_bands_s1.py
 """
 import json
 import os
@@ -201,45 +203,62 @@ def shared_ylabel(fig, axes, text, pad_pt=4.0, fontsize=11):
 
 
 from matplotlib.patches import Patch  # noqa: E402
+from scipy.interpolate import PchipInterpolator  # noqa: E402
 
-PANELS = [('GI', 'GI'), ('II', 'II'), ('both', 'GI and II')]
+PANELS = [('none', 'GI', 'GI, no cut'), ('none', 'II', 'II, no cut'),
+          ('K0/D 0.3', 'GI', r'GI, $K_0 = 0.3$'), ('K0/D 0.3', 'II', r'II, $K_0 = 0.3$')]
+BUMP_COLOR = '#0072B2'
+EDGE = {'below': {'color': 'black', 'lw': 1.2, 'ls': (0, (4.5, 2.5))},
+        'above': {'color': '#D55E00', 'lw': 1.2, 'ls': (0, (6.0, 2.0, 1.5, 2.0))}}
+
+
+def smooth(k, kf, v):
+    """Monotone (PCHIP) interpolation in ln k between the nodes, clipped to [0, 1]."""
+    return np.clip(PchipInterpolator(np.log(k), v)(np.log(kf)), 0.0, 1.0)
 
 
 def draw(data):
-    model = data['model']
-    st = MODEL_STYLE[model]
-    k = as_array(data['nodes'])
-    fig, axes = plt.subplots(3, 1, figsize=(WIDTH, 3*PANEL_HEIGHT + 0.4), sharex=True,
-                             sharey=True, gridspec_kw={'hspace': 0.06})
-    for ax, (key, name) in zip(axes, PANELS):
-        r = data['bands'][key]
-        one, joint = as_array(r['single']), as_array(r['joint'])
-        ax.fill_between(k, -one, one, color=st['color'], alpha=0.18, lw=0, zorder=1)
-        ax.fill_between(k, -joint, joint, color=st['color'], alpha=0.75, lw=0, zorder=2)
-        for sgn in (1, -1):
-            ax.plot(k, sgn*one, color=st['color'], lw=1.0, marker=st['marker'], ms=MARKER_SIZE,
-                    mfc='white', mec=st['color'], clip_on=False, zorder=3)
+    k = as_array(data['k'])
+    kf = np.geomspace(k[0], k[-1], 300)
+    fig, axes = plt.subplots(4, 1, figsize=(WIDTH, 4*1.3 + 0.9), sharex=True, sharey=True,
+                             gridspec_kw={'hspace': 0.06})
+    for ax, (cut, X, name) in zip(axes, PANELS):
+        b = data['bands'][cut]
+        up = smooth(k, kf, as_array(b[f'bump|{X}']['up']))
+        dn = smooth(k, kf, as_array(b[f'bump|{X}']['down']))
+        ax.fill_between(kf, -dn, up, color=BUMP_COLOR, alpha=0.30, lw=0, zorder=1)
+        ax.plot(k, as_array(b[f'bump|{X}']['up']), ls='none', marker='o', ms=MARKER_SIZE - 0.6,
+                mfc='white', mec=BUMP_COLOR, clip_on=False, zorder=3)
+        ax.plot(k, -as_array(b[f'bump|{X}']['down']), ls='none', marker='o', ms=MARKER_SIZE - 0.6,
+                mfc='white', mec=BUMP_COLOR, clip_on=False, zorder=3)
+        for shape, st in EDGE.items():
+            ax.plot(kf, smooth(k, kf, as_array(b[f'{shape}|{X}']['up'])), zorder=2, **st)
+            ax.plot(kf, -smooth(k, kf, as_array(b[f'{shape}|{X}']['down'])), zorder=2, **st)
         ax.axhline(0.0, **THRESHOLD_STYLE)
         ax.set_xscale('log')
         ax.grid(False, axis='x')
         ax.yaxis.set_label_position('right')
-        ax.set_ylabel(name, rotation=90, fontsize=10, labelpad=5)
+        ax.set_ylabel(name, rotation=90, fontsize=8.5, labelpad=5)
     axes[-1].set_xlim(0.0085, 11.5)
-    axes[-1].set_ylim(-1.0, 1.0)
-    axes[-1].set_yticks([-1.0, -0.5, 0.0, 0.5, 1.0])
-    axes[-1].set_yticklabels(['-1', '-0.5', '0', '0.5', '1'])
-    trim_top_tick(axes)
+    for ax in axes:
+        # symmetric log axis: linear within +-1%, logarithmic beyond, so 1%,
+        # 10% and 100% errors are all readable and the sign is kept
+        ax.set_yscale('symlog', linthresh=0.01, linscale=0.6)
+        ax.set_ylim(-1.15, 1.15)
+        ax.set_yticks([-0.1, -0.01, 0.0, 0.01, 0.1])
+        ax.set_yticklabels(['-10%', '-1%', '0', '1%', '10%'], fontsize=7.5)
+        ax.minorticks_off()
     axes[-1].set_xticks([0.01, 0.1, 1.0, 10.0])
     axes[-1].set_xticklabels(['0.01', '0.1', '1', '10'])
     axes[-1].set_xlabel(r'$k$ [$h\,{\rm Mpc}^{-1}$]')
-    handles = [(Patch(color=st['color'], alpha=0.18, lw=0),
-                Line2D([], [], color=st['color'], lw=1.0, marker=st['marker'], ms=MARKER_SIZE,
-                       mfc='white', mec=st['color'])),
-               Patch(color=st['color'], alpha=0.75, lw=0)]
-    labels = ['one node perturbed', 'all nodes perturbed']
-    place_legend(fig, axes[0], handles, labels, list(axes), above_ncol=2, fontsize=8,
+    handles = [(Patch(color=BUMP_COLOR, alpha=0.30, lw=0),
+                Line2D([], [], ls='none', marker='o', ms=MARKER_SIZE - 0.6, mfc='white', mec=BUMP_COLOR)),
+               Line2D([], [], **EDGE['below']), Line2D([], [], **EDGE['above'])]
+    labels = [r'one $k$ range wrong', r'every scale larger than $k$ wrong',
+              r'every scale smaller than $k$ wrong']
+    place_legend(fig, axes[0], handles, labels, list(axes), above_ncol=1, fontsize=7.5,
                  max_headroom=0, handler_map={tuple: HandlerTuple(ndivide=1)})
-    shared_ylabel(fig, axes, r'allowed fractional change $\varepsilon$')
+    shared_ylabel(fig, axes, r'allowed fractional error $\varepsilon$')
     return fig
 
 

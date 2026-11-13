@@ -1,13 +1,15 @@
-"""Redraw verification.pdf and verification.png from data.json alone.
+"""Redraw overlay_s1.pdf and overlay_s1.png from data.json alone.
 
-Is the linear response good enough? Each point is a full non-linear refit
-at the edge of a linear-response band, where linear response predicts a
-figure of bias of exactly 0.3 (dotted). Circles: one node at its band edge
-(three nodes, both signs); stars: the worst-case corners of the guaranteed
-box. Color, line width and marker as in the other figures: NLA orange, TATT
-blue. Mask k_UV = 0.3/D(z), case A.
+How wrong NLA and TATT are against the stitched FLAMINGO truth, over the error budget. Gray:
+the budget for one k range wrong (Omega_m and S8 each within 0.3 sigma;
+model agnostic). Lines with markers: P^model/P^truth - 1 of each model fitted
+at the fiducial cosmology (IA parameters only), the mean over the core
+snapshots 0.2 <= z <= 2; thin lines in the model's color: its smallest and
+largest value over those snapshots. Panels: GI and II, with no cut and with the cut k_UV = 0.3/D(z),
+each model fitted with the same cut. Symmetric logarithmic y axis (linear
+within +-1%; the panel edges are +-100%).
 
-Run from any folder: python plot_verification.py
+Run from any folder: python plot_overlay_s1.py
 """
 import json
 import os
@@ -199,32 +201,58 @@ def shared_ylabel(fig, axes, text, pad_pt=4.0, fontsize=11):
                     fontsize=fontsize)
 
 
-KIND_MARKER = {'single': 'o', 'joint corner': '*'}
-OFFSETS = np.linspace(-0.18, 0.18, 8)
+from matplotlib.patches import Patch  # noqa: E402
+from scipy.interpolate import PchipInterpolator  # noqa: E402
+
+PANELS = [('none', 'GI', 'GI, no cut'), ('none', 'II', 'II, no cut'),
+          ('K0/D 0.3', 'GI', r'GI, $K_0 = 0.3$'), ('K0/D 0.3', 'II', r'II, $K_0 = 0.3$')]
+BAND = '0.72'
+
+
+def smooth(k, kf, v):
+    return np.clip(PchipInterpolator(np.log(k), v)(np.log(kf)), 0.0, 1.0)
 
 
 def draw(data):
-    groups = list(data['groups'])
-    fig, ax = plt.subplots(figsize=(WIDTH, 2.2))
-    ax.axhline(float(data['fob_max']), **THRESHOLD_STYLE)
-    for i, g in enumerate(groups):
-        model = g.split()[0]
-        st = MODEL_STYLE[model]
-        for j, e in enumerate(data['groups'][g]):
-            ax.plot(i + OFFSETS[j % len(OFFSETS)], e['fob_full'], ls='none',
-                    marker=KIND_MARKER[e['kind']], ms=MARKER_SIZE + (3 if e['kind'] != 'single' else 1),
-                    mfc=st['color'], mec=st['color'], clip_on=False)
-    ax.set_xticks(range(len(groups)))
-    ax.set_xticklabels([g.replace(' ', ', ') for g in groups])
-    ax.set_xlim(-0.5, len(groups) - 0.5)
-    ax.set_ylim(0.0, 0.5)
-    ax.set_yticks([0.0, 0.1, 0.2, 0.3, 0.4, 0.5])
-    ax.grid(False, axis='x')
-    ax.set_ylabel('FoB of the full refit')
-    handles = [Line2D([], [], ls='none', marker='o', ms=MARKER_SIZE + 1, color='0.3'),
-               Line2D([], [], ls='none', marker='*', ms=MARKER_SIZE + 3, color='0.3')]
-    place_legend(fig, ax, handles, ['one node', 'all nodes (worst corner)'], [ax],
-                 above_ncol=2, fontsize=8, max_headroom=0)
+    k = as_array(data['k'])
+    kf = np.geomspace(k[0], k[-1], 300)
+    kd = as_array(data['k_dense'])
+    fig, axes = plt.subplots(4, 1, figsize=(WIDTH, 4*1.3 + 0.9), sharex=True, sharey=True,
+                             gridspec_kw={'hspace': 0.06})
+    for ax, (cut, X, name) in zip(axes, PANELS):
+        b = data['bands'][cut][X]
+        ax.fill_between(kf, -smooth(k, kf, as_array(b['down'])), smooth(k, kf, as_array(b['up'])),
+                        color=BAND, lw=0, zorder=1)
+        for model in ('NLA', 'TATT'):
+            st = MODEL_STYLE[model]
+            e = np.array(data['errors'][cut][model][X])          # (n core z, k_dense)
+            for edge in (e.min(0), e.max(0)):
+                ax.plot(kd, edge, color=st['color'], lw=0.6, zorder=2)
+            ax.plot(kd, e.mean(0), markevery=3, clip_on=False, zorder=3, **line_style(model, 'base'))
+        ax.axhline(0.0, **THRESHOLD_STYLE)
+        ax.set_xscale('log')
+        ax.set_yscale('symlog', linthresh=0.01, linscale=0.6)
+        ax.set_ylim(-1.15, 1.15)
+        ax.set_yticks([-0.1, -0.01, 0.0, 0.01, 0.1])
+        ax.set_yticklabels(['-10%', '-1%', '0', '1%', '10%'], fontsize=7.5)
+        ax.minorticks_off()
+        ax.grid(False, axis='x')
+        ax.yaxis.set_label_position('right')
+        ax.set_ylabel(name, rotation=90, fontsize=8.5, labelpad=5)
+    axes[-1].set_xlim(0.0085, 11.5)
+    axes[-1].set_xticks([0.01, 0.1, 1.0, 10.0])
+    axes[-1].set_xticklabels(['0.01', '0.1', '1', '10'])
+    axes[-1].set_xlabel(r'$k$ [$h\,{\rm Mpc}^{-1}$]')
+    handles = [Patch(color=BAND, lw=0)]
+    for m in ('TATT', 'NLA'):
+        st = MODEL_STYLE[m]
+        handles.append((Line2D([], [], color=st['color'], lw=0.6),
+                        Line2D([], [], **line_style(m, 'base'))))
+    labels = [r'budget, one $k$ range wrong', 'TATT error (mean, range over $z$)',
+              'NLA error (mean, range over $z$)']
+    place_legend(fig, axes[0], handles, labels, list(axes), above_ncol=1, fontsize=7.5,
+                 max_headroom=0, handler_map={tuple: HandlerTuple(ndivide=1)})
+    shared_ylabel(fig, axes, r'fractional error')
     return fig
 
 

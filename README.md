@@ -5,14 +5,21 @@ paper: which scales of Roman cosmic shear (and 3x2pt) can be analyzed with the
 NLA and TATT models when the true alignments are those measured in the
 FLAMINGO simulation, and how a halo model with central alignment (HMc) does.
 
-**Start here:** `notes/scale_cuts_summary/scale_cuts_summary.pdf`, the
-presentable summary of the scale-cut work (November 2026). Every figure in it
-redraws from its own folder under `notes/scale_cuts_summary/plots/`.
+**Start here:**
+* `notes/ia_error_budget/ia_error_budget.pdf`: the IA error budget of Roman
+  cosmic shear (how wrong the FLAMINGO IA spectra may be, scale by scale,
+  before Omega_m or S8 moves by 0.3 sigma) and NLA / TATT against it.
+  Scripts in `analysis/roman_dchi2/v8/`.
+* `notes/scale_cuts_summary/scale_cuts_summary.pdf`: the scale-cut work
+  (November 2026).
+
+Every figure redraws from its own folder under the note's `plots/`.
 
 ## Layout
 
 | folder | what it holds |
 |---|---|
+| `notes/ia_error_budget/` | the error-budget note and its figures; `plots/make_figure_data.py` exports the numbers from `analysis/roman_dchi2/v8/` |
 | `notes/scale_cuts_summary/` | the summary note (`.tex`, `.pdf`) and its figure folders (`data.json`, `plot_<name>.py`, PDF, PNG); `plots/make_figure_data.py` exports the numbers from `analysis/` |
 | `analysis/` | the scale-cut pipeline: Part 1 (NLA on a TATT fiducial, Cobaya yamls, Gauss-Newton bias, IR/UV masks) at the top level; `tatt_fit/` (the TATT model in cosmolike conventions, FLAMINGO loaders); `roman_dchi2/` (FLAMINGO fits `v2`, simulation cuts and Roman tests `v3`, strategies `v4`, production covariance `v5`, **halo model `v6`**, the cosmolike driver `cocoa/`, the work-log reports `report/`). See `analysis/README.md` and `analysis/roman_dchi2/v6/README.md` |
 | `flamingo/extraction/` | the FLAMINGO IA power-spectrum extraction (SOAP catalogue to P_hh, P_hE, P_EE, P_BB) and the L1_m8 run scripts |
