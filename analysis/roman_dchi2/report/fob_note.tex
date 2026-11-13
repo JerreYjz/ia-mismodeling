@@ -1,0 +1,259 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,bm,booktabs,xcolor,hyperref,enumitem}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\hypersetup{colorlinks=true,linkcolor=blue!60!black,urlcolor=blue!60!black}
+\newcommand{\vd}{\bm{d}}
+\newcommand{\vm}{\bm{m}}
+\newcommand{\vp}{\bm{p}}
+\newcommand{\vr}{\bm{r}}
+\newcommand{\vth}{\bm{\theta}}
+\newcommand{\tp}{^{\mathsf T}}
+\newcommand{\fob}{\mathrm{FoB}}
+\title{How the figure of bias is computed}
+\author{Notes for the IA scale-cut analysis}
+\date{10 November 2026}
+
+\begin{document}
+\maketitle
+
+\noindent These notes follow the code (\texttt{v3/roman\_test.py},
+function \texttt{fit}; the linear version in \texttt{v4/split\_pm.py} and
+\texttt{v5/linear\_cov.py}) step by step. Section~\ref{sec:summary} is the
+short version.
+
+\section{Ingredients}
+
+\paragraph{Data vector.} Real-space cosmic shear, $\xi_\pm^{ij}(\theta)$ for
+the 36 source-bin pairs and 15 angular bins, $N = 1080$ elements. The
+\emph{contaminated} (``truth'') data vector is noiseless:
+\begin{equation}
+\vd = \vm_{\rm GG}(\vp_{\rm fid}) + \bm{\xi}_{\rm IA}^{\rm FLAMINGO},
+\end{equation}
+where $\vm_{\rm GG}$ is the lensing-only prediction at the fiducial cosmology
+(D3A) and $\bm{\xi}_{\rm IA}^{\rm FLAMINGO}$ is the GI $+$ II contribution
+computed by cosmolike from the FLAMINGO $P_{\delta E}(k,z)$ and $P_{EE}(k,z)$
+(converted to the cosmolike convention, injected through the
+\texttt{sim\_IA} tables).
+
+\paragraph{Mask.} A boolean vector selects $n \le N$ elements (the scale
+cut). Everything below uses only the kept elements; I drop the mask from the
+notation.
+
+\paragraph{Covariance.} $C$ ($n\times n$), the data covariance on the mask:
+either the Gaussian $\xi_\pm$ covariance of these notes or the production
+\texttt{example1\_cov} ($\xi_\pm$ block). $C$ is held fixed (it does not
+depend on the parameters).
+
+\paragraph{Model and parameters.} $\vm(\vp)$ is cosmolike's prediction with
+the analysis IA model. The parameter vector is
+\begin{equation}
+\vp = (\underbrace{\Omega_m,\ A_s\ [,\ n_s,\ H_0,\ \Omega_b]}_{\vp_c\ \text{cosmology}},\ \underbrace{A_1,\ \eta_1\ [,\ A_2,\ \eta_2,\ b_{\rm TA}]}_{\vp_{\rm IA}}),
+\end{equation}
+with $A_i(z) = A_i\,[(1+z)/1.62]^{\eta_i}$. \emph{Case A} frees $\Omega_m$
+and $A_s$ only; \emph{case B} also frees $n_s$, $H_0$, $\Omega_b$. NLA has
+two IA parameters, TATT five.
+
+\paragraph{Priors.} IA parameters are bounded to the chain's flat priors
+($A_1, \eta_1, A_2, \eta_2 \in [-5, 5]$, $b_{\rm TA} \in [0, 2]$). In case B
+the extra cosmological parameters get Gaussian priors centred on the fiducial
+with the width of the chain's flat prior (see Eq.~\ref{eq:flatvar}):
+$\sigma_{n_s} = 0.2/\sqrt{12}$, $\sigma_{H_0} = 36/\sqrt{12}$,
+$\sigma_{\Omega_b} = 0.04/\sqrt{12}$.
+
+\section{Step 1: the best fit (MAP)}
+
+The best fit minimises
+\begin{equation}
+\chi^2(\vp) = [\vd - \vm(\vp)]\tp C^{-1}[\vd - \vm(\vp)]
+\;+\; \sum_{a\,\in\,\text{Gaussian priors}}\frac{(p_a - p_a^{\rm fid})^2}{\sigma_a^2},
+\label{eq:chi2}
+\end{equation}
+subject to the IA bounds. Because the data are noiseless and the prior is
+flat in the IA parameters, the minimiser is the maximum of the posterior
+(MAP). If the analysis model were the truth, the minimum would be at
+$\vp_{\rm fid}$ with $\chi^2 = 0$; any offset is caused by the model
+mismatch.
+
+\paragraph{How it is minimised.} Each cosmolike call is expensive when the
+cosmology changes (CAMB), cheap when only IA parameters change. So:
+\begin{enumerate}[itemsep=1pt]
+\item Fit the IA parameters alone at the fiducial cosmology, from several
+  starting points (both TATT branches), keeping the lowest $\chi^2$.
+\item Linearise the model in the cosmological parameters around the
+  fiducial, at the current IA solution:
+  \begin{equation}
+  \vm(\vp_c, \vp_{\rm IA}) \simeq \vm(\vp_c^{\rm fid}, \vp_{\rm IA}) + J_c(\vp_{\rm IA})\,(\vp_c - \vp_c^{\rm fid}),
+  \qquad (J_c)_{ia} = \frac{\partial m_i}{\partial p_{c,a}},
+  \label{eq:lin}
+  \end{equation}
+  with $J_c$ from central finite differences (steps $\Delta\Omega_m = 0.01$,
+  $\Delta A_s = 0.05\times10^{-9}$, \dots).
+\item Minimise Eq.~(\ref{eq:chi2}) over all parameters with this model (IA
+  part exact, cosmology part linear), by trust-region least squares on the
+  whitened residual $L^{-1}(\vd - \vm)$, $C = LL\tp$.
+\item Recompute $J_c$ at the new IA solution and repeat once.
+\end{enumerate}
+The final $\chi^2$ is evaluated with the exact model at the solution. This
+was checked against a fully non-linear fit (cosmology also exact): identical
+to all quoted digits. The cosmological shifts are a few tenths of $\sigma$,
+well inside the linear regime.
+
+\section{Step 2: the parameter shift}
+
+The quantities of interest are $\vth = (\Omega_m, S_8)$, with
+$S_8 = \sigma_8\sqrt{\Omega_m/0.3}$ computed by CAMB. The shift is
+\begin{equation}
+\delta\vth = \big(\Omega_m^{\rm MAP} - \Omega_m^{\rm fid},\ \ S_8^{\rm MAP} - S_8^{\rm fid}\big).
+\end{equation}
+
+\section{Step 3: the uncertainty of \texorpdfstring{$\vth$}{(Omega_m, S8)}}
+
+\paragraph{Fisher matrix.} At the best fit, with $J = \partial\vm/\partial\vp$
+($n \times n_p$; cosmology columns $J_c$ as above, IA columns by central
+differences with step 0.05),
+\begin{equation}
+F = J\tp C^{-1} J + P^{-1},
+\qquad \mathrm{Cov}(\vp) = F^{-1}.
+\label{eq:fisher}
+\end{equation}
+$P^{-1}$ is diagonal: the case-B Gaussian priors on $n_s, H_0, \Omega_b$,
+zero for $\Omega_m$ and $A_s$, and for each IA parameter the variance of its
+flat prior,
+\begin{equation}
+p \sim \mathcal{U}[a, b] \;\Rightarrow\; \mathrm{Var}(p) = \frac{(b-a)^2}{12},
+\qquad \sigma_{A_1} = \sigma_{\eta_1} = \sigma_{A_2} = \sigma_{\eta_2} = \frac{10}{\sqrt{12}} = 2.89,\quad
+\sigma_{b_{\rm TA}} = \frac{2}{\sqrt{12}} = 0.58 .
+\label{eq:flatvar}
+\end{equation}
+A Fisher matrix cannot represent a flat prior; replacing it by a Gaussian of
+the same variance is the standard approximation. It matters only for
+parameters the data barely constrain (for TATT, $\eta_2$ and $b_{\rm TA}$).
+
+\paragraph{Marginalising and projecting.} Inverting $F$ marginalises over all
+other parameters (IA included). The covariance of $\vth$ follows from the
+Jacobian $G = \partial\vth/\partial\vp$ ($2 \times n_p$):
+\begin{equation}
+\Sigma_\theta = G\,F^{-1}\,G\tp,\qquad
+G = \begin{pmatrix} 1 & 0 & \cdots & 0 \\ \partial S_8/\partial\Omega_m & \partial S_8/\partial A_s & \cdots & 0 \end{pmatrix},
+\end{equation}
+with the $S_8$ derivatives by finite differences through CAMB. The IA columns
+of $G$ are zero ($\vth$ depends on cosmology only).
+
+\section{Step 4: the figure of bias}
+
+\begin{equation}
+\boxed{\ \fob = \sqrt{\delta\vth\tp\,\Sigma_\theta^{-1}\,\delta\vth}\ }
+\label{eq:fob}
+\end{equation}
+This is the Mahalanobis distance between the biased and the true
+$(\Omega_m, S_8)$, in units of the marginalised Fisher error ellipse.
+Writing $\Sigma_\theta$ with $\sigma_{\Omega_m}$, $\sigma_{S_8}$ and
+correlation $\rho$, and $x = \delta\Omega_m/\sigma_{\Omega_m}$,
+$y = \delta S_8/\sigma_{S_8}$:
+\begin{equation}
+\fob^2 = \frac{x^2 - 2\rho\,xy + y^2}{1-\rho^2}.
+\end{equation}
+So the FoB is not $\sqrt{x^2+y^2}$: a shift along the degeneracy direction
+(sign of $xy$ equal to the sign of $\rho$) counts less, a shift across it
+counts more. For $\rho = 0$ it reduces to $\sqrt{x^2+y^2}$.
+
+\paragraph{Example} (Gaussian covariance, $K_0 = 0.3/D(z)$, NLA, case A).
+$\delta\Omega_m/\sigma = +0.07$, $\delta S_8/\sigma = +0.31$,
+$\sigma(S_8) = 0.0048$, $\fob = 0.31$: almost all of the bias is in $S_8$,
+and $|\delta S_8| = 0.31\times0.0048 = 1.5\times10^{-3}$.
+
+\paragraph{How to read ``$0.3\sigma$''.} For a Gaussian in two dimensions the
+68.3\% contour is at $\fob = \sqrt{2.30} = 1.52$ (not at 1), and the 95.4\%
+contour at $\sqrt{6.18} = 2.49$. A shift with $\fob = 0.3$ therefore moves
+the centre by $0.3/1.52 \approx 0.2$ of the 68\% contour's ``radius'' along
+that direction. The DES Y3 convention ``$0.3\sigma_{\rm 2D}$'' is defined on
+the marginalised posterior contours; depending on which convention is
+matched, numbers can differ by a factor of order 1.5 to 2. The paper should
+state Eq.~(\ref{eq:fob}) explicitly.
+
+\section{Step 5: the uncertainty of the FoB from FLAMINGO's finite volume}
+
+The injected spectra carry the simulation's measurement error. Let
+$\bm{\epsilon}$ be the vector of FLAMINGO errors per ``cell'' (snapshot $s$,
+spectrum $X \in \{\delta E, EE\}$, $k$ node $i$), and
+$\mathsf{J}_{\rm cell} = \partial\bm{\xi}/\partial P_X(k_i, z_s)$ the cell
+Jacobian (one \texttt{sim\_IA} table per cell). A noise realisation
+$\delta P = \bm{\epsilon}\odot\bm{u}$, $\bm{u} \sim \mathcal{N}(0, I)$, changes
+the data by $\delta\vd = \mathsf{J}_{\rm cell}\,(\bm{\epsilon}\odot\bm{u})$ and the
+shift by (linear estimator, Sec.~\ref{sec:linear})
+\begin{equation}
+\delta(\delta\vth) = G F^{-1} J\tp C^{-1}\,\delta\vd \equiv \mathsf{B}\,\delta\vd ,
+\qquad
+V_n = \mathsf{B}\,\mathsf{J}_{\rm cell} D_\epsilon^2 \mathsf{J}_{\rm cell}\tp\,\mathsf{B}\tp .
+\end{equation}
+The FoB changes along its gradient $\bm{g} = \partial\fob/\partial\delta\vth
+= \Sigma_\theta^{-1}\delta\vth/\fob$, so
+\begin{equation}
+\sigma_{\fob} = \sqrt{\bm{g}\tp V_n\,\bm{g}} .
+\end{equation}
+This is the ``$\pm$'' quoted with the FoB. It is a linearised estimate and
+becomes unreliable when the FoB is close to zero (the FoB cannot be
+negative).
+
+\section{The linear-response shortcut}\label{sec:linear}
+
+For quick scans over many masks the fit can be replaced by its linearisation
+around a reference point $\vp_0$ (fiducial cosmology, IA at a representative
+best fit). With $\vr = \vd - \vm(\vp_0)$ and $J$, $F$ evaluated at $\vp_0$,
+one Gauss-Newton step of Eq.~(\ref{eq:chi2}) gives
+\begin{equation}
+\delta\vp = F^{-1}J\tp C^{-1}\vr,\qquad \delta\vth = G\,\delta\vp,
+\label{eq:linshift}
+\end{equation}
+(the prior terms are centred on $\vp_0$, which for the cosmology is the
+fiducial). The $\chi^2$ left at the best fit is the part of the residual the
+model cannot absorb,
+\begin{equation}
+\Delta\chi^2_{\rm min} = \vr_\perp\tp C^{-1}\vr_\perp,\qquad
+\vr_\perp = \vr - J\,\delta\vp .
+\end{equation}
+The same estimator gives the bias from any extra contamination
+$\delta\vd$ (for example the white II term alone: $\delta\vth = G F^{-1}J\tp
+C^{-1}\delta\vd$), and adding a nuisance parameter (the white-term amplitude)
+is one more column in $J$ and one more prior entry in $P^{-1}$. On the masks
+where both exist the linear FoB agrees with the full fit to $\pm0.04$,
+except for TATT fits that move far from $\vp_0$ (prior-bound solutions),
+where the full fit is the number to quote.
+
+\section{Controls}
+Two checks run at every mask:
+\begin{itemize}[itemsep=1pt]
+\item \emph{Matched model}: TATT fitted to a data vector generated by TATT
+  gives $\fob = 0.000$. This confirms the minimiser and the Fisher
+  machinery: with the right model the MAP sits exactly at the truth.
+\item \emph{Injection path}: NLA fitted to an NLA data vector built through
+  the same \texttt{sim\_IA} tables as FLAMINGO gives $\fob < 0.01$. This
+  confirms that the table injection itself adds no bias.
+\end{itemize}
+Hence any nonzero FoB is model mismatch.
+
+\section{MAP versus posterior mean}
+The FoB above is a MAP statistic. A chain reports marginalised posterior
+means, which also move when a weakly constrained parameter has an asymmetric
+prior volume (projection effect). The MCMC at $K_0 = 0.3/D(z)$ reproduced the
+MAP shifts, and showed a $0.24\sigma$ shift of the TATT posterior mean even
+on a TATT truth (from $\eta_2$ and $b_{\rm TA}$). For chains, quote MAP
+shifts, or posterior-mean shifts minus those of the matched-model chain.
+
+\section{Summary}\label{sec:summary}
+\begin{enumerate}[itemsep=2pt]
+\item Truth: $\vd = \vm_{\rm GG}(\vp_{\rm fid}) + \bm{\xi}_{\rm IA}^{\rm FLAMINGO}$, noiseless, masked.
+\item Fit the analysis model with all parameters free (IA exact, cosmology
+  linearised and refreshed), minimising $\chi^2$ with the priors:
+  $\vp^{\rm MAP}$.
+\item $\delta\vth = \vth(\vp^{\rm MAP}) - \vth(\vp_{\rm fid})$, $\vth = (\Omega_m, S_8)$.
+\item $F = J\tp C^{-1}J + P^{-1}$ at $\vp^{\rm MAP}$ (flat IA priors as
+  Gaussians of variance $\text{range}^2/12$); $\Sigma_\theta = G F^{-1} G\tp$.
+\item $\fob = \sqrt{\delta\vth\tp\Sigma_\theta^{-1}\delta\vth}$; uncertainty
+  from FLAMINGO's errors through the cell Jacobian.
+\item Shortcut: $\delta\vth \simeq G F^{-1}J\tp C^{-1}[\vd - \vm(\vp_0)]$.
+\end{enumerate}
+
+\end{document}

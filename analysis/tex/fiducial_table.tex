@@ -1,0 +1,47 @@
+% Requires \usepackage{amsmath} (for \mathcal); no booktabs needed.
+% Sized for one column of a two-column (revtex) paper.
+\begin{table}
+\centering
+\caption{Fiducial parameters of the synthetic Roman data vectors and the
+priors of the analysis. The cosmology is the FLAMINGO fiducial (D3A); the
+TATT amplitudes are our fit to the FLAMINGO IA spectra with Takahashi
+halofit ($0.5 \le z \le 1.5$, pivot $z_0 = 0.62$). $H_0$ is in
+km\,s$^{-1}$\,Mpc$^{-1}$; the lens photo-$z$ shifts equal the source ones
+(lens = source sample). $\mathcal{U}[a,b]$ denotes
+a flat prior and $\mathcal{N}(\mu,\sigma)$ a Gaussian prior. In the NLA
+analysis $A_2$, $\eta_2$ and $b_{\rm TA}$ are fixed to zero.}
+\label{tab:fiducial}
+\footnotesize
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{@{}lcc@{}}
+\hline\hline
+Parameter & Fiducial & Prior \\
+\hline
+\multicolumn{3}{l}{\textit{Cosmology}} \\
+$10^9 A_{\rm s}$          & 2.099   & $\mathcal{U}[0.5, 5]$ \\
+$n_{\rm s}$               & 0.967   & $\mathcal{U}[0.87, 1.07]$ \\
+$H_0$                     & 68.1    & $\mathcal{U}[55, 91]$ \\
+$\Omega_{\rm b}$          & 0.0486  & $\mathcal{U}[0.03, 0.07]$ \\
+$\Omega_{\rm m}$          & 0.306   & $\mathcal{U}[0.1, 0.9]$ \\
+$\sum m_\nu$ [eV]         & 0.06    & fixed \\
+$w_0$, $w_a$              & $-1$, 0 & fixed \\
+$\sigma_8$ (derived)      & 0.808   & --- \\
+$S_8$ (derived)           & 0.816   & --- \\
+\hline
+\multicolumn{3}{l}{\textit{Intrinsic alignment (TATT)}} \\
+$A_1$                     & 3.808   & $\mathcal{U}[-5, 5]$ \\
+$\eta_1$                  & 0.564   & $\mathcal{U}[-5, 5]$ \\
+$A_2$                     & $-1.052$ & $\mathcal{U}[-5, 5]$ \\
+$\eta_2$                  & $-0.665$ & $\mathcal{U}[-5, 5]$ \\
+$b_{\rm TA}$              & 0.175   & $\mathcal{U}[-2, 2]$ \\
+\hline
+\multicolumn{3}{l}{\textit{Linear galaxy bias}} \\
+$b_1^{1\ldots4}$ & 1.18, 1.40, 1.55, 1.71 & $\mathcal{U}[0.4, 4]$ \\
+$b_1^{5\ldots8}$ & 1.90, 2.15, 2.52, 2.44 & $\mathcal{U}[0.4, 4]$ \\
+\hline
+\multicolumn{3}{l}{\textit{Observational systematics}} \\
+$\Delta z^{1\ldots8}$     & 0       & $\mathcal{N}(0, 0.002)$ \\
+$m^{1\ldots8}$            & 0       & $\mathcal{N}(0, 0.005)$ \\
+\hline\hline
+\end{tabular}
+\end{table}

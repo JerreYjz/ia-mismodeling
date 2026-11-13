@@ -1,0 +1,161 @@
+From d4986f22e82b133a46e7408dddae96bad0e46d2c Mon Sep 17 00:00:00 2001
+From: Yijie Zhu <yz994@cornell.edu>
+Date: Sun, 1 Nov 2026 10:31:03 -0500
+Subject: [PATCH] Simulation-tabulated IA (IA_code = 3): build, bindings, yaml
+ keys
+
+Compile sim_IA.c, bind init_IA_sim and the sim setters, and load the
+tables from sim_IA_* yaml keys when IA_code = 3 (init_IA runs with code 0;
+init_IA_sim then sets 3). Replaces the hard-coded paths of halo_ia_debug.
+Needs the matching cocoa-cosmolike-core commit.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_0135VCYFFeAoL9ZXf4QAGX4J
+---
+ interface/MakefileCosmolike             |  2 ++
+ interface/interface.cpp                 | 47 +++++++++++++++++++++++++
+ likelihood/_cosmolike_prototype_base.py | 41 ++++++++++++++++++++-
+ 3 files changed, 89 insertions(+), 1 deletion(-)
+
+diff --git a/interface/MakefileCosmolike b/interface/MakefileCosmolike
+index 36bfcb1..f76a73d 100644
+--- a/interface/MakefileCosmolike
++++ b/interface/MakefileCosmolike
+@@ -172,6 +172,7 @@ CSOURCES += \
+ 		${ROOTDIR}/external_modules/code/cosmolike/baryons.c \
+ 		${ROOTDIR}/external_modules/code/cosmolike/cosmo3D.c \
+ 		${ROOTDIR}/external_modules/code/cosmolike/cosmo2D.c \
++		${ROOTDIR}/external_modules/code/cosmolike/sim_IA.c \
+ 		${ROOTDIR}/external_modules/code/cosmolike/cosmo2D_scuts.c \
+ 		${ROOTDIR}/external_modules/code/cosmolike/halo.c \
+ 		${ROOTDIR}/external_modules/code/cosmolike/IA.c \
+@@ -201,6 +202,7 @@ OBJECTC += \
+ 		./bias.o \
+ 		./cosmo3D.o \
+ 		./cosmo2D.o \
++		./sim_IA.o \
+ 		./cosmo2D_scuts.o \
+ 		./halo.o \
+ 		./IA.o \
+diff --git a/interface/interface.cpp b/interface/interface.cpp
+index 1ff2f2f..76f5f4f 100644
+--- a/interface/interface.cpp
++++ b/interface/interface.cpp
+@@ -164,6 +164,53 @@ PYBIND11_MODULE(cosmolike_roman_real_interface, m)
+       (py::arg("include_halo_IA") = 0).none(false)
+     );
+ 
++  // simulation-tabulated IA (sim_IA.c; nuisance.IA_code = 3)
++  m.def("init_IA_sim",
++      &cosmolike_interface::init_IA_sim,
++      "Load simulation-measured IA P(k,z) tables (P<TAG><l>_sn<sn>_nfold"
++      "<nfold>.dat in dir) and set IA_MODEL = NLA, IA_code = 3. Call after "
++      "init_IA. sn and zlist: snapshot numbers and their redshifts",
++      py::arg("dir").none(false),
++      py::arg("sn").none(false),
++      py::arg("zlist").none(false),
++      py::arg("nfold").none(false).noconvert()
++    );
++
++  m.def("set_IA_sim_shape_convention",
++      &cosmolike_interface::set_IA_sim_shape_convention,
++      "apply_shear = 1: distortion -> shear, 1/(2R) per shape leg, "
++      "R = 1 - e_rms^2; los_mode: 0 monopole, 1 LA mu=0 factors, "
++      "2 mu=0 from l = 0, 2, 4 files, 3 hybrid (default)",
++      py::arg("apply_shear").none(false).noconvert(),
++      py::arg("los_mode").none(false).noconvert()
++    );
++
++  m.def("set_IA_sim_erms",
++      &cosmolike_interface::set_IA_sim_erms,
++      "Per-snapshot e_rms for the sim IA shear conversion; snapshots not "
++      "listed (or e_rms <= 0) are interpolated in z",
++      py::arg("sn").none(false),
++      py::arg("erms").none(false)
++    );
++
++  m.def("set_IA_sim_erms_hinfo",
++      &cosmolike_interface::set_IA_sim_erms_hinfo,
++      "Read e_rms = (e1z_rms + e2z_rms)/2 from <dir>/hinfo_<stem>_sn<sn>_"
++      "nfold<n>.dat; snapshots in skip are interpolated in z",
++      py::arg("dir").none(false),
++      py::arg("stem").none(false),
++      py::arg("skip").none(false)
++    );
++
++  m.def("set_IA_sim_window",
++      &cosmolike_interface::set_IA_sim_window,
++      "NGP mesh-window correction of the sim EE/BB tables: apply (0/1), "
++      "box size in Mpc/h and mesh size ng (default 205 Mpc/h, 1024: TNG300)",
++      py::arg("apply").none(false).noconvert(),
++      py::arg("boxsize_hMpc").none(false),
++      py::arg("ng").none(false).noconvert()
++    );
++
+ 
+   m.def("init_baryons_contamination",
+       py::overload_cast<std::string, std::string>(
+diff --git a/likelihood/_cosmolike_prototype_base.py b/likelihood/_cosmolike_prototype_base.py
+index d5f11db..5c877b0 100644
+--- a/likelihood/_cosmolike_prototype_base.py
++++ b/likelihood/_cosmolike_prototype_base.py
+@@ -372,9 +372,14 @@ class _cosmolike_prototype_base(DataSetLikelihood):
+         # (IA_code = 0), so get_requirements, which Cobaya calls after
+         # initialize, does not request the Python FAST-PT theory block.
+         self.IA_code = 0
++      # IA_code = 3: simulation-tabulated IA (sim_IA.c). init_IA accepts
++      # only the FAST-PT codes, so it runs with code 0 (NLA, no one-loop
++      # spectra needed) and init_IA_sim then sets IA_code = 3.
+       ci.init_IA(ia_model = int(self.IA_model), 
+                 ia_redshift_evolution = int(self.IA_redshift_evolution),
+-                ia_code = int(self.IA_code))
++                ia_code = 0 if int(self.IA_code) == 3 else int(self.IA_code))
++      if int(self.IA_code) == 3:
++        self._init_sim_IA()
+ 
+       if self.probe != "xi":
+         # bias_model: one redshift-evolution code per bias parameter, in the
+@@ -430,6 +435,40 @@ class _cosmolike_prototype_base(DataSetLikelihood):
+   # ------------------------------------------------------------------------
+   # ------------------------------------------------------------------------
+ 
++  def _init_sim_IA(self):
++    """Load the simulation IA tables (IA_code = 3) from the yaml keys.
++
++    Keys (likelihood block of the yaml):
++      sim_IA_dir          folder with P<TAG><l>_sn<sn>_nfold<n>.dat
++      sim_IA_snapshots    list of snapshot numbers
++      sim_IA_redshifts    their redshifts (same length, any order)
++      sim_IA_nfold        nfold value in the file names (default 1)
++      sim_IA_apply_shear  1 = distortion -> shear, needs e_rms (default 1)
++      sim_IA_los_mode     0 monopole, 1 LA, 2 multipole, 3 hybrid (default 3)
++      sim_IA_hinfo_dir    folder with hinfo_<stem>_sn<sn>_nfold<n>.dat
++      sim_IA_hinfo_stem   the <stem> of those files
++      sim_IA_erms         or: list of e_rms per snapshot (instead of hinfo)
++      sim_IA_window       [apply, boxsize in Mpc/h, ng]; default [1, 205, 1024]
++                          (TNG300) - set it for any other simulation
++    """
++    sn = [int(x) for x in getattr(self, "sim_IA_snapshots")]
++    zs = [float(x) for x in getattr(self, "sim_IA_redshifts")]
++    ci.init_IA_sim(str(getattr(self, "sim_IA_dir")), sn, zs,
++                   int(getattr(self, "sim_IA_nfold", 1)))
++    apply_shear = int(getattr(self, "sim_IA_apply_shear", 1))
++    ci.set_IA_sim_shape_convention(apply_shear,
++                                   int(getattr(self, "sim_IA_los_mode", 3)))
++    window = getattr(self, "sim_IA_window", None)
++    if window is not None:
++      ci.set_IA_sim_window(int(window[0]), float(window[1]), int(window[2]))
++    if apply_shear == 1:
++      erms = getattr(self, "sim_IA_erms", None)
++      if erms is not None:
++        ci.set_IA_sim_erms(sn, [float(x) for x in erms])
++      else:
++        ci.set_IA_sim_erms_hinfo(str(getattr(self, "sim_IA_hinfo_dir")),
++                                 str(getattr(self, "sim_IA_hinfo_stem")), [])
++
+   def get_requirements(self):
+     """Return the products Cobaya's theory blocks must compute for logp.
+ 
+-- 
+2.43.0
+

@@ -1,0 +1,12 @@
+% Stage 1 (particles): FLAMINGO L1_m8 snapshot 58 (z = 1.0), TNG reduced tensor of all bound stars
+SoapFile      cosma:/FLAMINGO/L1_m8/L1_m8/SOAP-HBT/halo_properties_0058.hdf5
+SnapFile      cosma:/FLAMINGO/L1_m8/L1_m8/snapshots/flamingo_0058/flamingo_0058.hdf5
+OutDirBase    /Users/yijiezhu/ia_power_flamingo/run_L1_m8_particles/results/Galaxies/
+SnapNum       58
+% 10.0 < log10(M*/Msun) < 11.07 (plan v2, Section 5), in 1e10 Msun/h (h = 0.681)
+M_min         0.681
+M_max         8.001
+MassField     BoundSubhalo/StellarMass
+Select        all
+MinStars      100
+NThreads      4

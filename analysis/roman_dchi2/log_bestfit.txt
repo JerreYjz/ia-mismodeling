@@ -1,0 +1,23 @@
+basis check NLA: max |dxi|/sigma = 2.18e-14
+basis check TATT: max |dxi|/sigma = 3.19e-14
+kUV=0.120    ( 17 pts): NLA-free   0.000  TATT-free   0.000  NLA-pl   0.000  TATT-pl   0.000
+kUV=0.161    ( 65 pts): NLA-free   0.213  TATT-free   0.172  NLA-pl   0.238  TATT-pl   0.203
+kUV=0.217    (113 pts): NLA-free   0.566  TATT-free   0.477  NLA-pl   0.679  TATT-pl   0.643
+kUV=0.291    (159 pts): NLA-free   0.754  TATT-free   0.663  NLA-pl   1.052  TATT-pl   0.973
+kUV=0.390    (192 pts): NLA-free   0.850  TATT-free   0.752  NLA-pl   1.430  TATT-pl   1.274
+kUV=0.523    (244 pts): NLA-free   0.973  TATT-free   0.890  NLA-pl   2.247  TATT-pl   1.809
+kUV=0.701    (297 pts): NLA-free   1.193  TATT-free   1.121  NLA-pl   3.110  TATT-pl   2.437
+kUV=0.941    (345 pts): NLA-free   1.610  TATT-free   1.526  NLA-pl   4.516  TATT-pl   3.969
+kUV=1.261    (417 pts): NLA-free   3.045  TATT-free   2.063  NLA-pl   6.619  TATT-pl   5.584
+kUV=1.692    (488 pts): NLA-free   5.835  TATT-free   3.189  NLA-pl  10.241  TATT-pl   7.811
+k0/D=0.115   ( 18 pts): NLA-free   0.001  TATT-free   0.000  NLA-pl   0.001  TATT-pl   0.001
+k0/D=0.139   ( 32 pts): NLA-free   0.001  TATT-free   0.000  NLA-pl   0.003  TATT-pl   0.001
+k0/D=0.166   ( 76 pts): NLA-free   0.042  TATT-free   0.015  NLA-pl   0.103  TATT-pl   0.070
+k0/D=0.200   (130 pts): NLA-free   0.511  TATT-free   0.441  NLA-pl   0.580  TATT-pl   0.547
+k0/D=0.240   (152 pts): NLA-free   0.714  TATT-free   0.614  NLA-pl   0.879  TATT-pl   0.840
+k0/D=0.288   (186 pts): NLA-free   0.863  TATT-free   0.782  NLA-pl   1.188  TATT-pl   1.172
+k0/D=0.346   (208 pts): NLA-free   0.987  TATT-free   0.865  NLA-pl   1.516  TATT-pl   1.451
+k0/D=0.416   (234 pts): NLA-free   1.092  TATT-free   1.037  NLA-pl   2.150  TATT-pl   1.861
+k0/D=0.500   (268 pts): NLA-free   1.365  TATT-free   1.276  NLA-pl   2.863  TATT-pl   2.454
+k0/D=0.600   (290 pts): NLA-free   1.521  TATT-free   1.442  NLA-pl   3.300  TATT-pl   2.764
+0.35/D       (208 pts): NLA-free   1.018  TATT-free   0.896  NLA-pl   1.547  TATT-pl   1.486

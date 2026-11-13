@@ -1,0 +1,321 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.85in]{geometry}
+\usepackage{amsmath,amssymb,graphicx,booktabs,xcolor,float,enumitem,bm}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!60!black,urlcolor=blue!60!black,citecolor=blue!60!black}
+\graphicspath{{../v6/}}
+\newcommand{\hmpc}{\,h\,\mathrm{Mpc}^{-1}}
+\newcommand{\kmax}{k_{\max}}
+\newcommand{\PNL}{P_{\rm NL}}
+\newcommand{\Plin}{P_{\rm lin}}
+\newcommand{\bTA}{b_{\rm TA}}
+\newcommand{\dd}{\mathrm{d}}
+\title{A halo model for intrinsic alignments with central-galaxy\\1-halo alignment: review}
+\author{Yijie Zhu, with Claude}
+\date{11 November 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Summary}
+\begin{itemize}[itemsep=3pt]
+\item \textbf{Model (HMc).} Halo-model IA in which every term has a halo-model
+  origin: centrals aligned with the tidal field of \emph{other} halos (2-halo, on
+  $I_1(k)\Plin$), blue centrals by tidal torquing and density weighting of the
+  shape field (the TATT one-loop terms), F21 radially aligned satellites, and a
+  new \textbf{central 1-halo term}: each central is aligned with its own triaxial
+  host, whose matter quadrupole is computed from an elliptical NFW profile with
+  literature halo shapes. One new amplitude, $a_c$.
+\item \textbf{The key change is structural.} NLA, TATT and Fortuna et al.\ (2021, F21) put the
+  centrals' GI on $\PNL$, which implicitly assumes each central is perfectly
+  aligned with the matter of its own halo. FLAMINGO's $P_{hE}$ lies 20 to 40\%
+  below $b(k)\,$TATT($\PNL$) at $k = 0.5$ to 1.3$\hmpc$. Splitting the term into a
+  2-halo piece on $I_1\Plin$ and a central 1-halo piece with a free alignment
+  strength removes that residual.
+\item \textbf{FLAMINGO.} At $\kmax = 0.52$ ($0.94$) the summed $\chi^2/\nu$ over
+  $z = 0.2$ to 2 is 2.80 (13.1) for HMc against 8.32 (62.9) for TATT. With a free
+  white $E = B$ term $W$ in both models (FLAMINGO needs $W \approx 0.4$ to $1.1\,N_s$):
+  1.04 (2.28) against 5.73 (20.9). The goodness-of-fit cuts move from
+  0.22 to 0.39 (TATT) to 0.52 to 0.70$\hmpc$ (HMc + $W$) at every snapshot.
+  The same holds with no measured $b(k)$ at all (galaxy bias from the HOD):
+  1.14 (2.29).
+\item \textbf{Over the prior.} Every ingredient is computed from the halo model
+  or is a free nuisance parameter; FLAMINGO only tests the form at its one
+  cosmology. The remaining gap is that the Roman templates are still evaluated at
+  the fiducial cosmology (Sec.~\ref{sec:prior}).
+\item \textbf{Roman cosmic shear.} In case B (with $n_s$, $H_0$, $\Omega_b$ priors)
+  HMc keeps the figure of bias at or below 0.29 up to $K_0 = 0.5$ for both
+  cut families; TATT crosses 0.3 at $K_0/D = 0.325$ and at constant $K_0 = 0.45$.
+  In case A the two agree on the $K_0/D$ family, and HMc gains on the
+  constant family ($\le 0.24$ up to 0.45). On Roman's masks $a_c$ is unconstrained
+  (often at 0), so the gain there likely comes from the $\PNL \to I_1\Plin$, $\Plin$ swap.
+\end{itemize}
+
+\section{Model}
+\subsection{Halo-model ingredients}
+Units $h^{-1}$Mpc, $h^{-1}M_\odot$. FLAMINGO fiducial cosmology. Linear
+CDM + baryon power from CAMB; Tinker et al.\ (2010) mass function and bias
+($\Delta = 200\bar\rho$); Bhattacharya et al.\ (2013) concentrations; NFW
+profiles $u(k|M)$ truncated at $r_{\rm vir}$. HOD per snapshot,
+\begin{equation}
+N_c = \tfrac12\left[1 + \mathrm{erf}\!\left(\tfrac{\lg M - \lg M_{\min}}{0.25}\right)\right],\qquad
+N_s = N_c\left(\tfrac{M - M_{\min}}{M_1}\right),
+\end{equation}
+with $(M_{\min}, M_1)$ solved so that $\bar n_g$ and $b_g$ match the FLAMINGO
+shape sample. Matter 2-halo integral, normalised to 1 at $k \to 0$:
+\begin{equation}
+I_1(k) = \int \dd\ln M\,\frac{\dd n}{\dd\ln M}\, b(M)\,\frac{M}{\bar\rho}\,u(k|M).
+\end{equation}
+
+\subsection{2-halo terms (centrals)}
+With $\bar C_1 = 0.01389\,\Omega_m/D(z)$, $\bar C_2 = 0.01389\,\Omega_m/D^2(z)$
+(cosmolike convention) and FAST-PT one-loop kernels $K_X(k)$ (Blazek et al.\ 2019),
+\begin{align}
+P^{2h}_{\delta E} &= -\Big[A_1\bar C_1\,I_1(k)\Plin + A_1\bar C_1\bTA K_{\delta E} - 5A_2\bar C_2 K_{\rm mix}\Big],\label{eq:gi2h}\\
+P^{2h}_{EE} &= A_1^2\bar C_1^2\,\Plin + A_1^2\bar C_1^2(\bTA^2 K_{\rm ta} + 2\bTA K_{\delta E})
+ - 10A_1A_2\bar C_1\bar C_2(K_{\rm mix} + \bTA K_{\rm mixEE}) + 25A_2^2\bar C_2^2K_{\rm tt},\label{eq:ii2h}\\
+P^{2h}_{BB} &= A_1^2\bar C_1^2\bTA^2 K_{\rm taBB} - 10A_1A_2\bar C_1\bar C_2\bTA K_{\rm mixBB} + 25A_2^2\bar C_2^2 K_{\rm ttB}.
+\end{align}
+$A_1$: tidal alignment of (red) centrals; $A_2$: tidal torquing of (blue)
+centrals; $\bTA$: density weighting of the shape field. This is cosmolike's TATT
+with two substitutions in the $A_1$ terms: $\PNL \to I_1\Plin$ in GI (centrals
+correlate with matter in other halos) and $\PNL \to \Plin$ in II (two centrals
+are never in the same halo). A window $f_{2h} = e^{-(k/6)^2}$ multiplies the 2-halo
+terms in the FLAMINGO fits (not used on Roman, where cosmolike's native TATT
+is used).
+
+\subsection{Central 1-halo term (new)}
+\paragraph{Triaxial halos.} Each halo has the density $\rho_{\rm NFW}(r_e)$ with
+$r_e^2 = \bm r^{\sf T}(\mathbb 1 - \mathsf E)\,\bm r$, $\mathsf E$ symmetric and
+traceless ($E_{ii} = 2\ln a_i$ along the principal axes, $abc = 1$). To first order
+the quadrupole is
+$\delta\rho(\bm r) = -\tfrac12(\hat{\bm r}\mathsf E\hat{\bm r})\,\dd\rho/\dd\ln r$,
+and its transform (integrating by parts, the truncation edge included) is
+\begin{equation}
+\frac{\delta\tilde\rho(\bm k)}{M} = -(\hat{\bm k}\mathsf E\hat{\bm k})\,u_E(k|M),\qquad
+u_E(k|M) = \frac{k r_s}{2m(c)}\int_0^c \frac{x^2}{(1+x)^2}\,j_1(k r_s x)\,\dd x ,
+\label{eq:uE}
+\end{equation}
+$m(c) = \ln(1+c) - c/(1+c)$. $u_E \propto k^2\langle r^2\rangle$ at low $k$, so the
+term switches on near $k \sim 1/r_{\rm vir}$ (Fig.~\ref{fig:terms}, right).
+Checked against a direct 3D integral to $10^{-5}$.
+
+\paragraph{Alignment.} The central's intrinsic shear follows its halo,
+$\gamma^c_{ij} = a_c\,[\mathsf E_{ij}]_\perp$ ($a_c$ absorbs the alignment strength,
+the galaxy to halo misalignment and the shape-estimator normalisation). For
+isotropic orientations,
+$\langle E_{ij}E_{kl}\rangle = \tfrac{\sigma_E^2}{2}(\delta_{ik}\delta_{jl} + \delta_{il}\delta_{jk} - \tfrac23\delta_{ij}\delta_{kl})$,
+the cross spectrum carries the linear-alignment angular factor $(1 - \mu^2)$, so
+FLAMINGO's $\tfrac32\times$monopole convention returns the $k_\perp$ value:
+\begin{equation}
+\boxed{P^{1h,c}_{\delta E}(k) = -a_c\,P_c(k),\qquad
+P_c(k) = \frac12\int\dd\ln M\,\frac{\dd n}{\dd\ln M}\,\frac{N_c}{\bar n_g}\,\frac{M}{\bar\rho}\,\sigma_E^2(M)\,u_E(k|M).}
+\label{eq:central}
+\end{equation}
+The central II 1-halo term vanishes (one central per halo; its self pair is
+shape noise).
+
+\paragraph{Halo shapes} (from the literature, not FLAMINGO): Allgood et al.\ (2006),
+$s = c/a = 0.54\,(M/M_*)^{-0.05}$ with $M_*$ at $\nu = 1$, $q = b/a = (1+s)/2$;
+$\sigma_E^2 = \tfrac45\sum_i(\ln a_i)^2$. At $10^{13.5}h^{-1}M_\odot$: $s = 0.47$, $q = 0.73$,
+$\sigma_E^2 = 0.24$ ($z = 0.3$). Replacing $\sigma_E^2(M)$ by its value at
+$10^{13.5}h^{-1}M_\odot$ changes the fitted $\chi^2$ by less than 1\% for $\kmax \le 1$ and 5\% at $\kmax = 3$ (tested on the
+``II on $\PNL$'' variant).
+
+\subsection{Satellites and white noise}
+\paragraph{Radial satellites (F21).} $\bar\gamma(r) = a_{1h}(r/r_{\rm vir})^{-2}$
+(core $0.06\,h^{-1}$Mpc, cap 0.3), $\ell = 2, 4, 6$ deprojection, window
+$f_{1h} = 1 - e^{-(k/4)^2}$:
+$P^{1h,s}_{\delta E} = -a_{1h}f_{1h}S_{\delta I}(k; a_{1h})$,
+$P^{1h,s}_{EE} = a_{1h}^2 f_{1h}S_{II}(k; a_{1h})$, $P^{1h,s}_{BB} = 0$.
+The FLAMINGO fits put $a_{1h} \simeq 0$ wherever $\kmax \lesssim 2$.
+
+\paragraph{Coherent satellites and $W$.} Satellites aligned with the host's
+major axis, $\gamma^s = a_s[\mathsf E]_\perp$, add
+$P_{EE} = P_{BB} = (\sigma_E^2/2)\!\int\!\dd n\,[2a_ca_sN_s\bar n_g^{-2}u_s + a_s^2N_s^2\bar n_g^{-2}u_s^2]$,
+nearly white up to $k \sim 1$. On FLAMINGO this is indistinguishable from a free
+white $E = B$ constant $W$ (Table~\ref{tab:gof}), so we carry $W$ rather than claim
+the satellite origin.
+
+\subsection{Observables and parameters}
+\textbf{What Roman needs} is the matter-shape spectrum $P_{\delta E}$ and $P_{EE}$
+(cosmic shear never sees galaxy positions). Every term above is computed from the
+halo model at the cosmology in question; no simulation-measured function enters.
+
+\textbf{What FLAMINGO measures} is the galaxy-shape cross $P_{hE}$. To compare,
+the model needs the galaxy side too. We do this two ways:
+\begin{align}
+\text{(a) halo model only:}\quad & P_{hE} = I_g(k)\,f_{2h}\,P^{2h}_{\delta E} - a_c\,P_{c,g}(k),\label{eq:nob}\\
+& I_g(k) = \int\dd\ln M\,\frac{\dd n}{\dd\ln M}\,b(M)\,\frac{N_c + N_s u(k|M)}{\bar n_g},\quad
+P_{c,g} = \frac12\int\dd\ln M\,\frac{\dd n}{\dd\ln M}\,\frac{N_s}{\bar n_g^2}\,\sigma_E^2\,u_E\nonumber\\
+\text{(b) measured bias:}\quad & P_{hE} = b(k)\big[P^{2h}_{\delta E} + P^{1h,c}_{\delta E} + P^{1h,s}_{\delta E}\big],
+\quad b(k) = (P_{hh}/\PNL)^{1/2}\ \text{from FLAMINGO},
+\end{align}
+with $P_{EE} = P^{2h}_{EE} + P^{1h,s}_{EE} + N_s + W$ and $P_{BB} = P^{2h}_{BB} + N_s + W$
+in both. In (a) the central term is the central's shape against the satellites
+of its own (elliptical) halo, and the only FLAMINGO inputs are the sample's
+$\bar n_g$ and large-scale $b_g$ (two numbers per snapshot, which fix the HOD).
+(a) and (b) fit FLAMINGO equally well (Table~\ref{tab:gof}), so the measured
+$b(k)$ is not what makes HMc work. (b) is kept only because the Roman truth is
+injected as $P_{\delta E} \equiv P_{hE}/b(k)$, so (b) tests the model against
+exactly the quantity Roman sees.
+
+Parameters: $A_1, A_2, \bTA, a_{1h}, a_c$
+(+ $W$). On Roman each amplitude evolves as $X(z) = X[(1+z)/1.62]^{\eta_X}$:
+nine IA parameters $A_1, \eta_1, A_2, \eta_2, \bTA, a_{1h}, \eta_{1h}, a_c, \eta_c$
+with flat priors $A_{1,2}, \eta \in [-5, 5]$, $\bTA \in [0, 2]$, $a_{1h} \in [0, 1]$,
+$a_c \in [0, 100]$.
+
+\begin{figure}[H]\centering
+\includegraphics[width=\textwidth]{fig_hmc_terms}
+\caption{Anatomy of the GI term. Left, middle: the centrals' GI per unit $A_1$
+in NLA, TATT and HM ($\bar C_1\PNL$, blue) and in HMc: 2-halo
+$\bar C_1 I_1\Plin$ (green) plus the central 1-halo term (orange, three $a_c$).
+$\PNL$ adds the full own-halo matter at full alignment strength; HMc lets the
+data set it. Right: the quadrupole kernel $u_E(k|M)$, Eq.~\eqref{eq:uE}.}
+\label{fig:terms}
+\end{figure}
+
+\section{FLAMINGO tests}
+Data: FLAMINGO shape spectra converted to the cosmolike convention, snapshots
+$z = 0.2$ to 2; probes $P_{hE}$ ($\tfrac32\times$ monopole), $P_{EE}$, $P_{BB}$;
+$0.05 \le k \le \kmax$; $N_s$ fixed to the $B$ plateau; FLAMINGO $\PNL$ and $b(k)$;
+$\nu = 3N_k - n_{\rm par}$. Cut: last $\kmax$ before two consecutive $p < 0.05$.
+(The FLAMINGO errors are underestimated by 3 to 9 times at high $k$, so absolute
+$\chi^2/\nu$ at $\kmax \gtrsim 1$ is inflated; the comparisons between models stand.)
+
+\begin{table}[H]\centering\footnotesize
+\caption{Summed $\chi^2_{\min}/\nu$ over the nine snapshots against $\kmax$
+[$h\,$Mpc$^{-1}$], and the goodness-of-fit cuts. ``$\beta$'', ``$p$'': $a_c \propto
+(M/10^{13.5})^\beta$ and $\mathsf E(r) \propto (r/r_{\rm vir})^p$, profiled on grids
+(both run to their grid edges and help only at $k \ge 2$).}
+\label{tab:gof}
+\resizebox{\textwidth}{!}{\input{tab_hmcr_gof}}
+\end{table}
+
+\begin{figure}[H]\centering
+\includegraphics[width=\textwidth]{fig_hmcw_gof}
+\caption{$\chi^2_{\min}/\nu$ against $\kmax$, summed (left) and per snapshot
+(middle), and the goodness-of-fit cuts ($k$ horizontal, $z$ vertical; right).}
+\end{figure}
+
+\begin{figure}[H]\centering
+\includegraphics[width=\textwidth]{fig_hmcw_spectra_z0p3}
+\caption{$z = 0.3$: TATT + $W$ (blue) and HMc + $W$ (green) fitted to
+$k \le 0.94$; dashed: HMc 2-halo and central 1-halo GI. Bottom:
+(model $-$ data)/$\sigma$. TATT must trade the low-$k$ GI amplitude against the
+$k \sim 0.5$ excess; HMc fits $P_{hE}$ to $\lesssim 3\sigma$ up to the fit limit.}
+\end{figure}
+
+\begin{figure}[H]\centering
+\includegraphics[width=\textwidth]{fig_hmcw_spectra_z1}
+\caption{As above at $z = 1$.}
+\end{figure}
+
+\begin{table}[H]\centering\footnotesize
+\caption{HMc + $W$ best-fit parameters per snapshot ($a_{1h} \simeq 0$ throughout).}
+\resizebox{\textwidth}{!}{\input{tab_hmcr_par}}
+\end{table}
+
+\paragraph{Reading.}
+\begin{enumerate}[itemsep=2pt]
+\item Keeping $\PNL$ and adding the central term on top fits only with
+  $a_c \approx -85$ (anti-alignment): $\PNL$ already overcounts the own-halo
+  GI. The consistent split (Eqs.~\ref{eq:gi2h}, \ref{eq:central}) is what works, and
+  it needs the II on $\Plin$ too (``HMc, II on $\PNL$'' is worse).
+\item With $W$ in both models, HMc beats TATT by a factor 5.5 in $\chi^2/\nu$ at
+  $\kmax = 0.52$ and 9 at 0.94. At $\kmax = 0.52$ the remaining $\chi^2$ is then
+  shared roughly evenly between $hE$, $EE$ and $BB$.
+\item $a_c$ drifts with the fit range (27 to 190 at $\kmax = 0.52$, 13 to 27 at 0.94,
+  3 to 4 at 3; the $\kmax = 0.52$ values grow with $z$, where the term is weakest): the central term rises as $k^2$ to $k \sim 3$ while FLAMINGO wants it to
+  switch on earlier and level off. Neither a mass-dependent alignment nor a radial
+  ellipticity profile fixes this at $k \le 1$; the likely cause is the halo model's
+  known 2-halo deficit at $k \approx 0.3$ to 1, which a large $a_c$ compensates.
+\item FLAMINGO's $BB$ excess over $N_s$ is white-like up to $k \sim 1$; a coherent
+  satellite alignment reproduces it, but so does a constant.
+\end{enumerate}
+
+\section{Roman figure of bias}
+Production pipeline (\texttt{v3/mask\_scan.py} masks, regenerated and checked
+identical; \texttt{roman\_test.fit}): \texttt{example1\_cov}; data GG + FLAMINGO IA
+through the sim-IA path; every parameter free; IA exact at the fiducial cosmology
+and the cosmology response of the full model at the IA solution; case A
+($\Omega_m$, $A_s$) and case B (+ $n_s$, $H_0$, $\Omega_b$ with the chain priors); FoB
+uncertainty from the FLAMINGO errors. HMc is cosmolike's native TATT plus
+per-snapshot templates through the same sim-IA path:
+\begin{equation}
+\xi_{\rm HMc} = \xi^{\rm native}_{\rm TATT} + \xi_{\rm sat}
+ + \sum_s\Big[A_s\big(T^{GI,\rm lin}_s - T^{GI,\rm NL}_s\big) + A_s^2\big(T^{II,\rm lin}_s - T^{II,\rm NL}_s\big) + c_s T^{c}_s\Big],
+\end{equation}
+$A_s = A_1x_s^{\eta_1}$, $c_s = a_cx_s^{\eta_c}$, $x_s = (1+z_s)/1.62$; $T^{\rm lin}$: $A_1$
+terms on $I_1\Plin$ (GI) and $\Plin$ (II); $T^{\rm NL}$: the same on $\PNL$; $T^c$:
+Eq.~\eqref{eq:central}. Checks on the $K_0/D = 0.35$ mask: cosmolike's TATT $A_1$ term
+equals its NLA exactly; the NLA templates reproduce native NLA to
+$\Delta\chi^2 = 0.002$ (IA signal $\chi^2 = 1976$); the swap is worth
+$\Delta\chi^2 = 0.8$ at $A_1 = 3.5$ and the central term $0.02$ at $a_c = 10$. The
+templates are held at the fiducial cosmology.
+
+\begin{figure}[H]\centering
+\includegraphics[width=\textwidth]{fig_hmc_fob}
+\caption{FoB against $K_0$ for NLA, TATT, HM and HMc; bands: FoB uncertainty
+from the FLAMINGO errors; dashed: 0.3.}
+\end{figure}
+
+\begin{table}[H]\centering\small
+\caption{FoB, TATT and HMc (red: $> 0.3$).}
+\input{tab_hmcr_roman}
+\end{table}
+
+\paragraph{Reading.} Case B: HMc stays at or below 0.29 to $K_0 = 0.5$ in both
+families (TATT: 0.36 at $K_0/D = 0.325$, 0.34 at constant 0.45). Case A: on $K_0/D$
+both reach 0.3 near $K_0 = 0.3$ to 0.35; on constant $K_0$ HMc stays at or below
+0.24 to 0.45 (TATT 0.36 there). HMc's best-fit $\chi^2$ is 0.1 to 0.45 above TATT's
+on the $K_0/D$ masks and equal on the constant ones: HMc does not contain TATT, so
+it is a different model with less bias, not a better fit to Roman. $a_c$ is
+unconstrained on Roman's scales (often at 0, $\eta_c$ at its bounds).
+
+\section{From one simulation cosmology to the whole prior}\label{sec:prior}
+FLAMINGO exists at one cosmology, so it can test the model's \emph{form} there but
+cannot supply anything the model needs elsewhere. The model is built so that it
+does not have to:
+\begin{center}\small
+\begin{tabular}{p{4.2cm} p{5.4cm} p{6.0cm}}\toprule
+ingredient & source & over the prior\\ \midrule
+$\Plin$, $\PNL$, FAST-PT kernels & cosmolike & exact at every cosmology (now)\\
+$I_1(k)$, $u_E(k|M)$, $P_c(k)$, satellite tables & halo model: Tinker mass function and bias, NFW, $c(M)$ & cosmology dependent; \textbf{currently held at the fiducial} (to fix)\\
+halo shapes $\sigma_E^2(M)$ & Allgood et al.\ (2006), in $M/M_*$ & follows $M_*(z, \text{cosmology})$\\
+HOD ($M_{\min}$, $M_1$) & sample property ($\bar n_g$, $b_g$) & held fixed in mass, or nuisance; enters only the weights $N_{c,s}/\bar n_g$\\
+$A_1, A_2, \bTA, a_c, \eta$'s & free nuisance parameters & marginalised, as in TATT\\
+$b(k)$ & FLAMINGO & not used by the model (Eq.~\ref{eq:nob})\\
+\bottomrule\end{tabular}
+\end{center}
+The one real gap is the second row: on Roman the halo-model pieces are templates
+at the fiducial cosmology, so at other cosmologies the $A_1$ term responds as
+$\PNL$ and the central term not at all. The fix is to evaluate them at each
+cosmology, most naturally in cosmolike's \texttt{halo.c}, which already has the
+mass function, bias, NFW profiles and HOD for the F21 model: $I_1(k)$ is one more
+integral, and $u_E$ is Eq.~\eqref{eq:uE}.
+
+\section{Caveats and next steps}
+\begin{itemize}[itemsep=2pt]
+\item Evaluate $I_1$, $P_c$ and the satellite tables at each cosmology (cosmolike
+  \texttt{halo.c}), and check the size of the fixed-template error on Roman.
+\item Isolate the source of the Roman gain: rerun with $a_c = 0$ (swap only).
+\item Fix the 1-halo/2-halo transition (free HMcode-style smoothing, or a
+  CHEFT-type 2-halo with mass-dependent operators), which should remove the $a_c$
+  drift.
+\item Interpret $a_c$: needs the normalisation of FLAMINGO's shape estimator
+  ($A_1 \approx 3$ to 4 here); cross-check halo shapes and central-halo misalignment
+  in FLAMINGO itself (outside the fit, to avoid circularity).
+\end{itemize}
+
+\section*{Code}
+\texttt{v6/halo\_central.py} (central tables), \texttt{halo\_central\_grid.py}
+($\beta$, $p$ grids), \texttt{halo\_satcoh.py} (coherent satellites),
+\texttt{halo\_central\_fit.py} (FLAMINGO fits, \texttt{f21v\_<variant>.npz}),
+\texttt{hmc\_scan.py} (Roman scan, \texttt{hmc\_scan\_ex1\_\{D1,flat\}.json}),
+\texttt{make\_hmcw.py}, \texttt{make\_hmc\_roman.py}, \texttt{make\_hmc\_review.py}
+(figures, tables).
+\end{document}

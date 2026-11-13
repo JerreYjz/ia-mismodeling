@@ -1,0 +1,10 @@
+[white template, mask 0.25/D]
+    NLAw: chi2 IA-only   0.56, best   0.55 (lin   0.55); dOm +0.0005 (+0.05s) dS8 +0.0006 (+0.10s); FoB 0.10 (reg50 0.10); IA [3.426 0.702 1.439]
+    TATTw: chi2 IA-only   0.52, best   0.50 (lin   0.50); dOm +0.0001 (+0.01s) dS8 +0.0008 (+0.13s); FoB 0.14 (reg50 0.13); IA [ 3.423  0.706 -0.21  -4.853  0.184  1.263]
+[white template, mask 0.35/D]
+    NLAw: chi2 IA-only   1.15, best   1.12 (lin   1.12); dOm +0.0012 (+0.13s) dS8 +0.0006 (+0.14s); FoB 0.16 (reg50 0.16); IA [3.482 0.676 1.241]
+    TATTw: chi2 IA-only   0.91, best   0.90 (lin   0.90); dOm -0.0003 (-0.03s) dS8 +0.0005 (+0.11s); FoB 0.12 (reg50 0.12); IA [3.467 0.659 0.112 3.257 0.    1.342]  AT BOUND ['bTA']
+[white template, mask 0.5/D]
+    NLAw: chi2 IA-only   2.39, best   2.17 (lin   2.17); dOm +0.0025 (+0.28s) dS8 +0.0015 (+0.41s); FoB 0.44 (reg50 0.44); IA [3.511 0.674 0.795]
+    TATTw: chi2 IA-only   1.53, best   1.46 (lin   1.46); dOm -0.0000 (-0.00s) dS8 +0.0010 (+0.27s); FoB 0.28 (reg50 0.27); IA [3.488 0.643 0.113 3.52  0.    1.191]  AT BOUND ['bTA']
+done (84s)

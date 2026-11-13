@@ -1,0 +1,45 @@
+white II excess per snapshot X_s [(Mpc/h)^3], chi2 of X(k) = const over 7 nodes:
+   z 0.00: X  0.074 (Ns  0.020), chi2   1.3
+   z 0.10: X  0.076 (Ns  0.027), chi2   2.7
+   z 0.20: X  0.112 (Ns  0.043), chi2   0.7
+   z 0.30: X  0.112 (Ns  0.050), chi2   1.9
+   z 0.40: X  0.115 (Ns  0.055), chi2   2.5
+   z 0.50: X  0.110 (Ns  0.063), chi2   2.9
+   z 0.60: X  0.115 (Ns  0.066), chi2   2.4
+   z 0.75: X  0.108 (Ns  0.075), chi2   5.4
+   z 1.00: X  0.123 (Ns  0.088), chi2   5.1
+   z 1.50: X  0.142 (Ns  0.127), chi2   8.8
+   z 2.00: X  0.251 (Ns  0.186), chi2   9.0
+   z 3.00: X  0.765 (Ns  0.410), chi2   2.5
+   z 4.00: X  1.916 (Ns  0.747), chi2   2.1
+GI_II1    : Delta chi2 vs production FLAMINGO on masks 0.25/D 0.985, 0.35/D 1.776, 0.5/D 2.997
+GI_II1_W  : Delta chi2 vs production FLAMINGO on masks 0.25/D 0.571, 0.35/D 1.046, 0.5/D 1.757
+GI_II1_Wk : Delta chi2 vs production FLAMINGO on masks 0.25/D 0.000, 0.35/D 0.000, 0.5/D 0.000
+[GI_II1, mask 0.25/D]
+    NLA : chi2 IA-only   0.75, best   0.74 (lin   0.74); dOm -0.0001 (-0.01s) dS8 +0.0004 (+0.07s); FoB 0.08 (reg50 0.08); IA [3.47 0.65]
+    TATT: chi2 IA-only   0.62, best   0.61 (lin   0.61); dOm -0.0008 (-0.07s) dS8 +0.0002 (+0.03s); FoB 0.09 (reg50 0.09); IA [3.472 0.634 0.036 4.981 0.042]
+[GI_II1_W, mask 0.25/D]
+    NLA : chi2 IA-only   1.03, best   1.00 (lin   1.00); dOm -0.0003 (-0.03s) dS8 +0.0009 (+0.15s); FoB 0.17 (reg50 0.17); IA [3.496 0.649]
+    TATT: chi2 IA-only   0.90, best   0.86 (lin   0.86); dOm -0.0006 (-0.06s) dS8 +0.0010 (+0.17s); FoB 0.20 (reg50 0.20); IA [ 3.483  0.657 -0.637 -4.146  0.314]
+[GI_II1_Wk, mask 0.25/D]
+    NLA : chi2 IA-only   0.86, best   0.81 (lin   0.81); dOm +0.0003 (+0.03s) dS8 +0.0013 (+0.22s); FoB 0.23 (reg50 0.23); IA [3.463 0.701]
+    TATT: chi2 IA-only   0.75, best   0.68 (lin   0.68); dOm -0.0002 (-0.02s) dS8 +0.0015 (+0.24s); FoB 0.26 (reg50 0.26); IA [ 3.45   0.708 -0.429 -4.567  0.279]
+[GI_II1, mask 0.35/D]
+    NLA : chi2 IA-only   1.22, best   1.21 (lin   1.21); dOm +0.0003 (+0.03s) dS8 +0.0005 (+0.10s); FoB 0.10 (reg50 0.10); IA [3.511 0.631]
+    TATT: chi2 IA-only   0.95, best   0.94 (lin   0.94); dOm -0.0006 (-0.06s) dS8 +0.0002 (+0.05s); FoB 0.09 (reg50 0.08); IA [3.51  0.611 0.038 4.811 0.006]
+[GI_II1_W, mask 0.35/D]
+    NLA : chi2 IA-only   1.73, best   1.64 (lin   1.64); dOm +0.0005 (+0.06s) dS8 +0.0014 (+0.30s); FoB 0.30 (reg50 0.30); IA [3.531 0.635]
+    TATT: chi2 IA-only   1.68, best   1.56 (lin   1.56); dOm +0.0002 (+0.02s) dS8 +0.0015 (+0.34s); FoB 0.34 (reg50 0.34); IA [ 3.536  0.63  -0.25  -2.537  0.161]
+[GI_II1_Wk, mask 0.35/D]
+    NLA : chi2 IA-only   1.64, best   1.48 (lin   1.48); dOm +0.0015 (+0.16s) dS8 +0.0018 (+0.39s); FoB 0.39 (reg50 0.39); IA [3.507 0.681]
+    TATT: chi2 IA-only   1.42, best   1.25 (lin   1.25); dOm +0.0003 (+0.03s) dS8 +0.0019 (+0.41s); FoB 0.42 (reg50 0.41); IA [3.492 0.675 0.042 4.155 0.082]
+[GI_II1, mask 0.5/D]
+    NLA : chi2 IA-only   1.82, best   1.80 (lin   1.80); dOm +0.0007 (+0.08s) dS8 +0.0004 (+0.11s); FoB 0.12 (reg50 0.12); IA [3.524 0.629]
+    TATT: chi2 IA-only   1.36, best   1.36 (lin   1.36); dOm -0.0004 (-0.05s) dS8 +0.0001 (+0.04s); FoB 0.07 (reg50 0.07); IA [3.523 0.605 0.039 4.627 0.   ]  AT BOUND ['bTA']
+[GI_II1_W, mask 0.5/D]
+    NLA : chi2 IA-only   2.60, best   2.48 (lin   2.48); dOm +0.0014 (+0.15s) dS8 +0.0012 (+0.34s); FoB 0.35 (reg50 0.35); IA [3.548 0.631]
+    TATT: chi2 IA-only   2.35, best   2.25 (lin   2.25); dOm +0.0004 (+0.05s) dS8 +0.0012 (+0.33s); FoB 0.33 (reg50 0.32); IA [3.541 0.621 0.024 4.712 0.026]
+[GI_II1_Wk, mask 0.5/D]
+    NLA : chi2 IA-only   2.97, best   2.53 (lin   2.53); dOm +0.0030 (+0.34s) dS8 +0.0021 (+0.60s); FoB 0.62 (reg50 0.62); IA [3.53  0.676]
+    TATT: chi2 IA-only   2.46, best   2.06 (lin   2.06); dOm +0.0013 (+0.14s) dS8 +0.0022 (+0.63s); FoB 0.63 (reg50 0.62); IA [3.512 0.664 0.058 3.832 0.048]
+done (245s)

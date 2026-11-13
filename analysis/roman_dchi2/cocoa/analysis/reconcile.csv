@@ -1,0 +1,5 @@
+model,kmax,v1_first_pass_mask_kmax,v2_matched_python,matched_cosmolike,v2_full_python,full_cosmolike_mask_kmax,xi_compare_python_mask_kmax,full_cosmolike_theta15.8,xi_compare_python_theta15.8,full_cosmolike_mask0.35/D
+NLA,0.291,0.906,0.189,0.591,0.884,1.19,2.5,117,45.2,4.49
+NLA,0.390,1.11,0.976,1.97,1.61,4.96,7.43,114,40.2,8.74
+TATT,0.390,8.18,0.175,0.212,0.486,2.56,3.1,41,14.3,2.83
+TATT,0.701,4.2,1.2,0.811,1.45,3.27,10,36.6,19.3,2.69

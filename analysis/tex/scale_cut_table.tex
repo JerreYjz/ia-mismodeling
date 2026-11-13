@@ -1,0 +1,43 @@
+% Requires \usepackage{booktabs,amssymb} in the preamble.
+\begin{table*}
+\centering
+\caption{Scale-cut validation for NLA fit to a TATT data vector. For each
+probe we list the UV cut $k_{\rm UV}$ (with $\alpha = 0.05$), the
+best-fit $\chi^2_{\rm min}$ of the NLA model, the shifts of $S_8$ and
+$\Omega_{\rm m}$ from the truth in units of their marginalized
+$1\sigma$ errors, the shift in the $(S_8,\Omega_{\rm m})$ plane
+expressed as an equivalent 1D significance, and the $1\sigma$ error on
+$S_8$. A cut passes if the 2D shift is below $0.3\sigma$. For the lens
+probes $k_{\rm UV}^{\rm GGL} = k_{\rm UV}^{\rm GC}$. Here
+$n_{\rm s}$, $H_0$ and $\Omega_{\rm b}$ are fixed at the truth;
+photo-$z$ shifts, shear calibration and linear galaxy bias are free.
+The matched TATT fit recovers the truth exactly ($\chi^2_{\rm min}=0$)
+in every case. Adopted cuts are shown in bold.}
+\label{tab:scale_cuts}
+\begin{tabular}{lcccccc}
+\toprule
+Probe & $k_{\rm UV}\,[h\,{\rm Mpc}^{-1}]$ & $\chi^2_{\rm min}$
+  & $\Delta S_8/\sigma$ & $\Delta\Omega_{\rm m}/\sigma$
+  & 2D shift $[\sigma]$ & $\sigma(S_8)$ \\
+\midrule
+Cosmic shear
+  & $\mathbf{0.35}$ & 1.56 & $-0.14$ & $-0.59$ & $\mathbf{0.20}$ \checkmark & 0.0068 \\
+  & 0.40 & 2.34 & $-0.22$ & $-0.81$ & 0.37 $\times$ & 0.0062 \\
+  & 0.50 & 3.45 & $-0.30$ & $-0.93$ & 0.47 $\times$ & 0.0057 \\
+\midrule
+2$\times$2pt
+  & $\mathbf{0.20}$ & 0.89 & $-0.01$ & $-0.58$ & $\mathbf{0.20}$ \checkmark & 0.0120 \\
+($\gamma_{\rm t}+w$)
+  & 0.25 & 1.68 & $+0.01$ & $-0.83$ & 0.38 $\times$ & 0.0091 \\
+  & 0.30 & 2.55 & $+0.01$ & $-0.76$ & 0.32 $\times$ & 0.0071 \\
+  & 0.35 & 3.44 & $-0.03$ & $-1.11$ & 0.61 $\times$ & 0.0068 \\
+  & 0.40 & 4.93 & $+0.11$ & $-0.89$ & 0.42 $\times$ & 0.0060 \\
+  & 0.50 & 7.58 & $-0.00$ & $-1.31$ & 0.80 $\times$ & 0.0051 \\
+\midrule
+3$\times$2pt
+  & 0.50/0.50 & 17.44 & $-0.24$ & $-2.18$ & 1.68 $\times$ & 0.0041 \\
+(shear / lens)
+  & $\mathbf{0.35/0.20}$ & 5.11 & $-0.13$ & $-1.19$ & 0.69 $\times$ & 0.0060 \\
+\bottomrule
+\end{tabular}
+\end{table*}

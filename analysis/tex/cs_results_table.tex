@@ -1,0 +1,29 @@
+% Requires \usepackage{amsmath}. Sized for a full-width float (table*) in a
+% two-column paper; no booktabs needed.
+\begin{table*}
+\centering
+\caption{NLA and TATT fits to the TATT Roman cosmic-shear data vector
+($k_{\rm UV} = 0.35\,h\,{\rm Mpc}^{-1}$; $n_s$, $H_0$ and $\Omega_b$ free).
+For each model we list the best-fit (MAP) value and the marginal mean with
+its 68\% standard deviation. The last two columns give the NLA$-$TATT
+difference of the MAP values and of the marginal means, in units of the TATT
+marginal $\sigma$; the 2D row is the shift in the $(S_8, \Omega_{\rm m})$
+plane, expressed as an equivalent one-dimensional significance. TATT is the
+true model, so its own offset between MAP and marginal mean is a projection
+effect.}
+\label{tab:cs_results}
+\begin{tabular}{lcccccc}
+\hline\hline
+ & \multicolumn{2}{c}{TATT} & \multicolumn{2}{c}{NLA} & \multicolumn{2}{c}{NLA$-$TATT} \\
+Parameter & MAP & Mean $\pm\,\sigma$ & MAP & Mean $\pm\,\sigma$ & MAP & Mean \\
+\hline
+$S_8$            & 0.8153 & $0.8142 \pm 0.0095$ & 0.8165 & $0.8151 \pm 0.0095$ & $+0.13\sigma$ & $+0.09\sigma$ \\
+$\Omega_{\rm m}$ & 0.3046 & $0.305 \pm 0.022$   & 0.3095 & $0.306 \pm 0.022$   & $+0.22\sigma$ & $+0.02\sigma$ \\
+$(S_8,\Omega_{\rm m})$, 2D & --- & --- & --- & --- & $\mathbf{0.03\sigma}$ & $0.00\sigma$ \\
+\hline
+$10^9 A_{\rm s}$ & 2.06   & $2.13 \pm 0.34$     & 2.33   & $2.23 \pm 0.32$     & $+0.80\sigma$ & $+0.28\sigma$ \\
+$H_0$            & 69.3   & $68.9 \pm 7.8$      & 63.4   & $67.6 \pm 7.4$      & $-0.76\sigma$ & $-0.16\sigma$ \\
+$n_{\rm s}$      & 0.962  & $0.963 \pm 0.049$   & 0.985  & $0.972 \pm 0.048$   & $+0.47\sigma$ & $+0.18\sigma$ \\
+\hline\hline
+\end{tabular}
+\end{table*}

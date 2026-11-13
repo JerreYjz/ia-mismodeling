@@ -1,0 +1,7 @@
+variant,description,dchi2_vs_main_all,dchi2_vs_main_mask0.35/D,NLA_kmax0.29_mask0.35/D,TATT_kmax0.52_mask0.35/D,NLA_kmax0.29_all,TATT_kmax0.52_all
+flam,main,0,0,4.492,1.867,1904,2423
+flam_zero,nothing above k = 17.7 (instead of P/P_NL held),0.1612,0.0002039,4.488,1.867,1892,2407
+flam_simIA,only measured rows; sim_IA extrapolation (power law below, linear above),130.1,115.9,135.5,105,2132,2651
+flam_nsnla,white level of P_EE from the notes' low-k NLA fit,6773,0.3872,5.29,1.642,4209,5089
+flam_nons,no white-noise subtraction in P_EE,2174,0.2124,4.435,2.558,6712,6987
+flam_raw,measured spectra instead of smoothed,12.74,1.675,7.791,2.569,1862,2410

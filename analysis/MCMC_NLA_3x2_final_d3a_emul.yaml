@@ -1,0 +1,836 @@
+# Roman 3x2pt, emulator theory (no CAMB), FLAMINGO D3A fiducial.
+# D3A: Omega_m 0.306, Omega_b 0.0486, h 0.681, n_s 0.967, sigma8 0.807,
+#      A_s 2.099e-9, sum m_nu 0.06 eV (flamingo.strw.leidenuniv.nl).
+# sigma8 and S8 come from the sigma8_from_pk theory (projects/roman_real/theories).
+timing: True
+debug: False
+stop_at_error: False
+
+likelihood:
+  roman_real.combo_3x2pt:
+    use_emulator: 2
+    path: ./projects/roman_real/data
+    # D3A TATT 3x2pt data vector (printed with combo_3x2pt and this theory block)
+    # + the final 3x2pt mask: k_UV 0.35 shear, 0.2 GGL and clustering
+    data_file: 3x2_final_d3a.dataset
+    print_datavector: False
+    print_datavector_file: "./projects/roman_real/data/tatt_fid_d3a_emul_3x2pt.modelvector"
+    accuracyboost: 1.0
+    integration_accuracy: 0
+    lmax: 100000 # as the 3x2pt data-vector yaml; must match the data vector
+    kmax_boltzmann: 5.0 # emulator range (as in the emulator yaml)
+    # 1 EE2, 2 Halofit
+    non_linear_emul: 2
+    IA_model: 1  # TATT machinery for both fits; the NLA file fixes A2 = BTA = 0
+    IA_code: 0    # CFASTPT (0) or FASTPT (1) (only works if not NLA)
+    IA_redshift_evolution: 3
+    ggl_exclude: [[6,0],[7,0],[7,1]]
+    debug: false
+    use_baryon_pca: false
+    create_baryon_pca: false
+    baryon_pca_select_sims: "antilles-2-99/antilles-101-378/antilles-380-400"
+    filename_baryon_pca: "./projects/lsst_y1/chains/pca.txt"
+    external_baryon_suppression: False
+
+params:
+  As_1e9:
+    prior:
+      min: 0.5
+      max: 5
+    ref:
+      dist: norm
+      loc: 2.099
+      scale: 0.1
+    proposal: 0.1
+    latex: 10^9 A_\mathrm{s}
+    drop: false
+    renames: A
+  ns:
+    prior:
+      min: 0.87
+      max: 1.07
+    ref:
+      dist: norm
+      loc: 0.967
+      scale: 0.01
+    proposal: 0.01
+    latex: n_\mathrm{s}
+  H0:
+    prior:
+      min: 55
+      max: 91
+    ref:
+      dist: norm
+      loc: 68.1
+      scale: 2
+    proposal: 2
+    latex: H_0
+  omegab:
+    prior:
+      min: 0.03
+      max: 0.07
+    ref:
+      dist: norm
+      loc: 0.0486
+      scale: 0.004
+    proposal: 0.004
+    latex: \Omega_\mathrm{b}
+    drop: false
+  omegam:
+    prior:
+      min: 0.1
+      max: 0.9
+    ref:
+      dist: norm
+      loc: 0.306
+      scale: 0.01
+    proposal: 0.01
+    latex: \Omega_\mathrm{m}
+    drop: false
+  # LCDM: w0, wa fixed (emulmps and emulbaosn still take them as inputs)
+  w:
+    value: -1.0
+    latex: w_{0,\mathrm{DE}}
+  wa:
+    value: 0.0
+    latex: w_{a,\mathrm{DE}}
+  # fixed at D3A: emulmps has no mnu input, so a free mnu would only move omegach2
+  mnu:
+    value: 0.06
+    latex: m_\nu
+  # ---------------------------------------------------------------------------------------
+  # ------------------------------------- DERIVED PARAMETERS ------------------------------
+  # ---------------------------------------------------------------------------------------
+  # WARNING: DO NOT REMOVE omegabh2/omegach2/omegamh2/wa/As/ FROM DERIVED PARAMETERS
+  # SEE: github.com/CosmoLike/cocoa#warning-warning-warning-weak-lensing-yaml-files-in-cobaya-
+  # CAMB-only derived parameters (omegal, age, yheused, omegan2, omegan) and tau are
+  # removed: no emulator computes or uses them.
+  # ---------------------------------------------------------------------------------------
+  As:
+    value: 'lambda As_1e9: 1e-9 * As_1e9'
+    latex: A_\mathrm{s}
+  omegabh2:
+    value: 'lambda omegab, H0: omegab*(H0/100)**2'
+    latex: \Omega_\mathrm{b} h^2
+  omegach2:
+    value: 'lambda omegam, omegab, mnu, H0: (omegam-omegab)*(H0/100)**2-(mnu*(3.046/3)**0.75)/94.0708'
+    latex: \Omega_\mathrm{c} h^2
+  omegamh2:
+    derived: 'lambda omegam, H0: omegam*(H0/100)**2'
+    latex: \Omega_\mathrm{m} h^2
+  rdrag:
+    latex: r_\mathrm{drag}
+  sigma8:            # from sigma8_from_pk (linear P(k) of emulmps, z = 0)
+    latex: \sigma_8
+  S8:                # sigma8 (Omega_m/0.3)^0.5, from sigma8_from_pk
+    latex: S_8
+  s8h5:
+    derived: 'lambda sigma8, H0: sigma8*(H0*1e-2)**(-0.5)'
+    latex: \sigma_8/h^{0.5}
+  s8omegamp5:
+    derived: 'lambda sigma8, omegam: sigma8*omegam**0.5'
+    latex: \sigma_8 \Omega_\mathrm{m}^{0.5}
+  s8omegamp25:
+    derived: 'lambda sigma8, omegam: sigma8*omegam**0.25'
+    latex: \sigma_8 \Omega_\mathrm{m}^{0.25}
+  # ------------------------------------------------------------------------
+  # ------------------------------------------------------------------------
+  # Nuisance parameters below (it overwrites the default settings)
+  # ------------------------------------------------------------------------
+  # ------------------------------------------------------------------------
+  # ------------------------------------------------------------------------
+  # WL photo-z errors
+  roman_DZ_S1:
+    prior:
+      dist: norm
+      loc: 0.0
+      scale: 0.002
+    ref:
+      dist: norm
+      loc: 0.0
+      scale: 0.002
+    proposal: 0.002
+    latex: \Delta z_\mathrm{s,roman}^1
+  roman_DZ_S2:
+    prior:
+      dist: norm
+      loc: 0.0
+      scale: 0.002
+    ref:
+      dist: norm
+      loc: 0.0
+      scale: 0.002
+    proposal: 0.002
+    latex: \Delta z_\mathrm{s,roman}^2
+  roman_DZ_S3:
+    prior:
+      dist: norm
+      loc: 0.0
+      scale: 0.002
+    ref:
+      dist: norm
+      loc: 0.0
+      scale: 0.002
+    proposal: 0.002
+    latex: \Delta z_\mathrm{s,roman}^3
+  roman_DZ_S4:
+    prior:
+      dist: norm
+      loc: 0.0
+      scale: 0.002
+    ref:
+      dist: norm
+      loc: 0.0
+      scale: 0.002
+    proposal: 0.002
+    latex: \Delta z_\mathrm{s,roman}^4
+  roman_DZ_S5:
+    prior:
+      dist: norm
+      loc: 0.0
+      scale: 0.002
+    ref:
+      dist: norm
+      loc: 0.0
+      scale: 0.002
+    proposal: 0.002
+    latex: \Delta z_\mathrm{s,roman}^5
+  roman_DZ_S6:
+    prior:
+      dist: norm
+      loc: 0.0
+      scale: 0.002
+    ref:
+      dist: norm
+      loc: 0.0
+      scale: 0.002
+    proposal: 0.002
+    latex: \Delta z_\mathrm{s,roman}^6
+  roman_DZ_S7:
+    prior:
+      dist: norm
+      loc: 0.0
+      scale: 0.002
+    ref:
+      dist: norm
+      loc: 0.0
+      scale: 0.002
+    proposal: 0.002
+    latex: \Delta z_\mathrm{s,roman}^7
+  roman_DZ_S8:
+    prior:
+      dist: norm
+      loc: 0.0
+      scale: 0.002
+    ref:
+      dist: norm
+      loc: 0.0
+      scale: 0.002
+    proposal: 0.002
+    latex: \Delta z_\mathrm{s,roman}^8
+  # ------------------------------------------------------------------------
+  # ------------------------------------------------------------------------
+  # Shear calibration parameters
+  roman_M1:
+    prior:
+      dist: norm
+      loc: 0.0
+      scale: 0.005
+    ref:
+      dist: norm
+      loc: 0.0
+      scale: 0.005
+    proposal: 0.005
+    latex: m_\mathrm{roman}^1
+  roman_M2:
+    prior:
+      dist: norm
+      loc: 0.0
+      scale: 0.005
+    ref:
+      dist: norm
+      loc: 0.0
+      scale: 0.005
+    proposal: 0.005
+    latex: m_\mathrm{roman}^2
+  roman_M3:
+    prior:
+      dist: norm
+      loc: 0.0
+      scale: 0.005
+    ref:
+      dist: norm
+      loc: 0.0
+      scale: 0.005
+    proposal: 0.005
+    latex: m_\mathrm{roman}^3
+  roman_M4:
+    prior:
+      dist: norm
+      loc: 0.0
+      scale: 0.005
+    ref:
+      dist: norm
+      loc: 0.0
+      scale: 0.005
+    proposal: 0.005
+    latex: m_\mathrm{roman}^4
+  roman_M5:
+    prior:
+      dist: norm
+      loc: 0.0
+      scale: 0.005
+    ref:
+      dist: norm
+      loc: 0.0
+      scale: 0.005
+    proposal: 0.005
+    latex: m_\mathrm{roman}^5
+  roman_M6:
+    prior:
+      dist: norm
+      loc: 0.0
+      scale: 0.005
+    ref:
+      dist: norm
+      loc: 0.0
+      scale: 0.005
+    proposal: 0.005
+    latex: m_\mathrm{roman}^6
+  roman_M7:
+    prior:
+      dist: norm
+      loc: 0.0
+      scale: 0.005
+    ref:
+      dist: norm
+      loc: 0.0
+      scale: 0.005
+    proposal: 0.005
+    latex: m_\mathrm{roman}^7
+  roman_M8:
+    prior:
+      dist: norm
+      loc: 0.0
+      scale: 0.005
+    ref:
+      dist: norm
+      loc: 0.0
+      scale: 0.005
+    proposal: 0.005
+    latex: m_\mathrm{roman}^8
+  # ------------------------------------------------------------------------
+  # ------------------------------------------------------------------------
+  # Intrinsic alignment (ref at the TATT truth of the data vector)
+  roman_A1_1:
+    prior:
+      min: -5
+      max: 5
+    ref:
+      dist: norm
+      loc: 3.8
+      scale: 0.1
+    proposal: 0.1
+    latex: A_\mathrm{1-IA,roman}^1
+  roman_A1_2:
+    prior:
+      min: -5
+      max: 5
+    ref:
+      dist: norm
+      loc: 0.57
+      scale: 0.1
+    proposal: 0.1
+    latex: \eta_\mathrm{1-IA,roman}
+  # NLA = TATT with the tidal-torquing and density-weighting terms off
+  roman_A2_1:
+    value: 0.0
+    latex: A_\mathrm{2-IA,Roman}^1
+  roman_A2_2:
+    value: 0.0
+    latex: A_\mathrm{2-IA,Roman}^2
+  roman_BTA_1:
+    value: 0.0
+    latex: A_\mathrm{BTA-IA,Roman}^1
+  # ------------------------------------------------------------------------
+  # ------------------------------------------------------------------------
+  # lens = source: lens photo-z shifts follow the source ones
+  roman_DZ_L1:
+    value: 'lambda roman_DZ_S1: roman_DZ_S1'
+    latex: \Delta z_\mathrm{l,Roman}^1
+  roman_DZ_L2:
+    value: 'lambda roman_DZ_S2: roman_DZ_S2'
+    latex: \Delta z_\mathrm{l,Roman}^2
+  roman_DZ_L3:
+    value: 'lambda roman_DZ_S3: roman_DZ_S3'
+    latex: \Delta z_\mathrm{l,Roman}^3
+  roman_DZ_L4:
+    value: 'lambda roman_DZ_S4: roman_DZ_S4'
+    latex: \Delta z_\mathrm{l,Roman}^4
+  roman_DZ_L5:
+    value: 'lambda roman_DZ_S5: roman_DZ_S5'
+    latex: \Delta z_\mathrm{l,Roman}^5
+  roman_DZ_L6:
+    value: 'lambda roman_DZ_S6: roman_DZ_S6'
+    latex: \Delta z_\mathrm{l,Roman}^6
+  roman_DZ_L7:
+    value: 'lambda roman_DZ_S7: roman_DZ_S7'
+    latex: \Delta z_\mathrm{l,Roman}^7
+  roman_DZ_L8:
+    value: 'lambda roman_DZ_S8: roman_DZ_S8'
+    latex: \Delta z_\mathrm{l,Roman}^8
+  # ------------------------------------------------------------------------
+  # ------------------------------------------------------------------------
+  # linear galaxy bias (ref at the data-vector truth)
+  roman_B1_1:
+    prior:
+      min: 0.4
+      max: 4
+    ref:
+      dist: norm
+      loc: 1.18
+      scale: 0.05
+    proposal: 0.03
+    latex: b_\mathrm{1-Roman}^1
+  roman_B1_2:
+    prior:
+      min: 0.4
+      max: 4
+    ref:
+      dist: norm
+      loc: 1.40
+      scale: 0.05
+    proposal: 0.03
+    latex: b_\mathrm{1-Roman}^2
+  roman_B1_3:
+    prior:
+      min: 0.4
+      max: 4
+    ref:
+      dist: norm
+      loc: 1.55
+      scale: 0.05
+    proposal: 0.03
+    latex: b_\mathrm{1-Roman}^3
+  roman_B1_4:
+    prior:
+      min: 0.4
+      max: 4
+    ref:
+      dist: norm
+      loc: 1.71
+      scale: 0.05
+    proposal: 0.03
+    latex: b_\mathrm{1-Roman}^4
+  roman_B1_5:
+    prior:
+      min: 0.4
+      max: 4
+    ref:
+      dist: norm
+      loc: 1.90
+      scale: 0.05
+    proposal: 0.03
+    latex: b_\mathrm{1-Roman}^5
+  roman_B1_6:
+    prior:
+      min: 0.4
+      max: 4
+    ref:
+      dist: norm
+      loc: 2.15
+      scale: 0.05
+    proposal: 0.03
+    latex: b_\mathrm{1-Roman}^6
+  roman_B1_7:
+    prior:
+      min: 0.4
+      max: 4
+    ref:
+      dist: norm
+      loc: 2.52
+      scale: 0.05
+    proposal: 0.03
+    latex: b_\mathrm{1-Roman}^7
+  roman_B1_8:
+    prior:
+      min: 0.4
+      max: 4
+    ref:
+      dist: norm
+      loc: 2.44
+      scale: 0.05
+    proposal: 0.03
+    latex: b_\mathrm{1-Roman}^8
+# ------------------------------------------------------------------------
+# ------------------------------------------------------------------------
+# ------------------------------------------------------------------------
+# ------------------------------------------------------------------------
+# BARYON FEEDBACK SPK PARAMS
+# ------------------------------------------------------------------------
+# ------------------------------------------------------------------------
+# ------------------------------------------------------------------------
+# ------------------------------------------------------------------------
+  # alpha_spk:
+  #   prior:
+  #     min: 3.8
+  #     max: 4.6
+  #   ref:
+  #     dist: norm
+  #     loc: 4.189
+  #     scale: 0.12
+  #   proposal: 0.12
+  #   latex: alpha_SPk
+  # beta_spk:
+  #   prior:
+  #     min: 1.0
+  #     max: 1.6
+  #   ref:
+  #     dist: norm
+  #     loc: 1.273
+  #     scale: 0.08
+  #   proposal: 0.08
+  #   latex: beta_SPk
+  # gamma_spk:
+  #   prior:
+  #     min: 0.1
+  #     max: 0.75
+  #   ref:
+  #     dist: norm
+  #     loc: 0.298
+  #     scale: 0.10
+  #   proposal: 0.10
+  #   latex: gamma_SPk
+# ------------------------------------------------------------------------
+# ------------------------------------------------------------------------
+# ------------------------------------------------------------------------
+# ------------------------------------------------------------------------
+# BARYON FEEDBACK BCE EMU PARAMS
+# ------------------------------------------------------------------------
+# ------------------------------------------------------------------------
+# ------------------------------------------------------------------------
+# ------------------------------------------------------------------------
+  # log10Mc_bcemu:
+  #   prior:
+  #     min: 11
+  #     max: 15
+  #   ref:
+  #     dist: norm
+  #     loc: 13.32
+  #     scale: 0.4
+  #   proposal: 0.4
+  #   latex: \log_{10}(M_c)
+  # mu_bcemu:
+  #   prior:
+  #     min: 0
+  #     max: 2
+  #   ref:
+  #     dist: norm
+  #     loc: 0.93
+  #     scale: 0.2
+  #   proposal: 0.2
+  #   latex: \mu
+  # thej_bcemu:
+  #   prior:
+  #     min: 2
+  #     max: 8
+  #   ref:
+  #     dist: norm
+  #     loc: 4.235
+  #     scale: 0.5
+  #   proposal: 0.5
+  #   latex: \theta_\mathrm{ej}
+  # gamma_bcemu:
+  #   prior:
+  #     min: 1
+  #     max: 4
+  #   ref:
+  #     dist: norm
+  #     loc: 2.25
+  #     scale: 0.4
+  #   proposal: 0.4
+  #   latex: \gamma
+  # delta_bcemu:
+  #   prior:
+  #     min: 3.0
+  #     max: 11.0
+  #   ref:
+  #     dist: norm
+  #     loc: 6.40
+  #     scale: 0.3
+  #   proposal: 0.3
+  #   latex: \delta
+  # eta_bcemu:
+  #   prior:
+  #     min: 0.05
+  #     max: 4.0
+  #   ref:
+  #     dist: norm
+  #     loc: 0.15
+  #     scale: 0.03
+  #   proposal: 0.03
+  #   latex: \eta
+  # deta_bcemu:
+  #   prior:
+  #     min: 0.05
+  #     max: 4.0
+  #   ref:
+  #     dist: norm
+  #     loc: 0.14
+  #     scale: 0.04
+  #   proposal: 0.04
+  #   latex: \eta_\delta
+# ------------------------------------------------------------------------
+# ------------------------------------------------------------------------
+# ------------------------------------------------------------------------
+# ------------------------------------------------------------------------
+# BARYON FEEDBACK FLAMINGO PARAMS
+# ------------------------------------------------------------------------
+# ------------------------------------------------------------------------
+# ------------------------------------------------------------------------
+# ------------------------------------------------------------------------
+  # fgas_sigma_flamingo:
+  #   prior:
+  #     min: -10
+  #     max: 4.0
+  #   ref:
+  #     dist: norm
+  #     loc: 0
+  #     scale: 1
+  #   proposal: 1
+  #   latex: f_\mathrm{gas}^{\pm\sigma}
+  # mstar_sigma_flamingo:
+  #   prior:
+  #     min: -3.0
+  #     max: 2.0
+  #   ref:
+  #     dist: norm
+  #     loc: 0
+  #     scale: 0.5
+  #   proposal: 0.5
+  #   latex: M_*^{\pm\sigma}
+  # jet_frac_flamingo:
+  #   prior:
+  #     min: 0
+  #     max: 1
+  #   proposal: 0.1
+  #   latex: f_\mathrm{jet}
+# ------------------------------------------------------------------------
+# ------------------------------------------------------------------------
+# ------------------------------------------------------------------------
+# ------------------------------------------------------------------------
+# BARYON FEEDBACK BACCO EMU PARAMS
+# ------------------------------------------------------------------------
+# ------------------------------------------------------------------------
+# ------------------------------------------------------------------------
+# ------------------------------------------------------------------------
+  # M_c_baccoemu:
+  #   prior:
+  #     min: 10
+  #     max: 16
+  #   ref:
+  #     dist: norm
+  #     loc: 14
+  #     scale: 1
+  #   proposal: 1
+  #   latex: \log_{10}[M_c/(M_\odot/h)]
+  # eta_baccoemu:
+  #   prior:
+  #     min: -0.7
+  #     max: 0.2
+  #   ref:
+  #     dist: norm
+  #     loc: -0.3
+  #     scale: 0.08
+  #   proposal: 0.08
+  #   latex: \log_{10}(\eta)
+  # beta_baccoemu:
+  #   prior:
+  #     min: -1
+  #     max: 0.7
+  #   ref:
+  #     dist: norm
+  #     loc: -0.22
+  #     scale: 0.2
+  #   proposal: 0.2
+  #   latex: \log_{10}(\beta)
+  # M1_z0_cen_baccoemu:
+  #   prior:
+  #     min: 9
+  #     max: 13
+  #   ref:
+  #     dist: norm
+  #     loc: 10.5
+  #     scale: 0.5
+  #   proposal: 0.5
+  #   latex: \log_{10}[M_{z_0,\mathrm{cen}}/(M_\odot/h)]
+  # theta_inn_baccoemu:
+  #   prior:
+  #     min: -2
+  #     max: 0
+  #   ref:
+  #     dist: norm
+  #     loc: -0.86
+  #     scale: 0.3
+  #   proposal: 0.3
+  #   latex: \log_{10}(\theta_\mathrm{inn})
+# ------------------------------------------------------------------------
+# ------------------------------------------------------------------------
+# BARYON FEEDBACK BCEMU2025 PARAMS
+# ------------------------------------------------------------------------
+# ------------------------------------------------------------------------
+# ------------------------------------------------------------------------
+# ------------------------------------------------------------------------
+  # Theta_co_bcemu25:
+  #   prior:
+  #     min: 0.0
+  #     max: 0.8
+  #   ref:
+  #     dist: norm
+  #     loc: 0.3
+  #     scale: 0.08
+  #   proposal: 0.08
+  #   latex: \Theta_\mathrm{co}
+  # log10Mc_bcemu25:
+  #   prior:
+  #     min: 11.0
+  #     max: 15.0
+  #   ref:
+  #     dist: norm
+  #     loc: 13.1
+  #     scale: 0.4
+  #   proposal: 0.4
+  #   latex: \log_{10}[M_c/(M_\odot/h)]
+  # mu_bcemu25:
+  #   prior:
+  #     min: 0.0
+  #     max: 3.0
+  #   ref:
+  #     dist: norm
+  #     loc: 1.0
+  #     scale: 0.3
+  #   proposal: 0.3
+  #   latex: \mu
+  # delta_bcemu25:
+  #   prior:
+  #     min: 2.0
+  #     max: 12.0
+  #   ref:
+  #     dist: norm
+  #     loc: 6.0
+  #     scale: 1.0
+  #   proposal: 1.0
+  #   latex: \delta
+  # eta_bcemu25:
+  #   prior:
+  #     min: -0.2
+  #     max: 0.2
+  #   ref:
+  #     dist: norm
+  #     loc: 0.10
+  #     scale: 0.04
+  #   proposal: 0.04
+  #   latex: \eta
+  # deta_bcemu25:
+  #   prior:
+  #     min: 0.0
+  #     max: 0.4
+  #   ref:
+  #     dist: norm
+  #     loc: 0.22
+  #     scale: 0.04
+  #   proposal: 0.04
+  #   latex: \delta_\eta
+  # Nstar_bcemu25:
+  #   prior:
+  #     min: 0.0
+  #     max: 0.05
+  #   ref:
+  #     dist: norm
+  #     loc: 0.028
+  #     scale: 0.005
+  #   proposal: 0.005
+  #   latex: N_\star
+
+
+theory:
+  sigma8_from_pk:
+    python_path: ./projects/roman_real/theories
+    provides: [sigma8, S8]
+  emulrdrag:
+    path: ./cobaya/cobaya/theories/
+    provides: ['rdrag']
+    extra_args:
+      file: ['external_modules/data/emultrf/BAO_SN_RES/emul_lcdm_rdrag_GP.joblib']
+      extra: ['external_modules/data/emultrf/BAO_SN_RES/extra_lcdm_rdrag.npy']
+      ord: [['omegabh2','omegach2']]
+  emulbaosn:
+    path: ./cobaya/cobaya/theories/
+    stop_at_error: True
+    provides: ['comoving_radial_distance', 'angular_diameter_distance', 'Hubble']
+    extra_args:
+      device: "cuda"
+      file:  [None, 'external_modules/data/emultrf/BAO_SN_RES/w0wa/emul_w0wa_H.pt']
+      extra: [None, 'external_modules/data/emultrf/BAO_SN_RES/w0wa/extra_w0wa_H.npy']
+      ord: [None, ['omegam','H0','w','wa']]
+      extrapar: [{'MLA': 'INT', 'ZMIN' : 0.0001, 'ZMAX' : 3, 'NZ' : 600},
+                 {'MLA': 'ResMLP', 'offset' : 0.0, 'INTDIM' : 4, 'NLAYER' : 6,
+                  'TMAT': 'external_modules/data/emultrf/BAO_SN_RES/w0wa/PCA_w0wa_H.npy',
+                  'ZLIN': 'external_modules/data/emultrf/BAO_SN_RES/w0wa/z_lin_w0wa.npy'}]
+  emulmps:
+    path: ./cobaya/cobaya/theories/
+    stop_at_error: True
+    extra_args:
+      model_file:    "external_modules/data/emultrf/emulmps/npce_emul/emulator_npce.keras"
+      metadata_file: "external_modules/data/emultrf/emulmps/npce_emul/metadata.joblib"
+      nl_model_file:    "external_modules/data/emultrf/emulmps/w0wa_halofit_npce/emulator_halofit.keras"
+      nl_metadata_file: "external_modules/data/emultrf/emulmps/w0wa_halofit_npce/metadata.joblib"
+      use_syren: False
+      param_order: ["As_1e9", "ns", "H0", "omegab", "omegam", 'w', 'wa']
+
+sampler:
+  mcmc:
+    # proposal covariance: null = built from the params' proposal widths,
+    # then learned during the run (learn_proposal)
+    covmat:
+    covmat_params:
+    learn_proposal: True
+    learn_proposal_Rminus1_min: 0.03
+    learn_proposal_Rminus1_max: 150
+    learn_proposal_Rminus1_max_early: 500.
+    # convergence (Gelman-Rubin across MPI chains)
+    max_samples: .inf
+    Rminus1_stop: 0.02
+    Rminus1_cl_stop: 0.2
+    Rminus1_cl_level: 0.95
+    # speed hierarchy (every sampled parameter must appear in exactly one block)
+    measure_speeds: False
+    drag: False
+    oversample_power: 0.2
+    oversample_thin: True
+    blocking:
+    - [8,
+        [
+          As_1e9, ns, H0, omegab, omegam
+        ]
+      ]
+    - [16,
+        [
+          roman_DZ_S1, roman_DZ_S2, roman_DZ_S3, roman_DZ_S4,
+          roman_DZ_S5, roman_DZ_S6, roman_DZ_S7, roman_DZ_S8,
+          roman_A1_1, roman_A1_2,
+          roman_B1_1, roman_B1_2, roman_B1_3, roman_B1_4,
+          roman_B1_5, roman_B1_6, roman_B1_7, roman_B1_8
+        ]
+      ]
+    - [60,
+        [
+          roman_M1, roman_M2, roman_M3, roman_M4,
+          roman_M5, roman_M6, roman_M7, roman_M8
+        ]
+      ]
+    max_tries: .inf
+    burn_in: 0
+    Rminus1_single_split: 4
+ 
+output: ./projects/roman_real/chains/MCMC_NLA_3x2_final_d3a_emul/MCMC_NLA_3x2_final_d3a_emul

@@ -1,0 +1,30 @@
+\begin{table*}
+\centering
+\caption{Scale cuts $k_{\rm UV}(z) = K_0/D(z)$ applied to Roman cosmic shear ($\xi_\pm$, IR/UV masks with $\alpha = 0.05$) with the FLAMINGO GI and II spectra injected into the data vector, and the resulting shifts of the maximum-posterior $\Omega_m$ and $S_8$ in units of their marginalised errors, $\delta\Omega_m/\sigma(\Omega_m)$ and $\delta S_8/\sigma(S_8)$, together with the two-dimensional figure of bias $\mathrm{FoB} = (\delta\boldsymbol{\theta}^{\rm T}\Sigma_\theta^{-1}\delta\boldsymbol{\theta})^{1/2}$, $\boldsymbol{\theta} = (\Omega_m, S_8)$. All cosmological and IA parameters are free; case A varies $\Omega_m$ and $A_s$, case B also $n_s$, $H_0$ and $\Omega_b$ with Gaussian priors. The uncertainty on the FoB propagates the finite-volume errors of the FLAMINGO spectra. $N_{\rm pts}$: number of the 1080 data points kept; $\sigma(S_8)$: marginalised error with NLA. Covariance: \texttt{example1\_cov}.}
+\label{tab:k0D_fob}
+\begin{tabular}{c ccc r c ccc ccc}
+\toprule
+ & \multicolumn{3}{c}{$k_{\rm UV}$ [$h\,{\rm Mpc}^{-1}$]} & & & \multicolumn{3}{c}{NLA} & \multicolumn{3}{c}{TATT}\\
+\cmidrule(lr){2-4}\cmidrule(lr){7-9}\cmidrule(lr){10-12}
+$K_0$ & $z=0.5$ & $z=1$ & $z=2$ & $N_{\rm pts}$ & $\sigma(S_8)$ & $\delta\Omega_m/\sigma$ & $\delta S_8/\sigma$ & FoB & $\delta\Omega_m/\sigma$ & $\delta S_8/\sigma$ & FoB\\
+\midrule
+\multicolumn{12}{l}{\emph{Case A: $\Omega_m$, $A_s$ and IA free}}\\
+0.15 & 0.19 & 0.25 & 0.36 & 118 & 0.0132 & $-0.03$ & $+0.09$ & $0.13\pm0.05$ & $-0.02$ & $+0.07$ & $0.10\pm0.05$\\
+0.20 & 0.26 & 0.33 & 0.48 & 192 & 0.0093 & $0.00$ & $+0.14$ & $0.15\pm0.06$ & $-0.03$ & $+0.13$ & $0.16\pm0.05$\\
+0.25 & 0.32 & 0.41 & 0.60 & 244 & 0.0083 & $-0.03$ & $+0.14$ & $0.16\pm0.04$ & $-0.06$ & $+0.17$ & $0.20\pm0.04$\\
+0.30 & 0.39 & 0.49 & 0.71 & 281 & 0.0068 & $+0.04$ & $+0.24$ & $0.24\pm0.06$ & $-0.06$ & $+0.24$ & $0.28\pm0.05$\\
+0.35 & 0.45 & 0.57 & 0.83 & 317 & 0.0066 & $+0.12$ & $+0.32$ & $0.32\pm0.08$ & $-0.08$ & $+0.24$ & $0.29\pm0.04$\\
+0.40 & 0.52 & 0.66 & 0.95 & 336 & 0.0058 & $+0.25$ & $+0.52$ & $0.53\pm0.09$ & $+0.04$ & $+0.44$ & $0.46\pm0.07$\\
+0.50 & 0.65 & 0.82 & 1.19 & 385 & 0.0053 & $+0.37$ & $+0.49$ & $0.55\pm0.12$ & $+0.03$ & $+0.35$ & $0.36\pm0.05$\\
+\midrule
+\multicolumn{12}{l}{\emph{Case B: $\Omega_m$, $A_s$, $n_s$, $H_0$, $\Omega_b$ and IA free}}\\
+0.15 & 0.19 & 0.25 & 0.36 & 118 & 0.0164 & $+0.01$ & $+0.09$ & $0.09\pm0.06$ & $+0.01$ & $+0.08$ & $0.08\pm0.06$\\
+0.20 & 0.26 & 0.33 & 0.48 & 192 & 0.0121 & $+0.03$ & $+0.17$ & $0.17\pm0.07$ & $-0.04$ & $+0.16$ & $0.17\pm0.06$\\
+0.25 & 0.32 & 0.41 & 0.60 & 244 & 0.0107 & $-0.01$ & $+0.16$ & $0.16\pm0.07$ & $-0.02$ & $+0.20$ & $0.20\pm0.06$\\
+0.30 & 0.39 & 0.49 & 0.71 & 281 & 0.0087 & $-0.05$ & $+0.23$ & $0.25\pm0.06$ & $-0.05$ & $+0.27$ & $0.29\pm0.06$\\
+0.35 & 0.45 & 0.57 & 0.83 & 317 & 0.0084 & $-0.02$ & $+0.31$ & $0.32\pm0.06$ & $0.00$ & $+0.30$ & $0.31\pm0.05$\\
+0.40 & 0.52 & 0.66 & 0.95 & 336 & 0.0076 & $-0.08$ & $+0.44$ & $0.50\pm0.06$ & $-0.04$ & $+0.41$ & $0.44\pm0.05$\\
+0.50 & 0.65 & 0.82 & 1.19 & 385 & 0.0069 & $0.00$ & $+0.41$ & $0.44\pm0.06$ & $+0.02$ & $+0.42$ & $0.45\pm0.06$\\
+\bottomrule
+\end{tabular}
+\end{table*}

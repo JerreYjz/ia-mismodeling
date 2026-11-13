@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.DS_Store
+# LaTeX build files of the notes (notes are built in a scratch folder)
+notes/**/*.aux
+notes/**/*.log
+notes/**/*.out
+notes/**/*.synctex.gz
+# machine-specific cosmolike build and regenerable sim-IA table caches
+analysis/roman_dchi2/cocoa/lib/
+analysis/roman_dchi2/cocoa/run/tables_*

@@ -1,0 +1,109 @@
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+[2026-11-07 14:15:41.284] [info] init_ntomo_powerspectra: GGL pair L6-S0 is excluded
+[2026-11-07 14:15:41.284] [info] init_ntomo_powerspectra: GGL pair L7-S0 is excluded
+[2026-11-07 14:15:41.284] [info] init_ntomo_powerspectra: GGL pair L7-S1 is excluded
+[NLA_GoF x 0.7: k_UV(z=0.5) 0.155, k_UV(z=1) 0.273; 80 points  (9s)]
+[2026-11-07 14:15:47] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PdE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+[2026-11-07 14:15:47] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PEE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    NLA : chi2 IA-only   0.02, best   0.01 (lin   0.01); dOm -0.0005 (-0.02s) dS8 +0.0001 (+0.00s); FoB 0.03 (reg50 0.03) +- 0.00 [noise rms 0.00]; IA [3.362 0.878]
+[2026-11-07 14:16:00] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PdE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+[2026-11-07 14:16:00] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PEE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    TATT: chi2 IA-only   0.01, best   0.01 (lin   0.01); dOm -0.0002 (-0.01s) dS8 +0.0002 (+0.01s); FoB 0.02 (reg50 0.02) +- 0.00 [noise rms 0.00]; IA [ 3.24   0.943 -1.226 -5.     0.118]  AT BOUND ['eta2']
+    Delta chi2_Roman (FLAMINGO vs refit model): NLA 0.00, TATT 0.00
+[NLA_GoF x 1: k_UV(z=0.5) 0.221, k_UV(z=1) 0.390; 146 points  (35s)]
+[2026-11-07 14:16:14] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PdE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+[2026-11-07 14:16:14] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PEE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    NLA : chi2 IA-only   0.14, best   0.13 (lin   0.13); dOm -0.0009 (-0.06s) dS8 +0.0001 (+0.01s); FoB 0.08 (reg50 0.08) +- 0.00 [noise rms 0.00]; IA [3.335 0.874]
+[2026-11-07 14:16:19] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PdE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+[2026-11-07 14:16:19] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PEE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    TATT: chi2 IA-only   0.10, best   0.10 (lin   0.10); dOm -0.0006 (-0.04s) dS8 +0.0001 (+0.01s); FoB 0.06 (reg50 0.05) +- 0.00 [noise rms 0.00]; IA [ 3.301  0.898 -1.096 -2.725  0.303]
+    Delta chi2_Roman (FLAMINGO vs refit model): NLA 0.04, TATT 0.04
+[NLA_GoF x 1.4: k_UV(z=0.5) 0.310, k_UV(z=1) 0.546; 232 points  (58s)]
+[2026-11-07 14:16:37] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PdE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+[2026-11-07 14:16:37] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PEE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    NLA : chi2 IA-only   0.61, best   0.58 (lin   0.58); dOm -0.0010 (-0.09s) dS8 +0.0006 (+0.11s); FoB 0.17 (reg50 0.17) +- 0.02 [noise rms 0.03]; IA [3.406 0.819]
+[2026-11-07 14:16:42] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PdE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+[2026-11-07 14:16:42] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PEE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    TATT: chi2 IA-only   0.54, best   0.50 (lin   0.50); dOm -0.0014 (-0.12s) dS8 +0.0006 (+0.10s); FoB 0.19 (reg50 0.19) +- 0.02 [noise rms 0.03]; IA [ 3.371  0.84   0.314 -5.     0.   ]  AT BOUND ['eta2', 'bTA']
+    Delta chi2_Roman (FLAMINGO vs refit model): NLA 0.82, TATT 0.56
+[NLA_GoF x 2: k_UV(z=0.5) 0.443, k_UV(z=1) 0.780; 305 points  (81s)]
+[2026-11-07 14:17:00] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PdE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+[2026-11-07 14:17:00] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PEE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    NLA : chi2 IA-only   1.17, best   1.11 (lin   1.11); dOm -0.0010 (-0.10s) dS8 +0.0009 (+0.20s); FoB 0.25 (reg50 0.25) +- 0.03 [noise rms 0.03]; IA [3.428 0.805]
+[2026-11-07 14:17:05] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PdE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+[2026-11-07 14:17:05] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PEE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    TATT: chi2 IA-only   0.92, best   0.82 (lin   0.82); dOm -0.0016 (-0.16s) dS8 +0.0009 (+0.20s); FoB 0.29 (reg50 0.28) +- 0.03 [noise rms 0.03]; IA [ 3.364  0.845  0.318 -5.     0.   ]  AT BOUND ['eta2', 'bTA']
+    Delta chi2_Roman (FLAMINGO vs refit model): NLA 5.13, TATT 2.43
+[NLA_GoF x 2.8: k_UV(z=0.5) 0.620, k_UV(z=1) 1.092; 372 points  (104s)]
+[2026-11-07 14:17:23] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PdE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+[2026-11-07 14:17:23] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PEE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    NLA : chi2 IA-only   2.06, best   1.89 (lin   1.89); dOm -0.0008 (-0.09s) dS8 +0.0013 (+0.36s); FoB 0.40 (reg50 0.40) +- 0.07 [noise rms 0.07]; IA [3.453 0.789]
+[2026-11-07 14:17:28] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PdE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+[2026-11-07 14:17:28] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PEE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    TATT: chi2 IA-only   1.62, best   1.41 (lin   1.41); dOm -0.0017 (-0.18s) dS8 +0.0012 (+0.34s); FoB 0.43 (reg50 0.43) +- 0.07 [noise rms 0.07]; IA [ 3.389  0.829  0.193 -3.326  0.   ]  AT BOUND ['bTA']
+    Delta chi2_Roman (FLAMINGO vs refit model): NLA 19.09, TATT 12.38
+[TATT_GoF x 0.7: k_UV(z=0.5) 0.208, k_UV(z=1) 0.273; 136 points  (135s)]
+[2026-11-07 14:17:54] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PdE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+[2026-11-07 14:17:54] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PEE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    NLA : chi2 IA-only   0.13, best   0.13 (lin   0.13); dOm -0.0006 (-0.04s) dS8 +0.0004 (+0.03s); FoB 0.08 (reg50 0.08) +- 0.00 [noise rms 0.00]; IA [3.342 0.868]
+[2026-11-07 14:17:59] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PdE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+[2026-11-07 14:17:59] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PEE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    TATT: chi2 IA-only   0.09, best   0.09 (lin   0.09); dOm -0.0003 (-0.02s) dS8 +0.0005 (+0.03s); FoB 0.06 (reg50 0.06) +- 0.00 [noise rms 0.00]; IA [ 3.313  0.893 -0.839 -2.498  0.   ]  AT BOUND ['bTA']
+    Delta chi2_Roman (FLAMINGO vs refit model): NLA 0.09, TATT 0.06
+[TATT_GoF x 1: k_UV(z=0.5) 0.297, k_UV(z=1) 0.390; 218 points  (158s)]
+[2026-11-07 14:18:17] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PdE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+[2026-11-07 14:18:17] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PEE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    NLA : chi2 IA-only   0.53, best   0.50 (lin   0.50); dOm -0.0006 (-0.05s) dS8 +0.0008 (+0.13s); FoB 0.16 (reg50 0.16) +- 0.02 [noise rms 0.03]; IA [3.407 0.824]
+[2026-11-07 14:18:22] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PdE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+[2026-11-07 14:18:22] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PEE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    TATT: chi2 IA-only   0.49, best   0.46 (lin   0.46); dOm -0.0010 (-0.08s) dS8 +0.0007 (+0.12s); FoB 0.17 (reg50 0.17) +- 0.02 [noise rms 0.03]; IA [ 3.381  0.839  0.28  -5.     0.   ]  AT BOUND ['eta2', 'bTA']
+    Delta chi2_Roman (FLAMINGO vs refit model): NLA 1.09, TATT 0.58
+[TATT_GoF x 1.4: k_UV(z=0.5) 0.416, k_UV(z=1) 0.546; 291 points  (181s)]
+[2026-11-07 14:18:40] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PdE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+[2026-11-07 14:18:40] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PEE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    NLA : chi2 IA-only   1.02, best   0.98 (lin   0.98); dOm -0.0005 (-0.05s) dS8 +0.0007 (+0.16s); FoB 0.19 (reg50 0.19) +- 0.02 [noise rms 0.02]; IA [3.423 0.817]
+[2026-11-07 14:18:45] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PdE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+[2026-11-07 14:18:45] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PEE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    TATT: chi2 IA-only   0.99, best   0.95 (lin   0.95); dOm -0.0005 (-0.05s) dS8 +0.0008 (+0.17s); FoB 0.19 (reg50 0.19) +- 0.02 [noise rms 0.02]; IA [ 3.418  0.823 -0.103  1.89   0.111]
+    Delta chi2_Roman (FLAMINGO vs refit model): NLA 6.88, TATT 3.27
+[TATT_GoF x 2: k_UV(z=0.5) 0.594, k_UV(z=1) 0.780; 360 points  (204s)]
+[2026-11-07 14:19:03] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PdE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+[2026-11-07 14:19:03] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PEE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    NLA : chi2 IA-only   1.69, best   1.62 (lin   1.62); dOm -0.0005 (-0.06s) dS8 +0.0009 (+0.25s); FoB 0.28 (reg50 0.28) +- 0.03 [noise rms 0.03]; IA [3.438 0.806]
+[2026-11-07 14:19:08] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PdE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+[2026-11-07 14:19:08] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PEE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    TATT: chi2 IA-only   1.24, best   1.13 (lin   1.13); dOm -0.0011 (-0.12s) dS8 +0.0010 (+0.26s); FoB 0.32 (reg50 0.32) +- 0.03 [noise rms 0.03]; IA [ 3.366  0.851  0.267 -5.     0.   ]  AT BOUND ['eta2', 'bTA']
+    Delta chi2_Roman (FLAMINGO vs refit model): NLA 21.76, TATT 5.64
+[TATT_GoF x 2.8: k_UV(z=0.5) 0.831, k_UV(z=1) 1.092; 433 points  (227s)]
+[2026-11-07 14:19:26] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PdE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+[2026-11-07 14:19:26] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PEE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    NLA : chi2 IA-only   2.85, best   2.70 (lin   2.70); dOm -0.0004 (-0.05s) dS8 +0.0010 (+0.35s); FoB 0.38 (reg50 0.38) +- 0.05 [noise rms 0.05]; IA [3.454 0.793]
+[2026-11-07 14:19:31] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PdE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+[2026-11-07 14:19:31] [[32minfo[0m][0m [90m/tmp/claude-0/-home-claude/35206aae-1960-5147-a79e-9f6c46a8d10a/scratchpad/cocoa_build/external_modules/code/cosmolike/sim_IA.c:626:[0m sim_IA: loaded PEE (nz=13, nk=324, z in [0.000,4.000], k in [0.0001,300] h/Mpc); monopole; DISTORTION units; no window correction.
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    TATT: chi2 IA-only   2.44, best   2.31 (lin   2.31); dOm -0.0014 (-0.16s) dS8 +0.0008 (+0.25s); FoB 0.34 (reg50 0.31) +- 0.04 [noise rms 0.04]; IA [3.444 0.782 0.022 5.    0.021]  AT BOUND ['eta2']
+    Delta chi2_Roman (FLAMINGO vs refit model): NLA 40.31, TATT 30.58
+done (253s)

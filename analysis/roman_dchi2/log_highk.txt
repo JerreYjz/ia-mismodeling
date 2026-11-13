@@ -1,0 +1,41 @@
+CAMB ...
+truth xi and covariance ...
+cov eigenvalues: min 9.494e-16 max 3.500e-10
+S/N: total 332.2, IA part 128.6
+IR/UV masks ...
+kept points per k_UV: {'0.120': 17, '0.161': 65, '0.217': 113, '0.291': 159, '0.390': 192, '0.523': 244, '0.701': 297, '0.941': 345, '1.261': 417, '1.692': 488} 0.35/D: 208
+NLA k_max=0.120: dchi2 full=  1196.65  IR/UV(k_UV=k_max)=   0.001  0.35/D mask=   3.523
+NLA k_max=0.161: dchi2 full=  1183.06  IR/UV(k_UV=k_max)=   0.736  0.35/D mask=   2.278
+NLA k_max=0.217: dchi2 full=  1209.52  IR/UV(k_UV=k_max)=   1.139  0.35/D mask=   1.651
+NLA k_max=0.291: dchi2 full=  1245.12  IR/UV(k_UV=k_max)=   0.906  0.35/D mask=   1.111
+NLA k_max=0.390: dchi2 full=  1324.05  IR/UV(k_UV=k_max)=   1.109  0.35/D mask=   1.228
+NLA k_max=0.523: dchi2 full=  1458.39  IR/UV(k_UV=k_max)=   5.414  0.35/D mask=   2.820
+NLA k_max=0.701: dchi2 full=  1640.48  IR/UV(k_UV=k_max)=  22.075  0.35/D mask=   7.378
+NLA k_max=0.941: dchi2 full=  1815.84  IR/UV(k_UV=k_max)=  52.592  0.35/D mask=  14.780
+NLA k_max=1.261: dchi2 full=  1884.40  IR/UV(k_UV=k_max)= 102.058  0.35/D mask=  24.637
+NLA k_max=1.692: dchi2 full=  1777.05  IR/UV(k_UV=k_max)= 158.088  0.35/D mask=  36.490
+TATT k_max=0.120: dchi2 full=  3139.07  IR/UV(k_UV=k_max)=   0.002  0.35/D mask=   9.142
+TATT k_max=0.161: dchi2 full=  2057.21  IR/UV(k_UV=k_max)=   2.075  0.35/D mask=  11.949
+TATT k_max=0.217: dchi2 full=  2182.81  IR/UV(k_UV=k_max)=   3.685  0.35/D mask=   6.770
+TATT k_max=0.291: dchi2 full=  1650.29  IR/UV(k_UV=k_max)=   5.288  0.35/D mask=   6.822
+TATT k_max=0.390: dchi2 full=  1697.54  IR/UV(k_UV=k_max)=   8.177  0.35/D mask=   8.854
+TATT k_max=0.523: dchi2 full=  1895.69  IR/UV(k_UV=k_max)=   3.352  0.35/D mask=   2.888
+TATT k_max=0.701: dchi2 full=  1969.24  IR/UV(k_UV=k_max)=   4.197  0.35/D mask=   2.729
+TATT k_max=0.941: dchi2 full=  1935.22  IR/UV(k_UV=k_max)=   7.511  0.35/D mask=   3.929
+TATT k_max=1.261: dchi2 full=  1736.34  IR/UV(k_UV=k_max)=  14.842  0.35/D mask=   5.209
+TATT k_max=1.692: dchi2 full=  1413.97  IR/UV(k_UV=k_max)=  38.244  0.35/D mask=   5.945
+k0/D(z) family ...
+k0=0.080 (0 pts): NLA    0.000  TATT    0.000  fit k_max per snapshot [0.12 0.12 0.12 0.12 0.12 0.12 0.12 0.12 0.12 0.12 0.16 0.22 0.29]
+k0=0.096 (0 pts): NLA    0.000  TATT    0.000  fit k_max per snapshot [0.12 0.12 0.12 0.12 0.12 0.12 0.12 0.12 0.12 0.16 0.22 0.29 0.29]
+k0=0.115 (18 pts): NLA    0.001  TATT    0.001  fit k_max per snapshot [0.12 0.12 0.12 0.12 0.12 0.12 0.12 0.16 0.16 0.22 0.22 0.29 0.39]
+k0=0.139 (32 pts): NLA    0.009  TATT    0.126  fit k_max per snapshot [0.12 0.12 0.12 0.16 0.16 0.16 0.16 0.16 0.22 0.22 0.29 0.39 0.52]
+k0=0.166 (76 pts): NLA    0.137  TATT    2.410  fit k_max per snapshot [0.16 0.16 0.16 0.16 0.16 0.16 0.22 0.22 0.22 0.29 0.39 0.52 0.52]
+k0=0.200 (130 pts): NLA    0.722  TATT    4.831  fit k_max per snapshot [0.16 0.16 0.22 0.22 0.22 0.22 0.22 0.29 0.29 0.39 0.39 0.52 0.7 ]
+k0=0.240 (152 pts): NLA    1.959  TATT    4.052  fit k_max per snapshot [0.22 0.22 0.22 0.22 0.29 0.29 0.29 0.29 0.39 0.39 0.52 0.7  0.94]
+k0=0.288 (186 pts): NLA    2.851  TATT    2.504  fit k_max per snapshot [0.22 0.29 0.29 0.29 0.29 0.29 0.39 0.39 0.39 0.52 0.52 0.7  0.94]
+k0=0.346 (208 pts): NLA    8.476  TATT    3.064  fit k_max per snapshot [0.29 0.29 0.29 0.39 0.39 0.39 0.39 0.39 0.52 0.52 0.7  0.94 1.26]
+k0=0.416 (234 pts): NLA   22.153  TATT    4.097  fit k_max per snapshot [0.39 0.39 0.39 0.39 0.39 0.52 0.52 0.52 0.52 0.7  0.94 1.26 1.26]
+k0=0.500 (268 pts): NLA   32.500  TATT    6.080  fit k_max per snapshot [0.39 0.52 0.52 0.52 0.52 0.52 0.52 0.7  0.7  0.94 0.94 1.26 1.69]
+k0=0.600 (290 pts): NLA   65.988  TATT    7.950  fit k_max per snapshot [0.52 0.52 0.52 0.7  0.7  0.7  0.7  0.7  0.94 0.94 1.26 1.69 1.69]
+noise floor ...
+noise floor (mean Delta chi2), IR/UV at k_UV: {np.float64(0.12): np.float64(0.0), np.float64(0.161): np.float64(0.003), np.float64(0.217): np.float64(0.01), np.float64(0.291): np.float64(0.017), np.float64(0.39): np.float64(0.025), np.float64(0.523): np.float64(0.037), np.float64(0.701): np.float64(0.061), np.float64(0.941): np.float64(0.097), np.float64(1.261): np.float64(0.187), np.float64(1.692): np.float64(0.354)}  0.35/D: 0.04  full: 16.2

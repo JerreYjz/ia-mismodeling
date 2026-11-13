@@ -1,0 +1,14 @@
+# snap  z_snap  ps_index  z_ps  file
+ 78 0.0000  122 0.0000 power_matter_0122.txt
+ 76 0.1000  120 0.1000 power_matter_0120.txt
+ 74 0.2000  118 0.2000 power_matter_0118.txt
+ 72 0.3000  116 0.3000 power_matter_0116.txt
+ 70 0.4000  114 0.4000 power_matter_0114.txt
+ 68 0.5000  112 0.5000 power_matter_0112.txt
+ 66 0.6000  110 0.6000 power_matter_0110.txt
+ 63 0.7500  107 0.7500 power_matter_0107.txt
+ 58 1.0000  102 1.0000 power_matter_0102.txt
+ 48 1.5000   92 1.5000 power_matter_0092.txt
+ 38 2.0000   82 2.0000 power_matter_0082.txt
+ 18 3.0000   62 3.0000 power_matter_0062.txt
+ 14 4.0000   58 4.0000 power_matter_0058.txt

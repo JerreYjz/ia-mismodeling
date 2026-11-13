@@ -1,0 +1,66 @@
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+[2026-11-09 22:47:05.537] [info] init_ntomo_powerspectra: GGL pair L6-S0 is excluded
+[2026-11-09 22:47:05.537] [info] init_ntomo_powerspectra: GGL pair L7-S0 is excluded
+[2026-11-09 22:47:05.537] [info] init_ntomo_powerspectra: GGL pair L7-S1 is excluded
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+Jacobian NLA done (59s)
+Jacobian TATT done (65s)
+J_cells . T vs xi_flam (|xi| > 5% of max): median ratio 0.904
+[NLA n1:0.3 stat: 281 pts (79s)]
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    NLA  case A: chi2   1.18; dOm +0.07s dS8 +0.31s; FoB 0.31; IA [3.497 0.683]
+[NLA n1:0.3 stat+theory: 281 pts (99s)]
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    NLA  case A: chi2   1.01; dOm +0.04s dS8 +0.26s; FoB 0.26; IA [3.499 0.685]
+[NLA n1:0.4 stat: 336 pts (119s)]
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    NLA  case A: chi2   1.90; dOm +0.22s dS8 +0.61s; FoB 0.61; IA [3.52  0.672]
+[NLA n1:0.4 stat+theory: 336 pts (141s)]
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    NLA  case A: chi2   1.52; dOm +0.13s dS8 +0.46s; FoB 0.46; IA [3.523 0.673]
+[NLA n1:0.5 stat: 385 pts (161s)]
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    NLA  case A: chi2   2.53; dOm +0.34s dS8 +0.60s; FoB 0.62; IA [3.53  0.676]
+[NLA n1:0.5 stat+theory: 385 pts (188s)]
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    NLA  case A: chi2   1.86; dOm +0.19s dS8 +0.42s; FoB 0.43; IA [3.529 0.677]
+[NLA scan:flat_0.5 stat: 335 pts (209s)]
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    NLA  case A: chi2   1.82; dOm +0.29s dS8 +0.56s; FoB 0.58; IA [3.539 0.669]
+[NLA scan:flat_0.5 stat+theory: 335 pts (231s)]
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    NLA  case A: chi2   1.48; dOm +0.19s dS8 +0.46s; FoB 0.47; IA [3.534 0.675]
+[TATT n1:0.3 stat: 281 pts (251s)]
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    TATT case A: chi2   0.96; dOm -0.03s dS8 +0.31s; FoB 0.34; IA [3.477 0.685 0.028 4.567 0.139]
+[TATT n1:0.3 stat+theory: 281 pts (368s)]
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    TATT case A: chi2   0.78; dOm -0.02s dS8 +0.23s; FoB 0.25; IA [3.489 0.687 0.018 4.91  0.133]
+[TATT n1:0.4 stat: 336 pts (595s)]
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    TATT case A: chi2   1.55; dOm +0.07s dS8 +0.57s; FoB 0.58; IA [3.498 0.671 0.036 4.12  0.103]
+[TATT n1:0.4 stat+theory: 336 pts (771s)]
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    TATT case A: chi2   1.17; dOm +0.06s dS8 +0.40s; FoB 0.41; IA [ 3.488  0.696  0.218 -5.     0.051]  AT BOUND ['eta2']
+[TATT n1:0.5 stat: 385 pts (874s)]
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    TATT case A: chi2   2.06; dOm +0.14s dS8 +0.63s; FoB 0.63; IA [3.512 0.664 0.058 3.831 0.048]
+[TATT n1:0.5 stat+theory: 385 pts (999s)]
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    TATT case A: chi2   1.44; dOm +0.08s dS8 +0.37s; FoB 0.38; IA [3.515 0.676 0.03  4.347 0.072]
+[TATT scan:flat_0.5 stat: 335 pts (1236s)]
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    TATT case A: chi2   1.45; dOm +0.22s dS8 +0.60s; FoB 0.61; IA [ 3.476  0.708  0.258 -5.     0.008]  AT BOUND ['eta2']
+[TATT scan:flat_0.5 stat+theory: 335 pts (1325s)]
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    TATT case A: chi2   1.04; dOm +0.09s dS8 +0.37s; FoB 0.37; IA [ 3.485  0.709  0.28  -5.     0.   ]  AT BOUND ['eta2', 'bTA']
+done (1541s)

@@ -1,0 +1,7 @@
+model,n,k0_udm,kind_udm,k0_gof,kind_gof
+NLA,0.0,0.28,cut,0.2983,cut
+NLA,0.5,0.3384,cut,0.3384,cut
+NLA,1.0,0.2983,cut,0.2983,cut
+TATT,0.0,0.28,cut,0.5267,cut
+TATT,0.5,0.3605,cut,0.5977,cut
+TATT,1.0,0.3605,cut,0.4945,cut

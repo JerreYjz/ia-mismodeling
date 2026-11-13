@@ -1,0 +1,32 @@
+CAMB ...
+real: points kept per K [ 17  72 116 158 192 242 293 343 415 477 565 602]; IA S/N [ 0.8  6.3 14.  21.  25.5 33.  39.6 45.4 51.9 57.3 63.8 69.3]
+fourier: points kept per K [ 13  35  58  89 119 148 177 207 233 270 309 355]; IA S/N [ 5.5 10.1 15.6 22.2 29.4 35.1 43.9 52.5 59.7 69.2 79.1 90.3]
+real: amplitude Delta chi2_R per eps^2 vs K: [1.2000e+00 3.2900e+01 8.4400e+01 1.9970e+02 4.0310e+02 9.9780e+02
+ 1.8122e+03 2.5725e+03 3.6604e+03 4.7368e+03 6.0568e+03 7.2600e+03]
+fourier: amplitude Delta chi2_R per eps^2 vs K: [0.00000e+00 0.00000e+00 0.00000e+00 3.30000e+00 1.31500e+02 5.86300e+02
+ 2.05340e+03 4.08530e+03 5.90330e+03 8.86830e+03 1.22206e+04 1.68717e+04]
+NLA k_max=0.120: dchi2_FL(K=k_max)=    35.15  Roman real    0.000 (full    0.001)  Fourier    0.000 (full    0.000)
+NLA k_max=0.161: dchi2_FL(K=k_max)=    58.44  Roman real    0.038 (full    0.721)  Fourier    0.000 (full    0.000)
+NLA k_max=0.217: dchi2_FL(K=k_max)=   122.61  Roman real    0.078 (full    0.783)  Fourier    0.000 (full    0.000)
+NLA k_max=0.291: dchi2_FL(K=k_max)=   338.65  Roman real    0.189 (full    0.884)  Fourier    0.006 (full    0.006)
+NLA k_max=0.390: dchi2_FL(K=k_max)=  1049.76  Roman real    0.976 (full    1.610)  Fourier    0.692 (full    0.691)
+NLA k_max=0.523: dchi2_FL(K=k_max)=  2955.51  Roman real    6.633 (full    7.182)  Fourier    3.872 (full    3.873)
+NLA k_max=0.701: dchi2_FL(K=k_max)=  6900.14  Roman real   22.605 (full   23.051)  Fourier   28.789 (full   28.794)
+NLA k_max=0.941: dchi2_FL(K=k_max)= 13129.88  Roman real   51.894 (full   52.251)  Fourier   94.349 (full   94.302)
+NLA k_max=1.262: dchi2_FL(K=k_max)= 13366.25  Roman real   72.216 (full   72.453)  Fourier  126.596 (full  126.579)
+NLA k_max=1.692: dchi2_FL(K=k_max)= 14690.35  Roman real   88.509 (full   88.435)  Fourier  167.367 (full  167.142)
+NLA k_max=2.269: dchi2_FL(K=k_max)= 20950.69  Roman real  101.046 (full  100.374)  Fourier  196.041 (full  195.759)
+NLA k_max=3.042: dchi2_FL(K=k_max)= 41228.26  Roman real  104.236 (full  102.987)  Fourier  213.668 (full  213.206)
+TATT k_max=0.120: dchi2_FL(K=k_max)=    21.95  Roman real    0.000 (full    0.000)  Fourier    0.000 (full    0.000)
+TATT k_max=0.161: dchi2_FL(K=k_max)=    32.39  Roman real    0.016 (full    0.131)  Fourier    0.000 (full    0.000)
+TATT k_max=0.217: dchi2_FL(K=k_max)=    42.17  Roman real    0.041 (full    0.230)  Fourier    0.000 (full    0.000)
+TATT k_max=0.291: dchi2_FL(K=k_max)=    53.30  Roman real    0.076 (full    0.346)  Fourier    0.000 (full    0.000)
+TATT k_max=0.390: dchi2_FL(K=k_max)=    78.04  Roman real    0.175 (full    0.486)  Fourier    0.037 (full    0.037)
+TATT k_max=0.523: dchi2_FL(K=k_max)=   139.04  Roman real    0.473 (full    0.734)  Fourier    0.318 (full    0.319)
+TATT k_max=0.701: dchi2_FL(K=k_max)=   327.92  Roman real    1.200 (full    1.455)  Fourier    1.056 (full    1.058)
+TATT k_max=0.941: dchi2_FL(K=k_max)=   771.64  Roman real    2.915 (full    3.143)  Fourier    2.942 (full    2.944)
+TATT k_max=1.262: dchi2_FL(K=k_max)=   860.72  Roman real    3.521 (full    3.735)  Fourier    3.405 (full    3.407)
+TATT k_max=1.692: dchi2_FL(K=k_max)=  1911.29  Roman real    3.292 (full    3.442)  Fourier    3.470 (full    3.459)
+TATT k_max=2.269: dchi2_FL(K=k_max)=  6923.45  Roman real    5.173 (full    5.125)  Fourier   10.288 (full   10.144)
+TATT k_max=3.042: dchi2_FL(K=k_max)= 19429.27  Roman real   42.219 (full   41.463)  Fourier   65.288 (full   64.766)
+wrote roman

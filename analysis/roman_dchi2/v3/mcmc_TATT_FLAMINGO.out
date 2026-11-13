@@ -1,0 +1,89 @@
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+[2026-11-07 10:44:00.606] [info] init_ntomo_powerspectra: GGL pair L6-S0 is excluded
+[2026-11-07 10:44:00.606] [info] init_ntomo_powerspectra: GGL pair L7-S0 is excluded
+[2026-11-07 10:44:00.606] [info] init_ntomo_powerspectra: GGL pair L7-S1 is excluded
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    TATT: chi2 IA-only   1.07, best   0.96 (lin   0.96); dOm -0.0003 (-0.03s) dS8 +0.0015 (+0.31s); FoB 0.34 (reg50 0.32); IA [3.477 0.685 0.028 4.567 0.139]
+TATT_FLAMINGO: step 50/600, 144s, acc 0.50
+TATT_FLAMINGO: step 100/600, 268s, acc 0.47
+TATT_FLAMINGO: step 150/600, 385s, acc 0.46
+TATT_FLAMINGO: step 200/600, 510s, acc 0.45
+TATT_FLAMINGO: step 250/600, 641s, acc 0.45
+TATT_FLAMINGO: step 300/600, 772s, acc 0.45
+TATT_FLAMINGO: step 350/600, 895s, acc 0.44
+TATT_FLAMINGO: step 400/600, 1023s, acc 0.44
+TATT_FLAMINGO: step 450/600, 1145s, acc 0.44
+TATT_FLAMINGO: step 500/600, 1271s, acc 0.44
+TATT_FLAMINGO: step 550/600, 1401s, acc 0.44
+TATT_FLAMINGO: step 600/600, 1524s, acc 0.44
+{
+ "model": "TATT",
+ "truth": "FLAMINGO",
+ "mask": 0.3,
+ "names": [
+  "omegam",
+  "As_1e9",
+  "A1",
+  "eta1",
+  "A2",
+  "eta2",
+  "bTA"
+ ],
+ "nwalk": 16,
+ "nsteps": 600,
+ "burn": 200,
+ "tau": [
+  43.03411338427515,
+  44.381916775493394,
+  36.79428213170043,
+  41.14565008335423,
+  43.93629056744495,
+  73.41514238556829,
+  48.28657399812566
+ ],
+ "map": [
+  0.3056975540542894,
+  2.112121931753173,
+  3.476646785015317,
+  0.6850271565270784,
+  0.027565889751254267,
+  4.567149633351458,
+  0.13902873517401265
+ ],
+ "mean": [
+  0.3035632217275921,
+  2.1492578059492753,
+  3.4678607801683383,
+  0.6748741323823814,
+  -0.04112603488503055,
+  -0.5794451317564717,
+  0.4987676602941747
+ ],
+ "std": [
+  0.010393342732057864,
+  0.1756714751785985,
+  0.16332432281166193,
+  0.11399252510846944,
+  0.6650805367835386,
+  2.184133253737031,
+  0.32710383872029636
+ ],
+ "S8_fid": 0.8151349664869318,
+ "S8_map": 0.8166614312067939,
+ "S8_mean": 0.8166631474722145,
+ "S8_std": 0.005364383105157623,
+ "Om_fid": 0.306,
+ "map_FoB": 0.3357358988907878,
+ "map_chi2": 0.957822526326187,
+ "dOm_mean_sig": -0.23445568333773445,
+ "dS8_mean_sig": 0.28487543773921425,
+ "dOm_map_sig": -0.029099968461323095,
+ "dS8_map_sig": 0.2845555005932432,
+ "FoB_mean": 0.4278035558222651,
+ "FoB_map_postcov": 0.3038068049332582
+}
+Segmentation fault

@@ -1,0 +1,114 @@
+% <Note title>: <one line on what the note establishes>.
+% Build with assets/build_note.sh of the summary-notes skill.
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[font=small,labelfont=bf,labelsep=period]{caption}
+\usepackage[hidelinks]{hyperref}
+
+% Symbols, one macro per object.
+\newcommand{\hMpc}{\,h\,{\rm Mpc}^{-1}}
+\newcommand{\T}{^{\mathsf{T}}}
+
+% =====================================================================
+% Numbers
+% =====================================================================
+% Every number the text quotes is defined here, with the file (and key)
+% it comes from. Part 1: results, refreshed when the analysis is rerun;
+% set \numbersfinalfalse to print them in red while they are stale.
+% Part 2: inputs, which a rerun does not change.
+%
+% Statements of the text that rest on Part 1 (re-check after a refresh):
+%   - <statement> (section "<title>").
+\newif\ifnumbersfinal
+\numbersfinaltrue
+\newcommand{\refresh}[1]{\ifnumbersfinal#1\else\textcolor{red}{#1}\fi}
+% Part 1: results.
+% <what> (<file>, <key>)
+\newcommand{\ExampleResult}{\refresh{0.30}}
+% Part 2: inputs.
+\newcommand{\ExampleInput}{0.05}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE <Title>\par}
+  \vspace{0.6em}
+  {\large <Subtitle: the question in one line>\par}
+  \vspace{0.6em}
+  {\large <Month Year>\par}
+  \ifnumbersfinal\else
+    \vspace{0.6em}
+    {\color{red}Numbers in red are being refreshed.\par}
+  \fi
+\end{center}
+\vspace{1em}
+
+\section{Summary}
+\label{sec:summary}
+
+\paragraph{The question.}
+<One or two sentences.>
+
+\paragraph{The answer.}
+<One or two sentences with the headline numbers, through macros.>
+
+\paragraph{Why.}
+<The reasoning in one paragraph, pointing to sections by title.>
+
+\paragraph{Limits.}
+<What the result does not cover.>
+
+\section{Setup and definitions}
+\label{sec:setup}
+
+\paragraph{Data.} <...>
+\paragraph{Model and fit.} <...>
+\paragraph{The statistic.} <Its equation, once.>
+
+\section{<First claim, as a title>}
+\label{sec:first}
+
+<The claim as the first sentence. How to read the figure. What it means.>
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=3.5in]{plots/<name>/<name>.pdf}
+  \caption{<What is drawn. The encodings. What is omitted.>}
+  \label{fig:<name>}
+\end{figure}
+
+\appendix
+
+\section{Method details}
+\label{app:method}
+
+\section{Numerical checks}
+\label{app:checks}
+
+\section{Where the code and results are}
+\label{app:code}
+
+\begin{center}
+  \begin{tabular}{ll}
+    \toprule
+    result & script $\rightarrow$ output \\
+    \midrule
+    <...> & \texttt{<...>} \\
+    \bottomrule
+  \end{tabular}
+\end{center}
+
+\section{Open issues}
+\label{app:open}
+
+\begin{itemize}
+  \item <One to three sentences each.>
+\end{itemize}
+
+\end{document}

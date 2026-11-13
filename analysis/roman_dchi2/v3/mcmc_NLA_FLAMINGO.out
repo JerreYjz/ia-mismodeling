@@ -1,0 +1,72 @@
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+[2026-11-07 11:38:20.176] [info] init_ntomo_powerspectra: GGL pair L6-S0 is excluded
+[2026-11-07 11:38:20.176] [info] init_ntomo_powerspectra: GGL pair L7-S0 is excluded
+[2026-11-07 11:38:20.176] [info] init_ntomo_powerspectra: GGL pair L7-S1 is excluded
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+Using kmax=10.0 with Halofit non-linear models may give inaccurate results
+    NLA : chi2 IA-only   1.27, best   1.18 (lin   1.18); dOm +0.0007 (+0.07s) dS8 +0.0015 (+0.31s); FoB 0.31 (reg50 0.31); IA [3.497 0.683]
+NLA_FLAMINGO: step 50/500, 153s, acc 0.60
+NLA_FLAMINGO: step 100/500, 300s, acc 0.60
+NLA_FLAMINGO: step 150/500, 450s, acc 0.60
+NLA_FLAMINGO: step 200/500, 598s, acc 0.60
+NLA_FLAMINGO: step 250/500, 672s, acc 0.60
+NLA_FLAMINGO: step 300/500, 702s, acc 0.60
+NLA_FLAMINGO: step 350/500, 732s, acc 0.60
+NLA_FLAMINGO: step 400/500, 765s, acc 0.60
+NLA_FLAMINGO: step 450/500, 798s, acc 0.60
+NLA_FLAMINGO: step 500/500, 830s, acc 0.60
+{
+ "model": "NLA",
+ "truth": "FLAMINGO",
+ "mask": 0.3,
+ "names": [
+  "omegam",
+  "As_1e9",
+  "A1",
+  "eta1"
+ ],
+ "nwalk": 16,
+ "nsteps": 500,
+ "burn": 166,
+ "tau": [
+  27.774920596188007,
+  27.588692874106265,
+  20.324159703943774,
+  24.57224939818495
+ ],
+ "map": [
+  0.306742069703253,
+  2.0937032115377257,
+  3.4971488128576014,
+  0.6833411366281896
+ ],
+ "mean": [
+  0.30466226648087125,
+  2.1267363809087074,
+  3.4916305241672645,
+  0.6811943286939959
+ ],
+ "std": [
+  0.010098541830584274,
+  0.17161244506491782,
+  0.1580109975207629,
+  0.1127614362102849
+ ],
+ "S8_fid": 0.8151349664869318,
+ "S8_map": 0.8166130378449927,
+ "S8_mean": 0.8160022598855362,
+ "S8_std": 0.00489077747501337,
+ "Om_fid": 0.306,
+ "map_FoB": 0.3072632824290868,
+ "map_chi2": 1.17766100638242,
+ "dOm_mean_sig": -0.13246798810867033,
+ "dS8_mean_sig": 0.17733241862573026,
+ "dOm_map_sig": 0.07348285680271219,
+ "dS8_map_sig": 0.3022160312163545,
+ "FoB_mean": 0.2513760413923003,
+ "FoB_map_postcov": 0.3022122301847564
+}
+Segmentation fault

@@ -1,0 +1,5 @@
+% Stage 2: galaxy density / ellipticity grids
+GalCatDir     ./results/Galaxies/
+OutDirBase    ./results/Galaxy_DS_Field/
+SnapNum       78
+Ngrid         1024

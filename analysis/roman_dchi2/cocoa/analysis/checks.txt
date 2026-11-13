@@ -1,0 +1,18 @@
+[check] NLA power law (A1 3.8, eta 0.57): cosmolike native vs same model as sim tables: Delta chi2 = 0.156 (all 1080), max |diff|/sigma = 0.106
+[check] TATT power law (A1 3.8, eta 0.57, A2 -1.08, eta2 -0.71, bTA 0.18): cosmolike native vs same model as sim tables: Delta chi2 = 41.112 (all 1080), max |diff|/sigma = 1.128
+[check] python Limber vs cosmolike, FLAMINGO IA (dE + EE, nothing above 17.7): Delta chi2 = 6.510, max |diff|/sigma = 1.269
+[check] FLAMINGO IA B modes (python): chi2 of the BB contribution to xi = 482.84 (all), 57.62 (theta >= 15.8')
+[masks] kept points, k_UV/D(z): 0.15: 118, 0.2: 192, 0.25: 244, 0.3: 281, 0.35: 317, 0.4: 336, 0.5: 385, 0.6: 417, 0.8: 487
+[masks] kept points, k_UV const: 0.12: 23, 0.16: 103, 0.22: 161, 0.29: 230, 0.39: 290, 0.52: 347, 0.70: 413, 0.94: 475, 1.26: 546, 1.69: 619, 2.27: 695, 3.04: 775
+[truth] flam        vs main: all      0.00, 0.35/D mask   0.000 | NLA(0.29)   4.49/  1903.9  TATT(0.52)   1.87/  2423.2  (mask / all)
+[truth] flam_zero   vs main: all      0.16, 0.35/D mask   0.000 | NLA(0.29)   4.49/  1892.0  TATT(0.52)   1.87/  2407.4  (mask / all)
+[truth] flam_simIA  vs main: all    130.08, 0.35/D mask 115.879 | NLA(0.29) 135.52/  2132.2  TATT(0.52) 104.95/  2651.0  (mask / all)
+[truth] flam_nsnla  vs main: all   6772.64, 0.35/D mask   0.387 | NLA(0.29)   5.29/  4208.9  TATT(0.52)   1.64/  5088.6  (mask / all)
+[truth] flam_nons   vs main: all   2174.07, 0.35/D mask   0.212 | NLA(0.29)   4.43/  6712.1  TATT(0.52)   2.56/  6987.1  (mask / all)
+[truth] flam_raw    vs main: all     12.74, 0.35/D mask   1.675 | NLA(0.29)   7.79/  1862.5  TATT(0.52)   2.57/  2410.3  (mask / all)
+model,kmax,v1_first_pass_mask_kmax,v2_matched_python,matched_cosmolike,v2_full_python,full_cosmolike_mask_kmax,xi_compare_python_mask_kmax,full_cosmolike_theta15.8,xi_compare_python_theta15.8,full_cosmolike_mask0.35/D
+NLA,0.291,0.906,0.189,0.591,0.884,1.19,2.5,117,45.2,4.49
+NLA,0.390,1.11,0.976,1.97,1.61,4.96,7.43,114,40.2,8.74
+TATT,0.390,8.18,0.175,0.212,0.486,2.56,3.1,41,14.3,2.83
+TATT,0.701,4.2,1.2,0.811,1.45,3.27,10,36.6,19.3,2.69
+

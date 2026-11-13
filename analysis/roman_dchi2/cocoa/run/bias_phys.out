@@ -1,0 +1,11 @@
+prod_phys - production: Delta chi2 on masks 0.25/D 0.078, 0.35/D 0.095, 0.5/D 0.100
+[prod_phys, mask 0.25/D]
+    NLA : chi2 IA-only   0.81, best   0.76 (lin   0.76); dOm +0.0010 (+0.09s) dS8 +0.0013 (+0.22s); FoB 0.22 (reg50 0.22); IA [3.45  0.698]
+    TATT: chi2 IA-only   0.66, best   0.60 (lin   0.60); dOm -0.0000 (-0.00s) dS8 +0.0014 (+0.23s); FoB 0.24 (reg50 0.24); IA [3.441 0.694 0.048 4.2   0.151]
+[prod_phys, mask 0.35/D]
+    NLA : chi2 IA-only   1.69, best   1.52 (lin   1.52); dOm +0.0023 (+0.24s) dS8 +0.0017 (+0.38s); FoB 0.40 (reg50 0.40); IA [3.498 0.678]
+    TATT: chi2 IA-only   1.36, best   1.20 (lin   1.20); dOm +0.0008 (+0.08s) dS8 +0.0019 (+0.41s); FoB 0.41 (reg50 0.41); IA [3.479 0.669 0.066 3.758 0.084]
+[prod_phys, mask 0.5/D]
+    NLA : chi2 IA-only   3.10, best   2.62 (lin   2.61); dOm +0.0039 (+0.44s) dS8 +0.0020 (+0.57s); FoB 0.64 (reg50 0.64); IA [3.522 0.673]
+    TATT: chi2 IA-only   2.42, best   2.01 (lin   2.02); dOm +0.0019 (+0.20s) dS8 +0.0022 (+0.62s); FoB 0.62 (reg50 0.62); IA [3.5   0.659 0.078 3.569 0.049]
+done (94s)

@@ -1,0 +1,25 @@
+1. conversion check (raw Pds files -> cosmolike convention), nfold 1
+   sn    z   e_rms  1/(2R)   max|dE mine/recomputed - 1|  max|EE ...|  aNLA mine  report  ratio
+    78 0.00  0.250  0.5333   2.2e-16                      0.0e+00       1.858    1.86  0.999
+    76 0.10  0.254  0.5345   2.2e-16                      0.0e+00       2.162    2.17  0.996
+    74 0.20  0.262  0.5369   2.2e-16                      0.0e+00       2.879    2.88  1.000
+    72 0.30  0.268  0.5387   2.2e-16                      0.0e+00       3.161    3.17  0.997
+    70 0.40  0.274  0.5406   2.2e-16                      0.0e+00       3.338    3.35  0.997
+    68 0.50  0.280  0.5425   2.2e-16                      0.0e+00       3.488    3.50  0.997
+    66 0.60  0.285  0.5442   2.2e-16                      0.0e+00       3.548    3.56  0.997
+    63 0.75  0.293  0.5470   2.2e-16                      0.0e+00       3.764    3.78  0.996
+    58 1.00  0.305  0.5513   2.2e-16                      0.0e+00       4.118    4.14  0.995
+    48 1.50  0.323  0.5582   2.2e-16                      0.0e+00       4.921    4.94  0.996
+    38 2.00  0.335  0.5632   2.2e-16                      0.0e+00       6.004    6.04  0.994
+    18 3.00  0.358  0.5735   2.2e-16                      0.0e+00       8.255    8.32  0.992
+    14 4.00  0.371  0.5798   2.2e-16                      0.0e+00       9.913   10.02  0.989
+
+2. sim_IA.c's own conversion (raw files, apply_shear 1, hybrid LOS, NGP window, e_rms) vs
+   my pre-converted tables (same rows nfold 1, 0.05-1.2 h/Mpc), xi_IA over all 1080 points:
+   max |difference| / max |xi_IA| = 2.54e-09;  median ratio = 1.000000
+
+3. injected FLAMINGO xi_IA vs cosmolike native NLA with the report's aNLA(z)
+   (power law A1 = 3.370, eta = 0.945; cosmolike units)
+   theta >= 54' : median FLAMINGO / NLA = 1.045  (16-84%: 0.976 - 1.154)
+   theta >= 21' : median FLAMINGO / NLA = 1.009  (16-84%: 0.951 - 1.154)
+   all theta    : median FLAMINGO / NLA = 0.990  (16-84%: 0.902 - 1.163)

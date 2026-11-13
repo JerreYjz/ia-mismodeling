@@ -1,0 +1,15 @@
+% Stage 1: galaxy catalogue from SOAP (FLAMINGO L2p8_m9, snapshot 78, z = 0)
+% SoapFile: a local copy, or cosma:/... to stream from the COSMA server (needs `pip install hdfstream`)
+SoapFile      cosma:/FLAMINGO/L2p8_m9/L2p8_m9/SOAP-HBT/halo_properties_0078.hdf5
+OutDirBase    ./results/Galaxies/
+SnapNum       78
+% mass cut in 10^10 Msun/h (TNG convention; SOAP stores 10^10 Msun, converted with h)
+M_min         1e-1
+M_max         1e4
+% Non-iterative stellar tensor of all bound stars within 10 R_half = closest analogue of the
+% TNG "simple" tensor. Alternatives: BoundSubhalo/StellarInertiaTensor (iterative),
+% .../StellarInertiaTensorReduced[Noniterative], or a projected one such as
+% ProjectedAperture/50kpc/projz/ProjectedStellarInertiaTensorNoniterative.
+ShapeField    BoundSubhalo/StellarInertiaTensorNoniterative
+MassField     BoundSubhalo/StellarMass
+Select        all

@@ -1,0 +1,4 @@
+K0_over_D,lambda_max_matched,FL_guaranteed_matched,lambda_amp_matched,FL_amp_matched,lambda_max_full,FL_guaranteed_full,lambda_amp_full
+0.25,0.08403,11.9,0.001394,717.6,0.08412,11.89,0.0002198
+0.35,0.09623,10.39,0.001394,717.2,0.09634,10.38,0.0003405
+0.5,0.1215,8.23,0.001542,648.5,0.1216,8.226,0.0005538

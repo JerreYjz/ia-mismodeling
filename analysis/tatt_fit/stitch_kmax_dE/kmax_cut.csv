@@ -1,0 +1,14 @@
+sn,z,k_t,NLA_A1,NLA_A1_kind,NLA_pred,NLA_pred_kind,NLA_gof,NLA_gof_kind,TATT_A1,TATT_A1_kind,TATT_pred,TATT_pred_kind,TATT_gof,TATT_gof_kind
+78,0.0,0.155,0.3721,cut,0.4948,cut,0.4264,cut,1.0495,cut,1.3576,cut,0.7724,cut
+76,0.1,0.159,0.3608,cut,0.4469,cut,0.3864,cut,1.2880,cut,1.5956,cut,0.9564,cut
+74,0.2,0.162,0.3581,cut,0.4358,cut,0.3292,cut,1.6522,cut,1.6916,none,1.0706,cut
+72,0.3,0.167,0.3587,cut,0.4400,cut,0.3268,cut,1.6916,none,1.6916,none,1.2810,cut
+70,0.4,0.172,0.3605,cut,0.4541,cut,0.3366,cut,1.6916,none,1.6916,none,1.3479,cut
+68,0.5,0.181,0.3844,cut,0.5256,cut,0.3990,cut,1.6916,none,1.6916,none,1.4466,cut
+66,0.6,0.19,0.4539,cut,0.6045,cut,0.4672,cut,1.6916,none,1.6916,none,1.6916,none
+63,0.75,0.2,0.5490,cut,0.7776,cut,0.5713,cut,1.6916,none,1.6916,none,1.6916,none
+58,1.0,0.21,0.7719,cut,1.5016,cut,1.0694,cut,1.6916,none,1.6916,none,1.6916,none
+48,1.5,0.23,0.5414,cut,1.6810,cut,1.6916,none,1.6916,none,1.6916,none,1.6916,none
+38,2.0,0.269,0.3695,cut,0.5452,cut,0.4277,cut,1.6916,none,1.6916,none,1.6916,none
+18,3.0,0.345,0.3432,cut,0.4381,cut,0.3951,cut,1.4326,cut,1.6916,none,1.6916,none
+14,4.0,0.447,0.3639,cut,0.4266,cut,0.3970,cut,0.7801,cut,1.6916,none,0.5786,cut

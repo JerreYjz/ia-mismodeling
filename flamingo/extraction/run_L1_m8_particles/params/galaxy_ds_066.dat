@@ -1,0 +1,5 @@
+% Stage 2: galaxy density / ellipticity grids, L1_m8 snapshot 66 (z = 0.6)
+GalCatDir     /Users/yijiezhu/ia_power_flamingo/run_L1_m8_particles/results/Galaxies/
+OutDirBase    /Users/yijiezhu/ia_power_flamingo/run_L1_m8_particles/results/Galaxy_DS_Field/
+SnapNum       66
+Ngrid         1024
