@@ -1,0 +1,206 @@
+{
+ "about": "Full non-linear refits at the edges of the linear-response bands, mask k_UV = 0.3/D(z), case A: each sign at the single-node edge of the three most sensitive nodes (\"single\") and both worst-case corners of the guaranteed box (\"joint corner\"). fob_full: the FoB of the shift of the refit from the unperturbed refit, in the unperturbed Sigma; linear response predicts fob_linear = 0.3 at every edge. (analysis/roman_dchi2/v7/tolerance_bands.py --verify -> tolerance_bands.json, bands.<X>.verify.)",
+ "fob_max": 0.3,
+ "groups": {
+  "NLA GI": [
+   {
+    "kind": "single",
+    "fob_full": 0.30939279131536557,
+    "fob_linear": 0.3,
+    "node": 1
+   },
+   {
+    "kind": "single",
+    "fob_full": 0.30669542833862895,
+    "fob_linear": 0.3,
+    "node": 1
+   },
+   {
+    "kind": "single",
+    "fob_full": 0.30923107850773995,
+    "fob_linear": 0.3,
+    "node": 4
+   },
+   {
+    "kind": "single",
+    "fob_full": 0.31034300385702646,
+    "fob_linear": 0.3,
+    "node": 4
+   },
+   {
+    "kind": "single",
+    "fob_full": 0.3099152774020457,
+    "fob_linear": 0.3,
+    "node": 2
+   },
+   {
+    "kind": "single",
+    "fob_full": 0.3125693749598995,
+    "fob_linear": 0.3,
+    "node": 2
+   },
+   {
+    "kind": "joint corner",
+    "fob_full": 0.3128020697530922,
+    "fob_linear": 0.3000000143456606,
+    "node": null
+   },
+   {
+    "kind": "joint corner",
+    "fob_full": 0.3246163143908319,
+    "fob_linear": 0.3000000143456606,
+    "node": null
+   }
+  ],
+  "NLA II": [
+   {
+    "kind": "single",
+    "fob_full": 0.30589519223996015,
+    "fob_linear": 0.3,
+    "node": 3
+   },
+   {
+    "kind": "single",
+    "fob_full": 0.31277856169072216,
+    "fob_linear": 0.3,
+    "node": 3
+   },
+   {
+    "kind": "single",
+    "fob_full": 0.31465402386483504,
+    "fob_linear": 0.29999999999999993,
+    "node": 4
+   },
+   {
+    "kind": "single",
+    "fob_full": 0.3250112947101261,
+    "fob_linear": 0.29999999999999993,
+    "node": 4
+   },
+   {
+    "kind": "single",
+    "fob_full": 0.31768612770353943,
+    "fob_linear": 0.3,
+    "node": 1
+   },
+   {
+    "kind": "single",
+    "fob_full": 0.31040808676780346,
+    "fob_linear": 0.3,
+    "node": 1
+   },
+   {
+    "kind": "joint corner",
+    "fob_full": 0.3156495723427297,
+    "fob_linear": 0.3000000173632541,
+    "node": null
+   },
+   {
+    "kind": "joint corner",
+    "fob_full": 0.3254697488720618,
+    "fob_linear": 0.3000000173632541,
+    "node": null
+   }
+  ],
+  "TATT GI": [
+   {
+    "kind": "single",
+    "fob_full": 0.31295204187914916,
+    "fob_linear": 0.30000000000000004,
+    "node": 1
+   },
+   {
+    "kind": "single",
+    "fob_full": 0.3105015707345204,
+    "fob_linear": 0.30000000000000004,
+    "node": 1
+   },
+   {
+    "kind": "single",
+    "fob_full": 0.2849358187123437,
+    "fob_linear": 0.3,
+    "node": 5
+   },
+   {
+    "kind": "single",
+    "fob_full": 0.2903779103299415,
+    "fob_linear": 0.3,
+    "node": 5
+   },
+   {
+    "kind": "single",
+    "fob_full": 0.3117109698178891,
+    "fob_linear": 0.30000000000000004,
+    "node": 0
+   },
+   {
+    "kind": "single",
+    "fob_full": 0.3091629993731196,
+    "fob_linear": 0.30000000000000004,
+    "node": 0
+   },
+   {
+    "kind": "joint corner",
+    "fob_full": 0.1439843373473252,
+    "fob_linear": 0.3000000130638955,
+    "node": null
+   },
+   {
+    "kind": "joint corner",
+    "fob_full": 0.303197520900823,
+    "fob_linear": 0.3000000130638955,
+    "node": null
+   }
+  ],
+  "TATT II": [
+   {
+    "kind": "single",
+    "fob_full": 0.31273817638659235,
+    "fob_linear": 0.3,
+    "node": 3
+   },
+   {
+    "kind": "single",
+    "fob_full": 0.31267404109683966,
+    "fob_linear": 0.3,
+    "node": 3
+   },
+   {
+    "kind": "single",
+    "fob_full": 0.34505534101036944,
+    "fob_linear": 0.3,
+    "node": 1
+   },
+   {
+    "kind": "single",
+    "fob_full": 0.27669680476204755,
+    "fob_linear": 0.3,
+    "node": 1
+   },
+   {
+    "kind": "single",
+    "fob_full": 0.24444243752398542,
+    "fob_linear": 0.30000000000000004,
+    "node": 4
+   },
+   {
+    "kind": "single",
+    "fob_full": 0.36024183767197043,
+    "fob_linear": 0.30000000000000004,
+    "node": 4
+   },
+   {
+    "kind": "joint corner",
+    "fob_full": 0.3286220041386268,
+    "fob_linear": 0.30000000804926347,
+    "node": null
+   },
+   {
+    "kind": "joint corner",
+    "fob_full": 0.3319867822745056,
+    "fob_linear": 0.30000000804926347,
+    "node": null
+   }
+  ]
+ }
+}

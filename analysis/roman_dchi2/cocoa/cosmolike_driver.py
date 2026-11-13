@@ -43,7 +43,8 @@ class Cosmolike:
         ci.init_binning(int(ntheta), tmin, tmax)
         ci.init_ggl_exclude(np.array([[6, 0], [7, 0], [7, 1]]).flatten())
         ci.set_log_level_info() if verbose else None
-        ci.init_photoz_histogram_akima(enabled=0, preparation_factor=3)
+        if hasattr(ci, "init_photoz_histogram_akima"):   # removed in cocoa v5.x
+            ci.init_photoz_histogram_akima(enabled=0, preparation_factor=3)
         ci.init_photoz_conventions(interpolation_type=0, zmid_convention=0)
         ci.init_fpt_internal_boost(internal_boost=1.0)
         ci.init_nonlimber_accuracy_boost(nonlimber_boost=1.0)
