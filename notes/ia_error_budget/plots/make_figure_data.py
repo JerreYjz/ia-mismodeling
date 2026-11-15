@@ -6,6 +6,7 @@ analysis/roman_dchi2/v8/:
     nonlinear_tol.json   the tolerances, refitted where the linear one > 10%
     fid_fits.json        NLA and TATT fitted at the fiducial cosmology
     correlated_budget.json  the budget for random errors correlated in k
+    correlated_bands.json   the same, confined to one decade of k: bands
 Rerun this after those scripts, then rerun the plot scripts.
 
     ~/cocoa/Cocoa/.local/bin/python make_figure_data.py
@@ -116,6 +117,23 @@ def main():
                   'fractional error splined through the 31 nodes; shift_sigma: the linear '
                   '(dOmega_m, dS8) in units of sigma. eps95: the rms of the errors.'),
         'k': kd.tolist(), 'examples': ex,
+    })
+    cw = load('correlated_bands.json')
+    write('corr_bands', {
+        'about': ('The IA error budget as a band, for random errors correlated in k and confined '
+                  'to one decade of k centred on k_c. Inside the window the fractional error of P_X '
+                  '(the same at every z) is Gaussian with rms eps and correlation '
+                  'exp(-(ln k_i - ln k_j)^2 / ell^2), splined in ln k through 31 nodes. '
+                  'eps95[cut][X][ell]: the rms at which 95% of such errors keep |dOmega_m| and |dS8| '
+                  'below 0.3 sigma; linear response below 5%, refitted above (200 errors, IA '
+                  'amplitude and evolution exact); 1 = no limit within 100%. Production truth; '
+                  'S1 holds the stitched truth. Model agnostic, example1_cov. '
+                  '(analysis/roman_dchi2/v8/correlated_bands.py.)'),
+        'k_c': cw['k_c'], 'ell': cw['ells'],
+        'eps95': {cut: {X: {f'{e:g}': cw['truths']['prod'][cut][f'{X}|{e:g}']['eps95'] for e in cw['ells']}
+                        for X in ('GI', 'II')} for cut in CUTS},
+        'S1': {cut: {X: {f'{e:g}': cw['truths']['S1'][cut][f'{X}|{e:g}']['eps95'] for e in cw['ells']}
+                     for X in ('GI', 'II')} for cut in CUTS},
     })
 
 

@@ -34,7 +34,7 @@
 % =====================================================================
 % Part 1: results (analysis/roman_dchi2/v8/: clean_budget.json,
 % nonlinear_tol.json, fid_fits.json; 13 November 2026; correlated_budget.json,
-% 14 November 2026), production truth unless stated. Part 2: inputs.
+% correlated_bands.json, 14 November 2026), production truth unless stated. Part 2: inputs.
 %
 % Statements that rest on Part 1; re-check after a rerun:
 %   - without a cut the budget is a few to 15% for one k range and about
@@ -43,9 +43,11 @@
 %   - with the cut it is 6 to 18% (GI) at k <= 0.2 and opens above k_UV;
 %   - without a cut both models leave the budget from k ~ 0.1 to 0.2,
 %     with the cut both stay inside ("The models against the budget");
-%   - a random error correlated in k may have an rms of about 0.7 to 1.7%
-%     without a cut and 1.8 to 5% with it, smallest at ell ~ 1 to 2
-%     ("Random errors correlated in k").
+%   - a random error correlated in k, confined to one decade, may have an
+%     rms of about 1 to 3% at every k without a cut, 2 to 5% at k <= 0.1
+%     with the cut, and no limit above 2 to 4 h/Mpc with the cut; over
+%     every k at once, about 0.7 to 1.7% without a cut and 1.8 to 5% with
+%     it ("Random errors correlated in k").
 \newif\ifnumbersfinal
 \numbersfinaltrue
 \newcommand{\refresh}[1]{\ifnumbersfinal#1\else\textcolor{red}{#1}\fi}
@@ -94,6 +96,13 @@
 \newcommand{\CorrCutMin}{\refresh{1.8}}
 \newcommand{\CorrCutGIMax}{\refresh{3.6}}
 \newcommand{\CorrCutIIMax}{\refresh{4.9}}
+% the same, confined to one decade: the band (percent)
+\newcommand{\BandNoCutLo}{\refresh{1}}
+\newcommand{\BandNoCutHi}{\refresh{3}}
+\newcommand{\BandCutLo}{\refresh{2}}
+\newcommand{\BandCutHi}{\refresh{5}}
+% refitted band against linear response (percent)
+\newcommand{\BandRefitDiff}{\refresh{15}}
 % checks: largest difference refit - linear (sigma); direct injections
 \newcommand{\CorrRefitDiff}{\refresh{0.014}}
 \newcommand{\CorrDirectDiff}{\refresh{0.06}}
@@ -138,13 +147,15 @@ to \BumpCutGIHi\% (GI), a coherent error over every kept scale by about
 $1\hMpc$ are not seen at all (Figure~\ref{fig:bands}).
 
 \paragraph{Random errors correlated in k.}
-If the error is instead a random function of $k$, with correlation length
-$\ell$ in $\ln k$, 95\% of such errors keep $\Om$ and $S_8$ within
-\Tol$\sigma$ when their rms is below \CorrNoCutGIMin{} to
-\CorrNoCutGIMax\% (GI) and \CorrNoCutIIMin{} to \CorrNoCutIIMax\% (II)
-without a cut, and \CorrCutMin{} to 5\% with it; the hardest correlation
-length is $\ell \simeq 1$ to 2, an error that changes over a factor of 3 to 7
-in $k$ (Figure~\ref{fig:corr}).
+If the error is instead a random function of $k$ (up here, down there), with
+correlation length $\ell$ in $\ln k$, the budget is the rms at which 95\% of
+such errors keep $\Om$ and $S_8$ within \Tol$\sigma$. Confined to one
+decade of $k$, it is a band (Figure~\ref{fig:corrbands}): \BandNoCutLo{} to
+\BandNoCutHi\% at every $k$ without a cut; with the cut, \BandCutLo{} to
+\BandCutHi\% at $k \le 0.1\hMpc$, opening above $0.3\hMpc$, with no limit
+above 2 to $4\hMpc$. Spread over every $k$ at once, the rms may be only
+\CorrNoCutGIMin{} to \CorrNoCutIIMax\% without a cut and \CorrCutMin{} to
+5\% with it (Figure~\ref{fig:corr}).
 
 \paragraph{The models.}
 Fitted to FLAMINGO at the fiducial cosmology, both NLA and TATT leave the
@@ -324,6 +335,54 @@ The fraction $q$ of errors within budget therefore exceeds a target when
 with $Q_q$ the $q$ quantile, found from $4\times10^5$ draws. The
 figures use $q = 0.95$; $\varepsilon_{68}$ is 1.7 to 2 times larger.
 
+\paragraph{The budget as a band.}
+To see which scales the budget comes from, the random error is confined to
+one decade of $k$ centred on $k_c$: $\delta_i \to w(k_i)\,\delta_i$, with $w =
+1$ from $k_c/\sqrt{10}$ to $\sqrt{10}\,k_c$ and logistic edges of width 0.25 in
+$\ln k$. The budget $\varepsilon_{95}(k_c)$, the rms at $k_c$, drawn as
+$\pm\varepsilon_{95}$ against $k_c$, is the band of
+Figure~\ref{fig:corrbands}, the analogue of Figure~\ref{fig:bands} for
+random errors. Where the linear $\varepsilon_{95}$ exceeds 5\%, it is found
+again by refitting 200 errors with the IA amplitude and evolution exact and
+bisecting on the fraction inside; the refitted values differ from linear
+response by at most \BandRefitDiff\%, about the sampling noise of 200
+errors. The stitched truth gives the same band to within 20\%.
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=3.5in]{plots/corr_bands/corr_bands.pdf}
+  \caption{The error budget for random errors correlated in $k$, as a
+    band: a random fractional error of the production FLAMINGO spectrum, the
+    same at every redshift, confined to one decade of $k$ centred on $k$,
+    with correlation length $\ell$ in $\ln k$. The band is
+    $\pm\varepsilon_{95}$, the rms at which 95\% of such errors keep $\Om$
+    and $S_8$ within \Tol$\sigma$. Shaded: $\ell = 1$; black dashed: $\ell =
+    0.3$; vermillion dash-dot: $\ell = 3$. Symmetric logarithmic axis (the
+    panel edges are $\pm100\%$, no limit).}
+  \label{fig:corrbands}
+\end{figure}
+
+\paragraph{The band without a cut: 1 to 3\% at every k.}
+The rms may be \BandNoCutLo{} to \BandNoCutHi\% at every $k$ up to
+$3\hMpc$, in GI and II alike, rising to 7 to 12\% in II at $10\hMpc$. It
+is two to five times tighter than the one-range band of
+Figure~\ref{fig:bands}, because a random error changes sign within its
+decade, which the free amplitude cannot absorb, and because 95\% of the
+errors must pass, not a typical one. At $k \simeq 0.1$ to 0.5 the band is
+wider for $\ell = 3$ than for $\ell = 1$: there a smooth error is close to an
+amplitude change.
+
+\paragraph{The band with the cut: room only above $\kuv$.}
+At $k \le 0.1\hMpc$ the rms may be \BandCutLo{} to \BandCutHi\%; the band
+widens above $0.3\hMpc$, passes 20\% at 0.5 to $1\hMpc$ and has no limit
+above 2 to $4\hMpc$, where the cut has removed the data. Values above about
+20\% are refit-based but, as in Section~\ref{sec:pert}, best read as upper
+estimates.
+
+\paragraph{Over every k at once.}
+Without the window the error is wrong at every $k$ with the same rms, and
+the budget is one number per correlation length (Figure~\ref{fig:corr}).
+
 \begin{figure}[tbp]
   \centering
   \includegraphics[width=3.5in]{plots/corr_budget/corr_budget.pdf}
@@ -337,12 +396,10 @@ figures use $q = 0.95$; $\varepsilon_{68}$ is 1.7 to 2 times larger.
 \end{figure}
 
 \paragraph{Without a cut: about 1\%.}
-The rms may be \CorrNoCutGIMin{} to \CorrNoCutGIMax\% in GI and
+Spread over every $k$, the rms may be \CorrNoCutGIMin{} to \CorrNoCutGIMax\% in GI and
 \CorrNoCutIIMin{} to \CorrNoCutIIMax\% in II (Figure~\ref{fig:corr}). This
-is smaller than the one-range budget of Figure~\ref{fig:bands} for three
-reasons: the random error is wrong at every $k$ at once, its sign changes,
-so the free amplitude cannot absorb it, and 95\% of the errors, not a
-typical one, must pass. The budget depends on $\ell$ as follows.
+is smaller than the band of Figure~\ref{fig:corrbands} because the error is
+now wrong at every $k$ at once. The budget depends on $\ell$ as follows.
 \begin{itemize}
   \item A short correlation length ($\ell \lesssim 0.3$) wiggles faster
     than the projection to $\xi_\pm$ resolves, and the wiggles cancel; the
@@ -470,6 +527,7 @@ Paths relative to \texttt{analysis/roman\_dchi2/v8/} of the repository.
     tolerances above 10\% by refitting & \texttt{nonlinear\_tol.py} $\rightarrow$ \texttt{nonlinear\_tol.json} \\
     NLA and TATT at the fiducial cosmology & \texttt{fid\_fits.py} $\rightarrow$ \texttt{fid\_fits.json} \\
     random errors correlated in $k$ & \texttt{correlated\_budget.py} $\rightarrow$ \texttt{correlated\_budget.json} \\
+    the same, one decade: bands & \texttt{correlated\_bands.py} $\rightarrow$ \texttt{correlated\_bands.json} \\
     figure data & \texttt{notes/ia\_error\_budget/plots/make\_figure\_data.py} \\
     \bottomrule
   \end{tabular}
