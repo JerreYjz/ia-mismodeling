@@ -9,9 +9,9 @@ errors keep Omega_m and S8 each within 0.3 of their marginalised errors.
 Shaded: ell = 1; black dashed: ell = 0.3; vermillion dash-dot: ell = 3;
 gray with open circles: the tolerance of the one-sign bump of the same
 width (bands_prod), for comparison.
-Panels: GI and II, with no cut and with k_UV = 0.3/D(z). Symmetric
-logarithmic y axis (linear within +-1%; the panel edges are +-100%, no
-limit). Production FLAMINGO truth. Model agnostic.
+Panels: GI and II, with no cut and with k_UV = 0.3/D(z). Linear y axis
+to +-30%; larger values run off the panel edge (with the cut there is no
+limit above about 1.5 h/Mpc). Production FLAMINGO truth. Model agnostic.
 
 Run from any folder: python plot_corr_bands.py
 """
@@ -214,6 +214,8 @@ PANELS = [('none', 'GI', 'GI, no cut'), ('none', 'II', 'II, no cut'),
 FILL_ELL, FILL_COLOR = '1', '#0072B2'
 EDGE = {'0.3': {'color': 'black', 'lw': 1.2, 'ls': (0, (4.5, 2.5))},
         '3': {'color': '#D55E00', 'lw': 1.2, 'ls': (0, (6.0, 2.0, 1.5, 2.0))}}
+# the y range [fraction]; larger budgets run off the panel
+YMAX = 0.3
 # the one-sign bump of the same width (bands_prod), for comparison
 ONE_SIGN = {'color': '0.45', 'lw': 0.9, 'ls': '-', 'marker': 'o', 'ms': 2.4, 'mfc': 'white',
             'mec': '0.45', 'zorder': 1.5}
@@ -242,11 +244,11 @@ def draw(data):
         ax.set_ylabel(name, rotation=90, fontsize=8.5, labelpad=5)
     axes[-1].set_xlim(0.0095, 10.5)
     for ax in axes:
-        # symmetric log axis: linear within +-1%, logarithmic beyond
-        ax.set_yscale('symlog', linthresh=0.01, linscale=0.6)
-        ax.set_ylim(-1.15, 1.15)
-        ax.set_yticks([-0.1, -0.01, 0.0, 0.01, 0.1])
-        ax.set_yticklabels(['-10%', '-1%', '0', '1%', '10%'], fontsize=7.5)
+        # linear axis to +-YMAX; larger values (no limit with the cut) run
+        # off the panel edge
+        ax.set_ylim(-YMAX, YMAX)
+        ax.set_yticks([-0.2, -0.1, 0.0, 0.1, 0.2])
+        ax.set_yticklabels(['-20%', '-10%', '0', '10%', '20%'], fontsize=7.5)
         ax.minorticks_off()
     axes[-1].set_xticks([0.01, 0.1, 1.0, 10.0])
     axes[-1].set_xticklabels(['0.01', '0.1', '1', '10'])
