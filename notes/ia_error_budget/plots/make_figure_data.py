@@ -6,7 +6,7 @@ analysis/roman_dchi2/v8/:
     nonlinear_tol.json   the tolerances, refitted where the linear one > 10%
     fid_fits.json        NLA and TATT fitted at the fiducial cosmology
     correlated_budget.json  the budget for random errors correlated in k
-    correlated_bands.json   the same, confined to one decade of k: bands
+    correlated_bands.json   the same, confined to one k range: bands
 Rerun this after those scripts, then rerun the plot scripts.
 
     ~/cocoa/Cocoa/.local/bin/python make_figure_data.py
@@ -121,7 +121,7 @@ def main():
     cw = load('correlated_bands.json')
     write('corr_bands', {
         'about': ('The IA error budget as a band, for random errors correlated in k and confined '
-                  'to one decade of k centred on k_c. Inside the window the fractional error of P_X '
+                  'to one k range around k_c (window exp(-ln^2(k/k_c)/(2*0.3^2)), the one-range bump). The fractional error of P_X '
                   '(the same at every z) is Gaussian with rms eps and correlation '
                   'exp(-(ln k_i - ln k_j)^2 / ell^2), splined in ln k through 31 nodes. '
                   'eps95[cut][X][ell]: the rms at which 95% of such errors keep |dOmega_m| and |dS8| '
@@ -134,6 +134,8 @@ def main():
                         for X in ('GI', 'II')} for cut in CUTS},
         'S1': {cut: {X: {f'{e:g}': cw['truths']['S1'][cut][f'{X}|{e:g}']['eps95'] for e in cw['ells']}
                      for X in ('GI', 'II')} for cut in CUTS},
+        'one_sign_k': src['nodes_h_per_Mpc'],
+        'one_sign': {cut: {X: nl['truths']['prod'][cut][f'bump|{X}'] for X in ('GI', 'II')} for cut in CUTS},
     })
 
 

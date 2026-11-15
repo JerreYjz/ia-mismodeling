@@ -3,15 +3,19 @@
 
 correlated_budget.py lets the random error run over every k with the same
 rms, so its budget is one number per correlation length. Here the error is
-confined to one decade of k centred on k_c, and the budget eps_95(k_c) is a
-band in k, like the bands of clean_budget.py.
+confined to one range of k around k_c, and the budget eps_95(k_c) is a band
+in k, like the bands of clean_budget.py.
 
 Perturbation. At the 31 NODES of correlated_budget, the fractional error of
 P_X (X = GI or II, the same at every z) is
     delta_i = w(k_i; k_c) g_i,   <g_i g_j> = eps^2 exp(-(ln k_i - ln k_j)^2 / ell^2),
-with the window w = 1 within a decade around k_c and smooth edges,
-    w = [1 + exp(-(ln(k/k_c) + ln 10/2)/0.25)]^-1 [1 + exp((ln(k/k_c) - ln 10/2)/0.25)]^-1,
+with the window w the bump of clean_budget,
+    w = exp(-ln^2(k/k_c) / (2 * 0.3^2)),
 splined in ln k as before. eps is the rms of the error at k_c.
+The window sets the resolution of the band. A wider one (a decade, the first
+version) averages the sensitivity, which changes sign every factor of 3 to 10
+in k, and gives a band nearly flat in k; with the width of the one-range
+bump the band resolves the same structure as clean_budget's bands.
 Budget. eps_95(k_c): the rms at which 95% of such errors keep |dOmega_m| and
 |dS8| below 0.3 sigma, by linear response (quantile of max|z|, 4e5 draws).
 Where it exceeds LIN_MAX, it is found again by refitting 200 errors (common
@@ -39,8 +43,7 @@ from correlated_budget import NODES, spline_basis, corr, chol  # noqa: E402
 
 TOL = 0.3
 ELLS = (0.3, 1.0, 3.0)
-HALF = 0.5*np.log(10.0)
-EDGE = 0.25
+WIN_W = CB.BUMP_W
 LIN_MAX = 0.05
 NDRAW = 400_000
 NREFIT = 200
@@ -49,8 +52,7 @@ RNG_SEED = 20261115
 
 
 def window(kc):
-    x = np.log(NODES/kc)
-    return 1/(1 + np.exp(np.clip(-(x + HALF)/EDGE, -60, 60)))/(1 + np.exp(np.clip((x - HALF)/EDGE, -60, 60)))
+    return np.exp(-np.log(NODES/kc)**2/(2*WIN_W**2))
 
 
 def main():

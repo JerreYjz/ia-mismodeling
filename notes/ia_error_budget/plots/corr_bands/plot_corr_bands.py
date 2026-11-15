@@ -2,10 +2,13 @@
 
 The IA error budget of Roman cosmic shear as bands, for random errors
 correlated in k: a random fractional error of P_X, the same at every
-redshift, confined to one decade of k centred on k, with correlation length
+redshift, confined to one k range around k (a Gaussian of width 0.3 in
+ln k, as the one-range band of bands_prod), with correlation length
 ell in ln k. The band is +-eps_95, the rms of the error at which 95% of such
 errors keep Omega_m and S8 each within 0.3 of their marginalised errors.
-Shaded: ell = 1; black dashed: ell = 0.3; vermillion dash-dot: ell = 3.
+Shaded: ell = 1; black dashed: ell = 0.3; vermillion dash-dot: ell = 3;
+gray with open circles: the tolerance of the one-sign bump of the same
+width (bands_prod), for comparison.
 Panels: GI and II, with no cut and with k_UV = 0.3/D(z). Symmetric
 logarithmic y axis (linear within +-1%; the panel edges are +-100%, no
 limit). Production FLAMINGO truth. Model agnostic.
@@ -211,6 +214,9 @@ PANELS = [('none', 'GI', 'GI, no cut'), ('none', 'II', 'II, no cut'),
 FILL_ELL, FILL_COLOR = '1', '#0072B2'
 EDGE = {'0.3': {'color': 'black', 'lw': 1.2, 'ls': (0, (4.5, 2.5))},
         '3': {'color': '#D55E00', 'lw': 1.2, 'ls': (0, (6.0, 2.0, 1.5, 2.0))}}
+# the one-sign bump of the same width (bands_prod), for comparison
+ONE_SIGN = {'color': '0.45', 'lw': 0.9, 'ls': '-', 'marker': 'o', 'ms': 2.4, 'mfc': 'white',
+            'mec': '0.45', 'zorder': 1.5}
 
 
 def draw(data):
@@ -225,6 +231,10 @@ def draw(data):
             v = as_array(b[ell])
             ax.plot(k, v, zorder=2, **st)
             ax.plot(k, -v, zorder=2, **st)
+        o = data['one_sign'][cut][X]
+        ko = as_array(data['one_sign_k'])
+        ax.plot(ko, as_array(o['up']), **ONE_SIGN)
+        ax.plot(ko, -as_array(o['down']), **ONE_SIGN)
         ax.axhline(0.0, **THRESHOLD_STYLE)
         ax.set_xscale('log')
         ax.grid(False, axis='x')
@@ -240,11 +250,11 @@ def draw(data):
         ax.minorticks_off()
     axes[-1].set_xticks([0.01, 0.1, 1.0, 10.0])
     axes[-1].set_xticklabels(['0.01', '0.1', '1', '10'])
-    axes[-1].set_xlabel(r'centre of the wrong decade, $k$ [$h\,{\rm Mpc}^{-1}$]')
+    axes[-1].set_xlabel(r'centre of the wrong $k$ range [$h\,{\rm Mpc}^{-1}$]')
     handles = [Patch(color=FILL_COLOR, alpha=0.30, lw=0), Line2D([], [], **EDGE['0.3']),
-               Line2D([], [], **EDGE['3'])]
-    labels = [r'$\ell = 1$', r'$\ell = 0.3$', r'$\ell = 3$']
-    place_legend(fig, axes[0], handles, labels, list(axes), above_ncol=3, fontsize=7.5,
+               Line2D([], [], **EDGE['3']), Line2D([], [], **ONE_SIGN)]
+    labels = [r'$\ell = 1$', r'$\ell = 0.3$', r'$\ell = 3$', 'one sign (Fig. 1)']
+    place_legend(fig, axes[0], handles, labels, list(axes), above_ncol=4, fontsize=7.5,
                  max_headroom=0)
     shared_ylabel(fig, axes, r'allowed rms error, 95% of errors $\varepsilon_{95}$')
     return fig
