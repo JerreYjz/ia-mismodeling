@@ -5,12 +5,16 @@ analysis/roman_dchi2/v8/:
     clean_budget.json    the budget by linear response, checks, Roman fits
     nonlinear_tol.json   the tolerances, refitted where the linear one > 10%
     fid_fits.json        NLA and TATT fitted at the fiducial cosmology
+    correlated_budget.json  the budget for random errors correlated in k
 Rerun this after those scripts, then rerun the plot scripts.
 
     ~/cocoa/Cocoa/.local/bin/python make_figure_data.py
 """
 import json
 import os
+
+import numpy as np
+from scipy.interpolate import CubicSpline
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 V8 = os.path.normpath(os.path.join(HERE, '..', '..', '..', 'analysis', 'roman_dchi2', 'v8'))
@@ -73,6 +77,46 @@ def main():
                                for k in ('dOm_over_sigma', 'dS8_over_sigma', 'chi2')}
                 for cut in CUTS for m in ('NLA', 'TATT')},
         })
+
+    cb = load('correlated_budget.json')
+    write('corr_budget', {
+        'about': ('The IA error budget for random errors correlated in k. At 31 nodes '
+                  '(0.01 to 10 h/Mpc, 10 per decade) the fractional errors of P_X (X = GI or II, '
+                  'the same at every z) are Gaussian with rms eps and correlation '
+                  'exp(-(ln k_i - ln k_j)^2 / ell^2), splined in ln k. eps[q]: the rms at which a '
+                  'fraction q of such errors keeps |dOmega_m| and |dS8| below 0.3 sigma (linear '
+                  'response; checked by refits). Model agnostic, example1_cov. '
+                  '(analysis/roman_dchi2/v8/correlated_budget.py.)'),
+        'ell': cb['ells'],
+        'eps': {tr: {cut: {X: {q: [r['eps'][q] for r in cb['truths'][tr][cut]['budget'][X]]
+                               for q in ('0.68', '0.95')}
+                           for X in ('GI', 'II')} for cut in CUTS} for tr in ('S1', 'prod')},
+    })
+    # example errors at the 95% budget, production truth, GI, no cut
+    nodes = np.array(cb['nodes_h_per_Mpc'])
+    kd = np.geomspace(nodes[0], nodes[-1], 300)
+    rng = np.random.default_rng(7)
+    ex = {}
+    for ell in (0.3, 1.0, 3.0):
+        C = np.exp(-(np.log(nodes)[:, None] - np.log(nodes)[None, :])**2/ell**2)
+        w, V = np.linalg.eigh(C)
+        L = V*np.sqrt(np.clip(w, 0, None))
+        row = [r for r in cb['truths']['prod']['none']['budget']['GI'] if r['ell'] == ell][0]
+        eps = row['eps']['0.95']
+        A = np.array(cb['truths']['prod']['none']['A_GI'])
+        draws = []
+        for _ in range(4):
+            dv = eps*(L @ rng.standard_normal(len(nodes)))
+            draws.append({'f': CubicSpline(np.log(nodes), dv)(np.log(kd)).tolist(),
+                          'shift_sigma': (A @ dv).tolist()})
+        ex[f'{ell:g}'] = {'eps95': eps, 'draws': draws}
+    write('corr_examples', {
+        'about': ('Four random errors of the production FLAMINGO GI spectrum at the 95% budget '
+                  '(no cut), for correlation lengths ell = 0.3, 1 and 3 in ln k: f(k), the '
+                  'fractional error splined through the 31 nodes; shift_sigma: the linear '
+                  '(dOmega_m, dS8) in units of sigma. eps95: the rms of the errors.'),
+        'k': kd.tolist(), 'examples': ex,
+    })
 
 
 if __name__ == '__main__':

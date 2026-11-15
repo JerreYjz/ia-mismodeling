@@ -8,7 +8,8 @@ FLAMINGO simulation, and how a halo model with central alignment (HMc) does.
 **Start here:**
 * `notes/ia_error_budget/ia_error_budget.pdf`: the IA error budget of Roman
   cosmic shear (how wrong the FLAMINGO IA spectra may be, scale by scale,
-  before Omega_m or S8 moves by 0.3 sigma) and NLA / TATT against it.
+  before Omega_m or S8 moves by 0.3 sigma), also for random errors
+  correlated in k, and NLA / TATT against it.
   Scripts in `analysis/roman_dchi2/v8/`.
 * `notes/scale_cuts_summary/scale_cuts_summary.pdf`: the scale-cut work
   (November 2026).
