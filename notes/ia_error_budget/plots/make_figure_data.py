@@ -7,6 +7,7 @@ analysis/roman_dchi2/v8/:
     fid_fits.json        NLA and TATT fitted at the fiducial cosmology
     correlated_budget.json  the budget for random errors correlated in k
     correlated_bands.json   the same, confined to one k range: bands
+                            (corr_bands; corr_overlay with NLA and TATT)
 Rerun this after those scripts, then rerun the plot scripts.
 
     ~/cocoa/Cocoa/.local/bin/python make_figure_data.py
@@ -136,6 +137,20 @@ def main():
                      for X in ('GI', 'II')} for cut in CUTS},
         'one_sign_k': src['nodes_h_per_Mpc'],
         'one_sign': {cut: {X: nl['truths']['prod'][cut][f'bump|{X}'] for X in ('GI', 'II')} for cut in CUTS},
+    })
+    write('corr_overlay', {
+        'about': ('The error of NLA and TATT against the production FLAMINGO truth, over the band '
+                  'for random errors correlated in k (corr_bands). eps95[cut][X][ell]: the rms at '
+                  'which 95% of random errors confined to one k range around k_c keep |dOmega_m| and '
+                  '|dS8| below 0.3 sigma (correlated_bands.py), for ell = 0.3 and 1 in ln k. '
+                  'errors[cut][model][X]: P^model/P^truth - 1 at the core snapshots (z_core) on '
+                  'k_dense, each model fitted at the fiducial cosmology (IA parameters only) with '
+                  'the same cut (fid_fits.py).'),
+        'k_c': cw['k_c'], 'k_dense': ff['k_dense'], 'z_core': ff['z_core'],
+        'eps95': {cut: {X: {e: cw['truths']['prod'][cut][f'{X}|{e}']['eps95'] for e in ('0.3', '1')}
+                        for X in ('GI', 'II')} for cut in CUTS},
+        'errors': {cut: {m: ff['fits'][f'prod|{cut}|{m}']['error'] for m in ('NLA', 'TATT')}
+                   for cut in CUTS},
     })
 
 

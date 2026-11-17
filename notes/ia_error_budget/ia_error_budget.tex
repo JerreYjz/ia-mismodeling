@@ -42,7 +42,8 @@
 %     "The budget");
 %   - with the cut it is 6 to 18% (GI) at k <= 0.2 and opens above k_UV;
 %   - without a cut both models leave the budget from k ~ 0.1 to 0.2,
-%     with the cut both stay inside ("The models against the budget");
+%     with the cut GI stays inside, II leaves it near k ~ 0.1 on the
+%     production truth ("The models against the budget");
 %   - a random error correlated in k, confined to one k range, may have an
 %     rms of about 1.5 to 12% (GI) and 2 to 8% (II) up to 3 h/Mpc without a
 %     cut, 3.5 to 15% at k <= 0.1 with the cut, and no limit above 1 to
@@ -164,11 +165,16 @@ It is about half the one-sign tolerance of Figure~\ref{fig:bands}. Spread over e
 \paragraph{The models.}
 Fitted to FLAMINGO at the fiducial cosmology, both NLA and TATT leave the
 budget from $k \simeq 0.1$ to $0.2\hMpc$ without a cut; TATT is the closer
-of the two at $k \simeq 0.1$ to 0.5. With the cut, both stay inside it at
-every $k$ (Figure~\ref{fig:overlay}), and their fitted shifts are below
-\Tol$\sigma$ (production truth: $S_8$ moves by \ProdNLAS$\sigma$ for both).
-With the cut the two models are nearly indistinguishable, because the kept
-scales are the ones both describe equally well.
+of the two at $k \simeq 0.1$ to 0.5. With the cut, GI stays inside it at
+every $k$; II stays inside on the stitched truth, but on the production truth
+it is 10 to 20\% low at $k \simeq 0.08$ to $0.13\hMpc$, up to twice the
+budget there (NLA also to $0.3\hMpc$; Figure~\ref{fig:overlay}). Their
+fitted shifts are below \Tol$\sigma$ (production truth: $S_8$ moves by
+\ProdNLAS$\sigma$ for both). With the cut the two models are nearly
+indistinguishable, because the kept scales are the ones both describe
+equally well. Against the stricter band for random errors
+(Figure~\ref{fig:corroverlay}), GI still stays inside with the cut, while
+II is outside it from the largest scales on.
 
 \section{Setup}
 \label{sec:setup}
@@ -486,16 +492,49 @@ in II at $k \le 0.06$, within $\pm3\%$ in GI at 0.1 to 0.2, and
 the same way above $0.3\hMpc$. Without a cut neither model is usable; the
 difference between them sits at $k \simeq 0.1$ to 0.5.
 
-\paragraph{With the cut both stay inside.}
+\paragraph{With the cut GI stays inside; II leaves near $0.1\hMpc$.}
 Both are \CutGILow\% off in GI and \CutIILow\% in II at $k \le 0.06\hMpc$,
-inside a budget of about 10\%, and \NLACutIIMid\% (NLA) and \TATTCutIIMid\%
-(TATT) in II at 0.1 to 0.6, where the budget is wider. Above $0.3\hMpc$ they
+inside a budget of about 10\%; GI stays inside at every $k$ (at most half
+the tolerance). II is \NLACutIIMid\% (NLA) and \TATTCutIIMid\% (TATT) at
+0.1 to 0.6. Where the budget is narrow, at 0.08 to $0.13\hMpc$ (7 to 13\%),
+both are outside it, NLA by up to 2.2 times and TATT by up to 1.7 times, and
+NLA stays just outside to $0.3\hMpc$; on the stitched truth both stay inside
+(at most 0.94 of the tolerance). Above $0.3\hMpc$ they
 are 10 to 90\% off, where the cut has removed the data. Their fitted shifts
 with the cut, cosmology free, agree: on the production truth $S_8$ moves by
 \ProdNLAS$\sigma$ for NLA and \ProdTATTS$\sigma$ for TATT, on the stitched
 truth $\Om$ moves by \StNLAOm{} and \StTATTOm$\sigma$. The band bounds one
 range of $k$ wrong at a time, while a model is wrong at every $k$ at once;
 its fitted shift is the final test, and it is just under \Tol.
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=3.5in]{plots/corr_overlay/corr_overlay.pdf}
+  \caption{NLA (orange, squares) and TATT (blue, circles) against the
+    production FLAMINGO truth, as in Figure~\ref{fig:overlay}, over the
+    band for random errors correlated in $k$ of Figure~\ref{fig:corrbands}:
+    gray, $\pm\varepsilon_{95}$ for $\ell = 1$; black dashed, for $\ell =
+    0.3$. Linear axis; errors and budgets above 30\% run off the panel.}
+  \label{fig:corroverlay}
+\end{figure}
+
+\paragraph{Against the band for random errors.}
+Figure~\ref{fig:corroverlay} draws the same errors over the band of
+Figure~\ref{fig:corrbands}. Without a cut the picture does not change: NLA
+is 3 to 7 times outside the band at $k \le 1\hMpc$ and TATT 2 to 4 times,
+except in GI at 0.06 to $0.3\hMpc$, where TATT (within 2\%) is inside. With
+the cut, GI stays inside at every $k$ for both models (at most 0.6 of the
+band at $k \le 0.3\hMpc$; TATT touches the $\ell = 0.3$ edge at 0.3 to
+$1\hMpc$). II does not: at $k \le 0.06\hMpc$ both models are 6 to 7\% low
+against a band of 4 to 11\%, 1.5 to 1.9 times outside its narrowest part,
+and at 0.1 to $0.3\hMpc$ up to 3 to 4 times. This band is stricter than the
+test a model has to pass. A model's error is not random: it has one sign
+over a range of $k$, and a one-sign error is allowed about twice the rms
+(Section~\ref{sec:corr}). So at $k \le 0.06\hMpc$ II is inside the
+one-sign band of Figure~\ref{fig:overlay} (0.74 to 0.83 of it), and near
+$0.1\hMpc$ it is outside both. The fitted shifts, below \Tol$\sigma$,
+remain the final test; the random band says where a model would fail if its
+error were random rather than smooth.
 
 \begin{figure}[tbp]
   \centering
