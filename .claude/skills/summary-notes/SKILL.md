@@ -155,6 +155,20 @@ X" sends them away from the note.
 - Notes, results and code for a project live in that project's
   repository (for the IA paper, `~/cocoa/ia_mismodeling`), never only
   in Downloads or a scratch folder.
+- **Check the physical sensibility of every result before it is shown,
+  in the same run that produces it.** For each fit or model output:
+  compare every fitted parameter with its natural size and allowed
+  range, and flag any that sits at a prior bound; check that it does
+  not drift with the fit range, the snapshot or the starting point;
+  check each model term's sign, its limits and that its scale
+  dependence matches the residual it absorbs; look at the model just
+  outside the fit range. Report the outcome next to the result, and
+  when a check fails, lead with that. *Why:* a good chi2 with an
+  unphysical parameter is a failed fit. A halo-model fit was once
+  plotted and reported with a central 1-halo amplitude about 100 times
+  its physical maximum, because only the goodness of fit had been
+  checked; the amplitude was compensating for power missing from
+  another term.
 
 ## Checklist before calling a note done
 
@@ -163,6 +177,9 @@ X" sends them away from the note.
 - [ ] Every figure folder passes the redraw test, and you looked at
       every PNG (and once in grayscale).
 - [ ] No large table; no number typed outside the numbers block.
+- [ ] Every fitted parameter and model term passed the physical
+      sensibility check (natural size, bounds, stability, limits), and
+      the note says so where the result is quoted.
 - [ ] Build log: 0 errors, 0 undefined references, 0 "too large".
 - [ ] No em-dash, no TODO, no "should/will/needs" in the body.
 - [ ] Open issues appendix holds every known limitation, once.
