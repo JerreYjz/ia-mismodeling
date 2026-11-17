@@ -13,6 +13,10 @@ FLAMINGO simulation, and how a halo model with central alignment (HMc) does.
   Scripts in `analysis/roman_dchi2/v8/`.
 * `notes/scale_cuts_summary/scale_cuts_summary.pdf`: the scale-cut work
   (November 2026).
+* `analysis/roman_dchi2/report/hmc_review.pdf`: the halo model with central
+  alignment (HMc). Read its addendum of 17 November 2026 first: the central
+  1-halo amplitude fitted to FLAMINGO is unphysical, and the refit that
+  replaces it is in `notes/flamingo_vs_tng300/`.
 
 Every figure redraws from its own folder under the note's `plots/`.
 
@@ -22,6 +26,7 @@ Every figure redraws from its own folder under the note's `plots/`.
 |---|---|
 | `notes/ia_error_budget/` | the error-budget note and its figures; `plots/make_figure_data.py` exports the numbers from `analysis/roman_dchi2/v8/` |
 | `notes/scale_cuts_summary/` | the summary note (`.tex`, `.pdf`) and its figure folders (`data.json`, `plot_<name>.py`, PDF, PNG); `plots/make_figure_data.py` exports the numbers from `analysis/` |
+| `notes/flamingo_vs_tng300/` | FLAMINGO at z = 1 against its best NLA, TATT and HMc fits, the halo-model refit with a free share of the nonlinear power in the 2-halo term (`fits/`), its physical-sensibility checks, and the HMc equations on one page; see its `README.md` |
 | `analysis/` | the scale-cut pipeline: Part 1 (NLA on a TATT fiducial, Cobaya yamls, Gauss-Newton bias, IR/UV masks) at the top level; `tatt_fit/` (the TATT model in cosmolike conventions, FLAMINGO loaders); `roman_dchi2/` (FLAMINGO fits `v2`, simulation cuts and Roman tests `v3`, strategies `v4`, production covariance `v5`, **halo model `v6`**, the cosmolike driver `cocoa/`, the work-log reports `report/`). See `analysis/README.md` and `analysis/roman_dchi2/v6/README.md` |
 | `flamingo/extraction/` | the FLAMINGO IA power-spectrum extraction (SOAP catalogue to P_hh, P_hE, P_EE, P_BB) and the L1_m8 run scripts |
 | `flamingo/data/` | its outputs used here: `PS/` (the 858 spectrum files), `hinfo/` (galaxy counts and e_rms), `flamingo_pmm/` (matter power), `stitched_all/` |

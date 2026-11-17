@@ -1,0 +1,76 @@
+% The equations of the halo model for intrinsic alignments with a central
+% 1-halo term (HMc), on one page sized for a slide. Taken from
+% analysis/roman_dchi2/report/hmc_review.tex and checked against
+% analysis/roman_dchi2/v6/halo_central_fit.py (m_hmc "HMc_lin", m_hmcw) and
+% halo_central.py. The term colors are those of plots/ia_hmc_z1.
+\documentclass[10pt]{article}
+\usepackage[paperwidth=8.6in,paperheight=6.45in,margin=0.32in]{geometry}
+\usepackage{amsmath,amssymb,bm,xcolor}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\definecolor{twohalo}{HTML}{0072B2}
+\definecolor{central}{HTML}{D55E00}
+\definecolor{white}{gray}{0.40}
+\definecolor{hmc}{HTML}{CC79A7}
+\newcommand{\Plin}{P_{\rm lin}}
+\newcommand{\PNL}{P_{\rm NL}}
+\newcommand{\bTA}{b_{\rm TA}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\head}[2]{\vspace{5pt}{\color{#1}\textbf{#2}}\par\vspace{-3pt}}
+\allowdisplaybreaks
+\begin{document}
+\setlength{\abovedisplayskip}{4pt}
+\setlength{\belowdisplayskip}{4pt}
+\setlength{\abovedisplayshortskip}{2pt}
+\setlength{\belowdisplayshortskip}{2pt}
+
+{\large\textbf{Halo model for intrinsic alignments with a central 1-halo term (HMc)}}
+
+\vspace{3pt}
+{\small Cosmolike convention: $\bar C_1 = 0.01389\,\Omega_m/D(z)$,
+$\bar C_2 = 0.01389\,\Omega_m/D^2(z)$; $K_X(k)$: one-loop TATT kernels (FAST-PT);
+$u(k|M)$: NFW profile.}
+
+\head{twohalo}{Centrals, 2-halo: TATT with $\PNL \to I_1\Plin$ (GI) and $\PNL \to \Plin$ (II)}
+\begin{align*}
+I_1(k) &= \int \dd\ln M\,\frac{\dd n}{\dd\ln M}\, b(M)\,\frac{M}{\bar\rho}\,u(k|M)\\
+P^{2h}_{\delta E} &= -\Big[A_1\bar C_1\,I_1(k)\,\Plin + A_1\bar C_1\bTA K_{\delta E} - 5A_2\bar C_2 K_{\rm mix}\Big]\\
+P^{2h}_{EE} &= A_1^2\bar C_1^2\,\Plin + A_1^2\bar C_1^2\big(\bTA^2 K_{\rm ta} + 2\bTA K_{\delta E}\big)
+ - 10A_1A_2\bar C_1\bar C_2\big(K_{\rm mix} + \bTA K_{\rm mixEE}\big) + 25A_2^2\bar C_2^2K_{\rm tt}\\
+P^{2h}_{BB} &= A_1^2\bar C_1^2\bTA^2 K_{\rm taBB} - 10A_1A_2\bar C_1\bar C_2\bTA K_{\rm mixBB} + 25A_2^2\bar C_2^2 K_{\rm ttB}
+\end{align*}
+
+\head{central}{Central 1-halo (new): each central aligned with its own triaxial NFW halo, $\gamma^c_{ij} = a_c\,[\mathsf E_{ij}]_\perp$}
+\begin{align*}
+P^{1h,c}_{\delta E}(k) &= -a_c\,P_c(k),\qquad
+P_c(k) = \frac12\int\dd\ln M\,\frac{\dd n}{\dd\ln M}\,\frac{N_c(M)}{\bar n_g}\,\frac{M}{\bar\rho}\,\sigma_E^2(M)\,u_E(k|M)\\
+u_E(k|M) &= \frac{k r_s}{2\,m(c)}\int_0^c \frac{x^2}{(1+x)^2}\,j_1(k r_s x)\,\dd x,\qquad
+m(c) = \ln(1+c) - \frac{c}{1+c}\\
+\sigma_E^2 &= \tfrac45\textstyle\sum_i(\ln a_i)^2,\qquad
+s = \frac{c}{a} = 0.54\Big(\frac{M}{M_*}\Big)^{-0.05},\quad q = \frac{b}{a} = \frac{1+s}{2},\quad abc = 1
+\quad\text{(Allgood et al.\ 2006)}
+\end{align*}
+
+\head{black}{Satellites (Fortuna et al.\ 2021, radial) and HOD}
+\begin{align*}
+P^{1h,s}_{\delta E} &= -a_{1h}\,f_{1h}\,S_{\delta I}(k),\qquad
+P^{1h,s}_{EE} = a_{1h}^2\,f_{1h}\,S_{II}(k),\qquad f_{1h} = 1 - e^{-(k/4)^2}\\
+N_c &= \tfrac12\Big[1 + \mathrm{erf}\Big(\frac{\lg M - \lg M_{\min}}{0.25}\Big)\Big],\qquad
+N_s = N_c\,\frac{M - M_{\min}}{M_1}
+\end{align*}
+
+\head{hmc}{Total, as fitted to FLAMINGO ($f_{2h} = e^{-(k/6)^2}$, $k$ in $h\,{\rm Mpc}^{-1}$)}
+\begin{align*}
+P_{\delta E} &= f_{2h}\,P^{2h}_{\delta E} + P^{1h,c}_{\delta E} + P^{1h,s}_{\delta E},\qquad
+P_{hE} = b(k)\,P_{\delta E},\qquad b(k) = \big(P_{hh}/\PNL\big)^{1/2}\\
+P_{EE} &= f_{2h}\,P^{2h}_{EE} + P^{1h,s}_{EE} + {\color{white}N_s + W},\qquad
+P_{BB} = f_{2h}\,P^{2h}_{BB} + {\color{white}N_s + W}
+\end{align*}
+
+\vspace{2pt}
+{\small Parameters: $A_1$ (tidal alignment), $A_2$ (tidal torquing), $\bTA$ (density weighting),
+$a_c$ (central 1-halo), $a_{1h}$ (satellites), $W$ (white $E = B$ term; $N_s$ fixed to the $B$ plateau).}
+\end{document}

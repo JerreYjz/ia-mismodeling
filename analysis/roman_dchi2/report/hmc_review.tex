@@ -14,13 +14,22 @@
 \newcommand{\dd}{\mathrm{d}}
 \title{A halo model for intrinsic alignments with central-galaxy\\1-halo alignment: review}
 \author{Yijie Zhu, with Claude}
-\date{11 November 2026}
+\date{11 November 2026; addendum 17 November 2026}
 
 \begin{document}
 \maketitle
 
 \section*{Summary}
 \begin{itemize}[itemsep=3pt]
+\item \textbf{Correction, 17 November 2026 (Sec.~\ref{sec:addendum}).} The
+  central 1-halo amplitudes fitted to FLAMINGO below ($a_c = 13$ to 190) are 30
+  to 400 times the physical size of that amplitude ($a_c \simeq 0.5$ for a
+  central that copies the shape of its halo). They compensate for nonlinear
+  power that the $\PNL \to I_1\Plin$ swap removes from the 2-halo term. With a
+  share $\alpha \approx 0.4$ to 0.8 of that power restored and $a_c \le 1$ the
+  fits are as good or better, and FLAMINGO then does not constrain the central
+  term. The FLAMINGO $\chi^2$ numbers below stand; their reading as evidence
+  for the central 1-halo term does not.
 \item \textbf{Model (HMc).} Halo-model IA in which every term has a halo-model
   origin: centrals aligned with the tidal field of \emph{other} halos (2-halo, on
   $I_1(k)\Plin$), blue centrals by tidal torquing and density weighting of the
@@ -311,7 +320,115 @@ integral, and $u_E$ is Eq.~\eqref{eq:uE}.
   in FLAMINGO itself (outside the fit, to avoid circularity).
 \end{itemize}
 
+\section{Addendum, 17 November 2026: the 1-halo amplitudes are not physical}\label{sec:addendum}
+\newcommand{\figdir}{../../../notes/flamingo_vs_tng300/plots}
+
+\paragraph{The problem.} With $\gamma^c_{ij} = a_c[\mathsf E_{ij}]_\perp$ and
+$E_{ii} = 2\ln a_i$, a central with the axis ratios of its halo and perfectly
+aligned with it has shear $\tfrac12\ln(a_1/a_2)$ to first order, which is
+$a_c = 0.5$ (an estimate; misalignment lowers it). The HMc + $W$ fits give
+$a_c = 27$ to 190 at $\kmax = 0.52$ and 13 to 27 at 0.94. At $z = 1$ the value
+follows the fit range: 300 (the prior bound), 102, 82, 38, 17 and 2.7 for
+$\kmax = 0.29$, 0.39, 0.52, 0.70, 0.94 and 3.04. A good $\chi^2$ with an
+amplitude of this size is a failed fit; only the goodness of fit had been
+checked.
+
+\paragraph{The cause.} $I_1 \simeq 1$ below $k = 1$, so the swap of
+Eq.~\eqref{eq:gi2h} is in effect $\PNL \to \Plin$: at $z = 1$ it removes 29, 42
+and 56\% of the $A_1$ GI term at $k = 0.39$, 0.52 and 0.70$\hmpc$. The model
+hands all of that power to the central 1-halo term, but a single halo's
+quadrupole is suppressed as $(kr)^2$ below $k \sim 1/r_{\rm vir}$
+(Eq.~\ref{eq:uE}). At $z = 1$, FLAMINGO minus the fitted 2-halo term is nearly
+flat, 0.3 to 0.6$\,(h^{-1}{\rm Mpc})^3$ from $k = 0.5$ to 4$\hmpc$, while $P_c$
+rises by a factor 30 over that range: the amplitude that one bin alone needs
+falls from 49 at $k = 0.52$ to 1.8 at $k = 4.1$. No single $a_c$ fits, and the
+fit to $\kmax = 0.70$ overshoots $P_{\delta E}$ by 51\% at $k = 1.3$ and 151\% at
+1.7 (Fig.~\ref{fig:addold}).
+
+\begin{figure}[H]\centering
+\includegraphics[width=0.68\textwidth]{\figdir/ia_hmc_z1/ia_hmc_z1}
+\caption{FLAMINGO at $z = 1$ (shear units, $\mu = 0$; $P_{\delta E} =
+P_{hE}/b(k)$) and the HMc + $W$ fit with $a_c$ free, with its parts. Bottom
+row: $100\,(\text{model} - \text{FLAMINGO})/\text{FLAMINGO}$, gray band: the
+measurement error. Solid, filled: inside the fit range; dashed, open:
+outside.}
+\label{fig:addold}
+\end{figure}
+
+\paragraph{The test.} The $A_1$ terms were put on
+\begin{equation}
+P_{\rm GI} = I_1\Plin + \alpha\,(\PNL - I_1\Plin),\qquad
+P_{\rm II} = \Plin + \alpha\,(\PNL - \Plin),
+\end{equation}
+with $\alpha$ free in $[-1, 2]$ (its physical range is 0 to 1; the wider range
+lets an unphysical value show) and $a_c \le 1$; everything else as HMc + $W$.
+Summed $\chi^2_{\min}/\nu$ over the nine snapshots:
+\begin{center}\small
+\begin{tabular}{lccc}\toprule
+$\kmax$ [$h\,$Mpc$^{-1}$] & 0.52 & 0.70 & 0.94\\ \midrule
+HMc + $W$ ($a_c \le 300$) & 1.04 & 1.29 & 2.28\\
+HMc + $W$, $a_c \le 1$ & 2.17 & 4.49 & 8.73\\
+$\alpha$ free, $a_c \le 1$ & 1.03 & 1.11 & 1.18\\
+$\alpha$ free, $a_c \le 1$, no satellites ($a_{1h} = 0$) & 0.97 & 1.08 & 1.33\\
+\bottomrule\end{tabular}
+\end{center}
+HMc cannot fit with a physical $a_c$ (second row); with $\alpha$ it fits
+better than with $a_c$ free, at the same number of parameters when the
+satellites are off.
+
+\paragraph{Physical-sensibility checks of the refit} (no satellites unless
+stated; \texttt{hmc\_alpha\_checks.py}).
+\begin{itemize}[itemsep=1pt]
+\item \emph{Passed.} $\alpha$ lies between 0.31 and 0.83 at every snapshot for
+  $\kmax = 0.52$ to 0.94. At $z = 1$ ($\kmax = 0.70$): $\alpha = 0.58 \pm 0.06$,
+  $A_1 = 4.03 \pm 0.07$ (the low-$k$ NLA value is 3.98); for $\kmax = 0.52$ to
+  1.26, $A_1$ stays at 4.03 to 4.04 and $\alpha$ at 0.56 to 0.59. All spectra
+  are positive. Outside the fit range the model degrades smoothly: $-6.5\%$ at
+  $k = 1.3$ and $-13.5\%$ at 1.7 (Fig.~\ref{fig:add}, top). The
+  goodness-of-fit cuts are 0.70 to 1.69$\hmpc$, against 0.52 to 0.70.
+\item \emph{Failed: $a_c$ is unconstrained.} It sits at 0 or at the bound 1 in
+  nearly every fit; at $a_c = 1$ the central term is below 2\% of
+  $P_{\delta E}$ up to $k = 1.3$. FLAMINGO does not test the central 1-halo
+  term at a physical amplitude.
+\item \emph{Failed: the satellite amplitude.} With $a_{1h}$ free it is
+  unconstrained for $\kmax \lesssim 1$ ($1.0 \pm 600$ at $z = 1$,
+  $\kmax = 0.70$) and that value drives the model above the fit range. Where
+  it is constrained it follows the fit range like $a_c$ did: 0.07, 0.04, 0.02
+  and 0.009 for $\kmax = 1.26$, 1.69, 2.27 and 3.04 at $z \le 0.5$. At $z = 1$,
+  $\kmax = 1.69$: $a_{1h} = 0.10 \pm 0.03$, which reaches the cap of 0.3 inside
+  $0.58\,r_{\rm vir}$, and the model overshoots $P_{\delta E}$ by 28\% at
+  $k = 2.3$ and 100\% at 3.0 (Fig.~\ref{fig:add}, bottom).
+\item \emph{Limits of $\alpha$.} It is anticorrelated with $\bTA$ (correlation
+  $-0.8$ to $-0.9$), rises with redshift (at $\kmax = 0.70$: 0.38 to 0.46 for
+  $z \le 0.75$, 0.58 at $z = 1$, 0.78 at $z \ge 1.5$) and with $\kmax$ above 1.
+  It is a phenomenological share, not a derived quantity. Without satellites
+  the model underpredicts $P_{\delta E}$ by 7 to 20\% above $k = 1.2$.
+\end{itemize}
+
+\paragraph{What changes in this review.} Item 3 of the Reading of the FLAMINGO
+tests (the drift of $a_c$) is the main result, not a detail: the central term
+absorbed the 2-halo deficit. Neither 1-halo term of the model has the scale
+dependence FLAMINGO needs; both rise too steeply with $k$. The 2-halo part
+with $\alpha$ is the piece that passes the checks. The Roman scan was not
+rerun with $\alpha$; there $a_c$ is unconstrained and the gain was already
+attributed to the swap, which $\alpha \approx 0.5$ says goes too far by about
+half.
+
+\begin{figure}[H]\centering
+\includegraphics[width=0.66\textwidth]{\figdir/ia_hmca_z1/ia_hmca_z1}\\[2pt]
+\includegraphics[width=0.66\textwidth]{\figdir/ia_hmcas_z1/ia_hmcas_z1}
+\caption{As Fig.~\ref{fig:addold} for the refit. Top: $\alpha$ free,
+$a_c \le 1$, no satellites. Bottom: the same with the satellites free, fitted
+to a wider range. The central 1-halo term has no $P_{EE}$ part: one central
+per halo.}
+\label{fig:add}
+\end{figure}
+
 \section*{Code}
+Addendum: \texttt{notes/flamingo\_vs\_tng300/fits/hmc\_alpha\_fit.py} (the refit,
+\texttt{hmc\_alpha\_fits.json}), \texttt{hmc\_alpha\_checks.py} (the checks,
+\texttt{checks\_z1.txt}), \texttt{notes/flamingo\_vs\_tng300/plots/} (figures).
+
 \texttt{v6/halo\_central.py} (central tables), \texttt{halo\_central\_grid.py}
 ($\beta$, $p$ grids), \texttt{halo\_satcoh.py} (coherent satellites),
 \texttt{halo\_central\_fit.py} (FLAMINGO fits, \texttt{f21v\_<variant>.npz}),
