@@ -4,25 +4,25 @@
  "rows": [
   {
    "name": "1p",
-   "label": "one population, $A_1 X^{\\eta_1}$",
+   "label": "no split: $A_1 X^{\\eta_1}$",
    "group": "one",
    "status": "ok",
    "why": "",
-   "chi2_nu": 1.4875137889120216,
+   "chi2_nu": 1.4875137888509706,
    "npar": 8
   },
   {
    "name": "1pA",
-   "label": "one population, $A_1 X^{\\eta_1}$, $\\alpha(z)$",
+   "label": "no split: $A_1 X^{\\eta_1}$, $\\alpha(z)$",
    "group": "one",
    "status": "ok",
-   "why": "",
+   "why": "alpha trades with b_TA, A2",
    "chi2_nu": 1.1839085303954306,
    "npar": 9
   },
   {
    "name": "1pB",
-   "label": "one population, $A_1 b_g$",
+   "label": "no split: $A_1 b_g$",
    "group": "one",
    "status": "ok",
    "why": "",
@@ -31,16 +31,16 @@
   },
   {
    "name": "1pBb",
-   "label": "one population, $A_1 b_g^{\\beta}$",
+   "label": "no split: $A_1 b_g^{\\beta}$",
    "group": "one",
    "status": "ok",
-   "why": "",
+   "why": "beta = 0.88",
    "chi2_nu": 1.9253147125727255,
    "npar": 8
   },
   {
    "name": "1pBbA",
-   "label": "one population, $A_1 b_g^{\\beta}$, $\\alpha(z)$",
+   "label": "no split: $A_1 b_g^{\\beta}$, $\\alpha(z)$",
    "group": "one",
    "status": "bad",
    "why": "alpha > 1 at z = 2; eta2 at bound",
@@ -67,7 +67,7 @@
   },
   {
    "name": "rbF21",
-   "label": "red + blue, constant (F21)",
+   "label": "split, F21: constant $A_{\\rm red}$, $A_{\\rm blue}$",
    "group": "colour",
    "status": "bad",
    "why": "A_blue = 14 A_red",
@@ -75,35 +75,26 @@
    "npar": 6
   },
   {
-   "name": "rbTT_eta",
-   "label": "red $A_r X^{\\eta_r}$ + blue torquing",
-   "group": "colour",
-   "status": "bad",
-   "why": "A2_b sign opposite to data",
-   "chi2_nu": 9.122067984621863,
-   "npar": 7
-  },
-  {
-   "name": "rbH",
-   "label": "halo-based, centrals only",
-   "group": "colour",
-   "status": "ok",
-   "why": "",
-   "chi2_nu": 4.546759812036311,
-   "npar": 7
-  },
-  {
    "name": "rbS",
-   "label": "halo-based, $\\kappa_b$ free",
+   "label": "split, halo-based: $b$, $\\kappa_b$",
    "group": "colour",
    "status": "ok",
    "why": "kappa_b = 1.09",
-   "chi2_nu": 2.01436621079294,
+   "chi2_nu": 2.0143662107926663,
+   "npar": 8
+  },
+  {
+   "name": "rbS_zm",
+   "label": "split, halo-based, other fractions",
+   "group": "colour",
+   "status": "ok",
+   "why": "kappa_b = 0.72",
+   "chi2_nu": 1.99422852476557,
    "npar": 8
   },
   {
    "name": "rbSbP",
-   "label": "halo-based, $b^{\\beta}$, $\\kappa_b \\leq 1$",
+   "label": "split, halo-based: $b^{\\beta}$, $\\kappa_b \\leq 1$",
    "group": "colour",
    "status": "ok",
    "why": "kappa_b -> 1",
@@ -112,7 +103,7 @@
   },
   {
    "name": "rbSbAP",
-   "label": "halo-based, $b^{\\beta}$, $\\kappa_b \\leq 1$, $\\alpha(z)$",
+   "label": "split, halo-based: $b^{\\beta}$, $\\kappa_b \\leq 1$, $\\alpha(z)$",
    "group": "colour",
    "status": "bad",
    "why": "kappa_b -> 1; alpha > 1 at z = 2",
@@ -121,7 +112,7 @@
   },
   {
    "name": "rbSb",
-   "label": "halo-based, $b^{\\beta}$, $\\kappa_b$ free",
+   "label": "split, halo-based: $b^{\\beta}$, $\\kappa_b$ free",
    "group": "colour",
    "status": "bad",
    "why": "kappa_b = 2 (bound)",
@@ -130,7 +121,7 @@
   },
   {
    "name": "rbSbA",
-   "label": "halo-based, $b^{\\beta}$, $\\kappa_b$ free, $\\alpha(z)$",
+   "label": "split, halo-based: $b^{\\beta}$, $\\kappa_b$ free, $\\alpha(z)$",
    "group": "colour",
    "status": "bad",
    "why": "kappa_b = 2 (bound)",

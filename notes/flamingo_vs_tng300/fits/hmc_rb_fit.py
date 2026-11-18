@@ -1,90 +1,51 @@
-"""Halo model with red and blue galaxies, fitted jointly to the FLAMINGO
-spectra of the core snapshots (0.2 <= z <= 2).
+"""Halo model with and without a red/blue split, fitted jointly to the
+FLAMINGO spectra of the core snapshots (0.2 <= z <= 2).
 
 Why joint. Fitted snapshot by snapshot, a red/blue split is only a
-relabelling: the effective amplitudes f_rc A_r + f_bc A_b absorb any
-fraction. The split says something only when the amplitudes of each colour
-are the same at every redshift (Fortuna et al. 2021: "we do not include any
-intrinsic redshift evolution in our IA model") and the redshift dependence
-of the signal comes from the red and blue fractions of the sample. So every
-model here is fitted to the nine core snapshots at once, with one set of
-physical amplitudes and a white term W_s per snapshot.
+relabelling: the effective amplitudes absorb any fraction. The split says
+something only when each colour has one amplitude at every redshift
+(Fortuna et al. 2021: "we do not include any intrinsic redshift evolution in
+our IA model"), so every model here is fitted to the nine core snapshots at
+once, with one set of physical parameters and a white term W_s per snapshot.
 
 Data, b(k), N_s, windows, the I_1 P_lin + alpha (P_NL - I_1 P_lin) 2-halo
 power (GI) and P_lin + alpha (P_NL - P_lin) (II), and the bounds follow
-hmc_alpha_fit.py (variant alpha_cap: a_c <= 1).
+hmc_alpha_fit.py (variant alpha_cap: a_c <= 1). Every model has the TATT
+torquing term A2 X^eta2 (except rbF21), b_TA, the satellite amplitude a_1h,
+the central 1-halo a_c and alpha. X = (1 + z)/1.62; f_rc, f_bc, f_rs, f_bs:
+red/blue central/satellite fractions; b_r, b_b: mean bias of red and blue
+galaxies on the HOD (analysis/roman_dchi2/v6/halo_redblue.py; red
+fractions "zt": Zu & Mandelbaum 2016 at z <= 0.1, Tinker et al. 2013 at
+z = 0.36 to 0.88, held above; "zm": Zu & Mandelbaum at every z).
 
-Models (X = (1 + z)/1.62; f_rc, f_bc: red and blue central fractions of the
-sample from analysis/roman_dchi2/v6/halo_redblue.py):
-  1p      one population, power-law evolution: A1 X^eta1, A2 X^eta2, b_TA,
-          satellites a_1h, central 1-halo a_c (all centrals), alpha
-  1p0     1p with eta1 = eta2 = 0 (no evolution)
-  rbF21   red centrals NLA A_r, blue centrals NLA A_b, as Fortuna et al.
-          2021 Eqs. 3-4: GI amplitude f_rc A_r + f_bc A_b, II amplitude
-          (f_rc A_r)^2 + (f_bc A_b)^2 without the red-blue cross term;
-          red satellites a_1h, blue satellites 0.6 a_1h (F21 Table 3);
-          central 1-halo a_c on red centrals only
-  rbTT    red centrals NLA A_r, blue centrals tidal torquing A2_b (the TATT
-          quadratic term with amplitude f_bc A2_b); TATT then carries the
-          red-blue cross terms it implies; satellites and a_c as rbF21
-  rbTT_q0 rbTT with unaligned blue satellites
-  rbTT_zm rbTT with the red fractions of Zu & Mandelbaum 2016 at every z
-  rbTT_eta rbTT with A_r X^eta_r: does the red fraction remove the need
-          for an evolution law?
-Added after the first fits, which needed the amplitude to rise with z as
-the galaxy bias does (A1/b_g of the per-snapshot fits is 2.4 to 2.6):
-  1pB     one population with A1 b_g(z)/B_PIV in place of A1 X^eta1 (b_g:
-          the HOD bias matched to FLAMINGO, halo_sim.py); A2 X^eta2 kept
-  rbB     red and blue centrals both linear (NLA), each with its amplitude
-          times its own bias, A_r b_r/B_PIV and A_b b_b/B_PIV (with the
-          red-blue cross term: two linear populations share the tidal
-          field); blue tidal torquing f_bc A2_b; satellites and a_c as rbTT.
-          A_b = A_r means alignment that does not care about colour.
-Halo-based colour split (added after scrutiny of the models above, which
-give each colour an amplitude that ignores its halo): a central takes the
-alignment of its halo, which scales with the halo bias (Xia et al. 2017:
-the mass and formation-time dependence of halo alignment is explained by
-halo bias; Kurita et al. 2021), times a misalignment factor that depends on
-colour (Tenneti et al. 2016: discs are more misaligned with their halos
-than ellipticals), 1 for red and kappa_b for blue:
-    a1(z) = A_h [f_rc b_rc + kappa_b f_bc b_bc],
-b_rc, b_bc the mean bias of red and blue centrals (halo_redblue.py), the
-satellites not aligned on large scales (F21). Both colours align linearly
-with the same tidal field, so P_II keeps the red-blue cross term.
-  rbH     kappa_b free in [0, 2] (physical: 0 to 1), blue tidal torquing
-          f_bc A2_b
-  rbH_A2  rbH with torquing on every central, A2 X^eta2, not by colour
-  rbH_k1  kappa_b = 1 (colour-blind)
-  rbH_kF  kappa_b = 0.04 (the F21 ratio A_blue/A_red = 0.21/5.3)
-  rbH_zm  rbH with the Zu & Mandelbaum fractions at every z
-The rbH fits need the satellites to carry large-scale alignment (with the
-centrals alone the amplitude rises too steeply with z), so:
-  rbS     every galaxy, central or satellite, aligned like its host halo:
-          a1 = A_h [(f_rc + f_rs) b_r + kappa_b (f_bc + f_bs) b_b]/1.5,
-          torquing A2 X^eta2 on every galaxy. kappa_b = 1 is 1pB exactly
-          (the bracket is then b_g), so the colour split can only improve it.
-  rbS_bt  rbS with the torquing on blue galaxies only, f_bc A2_b
-  rbS_zm  rbS with the Zu & Mandelbaum fractions at every z
-Diagnostics of what limits the joint fits (added after rbS fell short of 1p):
-  1pF     one population with A1 free at every snapshot (nine values), the
-          rest shared: the floor any law A1(z), colour-based or not, can reach
-  1pA     1p with alpha X^eta_alpha (the per-snapshot alpha rises with z)
-  1pFA    1pF with alpha X^eta_alpha
-  1pBb    one population, A1 (b_g/1.5)^beta: alignment growing as a power of
-          the bias (misalignment falls with halo mass, Tenneti et al. 2016)
-  1pBbA   1pBb with alpha X^eta_alpha
-  rbSb    rbS with b^beta for each colour (beta = 1 is rbS)
-  rbSbA   rbSb with alpha X^eta_alpha
-  rbSbP, rbSbAP   rbSb and rbSbA with kappa_b in its physical range [0, 1]
-          (the free fits reach the bound kappa_b = 2: blue galaxies twice as
-          aligned as red, which uses the rising blue fraction as an evolution law)
-The red fractions are fixed inputs (FLAMINGO has no colour split): model
-"zt" (Zu & Mandelbaum 2016 at z <= 0.1, Tinker et al. 2013 at z = 0.36 to
-0.88, held above) unless stated.
+No colour split:
+  1p      A1 X^eta1
+  1pB     A1 b_g/1.5 (b_g: the HOD bias matched to FLAMINGO)
+  1pBb    A1 (b_g/1.5)^beta
+  1pA, 1pBbA   1p, 1pBb with alpha X^eta_alpha
+  1pF, 1pFA    the floor: A1 free at each of the nine snapshots (alpha
+          fixed; evolving): the best any law A1(z), colour-based or not, can do
+Colour split:
+  rbF21   Fortuna et al. 2021 (Eqs. 3-4): red and blue centrals NLA with
+          constant amplitudes A_r, A_b, GI amplitude f_rc A_r + f_bc A_b, II
+          (f_rc A_r)^2 + (f_bc A_b)^2 without the red-blue cross term
+  rbS     halo-based: every galaxy, central or satellite, aligned like its
+          host halo, whose alignment scales with its bias (Xia et al. 2017;
+          Kurita et al. 2021), blue galaxies scaled by a misalignment factor
+          kappa_b (Tenneti et al. 2016: discs are more misaligned):
+              a1 = A_h [(f_rc + f_rs)(b_r/1.5)^beta + kappa_b (f_bc + f_bs)(b_b/1.5)^beta],
+          beta = 1, kappa_b in [0, 2] (physical: 0 to 1); kappa_b = 1 is 1pB
+          (1pBb) exactly, so the split can only match or improve it; the
+          TATT terms carry the red-blue cross term
+  rbS_zm  rbS with the "zm" fractions
+  rbSb, rbSbP   beta free; kappa_b in [0, 2], in [0, 1]
+  rbSbA, rbSbAP rbSb, rbSbP with alpha X^eta_alpha
+Satellites (both families with colour): red a_1h, blue 0.6 a_1h (F21
+Table 3); central 1-halo a_c on red centrals.
 
 Writes hmc_rb_fits.json: per model and k_max the parameters, their errors,
-chi2, nu, the parameters at a bound, and the effective per-snapshot
-amplitudes a1(z), a2(z).
+chi2, nu, the parameters at a bound, the effective per-snapshot amplitudes
+a1(z), a2(z), and chi2 per snapshot.
 
     ~/cocoa/Cocoa/.local/bin/python hmc_rb_fit.py [model ...]
 """
@@ -114,66 +75,41 @@ AT_BOUND = 1e-3
 Q_BLUE = 0.6
 C1RHOCRIT = 0.01389
 
-# model: (global parameter names, bounds lo, bounds hi, red-fraction model, blue satellites q)
-MODELS = {
-    '1p': (('A1', 'A2', 'eta1', 'eta2', 'bTA', 'a_1h', 'a_c', 'alpha'),
-           (0, -10, -5, -5, 0, 0, 0, -1), (40, 10, 5, 5, 2, 3, AC_CAP, 2), None, None),
-    '1p0': (('A1', 'A2', 'bTA', 'a_1h', 'a_c', 'alpha'),
-            (0, -10, 0, 0, 0, -1), (40, 10, 2, 3, AC_CAP, 2), None, None),
-    'rbF21': (('A_r', 'A_b', 'bTA', 'a_1h', 'a_c', 'alpha'),
-              (0, -40, 0, 0, 0, -1), (60, 40, 2, 3, AC_CAP, 2), 'zt', Q_BLUE),
-    'rbTT': (('A_r', 'A2_b', 'bTA', 'a_1h', 'a_c', 'alpha'),
-             (0, -40, 0, 0, 0, -1), (60, 40, 2, 3, AC_CAP, 2), 'zt', Q_BLUE),
-    'rbTT_q0': (('A_r', 'A2_b', 'bTA', 'a_1h', 'a_c', 'alpha'),
-                (0, -40, 0, 0, 0, -1), (60, 40, 2, 3, AC_CAP, 2), 'zt', 0.0),
-    'rbTT_zm': (('A_r', 'A2_b', 'bTA', 'a_1h', 'a_c', 'alpha'),
-                (0, -40, 0, 0, 0, -1), (60, 40, 2, 3, AC_CAP, 2), 'zm', Q_BLUE),
-    'rbTT_eta': (('A_r', 'A2_b', 'eta_r', 'bTA', 'a_1h', 'a_c', 'alpha'),
-                 (0, -40, -5, 0, 0, 0, -1), (60, 40, 5, 2, 3, AC_CAP, 2), 'zt', Q_BLUE),
-    '1pB': (('A1', 'A2', 'eta2', 'bTA', 'a_1h', 'a_c', 'alpha'),
-            (0, -10, -5, 0, 0, 0, -1), (40, 10, 5, 2, 3, AC_CAP, 2), None, None),
-    'rbB': (('A_r', 'A_b', 'A2_b', 'bTA', 'a_1h', 'a_c', 'alpha'),
-            (0, -40, -40, 0, 0, 0, -1), (60, 60, 40, 2, 3, AC_CAP, 2), 'zt', Q_BLUE),
-    'rbH': (('A_h', 'kappa_b', 'A2_b', 'bTA', 'a_1h', 'a_c', 'alpha'),
-            (0, 0, -40, 0, 0, 0, -1), (60, 2, 40, 2, 3, AC_CAP, 2), 'zt', Q_BLUE),
-    'rbH_A2': (('A_h', 'kappa_b', 'A2', 'eta2', 'bTA', 'a_1h', 'a_c', 'alpha'),
-               (0, 0, -10, -5, 0, 0, 0, -1), (60, 2, 10, 5, 2, 3, AC_CAP, 2), 'zt', Q_BLUE),
-    'rbH_k1': (('A_h', 'A2_b', 'bTA', 'a_1h', 'a_c', 'alpha'),
-               (0, -40, 0, 0, 0, -1), (60, 40, 2, 3, AC_CAP, 2), 'zt', Q_BLUE),
-    'rbH_kF': (('A_h', 'A2_b', 'bTA', 'a_1h', 'a_c', 'alpha'),
-               (0, -40, 0, 0, 0, -1), (60, 40, 2, 3, AC_CAP, 2), 'zt', Q_BLUE),
-    'rbH_zm': (('A_h', 'kappa_b', 'A2_b', 'bTA', 'a_1h', 'a_c', 'alpha'),
-               (0, 0, -40, 0, 0, 0, -1), (60, 2, 40, 2, 3, AC_CAP, 2), 'zm', Q_BLUE),
-    'rbS': (('A_h', 'kappa_b', 'A2', 'eta2', 'bTA', 'a_1h', 'a_c', 'alpha'),
-            (0, 0, -10, -5, 0, 0, 0, -1), (60, 2, 10, 5, 2, 3, AC_CAP, 2), 'zt', Q_BLUE),
-    'rbS_bt': (('A_h', 'kappa_b', 'A2_b', 'bTA', 'a_1h', 'a_c', 'alpha'),
-               (0, 0, -40, 0, 0, 0, -1), (60, 2, 40, 2, 3, AC_CAP, 2), 'zt', Q_BLUE),
-    'rbS_zm': (('A_h', 'kappa_b', 'A2', 'eta2', 'bTA', 'a_1h', 'a_c', 'alpha'),
-               (0, 0, -10, -5, 0, 0, 0, -1), (60, 2, 10, 5, 2, 3, AC_CAP, 2), 'zm', Q_BLUE),
-}
 NCORE = 9
 _COMMON = (('bTA', 0, 2), ('a_1h', 0, 3), ('a_c', 0, AC_CAP), ('alpha', -1, 2))
 _A2 = (('A2', -10, 10), ('eta2', -5, 5))
 _EA = (('eta_alpha', -5, 5),)
 _A1S = tuple((f'a1_{i}', 0, 40) for i in range(NCORE))
+_HALO = (('A_h', 0, 60), ('kappa_b', 0, 2))
+_HALOP = (('A_h', 0, 60), ('kappa_b', 0, 1))
+_BETA = (('beta', -2, 5),)
 
 
 def _model(spec, rf=None, q=None):
+    '''(parameter names, lower bounds, upper bounds, red-fraction model, blue satellite factor).'''
     return (tuple(n for n, _, _ in spec), tuple(l for _, l, _ in spec), tuple(h for _, _, h in spec), rf, q)
 
 
-MODELS.update({
-    '1pF': _model(_A2 + _COMMON + _A1S),
+MODELS = {
+    # no colour split
+    '1p': _model((('A1', 0, 40), ('eta1', -5, 5)) + _A2 + _COMMON),
+    '1pB': _model((('A1', 0, 40),) + _A2 + _COMMON),
+    '1pBb': _model((('A1', 0, 40),) + _BETA + _A2 + _COMMON),
     '1pA': _model((('A1', 0, 40), ('eta1', -5, 5)) + _A2 + _COMMON + _EA),
+    '1pBbA': _model((('A1', 0, 40),) + _BETA + _A2 + _COMMON + _EA),
+    '1pF': _model(_A2 + _COMMON + _A1S),
     '1pFA': _model(_A2 + _COMMON + _EA + _A1S),
-    '1pBb': _model((('A1', 0, 40), ('beta', -2, 5)) + _A2 + _COMMON),
-    '1pBbA': _model((('A1', 0, 40), ('beta', -2, 5)) + _A2 + _COMMON + _EA),
-    'rbSb': _model((('A_h', 0, 60), ('kappa_b', 0, 2), ('beta', -2, 5)) + _A2 + _COMMON, 'zt', Q_BLUE),
-    'rbSbA': _model((('A_h', 0, 60), ('kappa_b', 0, 2), ('beta', -2, 5)) + _A2 + _COMMON + _EA, 'zt', Q_BLUE),
-    'rbSbP': _model((('A_h', 0, 60), ('kappa_b', 0, 1), ('beta', -2, 5)) + _A2 + _COMMON, 'zt', Q_BLUE),
-    'rbSbAP': _model((('A_h', 0, 60), ('kappa_b', 0, 1), ('beta', -2, 5)) + _A2 + _COMMON + _EA, 'zt', Q_BLUE),
-})
-KAPPA_FIXED = {'rbH_k1': 1.0, 'rbH_kF': 0.21/5.3}
+    # colour split
+    'rbF21': _model((('A_r', 0, 60), ('A_b', -40, 40)) + _COMMON, 'zt', Q_BLUE),
+    'rbS': _model(_HALO + _A2 + _COMMON, 'zt', Q_BLUE),
+    'rbS_zm': _model(_HALO + _A2 + _COMMON, 'zm', Q_BLUE),
+    'rbSb': _model(_HALO + _BETA + _A2 + _COMMON, 'zt', Q_BLUE),
+    'rbSbP': _model(_HALOP + _BETA + _A2 + _COMMON, 'zt', Q_BLUE),
+    'rbSbA': _model(_HALO + _BETA + _A2 + _COMMON + _EA, 'zt', Q_BLUE),
+    'rbSbAP': _model(_HALOP + _BETA + _A2 + _COMMON + _EA, 'zt', Q_BLUE),
+}
+# kappa_b fixed by model name (hmc_rb_kappa_profile.py adds entries)
+KAPPA_FIXED = {}
 B_PIV = 1.5
 
 
@@ -249,11 +185,9 @@ class Snapshot:
             dE_c = -ac*self.pc_all
         else:
             d = self.rb[rf]
-            ar = p.get('A_r', 0.0)*self.X**p.get('eta_r', 0.0)
-            if name.startswith('rbF21'):
-                a1 = d['f_rc']*ar + d['f_bc']*p['A_b']
-                dE, EE, BB = self.two_halo(a1, 0.0, bta, alpha,
-                                           a1sq=(d['f_rc']*ar)**2 + (d['f_bc']*p['A_b'])**2)
+            if name == 'rbF21':
+                ar, ab_ = d['f_rc']*p['A_r'], d['f_bc']*p['A_b']
+                dE, EE, BB = self.two_halo(ar + ab_, 0.0, bta, alpha, a1sq=ar**2 + ab_**2)
             else:
                 dE, EE, BB = self.two_halo(*self.effective(name, p), bta, alpha)
             ab = q*a1h
@@ -279,25 +213,13 @@ class Snapshot:
                 a1 = p['A1']*self.X**p.get('eta1', 0.0)
             return a1, p['A2']*self.X**p.get('eta2', 0.0)
         d = self.rb[rf]
-        ar = p.get('A_r', 0.0)*self.X**p.get('eta_r', 0.0)
-        if name.startswith('rbS'):
-            be = p.get('beta', 1.0)
-            kap = KAPPA_FIXED.get(name, p.get('kappa_b'))
-            a1 = p['A_h']*((d['f_rc'] + d['f_rs'])*(d['b_r']/B_PIV)**be
-                           + kap*(d['f_bc'] + d['f_bs'])*(d['b_b']/B_PIV)**be)
-            a2 = d['f_bc']*p['A2_b'] if name == 'rbS_bt' else p['A2']*self.X**p['eta2']
-            return a1, a2
-        if name.startswith('rbH'):
-            kap = KAPPA_FIXED.get(name, p.get('kappa_b'))
-            a1 = p['A_h']*(d['f_rc']*d['b_rc'] + kap*d['f_bc']*d['b_bc'])
-            a2 = p['A2']*self.X**p['eta2'] if name == 'rbH_A2' else d['f_bc']*p['A2_b']
-            return a1, a2
-        if name == 'rbB':
-            return ((d['f_rc']*p['A_r']*d['b_r'] + d['f_bc']*p['A_b']*d['b_b'])/B_PIV,
-                    d['f_bc']*p['A2_b'])
-        if name.startswith('rbF21'):
-            return d['f_rc']*ar + d['f_bc']*p['A_b'], 0.0
-        return d['f_rc']*ar, d['f_bc']*p['A2_b']
+        if name == 'rbF21':
+            return d['f_rc']*p['A_r'] + d['f_bc']*p['A_b'], 0.0
+        be = p.get('beta', 1.0)
+        kap = KAPPA_FIXED.get(name, p.get('kappa_b'))
+        a1 = p['A_h']*((d['f_rc'] + d['f_rs'])*(d['b_r']/B_PIV)**be
+                       + kap*(d['f_bc'] + d['f_bs'])*(d['b_b']/B_PIV)**be)
+        return a1, p['A2']*self.X**p['eta2']
 
 
 def fit_joint(snaps, name, kmax, warm=None):
@@ -316,11 +238,11 @@ def fit_joint(snaps, name, kmax, warm=None):
                                for i, (s, m) in enumerate(zip(snaps, masks))])
     starts = []
     base = {'A1': 3.5, 'A2': -1.0, 'eta1': 0.0, 'eta2': 0.0, 'bTA': 0.3, 'a_1h': 1e-3, 'a_c': 0.5,
-            'alpha': 0.5, 'A_r': 12.0, 'A_b': 1.0, 'A2_b': -2.0, 'eta_r': 0.0, 'A_h': 10.0, 'kappa_b': 0.3,
+            'alpha': 0.5, 'A_r': 12.0, 'A_b': 1.0, 'A_h': 10.0, 'kappa_b': 0.3,
             'beta': 1.0, 'eta_alpha': 0.0, **{f'a1_{i}': 3.5 + 0.2*i for i in range(NCORE)}}
-    for over in ({}, {'A_r': 6.0, 'A1': 2.5, 'alpha': 0.2}, {'A_r': 20.0, 'A2_b': -6.0, 'A2': -3.0, 'bTA': 0.6},
-                 {'A_b': 5.0, 'A2_b': 2.0, 'A2': 1.0, 'a_1h': 0.05, 'alpha': 0.8}, {'eta1': 1.0, 'eta_r': -1.0},
-                 {'kappa_b': 1.0, 'A_h': 6.0}, {'kappa_b': 0.05, 'A_h': 14.0, 'A2_b': 1.0},
+    for over in ({}, {'A_r': 6.0, 'A1': 2.5, 'alpha': 0.2}, {'A_r': 20.0, 'A2': -3.0, 'bTA': 0.6},
+                 {'A_b': 5.0, 'A2': 1.0, 'a_1h': 0.05, 'alpha': 0.8}, {'eta1': 1.0},
+                 {'kappa_b': 1.0, 'A_h': 6.0}, {'kappa_b': 0.05, 'A_h': 14.0},
                  # the 1pB solution, which rbS contains at kappa_b = 1
                  {'kappa_b': 1.0, 'A_h': 3.54, 'A1': 3.54, 'A2': 0.67, 'eta2': 1.73, 'bTA': 0.0, 'alpha': 0.5,
                   'a_1h': 0.0, 'a_c': 0.0},

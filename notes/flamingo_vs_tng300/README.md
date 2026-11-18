@@ -23,21 +23,16 @@ amplitude turned out to be unphysical. The written record is the addendum of
   is unconstrained at a physical amplitude; the satellite amplitude a_1h is
   unconstrained below k of about 1 and drifts with the fit range above it.
 * Red and blue galaxies (18 November 2026, the second addendum of
-  `hmc_review.pdf`): with red fractions from halo-quenching fits to observed
-  galaxies (Zu & Mandelbaum 2016, Tinker et al. 2013) on the FLAMINGO HOD and
-  one amplitude per colour at every redshift (Fortuna et al. 2021), the joint
-  fit to the nine core snapshots gives chi2/nu = 12.5 (constant NLA amplitudes,
-  F21 Eqs. 3-4) to 133 at k_max = 0.52, against 1.49 for one population with
-  a power-law evolution. FLAMINGO's amplitude follows the galaxy bias
-  (A1/b_g = 2.4 to 2.7 at every snapshot) while the red fraction falls; with
-  each colour's amplitude scaled by its bias the fit sets A_blue = A_red.
-  A physically consistent split (alignment from the host halo, scaled with
-  its bias; blue scaled by a misalignment factor kappa_b; satellites aligned;
-  nested on one population) gives kappa_b = 0.7 to 1.1 and no gain: the chi2
-  profile in kappa_b has no minimum below 1, and every colour fit that beats
-  one population needs kappa_b > 1. The fit improves instead with the
-  2-halo nonlinear share alpha evolving with z (chi2/nu 1.49 to 1.18, floor
-  1.15 to 0.95), partly by degeneracy with the shared b_TA and A2.
+  `hmc_review.pdf`): red fractions from halo-quenching fits to observed
+  galaxies (Zu & Mandelbaum 2016, Tinker et al. 2013) on the FLAMINGO HOD;
+  the halo model with and without a colour split, fitted jointly to the nine
+  core snapshots. The split does not improve on one population: the F21 form
+  (constant amplitude per colour) fails (chi2/nu 12.5 at k_max = 0.52, the
+  alignment pushed onto blue galaxies), and a halo-based split (every galaxy
+  aligned like its host halo, scaled with its bias; blue scaled by kappa_b)
+  matches its one-population counterpart (2.01 against 2.02) with
+  kappa_b = 0.7 to 1.1. Only kappa_b > 1 would gain. FLAMINGO's amplitude
+  follows the host-halo bias (A1/b_g = 2.4 to 2.7 at every snapshot).
 
 ## Layout
 
@@ -51,13 +46,12 @@ amplitude turned out to be unphysical. The written record is the addendum of
 | `fits/hmc_alpha_fit.py` | the refit of all variants, every snapshot and k_max; results in `fits/hmc_alpha_fits.json` |
 | `fits/hmc_alpha_checks.py` | the physical-sensibility checks; output for z = 1 in `fits/checks_z1.txt` |
 | `hmc_equations/` | the HMc equations on one slide-sized page (`.tex`, `.pdf`, `.png`) |
-| `fits/hmc_rb_fit.py` | the joint red/blue and one-population fits over the core snapshots; results in `fits/hmc_rb_fits.json`, log `fits/hmc_rb_fit_log.txt` (tables from `analysis/roman_dchi2/v6/halo_redblue.py`) |
-| `plots/ia_redblue/` | the effective amplitude against z, per snapshot and from the joint fits, with the red and blue fractions |
-| `plots/ia_redblue_fit/` | the joint fits against the FLAMINGO spectra at z = 0.3, 1 and 2 |
+| `fits/hmc_rb_fit.py` | the joint fits with and without a colour split over the core snapshots; results in `fits/hmc_rb_fits.json`, log `fits/hmc_rb_fit_log.txt` (tables from `analysis/roman_dchi2/v6/halo_redblue.py`) |
+| `plots/ia_redblue/` | the effective amplitude against z, per snapshot and from joint fits with and without the split, with the red and blue fractions |
+| `plots/ia_redblue_fit/` | the joint fits with and without the split against the FLAMINGO spectra at z = 0.3, 1 and 2 |
 | `fits/hmc_rb_kappa_profile.py` | the joint chi2 against a fixed blue misalignment factor kappa_b; `fits/hmc_rb_kappa_profile.json` |
-| `plots/ia_rb_models/` | every joint model ranked by chi2/nu, with its physical-check status |
-| `plots/ia_rb_profile/`, `plots/ia_redblue_kappa/` | the kappa_b profile, and kappa_b against the fit range |
-| `plots/ia_rb_alpha/` | the 2-halo nonlinear share alpha against z, per snapshot and joint |
+| `plots/ia_rb_models/` | every joint model, split and no split, ranked by chi2/nu, with its physical-check status |
+| `plots/ia_rb_profile/` | the joint chi2 against a fixed blue misalignment factor kappa_b |
 
 Each figure folder redraws from its `data.json` alone
 (`python plot_<name>.py`). `make_figure_data.py` also knows a fifth figure,
@@ -73,9 +67,9 @@ $PY hmc_alpha_fit.py                 # all variants, about 20 minutes
 $PY hmc_alpha_checks.py 1.0 > checks_z1.txt
 (cd ../../../analysis/roman_dchi2/v6 && $PY halo_redblue.py > halo_redblue_log.txt)   # about 10 minutes
 (cd ../../../analysis/roman_dchi2/v6 && $PY halo_redblue.py --light)   # central biases
-$PY hmc_rb_fit.py > hmc_rb_fit_log.txt   # about 3 minutes
+$PY hmc_rb_fit.py > hmc_rb_fit_log.txt   # about 2 minutes
 $PY hmc_rb_kappa_profile.py > hmc_rb_kappa_profile_log.txt   # about 1 minute
 cd ../plots
-$PY make_figure_data.py ia_fit_z1 ia_hmc_z1 ia_hmca_z1 ia_hmcas_z1 ia_redblue ia_redblue_fit ia_redblue_kappa ia_rb_models ia_rb_profile ia_rb_alpha
-for d in ia_fit_z1 ia_hmc_z1 ia_hmca_z1 ia_hmcas_z1 ia_redblue ia_redblue_fit ia_redblue_kappa ia_rb_models ia_rb_profile ia_rb_alpha; do (cd $d && $PY plot_$d.py); done
+$PY make_figure_data.py ia_fit_z1 ia_hmc_z1 ia_hmca_z1 ia_hmcas_z1 ia_redblue ia_redblue_fit ia_rb_models ia_rb_profile
+for d in ia_fit_z1 ia_hmc_z1 ia_hmca_z1 ia_hmcas_z1 ia_redblue ia_redblue_fit ia_rb_models ia_rb_profile; do (cd $d && $PY plot_$d.py); done
 ```

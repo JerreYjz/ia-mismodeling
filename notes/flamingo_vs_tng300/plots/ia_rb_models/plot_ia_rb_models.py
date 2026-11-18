@@ -1,10 +1,9 @@
 """Redraw ia_rb_models.pdf and ia_rb_models.png from data.json alone.
 
 Every model fitted jointly to the nine core FLAMINGO snapshots (k <= 0.52
-h/Mpc), ranked by chi2/nu (log axis). Blue circles: one population (no colour
-split); black diamonds: the floor, the amplitude A1 free at every snapshot,
-which no law A1(z), colour-based or not, can beat; pink squares: colour
-splits. Filled: passes the physical checks; open with a cross: fails one (the
+h/Mpc), ranked by chi2/nu (log axis): without a colour split (blue circles), with
+one (pink squares), and the floor (black diamonds), the amplitude A1 free at
+every snapshot, which no law A1(z), colour-based or not, can beat. Filled: passes the physical checks; open with a cross: fails one (the
 reason is printed next to it). Dotted: the best one-population fit with the
 2-halo nonlinear share alpha evolving with z.
 
@@ -235,7 +234,7 @@ def draw(data):
     ax.minorticks_off()
     handles = [Line2D([], [], marker=GROUP[g][1], color=GROUP[g][0], ls='none', ms=6) for g in GROUP]
     handles += [Line2D([], [], marker='o', color='0.3', mfc='white', ls='none', ms=6)]
-    leg = ax.legend(handles, ['one population', 'floor (A$_1$ free per snapshot)', 'colour split',
+    leg = ax.legend(handles, ['no colour split', 'floor (A$_1$ free per snapshot)', 'colour split',
                               'fails a physical check'], loc='lower left', bbox_to_anchor=(-0.02, 1.02), ncol=2,
                     frameon=False, borderaxespad=0.0, fontsize=7.0)
     return fig

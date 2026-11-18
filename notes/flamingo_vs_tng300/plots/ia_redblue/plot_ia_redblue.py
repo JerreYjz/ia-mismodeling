@@ -5,13 +5,12 @@ FLAMINGO snapshots (k <= 0.52 h/Mpc). Top: the effective linear-alignment
 amplitude against redshift. Black points with error bars: A1 of the
 per-snapshot halo-model fit (free share of nonlinear power, no satellites).
 Lines: the effective amplitude of each joint model, with chi2/nu in the
-legend: one population with a power law in (1 + z) (blue, circles), one
-population with A1 proportional to the galaxy bias (green, squares), the
-halo-based colour split (every galaxy aligned like its host halo, blue
-scaled by kappa_b; pink, diamonds), the same with the Zu and Mandelbaum
-fractions at every z (sky blue, plus), the halo-based split on centrals only
-(orange, triangles), red and blue centrals with constant amplitudes as
-Fortuna et al. 2021 (vermillion, down triangles). Bottom: the red (vermillion) and blue (blue)
+legend: one population with a power law in (1 + z) (blue, circles) and with A1
+proportional to the galaxy bias (green, squares), no colour split; the
+halo-based colour split, every galaxy aligned like its host halo with blue
+galaxies scaled by kappa_b (pink, diamonds; at kappa_b = 1 it is the green
+model), and red and blue centrals with constant amplitudes as Fortuna et al.
+2021 (vermillion, down triangles). Bottom: the red (vermillion) and blue (blue)
 fractions of the sample, centrals solid, satellites dashed, from the
 halo-quenching fits of Zu and Mandelbaum 2016 and Tinker et al. 2013 on the
 FLAMINGO HOD.
@@ -214,12 +213,10 @@ SHADE = '0.9'
 
 
 STYLE = {
-    '1p': {'color': '#0072B2', 'lw': 2.0, 'ls': '-', 'marker': 'o', 'label': r'one population, $A_1 X^{\eta_1}$'},
-    '1pB': {'color': '#009E73', 'lw': 1.6, 'ls': (0, (5, 2)), 'marker': 's', 'label': r'one population, $A_1 b_g$ ($\kappa_b = 1$)'},
-    'rbS': {'color': '#CC79A7', 'lw': 1.6, 'ls': (0, (6, 2, 1, 2)), 'marker': 'D', 'label': r'halo-based colour split, $\kappa_b$ free'},
-    'rbS_zm': {'color': '#56B4E9', 'lw': 1.3, 'ls': (0, (1.2, 1.6)), 'marker': 'P', 'label': r'the same, Zu & Mandelbaum fractions'},
-    'rbH': {'color': '#E69F00', 'lw': 1.3, 'ls': (0, (3, 1.5)), 'marker': '^', 'label': r'halo-based, centrals only'},
-    'rbF21': {'color': '#D55E00', 'lw': 1.2, 'ls': (0, (8, 2.5)), 'marker': 'v', 'label': 'red + blue, constant (F21)'},
+    '1p': {'color': '#0072B2', 'lw': 2.0, 'ls': '-', 'marker': 'o', 'label': r'no split: $A_1 X^{\eta_1}$'},
+    '1pB': {'color': '#009E73', 'lw': 1.6, 'ls': (0, (5, 2)), 'marker': 's', 'label': r'no split: $A_1 b_g$'},
+    'rbS': {'color': '#CC79A7', 'lw': 1.6, 'ls': (0, (6, 2, 1, 2)), 'marker': 'D', 'label': r'split, halo-based ($\kappa_b$ free)'},
+    'rbF21': {'color': '#D55E00', 'lw': 1.2, 'ls': (0, (8, 2.5)), 'marker': 'v', 'label': 'split, F21 (constant amplitudes)'},
 }
 FRAC = {'f_rc': ('#D55E00', '-', 'red centrals'), 'f_bc': ('#0072B2', '-', 'blue centrals'),
         'f_rs': ('#D55E00', (0, (4, 2)), 'red satellites'), 'f_bs': ('#0072B2', (0, (4, 2)), 'blue satellites')}
