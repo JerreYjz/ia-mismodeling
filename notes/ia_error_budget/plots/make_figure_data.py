@@ -12,6 +12,8 @@ and, for the v9 section (the correlated residual prior and Fisher method), in
 analysis/roman_dchi2/v9/:
     ia_budget.json       every v9 budget (global, band, map, drift, marginal)
     validate_direct.json direct injections refitted against linear response
+    scale_cut_scan.json  NLA and TATT refitted at each K_0, their shifts
+    scale_cut_pieces.json   the same shifts split by spectrum and k range
 Rerun this after those scripts, then rerun the plot scripts.
 
     ~/cocoa/Cocoa/.local/bin/python make_figure_data.py
@@ -218,6 +220,46 @@ def v9_figures():
                      for cut in ('none', 'K03')},
         'errors': {cut9: {m: ff['fits'][f'prod|{cut8}|{m}']['error'] for m in ('NLA', 'TATT')}
                    for cut9, cut8 in (('none', 'none'), ('K03', 'K0/D 0.3'))},
+    })
+    sc = load('scale_cut_scan.json', V9)
+    pc = load('scale_cut_pieces.json', V9)
+    Ks = [K for K in sc['K0'] if K != 'none']
+    write('v9_scalecut', {
+        'about': ('The scale cut k_UV = K_0/D(z) from the v9 base: NLA and TATT refitted to the '
+                  'FLAMINGO data vector at the fiducial cosmology with each mask (IA parameters '
+                  'only), their error on the tents at every snapshot taken as a known error, and '
+                  'the linear shift of (Omega_m, S8) of the truth-as-model fit with the same mask. '
+                  'fob[truth][model]: the 2D figure of bias sqrt(dp^T C^-1 dp) in (Omega_m, S8); '
+                  'room[truth][model]: sigma_max of a random error of GI and II on top, equal at '
+                  'every z (exp kernel, ell = 1), 0 once a shift reaches 0.3 sigma; fom: '
+                  '1/sqrt(det C) of (Omega_m, S8). k_max_valid_K0: the largest K_0 treated as '
+                  'within the range of validity of the models (k_UV <= 0.5 to 0.6 h/Mpc at z ~ 1). '
+                  '(analysis/roman_dchi2/v9/scale_cut_scan.py.)'),
+        'K0': [float(K) for K in Ks], 'k_max_valid_K0': 0.4,
+        'fob': {tr: {m: [sc['truths'][tr][K]['models'][m]['fob'] for K in Ks] for m in ('NLA', 'TATT')}
+                for tr in ('prod', 'S1')},
+        'room': {tr: {m: [sc['truths'][tr][K]['models'][m]['room']['inf'] for K in Ks]
+                      for m in ('NLA', 'TATT')} for tr in ('prod', 'S1')},
+        'fom': [sc['truths']['prod'][K]['fom'] for K in Ks],
+    })
+    B = pc['bins']
+    groups = {'II, k < 0.06': ('II', 0.0, 0.06), 'II, 0.06 to 0.3': ('II', 0.06, 0.3),
+              'II, k > 0.3': ('II', 0.3, 1e9), 'GI, all k': ('GI', 0.0, 1e9)}
+
+    def group(p, X, a, b):
+        sel = [i for i in range(len(B) - 1) if (B[i] >= a - 1e-9 or a == 0.0) and B[i] < b - 1e-9]
+        return [float(sum(p['pieces'][X][i][q] for i in sel)) for q in (0, 1)]
+
+    write('v9_pieces', {
+        'about': ('Where the shift of S8 (index 1; Omega_m index 0) caused by NLA and TATT comes '
+                  'from, against the cut K_0, production truth: the known error of each model '
+                  'fitted with that cut, restricted to one spectrum and one range of k (h/Mpc), '
+                  'pushed through the rigid fit of the v9 base; the pieces add up to total. Units: '
+                  'sigma. (analysis/roman_dchi2/v9/scale_cut_pieces.py.)'),
+        'K0': [float(K) for K in Ks],
+        'total': {m: [pc['truths']['prod'][K][m]['total'] for K in Ks] for m in ('NLA', 'TATT')},
+        'pieces': {m: {g: [group(pc['truths']['prod'][K][m], *v) for K in Ks]
+                       for g, v in groups.items()} for m in ('NLA', 'TATT')},
     })
     write('v9_validation', {
         'about': ('Direct injection of random IA errors through cosmolike (spline on the table '

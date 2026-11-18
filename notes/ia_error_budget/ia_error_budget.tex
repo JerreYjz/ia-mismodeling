@@ -54,7 +54,11 @@
 %     3 to 9% with it, strictest for an error equal at every z; with the cut
 %     GI of both models inside the band, II at 0.06 to 0.3 h/Mpc at 1.1 /
 %     0.8 (L_z = 0.3) and 1.9 / 1.5 (equal at every z) of it; room left
-%     beside the models 2 to 5% ("Errors that vary with redshift").
+%     beside the models 2 to 5% ("Errors that vary with redshift");
+%   - the scale cut: K_0 = 0.3 passes for both models only by cancellation of
+%     a +0.7 to +0.8 sigma S8 shift from II at 0.06 to 0.3 h/Mpc; TATT's A2,
+%     eta2 drift with the cut below 0.3; robust cut K_0 = 0.2 for both
+%     ("The scale cut").
 \newif\ifnumbersfinal
 \numbersfinaltrue
 \newcommand{\refresh}[1]{\ifnumbersfinal#1\else\textcolor{red}{#1}\fi}
@@ -164,6 +168,24 @@
 % direct injections: largest difference refit - linear (sigma)
 \newcommand{\NineDirectNoCut}{\refresh{0.055}}
 \newcommand{\NineDirectCut}{\refresh{0.017}}
+% the scale cut (scale_cut_scan.json, scale_cut_pieces.json; 17 November 2026):
+% bias in (Omega_m, S8) [sigma], room left (equal at every z, percent), FoM
+\newcommand{\CutNLAProdThree}{\refresh{0.25}}
+\newcommand{\CutTATTProdThree}{\refresh{0.27}}
+\newcommand{\CutNLAProdThreeFive}{\refresh{0.34}}
+\newcommand{\CutNLASOneQuarter}{\refresh{0.27}}
+\newcommand{\CutTATTProdFour}{\refresh{0.30}}
+\newcommand{\CutIINLATwo}{\refresh{0.31}}
+\newcommand{\CutIINLAQuarter}{\refresh{0.37}}
+\newcommand{\CutIINLAThree}{\refresh{0.80}}
+\newcommand{\CutIITATTQuarter}{\refresh{0.28}}
+\newcommand{\CutIITATTThree}{\refresh{0.68}}
+\newcommand{\CutHighNLAThree}{\refresh{-0.42}}
+\newcommand{\CutNLAMaxRobust}{\refresh{0.15}}
+\newcommand{\CutTATTMaxRobust}{\refresh{0.20}}
+\newcommand{\CutRoomNLATwo}{\refresh{4.4 to 4.8}}
+\newcommand{\CutRoomNLAThree}{\refresh{1.4 to 2.9}}
+\newcommand{\CutFoMNLA}{\refresh{44}}
 % ---------------------------------------------------------------------
 % Part 2: inputs.
 \newcommand{\Tol}{0.3}
@@ -244,6 +266,23 @@ the cut; II at 0.06 to $0.3\hMpc$ is \NineNLAII{} (NLA) and \NineTATTII{}
 the stricter band where 95\% of errors stay within \Tol$\sigma$. With the
 cut the model errors use most of the \Tol$\sigma$, and leave room for a
 further random error of about \NineRoomSNLA{} to \NineRoomProd\%.
+
+\paragraph{The scale cut.}
+Refitted with each cut $\kuv = K_0/D(z)$, both models keep the bias in
+$(\Om, S_8)$ below \Tol$\sigma$ up to $K_0 = 0.3$ (NLA) and 0.35 (TATT)
+on both truths (Figure~\ref{fig:v9scalecut}). At $K_0 = 0.3$ that is a
+cancellation: on the production truth, the II error at 0.06 to
+$0.3\hMpc$, the scales where both models leave the band of
+Figure~\ref{fig:v9bands}, moves $S_8$ by \CutIINLAThree$\sigma$ (NLA) and
+\CutIITATTThree$\sigma$ (TATT) by itself, and the smaller scales still in
+the data pull it back (Figure~\ref{fig:v9pieces}). TATT's apparent margin
+below $K_0 = 0.3$ rests on $A_2$ and $\eta_2$ that drift with the cut
+($A_2$ from $-0.25$ to $-2.1$, $\eta_2$ at $-3$ to $-5$), absorbing the
+large-scale redshift mismatch rather than measuring tidal torquing. The cut
+that relies on neither is $K_0 = 0.2$ for both models (bias at most
+\CutNLAMaxRobust$\sigma$, room for a further random error of
+\CutRoomNLATwo\%), at a cost of \CutFoMNLA\% of the $(\Om, S_8)$ figure
+of merit against $K_0 = 0.3$.
 
 \section{Setup}
 \label{sec:setup}
@@ -781,6 +820,110 @@ behind $\eta$ match a Monte Carlo of whole experiments (noise, random truths
 and errors) to 2\%, and 46 numerical checks pass
 (Appendix~\ref{app:checks}).
 
+\section{The scale cut}
+\label{sec:scalecut}
+
+The band of Figure~\ref{fig:v9bands} tests one range of $k$ at a time;
+a model is wrong at every $k$ at once. The scale cut is set by the total
+shift a model causes, with the base of Section~\ref{sec:v9}.
+
+\paragraph{The scan.}
+For each mask of the production family $\kuv = K_0/D(z)$, $K_0 = 0.15$ to
+0.8 (118 to 487 of the 1080 points), NLA and TATT are refitted to the
+FLAMINGO data vector at the fiducial cosmology with that mask (IA
+parameters only, as in Section~\ref{sec:models}), and their error on every
+tent and snapshot enters the fit of the base with the same mask as the
+known error $\bvec\mu$. Figure~\ref{fig:v9scalecut} shows the bias in
+$(\Om, S_8)$, $\sqrt{\delta\bvec p\T C^{-1} \delta\bvec p}$, and the room
+left for a further random error equal at every redshift. At $K_0 = 0.3$ the
+scan reproduces the shifts of Section~\ref{sec:v9}. The models are not
+used beyond $K_0 = 0.4$, where $\kuv$ exceeds 0.5 to $0.6\hMpc$ at $z
+\simeq 1$ and both are 20 to 90\% off; the shifts there are drawn only to
+show that they no longer grow steadily.
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=3.5in]{plots/v9_scalecut/v9_scalecut.pdf}
+  \caption{The scale cut from the base. Top: the bias in $(\Om, S_8)$
+    caused by NLA (orange, squares) and TATT (blue, circles), each refitted
+    with the cut; production truth solid, stitched truth dashed with open
+    markers; dotted: \Tol. Bottom: the rms of a further random error of GI
+    and II, equal at every redshift ($\ell = 1$), that keeps the rms shift
+    within \Tol$\sigma$. Shaded: $K_0$ beyond the range in which the models
+    are used.}
+  \label{fig:v9scalecut}
+\end{figure}
+
+\paragraph{The total stays below \Tol$\sigma$ to $K_0 = 0.3$.}
+NLA reaches \CutNLAProdThree$\sigma$ at $K_0 = 0.3$ and
+\CutNLAProdThreeFive$\sigma$ at 0.35 on the production truth; TATT
+reaches \CutTATTProdThree$\sigma$ at 0.3 and \CutTATTProdFour$\sigma$ at
+0.4. On the stitched truth NLA is at \CutNLASOneQuarter$\sigma$ already at
+$K_0 = 0.25$, almost all in $\Om$ from II at $k < 0.06\hMpc$: the mismatch
+between its power-law redshift evolution and the amplitudes of the
+snapshots, not small-scale physics. By the total alone, the cuts would be
+$K_0 = 0.3$ (NLA) and 0.35 (TATT).
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=3.5in]{plots/v9_pieces/v9_pieces.pdf}
+  \caption{Where the $S_8$ shift of NLA (top) and TATT (bottom) comes from,
+    production truth. Black: the total. Colored: the shift caused by the
+    model's error restricted to II at $k < 0.06$, 0.06 to 0.3 and above
+    $0.3\hMpc$, and to GI at every $k$; the pieces add up to the total.
+    Dotted: $\pm\Tol\sigma$. Shaded: as Figure~\ref{fig:v9scalecut}; NLA's
+    II piece at 0.06 to 0.3 runs off the panel there.}
+  \label{fig:v9pieces}
+\end{figure}
+
+\paragraph{At $K_0 = 0.3$ the total is a cancellation.}
+Split by spectrum and range of $k$ (Figure~\ref{fig:v9pieces}), the
+production-truth shift of $S_8$ at $K_0 = 0.3$ comes from the II error at
+0.06 to $0.3\hMpc$, the scales where both models leave the band of
+Figure~\ref{fig:v9bands}: \CutIINLAThree$\sigma$ for NLA and
+\CutIITATTThree$\sigma$ for TATT, by itself two to three times the
+tolerance. The II error above $0.3\hMpc$ pulls back by
+\CutHighNLAThree$\sigma$ (NLA): $\kuv$ exceeds $0.3\hMpc$ at $z \gtrsim
+0.5$, the mask keeps bins with up to 5\% of their signal from above $\kuv$,
+and the models are 50 to 90\% off there. The total of \CutNLAProdThree$\sigma$ is the difference of two
+large pieces of opposite sign, which a slightly different truth or galaxy
+sample would not reproduce. The II piece at 0.06 to $0.3\hMpc$ grows
+steeply between $K_0 = 0.25$ and 0.3 (NLA: \CutIINLATwo,
+\CutIINLAQuarter{} and \CutIINLAThree$\sigma$ at $K_0 = 0.2$, 0.25 and
+0.3; TATT: \CutIITATTQuarter{} and \CutIITATTThree$\sigma$ at 0.25 and
+0.3), as the cut admits the angular bins that see the step of the
+FLAMINGO II spectrum near $0.1\hMpc$. Not every cancellation is
+accidental: at $k < 0.06\hMpc$ the model errors are nearly flat offsets,
+which the free amplitude absorbs as a whole but not range by range, so
+pieces of a flat error overstate its harm.
+
+\paragraph{TATT's extra parameters are not physical below $K_0 = 0.3$.}
+$A_1$ (3.2 to 3.5) is stable for both models at $K_0 \le 0.4$, and NLA's
+$\eta_1$ is stable on the production truth (0.68 to 0.70; 0.81 to 0.92 on
+the stitched truth, drifting with the cut). TATT's $A_2$ and $\eta_2$ are
+not: $A_2$ goes from $-0.25$ at $K_0 = 0.3$ to $-0.6$ to $-0.75$ at 0.25,
+$-1.3$ at 0.2 and $-2.1$ at 0.15, with $\eta_2$ between $-3$ and $-5$
+(at its prior bound at 0.15), and $b_{\rm TA}$ rises to 0.5 to 0.6 on the
+production truth. With few points left, these terms absorb the mismatch
+between a power-law redshift evolution and the amplitudes of the snapshots,
+the same mismatch that sets NLA's bias on the stitched truth; they do not
+measure tidal torquing. From $K_0 = 0.35$ on, $A_2 \simeq 0$ (with
+$\eta_2$ then unconstrained, at its bound at 0.4) and TATT is NLA with a
+small $b_{\rm TA}$. TATT's lower bias at $K_0 = 0.25$ (at most
+\CutTATTMaxRobust$\sigma$ against NLA's \CutNLASOneQuarter$\sigma$) rests on those
+drifting values and is not counted.
+
+\paragraph{Cuts that do not rely on the cancellation.}
+Requiring the total and every range piece to stay near or below
+\Tol$\sigma$ on both truths, with physically stable parameters, gives
+$K_0 = 0.2$ for both models: the bias is at most \CutNLAMaxRobust$\sigma$,
+the largest piece \CutIINLATwo$\sigma$, and the room for a further random
+error \CutRoomNLATwo\%, against \CutRoomNLAThree\% for NLA at $K_0 =
+0.3$. It costs \CutFoMNLA\% of the $(\Om, S_8)$ figure of merit against
+$K_0 = 0.3$. In this test TATT gains nothing over NLA that survives the
+check of its parameters. The shifts are linear; at $K_0 = 0.3$ full refits
+agree with them to about $0.03\sigma$ (Section~\ref{sec:models}).
+
 \appendix
 
 \section{Numerical checks}
@@ -848,6 +991,8 @@ and to \texttt{v9/} next to it for Section~\ref{sec:v9}.
     every budget from the base & \texttt{ia\_budget.py} $\rightarrow$ \texttt{ia\_budget.json} \\
     the method (numpy only), checks & \texttt{ia\_fisher.py}, \texttt{verify\_ia\_fisher.py} \\
     direct injections & \texttt{validate\_direct.py} $\rightarrow$ \texttt{validate\_direct.json} \\
+    scale-cut scan, NLA and TATT refits & \texttt{scale\_cut\_scan.py} $\rightarrow$ \texttt{scale\_cut\_scan.json} \\
+    the shifts split by $k$ range & \texttt{scale\_cut\_pieces.py} $\rightarrow$ \texttt{scale\_cut\_pieces.json} \\
     figure data & \texttt{notes/ia\_error\_budget/plots/make\_figure\_data.py} \\
     \bottomrule
   \end{tabular}
