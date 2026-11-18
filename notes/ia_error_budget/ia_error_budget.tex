@@ -49,7 +49,12 @@
 %     cut, 3.5 to 15% at k <= 0.1 with the cut, and no limit above 1 to
 %     1.6 h/Mpc with the cut; it is about half the one-sign tolerance; over
 %     every k at once, about 0.7 to 1.7% without a cut and 1.8 to 5% with
-%     it ("Random errors correlated in k").
+%     it ("Random errors correlated in k");
+%   - v9: GI and II together over every k and z, 1.3 to 4% without a cut and
+%     3 to 9% with it, strictest for an error equal at every z; with the cut
+%     GI of both models inside the band, II at 0.06 to 0.3 h/Mpc at 1.1 /
+%     0.8 (L_z = 0.3) and 1.9 / 1.5 (equal at every z) of it; room left
+%     beside the models 2 to 5% ("Errors that vary with redshift").
 \newif\ifnumbersfinal
 \numbersfinaltrue
 \newcommand{\refresh}[1]{\ifnumbersfinal#1\else\textcolor{red}{#1}\fi}
@@ -110,6 +115,55 @@
 % checks: largest difference refit - linear (sigma); direct injections
 \newcommand{\CorrRefitDiff}{\refresh{0.014}}
 \newcommand{\CorrDirectDiff}{\refresh{0.06}}
+% v9, the correlated residual prior and Fisher method (analysis/roman_dchi2/v9/:
+% ia_budget.json, validate_direct.json; 17 November 2026), production truth,
+% GI and II together, exponential kernel, ell = 1 unless stated; percent
+\newcommand{\NineVeight}{\refresh{0.06}}
+\newcommand{\NineNoCutLo}{\refresh{1.3}}
+\newcommand{\NineNoCutHi}{\refresh{4.0}}
+\newcommand{\NineCutLo}{\refresh{3.0}}
+\newcommand{\NineCutHi}{\refresh{8.8}}
+\newcommand{\NineNoCutLzt}{\refresh{1.8}}
+\newcommand{\NineNoCutLzinf}{\refresh{1.3}}
+\newcommand{\NineCutLzt}{\refresh{4.9}}
+\newcommand{\NineCutLzinf}{\refresh{3.0}}
+\newcommand{\NineRhoNoCut}{\refresh{1.0}}
+\newcommand{\NineRhoCut}{\refresh{2.3}}
+% band, error equal at every z, rms criterion (percent; the 95% band is half)
+\newcommand{\NineBandNoCutGILo}{\refresh{3}}
+\newcommand{\NineBandNoCutGIHi}{\refresh{23}}
+\newcommand{\NineBandNoCutIILo}{\refresh{5}}
+\newcommand{\NineBandNoCutIIHi}{\refresh{14}}
+\newcommand{\NineBandCutGILo}{\refresh{7}}
+\newcommand{\NineBandCutGIHi}{\refresh{26}}
+\newcommand{\NineBandCutIILo}{\refresh{8}}
+\newcommand{\NineBandCutIIHi}{\refresh{22}}
+% the models with the cut against the band at 0.06 to 0.3 h/Mpc (ratio):
+% rms criterion, 95% criterion, and the rms band for L_z = 0.3
+\newcommand{\NineNLAII}{\refresh{1.9}}
+\newcommand{\NineTATTII}{\refresh{1.5}}
+\newcommand{\NineNLAIIn}{\refresh{3.8}}
+\newcommand{\NineTATTIIn}{\refresh{2.9}}
+\newcommand{\NineNLAIIopt}{\refresh{1.1}}
+\newcommand{\NineTATTIIopt}{\refresh{0.8}}
+% known drifts (sigma) and the room left (percent)
+\newcommand{\NineNLANoCut}{\refresh{+19}}
+\newcommand{\NineTATTNoCut}{\refresh{+16}}
+\newcommand{\NineNLAS}{\refresh{+0.25}}
+\newcommand{\NineTATTS}{\refresh{+0.23}}
+\newcommand{\NineNLAOmS}{\refresh{-0.27}}
+\newcommand{\NineTATTOmS}{\refresh{-0.19}}
+\newcommand{\NineRoomProd}{\refresh{4.8}}
+\newcommand{\NineRoomSNLA}{\refresh{2.3}}
+\newcommand{\NineRoomSTATT}{\refresh{3.8}}
+% fitting the residual: FoM ratio at sigma_fit = 5 and 10%
+\newcommand{\NineFoMNoCutFive}{\refresh{0.73}}
+\newcommand{\NineFoMNoCutTen}{\refresh{0.52}}
+\newcommand{\NineFoMCutFive}{\refresh{0.95}}
+\newcommand{\NineFoMCutTen}{\refresh{0.85}}
+% direct injections: largest difference refit - linear (sigma)
+\newcommand{\NineDirectNoCut}{\refresh{0.055}}
+\newcommand{\NineDirectCut}{\refresh{0.017}}
 % ---------------------------------------------------------------------
 % Part 2: inputs.
 \newcommand{\Tol}{0.3}
@@ -175,6 +229,21 @@ indistinguishable, because the kept scales are the ones both describe
 equally well. Against the stricter band for random errors
 (Figure~\ref{fig:corroverlay}), GI still stays inside with the cut, while
 II is outside it from the largest scales on.
+
+\paragraph{Errors that vary with redshift, in GI and II at once.}
+A second method, the correlated residual prior and Fisher matrix of the
+lssty1xdesi notes, lets the error vary with redshift (correlation length
+$L_z$) and perturbs GI and II together (Section~\ref{sec:v9}). The rms
+error at which the rms shift of $\Om$ or $S_8$ reaches \Tol$\sigma$ is
+\NineNoCutLo{} to \NineNoCutHi\% without a cut and \NineCutLo{} to
+\NineCutHi\% with it, smallest for an error the same at every redshift
+(Figure~\ref{fig:v9budget}). As a band in $k$ (Figure~\ref{fig:v9bands}),
+for an error equal at every redshift, GI of both models stays inside with
+the cut; II at 0.06 to $0.3\hMpc$ is \NineNLAII{} (NLA) and \NineTATTII{}
+(TATT) times outside it, and \NineNLAIIn{} and \NineTATTIIn{} times outside
+the stricter band where 95\% of errors stay within \Tol$\sigma$. With the
+cut the model errors use most of the \Tol$\sigma$, and leave room for a
+further random error of about \NineRoomSNLA{} to \NineRoomProd\%.
 
 \section{Setup}
 \label{sec:setup}
@@ -546,6 +615,172 @@ error were random rather than smooth.
   \label{fig:overlays1}
 \end{figure}
 
+\section{Errors that vary with redshift: the residual prior and Fisher method}
+\label{sec:v9}
+
+The budgets above perturb one spectrum at a time and the same at every
+redshift. This section drops both restrictions with the machinery of the
+lssty1xdesi notes (\texttt{correlated\_bias\_prior\_v2},
+\texttt{fisher\_machinery}): a base of derivative columns, a Gaussian
+residual prior correlated across its arguments, and closed-form averages
+over random truths in place of sampling.
+
+\paragraph{The base.}
+One elementary knob is the fractional error of $P_X$ on one $\ln k$ tent at
+one FLAMINGO snapshot, $P_X(k, z_s) \to P_X(k, z_s)[1 + t_j(k)]$, with
+$X$ = GI or II, the 61 tents of Section~\ref{sec:pert} and the 13
+snapshots: 1586 knobs, each one exact cosmolike response. Every residual,
+kernel, cut and truth afterwards is a product of small matrices on this
+base. The Jacobian of the model~\eqref{eq:model} is computed alongside, and
+the base reproduces its $A$ column to $10^{-8}$.
+
+\paragraph{The residual prior.}
+The error $\delta(X, z_s, k_i)$ at the 31 nodes of
+Section~\ref{sec:corr} and the 13 snapshots (splined in $\ln k$ onto the
+tents) is Gaussian with rms $\sigma$ and correlation
+\begin{equation}
+  \frac{\langle \delta(X, z_s, k_i)\,\delta(Y, z_t, k_j)\rangle}{\sigma^2}
+  = \rho_{XY}\, e^{-|\ln k_i - \ln k_j|/\ell}\, e^{-|z_s - z_t|/L_z},
+  \label{eq:v9prior}
+\end{equation}
+the exponential kernel of the lssty1xdesi prior in both arguments
+($L_z = \infty$: the same error at every redshift). GI and II are
+independent ($\rho_{\rm GI,II} = 0$) unless stated; $\rho = 1$ is the same
+error in both.
+
+\paragraph{The criterion.}
+The shifts in units of their errors are $\bvec s = A\bvec\delta$, as in
+Section~\ref{sec:corr}. Averaged over the data noise and over random errors
+around a known error $\bvec\mu$ (zero, or the error of NLA or TATT), the
+$\chi^2$ of one parameter is $1 + \mu_p^2 + \sigma^2 (A K A\T)_{pp}$, and
+its root is $\eta_p$, the factor by which the scatter of the best fit
+exceeds its error. The budget $\sigma_{\rm max}$ is the rms at which the
+limiting parameter reaches $\eta = \sqrt{1 + \Tol^2}$, the rms shift
+\Tol$\sigma$ of the lssty1xdesi notes:
+\begin{equation}
+  \sigma_{\rm max} = \min_p \frac{\sqrt{\Tol^2 - \mu_p^2}}{\sqrt{(A K A\T)_{pp}}}.
+\end{equation}
+The criterion of Section~\ref{sec:corr}, 95\% of errors with both shifts
+below \Tol$\sigma$, is computed exactly from the same Gaussian, without
+sampling. With $L_z = \infty$, one spectrum and the kernel
+of Equation~\eqref{eq:corr}, it reproduces $\varepsilon_{95}$ of
+Figure~\ref{fig:corr} to \NineVeight\% in every case. It is 0.46 to 0.50
+of $\sigma_{\rm max}$: 95\% of errors inside \Tol$\sigma$ is about twice
+as strict as an rms of \Tol$\sigma$.
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=3.5in]{plots/v9_budget/v9_budget.pdf}
+  \caption{The rms fractional error $\sigma_{\rm max}$ of the production
+    FLAMINGO GI and II spectra (independent, wrong at every $k$ and every
+    snapshot) at which the rms shift of $\Om$ or $S_8$ reaches \Tol{} of
+    its error, against the correlation length $\ell$ in $\ln k$. Color,
+    line width and marker: the correlation length $L_z$ in redshift;
+    black squares: the same error at every redshift.}
+  \label{fig:v9budget}
+\end{figure}
+
+\paragraph{Over every $k$ and $z$: 1.3 to 4\% without a cut, 3 to 9\%
+with it.}
+GI and II wrong together, with $\ell = 1$, may have an rms of
+\NineNoCutLzt\% without a cut when the error decorrelates over $\Delta z
+\simeq 0.3$ and \NineNoCutLzinf\% when it is the same at every redshift;
+with the cut, \NineCutLzt{} and \NineCutLzinf\%
+(Figure~\ref{fig:v9budget}). An error that changes with redshift averages
+out over the broad lensing kernels, so it is allowed to be larger; the
+same error at every redshift is the strictest case. The same error in GI
+and II ($\rho = 1$) lowers the strictest case to \NineRhoNoCut{} and
+\NineRhoCut\%. The dependence on $\ell$ is that of
+Figure~\ref{fig:corr}: short correlation lengths cancel, and with the cut
+long ones approach the amplitude that $A$ absorbs. The stitched truth
+agrees to within 4\%.
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=3.5in]{plots/v9_bands/v9_bands.pdf}
+  \caption{NLA (orange, squares) and TATT (blue, circles) against the
+    production FLAMINGO truth, as in Figure~\ref{fig:overlay}, over the
+    band of the residual prior: a random error of one spectrum confined to
+    one range of $k$ (the window of Figure~\ref{fig:corrbands}), $\ell =
+    1$, equal at every redshift. Gray: $\pm\sigma_{\rm max}$, rms shift
+    \Tol$\sigma$; black dashed: $\pm\sigma_{95}$, 95\% of errors within
+    \Tol$\sigma$. Linear axis; errors and budgets above 30\% run off the
+    panel.}
+  \label{fig:v9bands}
+\end{figure}
+
+\paragraph{The band, and the models on it.}
+Figure~\ref{fig:v9bands} draws the error confined to one range of $k$
+and equal at every redshift, the strictest $L_z$ and the one closest to a
+model's smooth redshift dependence. For the rms criterion the band is
+$\pm$\NineBandNoCutGILo{} to \NineBandNoCutGIHi\% (GI) and
+$\pm$\NineBandNoCutIILo{} to \NineBandNoCutIIHi\% (II) up to $3\hMpc$
+without a cut; with the cut, \NineBandCutGILo{} to \NineBandCutGIHi\% (GI)
+and \NineBandCutIILo{} to \NineBandCutIIHi\% (II) at $k \le 0.1\hMpc$,
+opening above 0.2 to $0.3\hMpc$. It agrees with the one-sign tolerance of
+Figure~\ref{fig:bands} (median ratio 1.0 to 1.1): within a narrow window a
+random error is a bump of random sign, and an rms shift of \Tol$\sigma$ is
+the bump's tolerance. The 95\% band is half as wide, close to
+Figure~\ref{fig:corrbands} (exponential instead of Gaussian kernel).
+
+Without a cut NLA is outside both bands at nearly every $k$ (II at $k \le
+0.06\hMpc$ by 3.5 times the rms band), TATT is inside the rms band at 0.06
+to $0.3\hMpc$ (GI at 0.4 of it, II at its edge), and both leave it above
+$0.3\hMpc$ by 2 to 4 times. With the
+cut GI stays inside both bands at $k \le 0.3\hMpc$ (at most a third of the
+rms band, two thirds of the 95\% band). II at 0.06 to $0.3\hMpc$ is outside:
+\NineNLAII{} (NLA) and \NineTATTII{} (TATT) times the rms band, and
+\NineNLAIIn{} and \NineTATTIIn{} times the 95\% band; at $k \le
+0.06\hMpc$ it is inside the rms band (0.9 and 0.7) and outside the 95\% band
+(1.8 and 1.4). An error that decorrelates over $\Delta z \simeq 0.3$ is
+the optimistic case: its band is 1.3 to 2 times wider, and II reaches
+\NineNLAIIopt{} (NLA) and \NineTATTIIopt{} (TATT) of it.
+
+\paragraph{The models as known errors.}
+The error of each model, on every tent and snapshot, enters as the known
+error $\bvec\mu$. Without a cut the linear shift of $\Om$ is
+\NineNLANoCut$\sigma$ (NLA) and \NineTATTNoCut$\sigma$ (TATT), far
+outside any budget and beyond linear response (Appendix~\ref{app:checks}).
+With the cut it reproduces the full fits of Section~\ref{sec:models}: on
+the production truth $S_8$ moves by \NineNLAS$\sigma$ (NLA) and
+\NineTATTS$\sigma$ (TATT), on the stitched truth $\Om$ by \NineNLAOmS{}
+and \NineTATTOmS$\sigma$, against \ProdNLAS, \ProdTATTS, \StNLAOm{} and
+\StTATTOm$\sigma$ from the refits. Each model uses most of the
+\Tol$\sigma$ ($\eta = 1.03$ on the production truth), and the room left for
+a random error on top ($\ell = 1$, $L_z = 0.3$) is \NineRoomProd\% on the
+production truth (both models) and \NineRoomSNLA\% (NLA) and
+\NineRoomSTATT\% (TATT) on the stitched truth, against \NineCutLzt\% with
+no model error.
+
+\paragraph{Fitting the residual.}
+With the same prior in the fit (the residual marginalised, rms
+$\sigma_{\rm fit}$), the scatter stays within $\eta \le \sqrt{1 + \Tol^2}$ when
+$\sigma_{\rm fit}$ is close to the true rms or larger; an underestimated
+$\sigma_{\rm fit}$ fails once the true rms exceeds the budget. The price is precision: at
+$\sigma_{\rm fit} = 5$ and 10\% the figure of merit of $(\Om, S_8)$ falls
+to \NineFoMNoCutFive{} and \NineFoMNoCutTen{} of its value without a cut,
+and to \NineFoMCutFive{} and \NineFoMCutTen{} with it.
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=3.2in]{plots/v9_validation/v9_validation.pdf}
+  \caption{Random errors of GI and II ($\ell = 1$, $L_z = 0.3$, at each
+    cut's $\sigma_{\rm max}$) injected through cosmolike and refitted by
+    Gauss--Newton (CAMB at every step), against the shift predicted from
+    the base, production truth. Vermillion circles: $\Om$; sky-blue
+    squares: $S_8$; filled: no cut; open: with the cut. Dotted: equality.}
+  \label{fig:v9val}
+\end{figure}
+
+\paragraph{Checks.}
+Five errors per cut, drawn at $\sigma_{\rm max}$, were written into the
+tables and refitted with the full Gauss--Newton fit: the shifts match the
+base to within \NineDirectNoCut$\sigma$ without a cut and
+\NineDirectCut$\sigma$ with it (Figure~\ref{fig:v9val}). The averages
+behind $\eta$ match a Monte Carlo of whole experiments (noise, random truths
+and errors) to 2\%, and 46 numerical checks pass
+(Appendix~\ref{app:checks}).
+
 \appendix
 
 \section{Numerical checks}
@@ -579,12 +814,23 @@ error were random rather than smooth.
     model errors therefore use fits at the fiducial cosmology, where TATT
     fits better than NLA as a nested model must ($\chi^2 = 1169$ against
     1462 for 1080 points).
+  \item \textbf{The base of Section~\ref{sec:v9}.} Its 1586 columns sum to
+    $\xi_{\rm IA}$ to $7\times10^{-10}$; one column recomputed after all
+    others is identical (no stale table). Its $\eta$ derivative differs
+    from the Jacobian by $1.5\times10^{-3}$, which is the error of the
+    Jacobian's central difference (step 0.05 in $\eta$): the same
+    difference built from the base matches it to $10^{-8}$. The projected
+    residual precision annihilates the template, has rank $n - 2$ and
+    reaches its Woodbury limit; a matched prior gives $\eta = 1$
+    exactly; coverages and the 95\% probability match Monte Carlo to
+    0.003. All 46 checks are in \texttt{verify\_ia\_fisher.py}.
 \end{itemize}
 
 \section{Where the code and results are}
 \label{app:code}
 
-Paths relative to \texttt{analysis/roman\_dchi2/v8/} of the repository.
+Paths relative to \texttt{analysis/roman\_dchi2/v8/} of the repository,
+and to \texttt{v9/} next to it for Section~\ref{sec:v9}.
 
 \begin{center}
   \small
@@ -597,6 +843,11 @@ Paths relative to \texttt{analysis/roman\_dchi2/v8/} of the repository.
     NLA and TATT at the fiducial cosmology & \texttt{fid\_fits.py} $\rightarrow$ \texttt{fid\_fits.json} \\
     random errors correlated in $k$ & \texttt{correlated\_budget.py} $\rightarrow$ \texttt{correlated\_budget.json} \\
     the same, one $k$ range: bands & \texttt{correlated\_bands.py} $\rightarrow$ \texttt{correlated\_bands.json} \\
+    \multicolumn{2}{l}{\textit{Section~\ref{sec:v9}, in \texttt{v9/}:}} \\
+    the base (1586 responses, drifts) & \texttt{ia\_base.py} $\rightarrow$ \texttt{ia\_base\_<truth>.npz} \\
+    every budget from the base & \texttt{ia\_budget.py} $\rightarrow$ \texttt{ia\_budget.json} \\
+    the method (numpy only), checks & \texttt{ia\_fisher.py}, \texttt{verify\_ia\_fisher.py} \\
+    direct injections & \texttt{validate\_direct.py} $\rightarrow$ \texttt{validate\_direct.json} \\
     figure data & \texttt{notes/ia\_error\_budget/plots/make\_figure\_data.py} \\
     \bottomrule
   \end{tabular}
@@ -608,11 +859,12 @@ Paths relative to \texttt{analysis/roman\_dchi2/v8/} of the repository.
 \begin{itemize}
   \item Tolerances between about 20 and 100\% at $k \lesssim 0.6\hMpc$ with
     the cut are upper estimates (Section~\ref{sec:pert}).
-  \item The perturbations are the same at every redshift; a model's error
-    varies with redshift, which the budget does not represent.
-  \item The random errors of Section~\ref{sec:corr} perturb GI and II one
-    at a time; errors in both at once, independent or correlated, are not
-    yet included.
+  \item Sections~\ref{sec:pert} to \ref{sec:corr} perturb one spectrum,
+    the same at every redshift; Section~\ref{sec:v9} lifts both, for
+    random errors only (no one-sign shapes varying with redshift).
+  \item The redshift correlation of Section~\ref{sec:v9} is between
+    snapshots; the tables are interpolated in $z$ between them, so an
+    error at one snapshot reaches its neighbors.
   \item One simulation and one galaxy selection, with a strong alignment
     ($A_1 \simeq 3.4$); the fractional budget scales roughly as $1/A_1$ for
     GI and $1/A_1^2$ for II.

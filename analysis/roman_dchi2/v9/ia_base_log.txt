@@ -1,0 +1,32 @@
+[3s] start: truths ('S1', 'prod'), 1586 knobs per truth
+[7s] S1: snapshot 1/13 (z = 0) done; 0.04 s per column, about 1 min left
+[12s] S1: snapshot 2/13 (z = 0.1) done; 0.04 s per column, about 1 min left
+[16s] S1: snapshot 3/13 (z = 0.2) done; 0.04 s per column, about 1 min left
+[21s] S1: snapshot 4/13 (z = 0.3) done; 0.04 s per column, about 1 min left
+[25s] S1: snapshot 5/13 (z = 0.4) done; 0.04 s per column, about 1 min left
+[29s] S1: snapshot 6/13 (z = 0.5) done; 0.04 s per column, about 1 min left
+[34s] S1: snapshot 7/13 (z = 0.6) done; 0.04 s per column, about 0 min left
+[38s] S1: snapshot 8/13 (z = 0.75) done; 0.04 s per column, about 0 min left
+[42s] S1: snapshot 9/13 (z = 1) done; 0.04 s per column, about 0 min left
+[47s] S1: snapshot 10/13 (z = 1.5) done; 0.04 s per column, about 0 min left
+[51s] S1: snapshot 11/13 (z = 2) done; 0.04 s per column, about 0 min left
+[55s] S1: snapshot 12/13 (z = 3) done; 0.04 s per column, about 0 min left
+[60s] S1: snapshot 13/13 (z = 4) done; 0.04 s per column, about 0 min left
+[63s] S1: checks stale 0.0e+00, sum_vs_xi_ia 6.6e-10, sum_vs_dA 9.0e-09, sum_vs_deta 1.5e-03
+[63s] S1: wrote ia_base_S1.npz
+[67s] prod: snapshot 1/13 (z = 0) done; 0.03 s per column, about 1 min left
+[71s] prod: snapshot 2/13 (z = 0.1) done; 0.04 s per column, about 1 min left
+[76s] prod: snapshot 3/13 (z = 0.2) done; 0.04 s per column, about 1 min left
+[80s] prod: snapshot 4/13 (z = 0.3) done; 0.04 s per column, about 1 min left
+[84s] prod: snapshot 5/13 (z = 0.4) done; 0.04 s per column, about 1 min left
+[88s] prod: snapshot 6/13 (z = 0.5) done; 0.04 s per column, about 1 min left
+[93s] prod: snapshot 7/13 (z = 0.6) done; 0.04 s per column, about 0 min left
+[97s] prod: snapshot 8/13 (z = 0.75) done; 0.04 s per column, about 0 min left
+[101s] prod: snapshot 9/13 (z = 1) done; 0.03 s per column, about 0 min left
+[105s] prod: snapshot 10/13 (z = 1.5) done; 0.03 s per column, about 0 min left
+[110s] prod: snapshot 11/13 (z = 2) done; 0.03 s per column, about 0 min left
+[114s] prod: snapshot 12/13 (z = 3) done; 0.03 s per column, about 0 min left
+[118s] prod: snapshot 13/13 (z = 4) done; 0.03 s per column, about 0 min left
+[118s] prod: checks stale 0.0e+00, sum_vs_xi_ia 3.9e-10, sum_vs_dA 7.1e-09, sum_vs_deta 1.5e-03
+[118s] prod: wrote ia_base_prod.npz
+done (118s)

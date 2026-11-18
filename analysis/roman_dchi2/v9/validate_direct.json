@@ -1,0 +1,136 @@
+{
+ "about": "Validation of the v9 linear response by direct injection.\n\nRandom IA errors delta(X, s, i) are drawn from the kernel of the drift\nsection of ia_budget.py (exp, ell = 1, L_z = 0.3, GI and II independent) at\nthe budget sigma_max of each cut (ia_budget.json, global), written into the\ntruth tables as P_X(k, z_s) [1 + f(k, z_s)], with f on the tents exactly as\nthe base represents it (spline at FINE, tents in ln k beyond), injected\nthrough cosmolike, and refitted with the full Gauss-Newton fit of v8\n(clean_budget.gn_refit: CAMB at every step, A and eta free). The refitted\nshifts of Omega_m and S8 are compared with the linear prediction of\nia_fisher. Production truth only.\nOutput: validate_direct.json.\n\n    python validate_direct.py <cocoa so dir> <cocoa_roman_real/data> [--n 5]\n",
+ "truth": "prod",
+ "kernel": {
+  "ell": 1.0,
+  "lz": 0.3,
+  "kind": "exp",
+  "set": "both"
+ },
+ "cuts": {
+  "none": [
+   {
+    "sigma": 0.017954455352984483,
+    "full": [
+     0.5706270118908029,
+     0.1268937584203208
+    ],
+    "linear": [
+     0.549458567227773,
+     0.1105256269418194
+    ],
+    "diff": 0.021168444663029917
+   },
+   {
+    "sigma": 0.017954455352984483,
+    "full": [
+     -0.03514001614381632,
+     0.2021989294059442
+    ],
+    "linear": [
+     -0.01424606358595235,
+     0.20495351064872655
+    ],
+    "diff": 0.02089395255786397
+   },
+   {
+    "sigma": 0.017954455352984483,
+    "full": [
+     0.3849753228430599,
+     0.1290101629801515
+    ],
+    "linear": [
+     0.334580815322524,
+     0.18356274087918276
+    ],
+    "diff": 0.05455257789903126
+   },
+   {
+    "sigma": 0.017954455352984483,
+    "full": [
+     -0.2035226806623828,
+     -0.03702685479931522
+    ],
+    "linear": [
+     -0.15170269001730685,
+     0.009812118081149717
+    ],
+    "diff": 0.05181999064507595
+   },
+   {
+    "sigma": 0.017954455352984483,
+    "full": [
+     0.04766407463917503,
+     0.5593038535066616
+    ],
+    "linear": [
+     0.03794975589900196,
+     0.566882190783643
+    ],
+    "diff": 0.009714318740173075
+   }
+  ],
+  "K03": [
+   {
+    "sigma": 0.04910569751852197,
+    "full": [
+     0.5238379904278431,
+     -0.02836931260242045
+    ],
+    "linear": [
+     0.5182606193456598,
+     -0.015647999503581745
+    ],
+    "diff": 0.012721313098838706
+   },
+   {
+    "sigma": 0.04910569751852197,
+    "full": [
+     0.07087467219378374,
+     0.09892768077038903
+    ],
+    "linear": [
+     0.07170400325655163,
+     0.1013355160253288
+    ],
+    "diff": 0.002407835254939761
+   },
+   {
+    "sigma": 0.04910569751852197,
+    "full": [
+     -0.046850926696035286,
+     -0.0057632912361836024
+    ],
+    "linear": [
+     -0.04735177056793245,
+     0.011664947789522463
+    ],
+    "diff": 0.017428239025706067
+   },
+   {
+    "sigma": 0.04910569751852197,
+    "full": [
+     -0.110289984051762,
+     0.029525598896632546
+    ],
+    "linear": [
+     -0.11512030214544343,
+     0.03866602042994552
+    ],
+    "diff": 0.009140421533312973
+   },
+   {
+    "sigma": 0.04910569751852197,
+    "full": [
+     0.3506710746240198,
+     -0.03913823750365431
+    ],
+    "linear": [
+     0.3539925159070934,
+     -0.024339160564853753
+    ],
+    "diff": 0.01479907693880056
+   }
+  ]
+ }
+}
