@@ -58,7 +58,11 @@
 %   - the scale cut: K_0 = 0.3 passes for both models only by cancellation of
 %     a +0.7 to +0.8 sigma S8 shift from II at 0.06 to 0.3 h/Mpc; TATT's A2,
 %     eta2 drift with the cut below 0.3; robust cut K_0 = 0.2 for both
-%     ("The scale cut").
+%     ("The scale cut");
+%   - 3x2pt: gamma_t narrows the GI band to about 5% and widens the II band;
+%     with every lens-source pair NLA needs K0_ggl <= 0.15, with sources
+%     behind lenses both models stay below 0.3 sigma to K0_ggl = 0.4
+%     ("Galaxy-galaxy lensing").
 \newif\ifnumbersfinal
 \numbersfinaltrue
 \newcommand{\refresh}[1]{\ifnumbersfinal#1\else\textcolor{red}{#1}\fi}
@@ -186,6 +190,38 @@
 \newcommand{\CutRoomNLATwo}{\refresh{4.4 to 4.8}}
 \newcommand{\CutRoomNLAThree}{\refresh{1.4 to 2.9}}
 \newcommand{\CutFoMNLA}{\refresh{44}}
+% 3x2pt (v9/: ia_budget_3x2.json, scale_cut_scan_3x2.json; 18 November 2026),
+% Gaussian 3x2pt covariance, production truth unless stated; band = rms
+% criterion, error equal at every z, ell = 1, its narrowest point (percent)
+\newcommand{\GGLxiVar}{\refresh{0.6}}
+\newcommand{\GGLBandGIcsThree}{\refresh{9}}
+\newcommand{\GGLBandGIallThree}{\refresh{4.5}}
+\newcommand{\GGLBandGIbehThree}{\refresh{13}}
+\newcommand{\GGLBandIIcsThree}{\refresh{10}}
+\newcommand{\GGLBandIIallThree}{\refresh{21}}
+\newcommand{\GGLBandGIcsTwo}{\refresh{14}}
+\newcommand{\GGLBandGIallTwo}{\refresh{5.3}}
+\newcommand{\GGLBandGIbehTwo}{\refresh{9}}
+% global, GI and II, equal at every z (percent): xi alone, every pair, behind
+\newcommand{\GGLGlobcsThree}{\refresh{4.7}}
+\newcommand{\GGLGloballThree}{\refresh{4.0}}
+\newcommand{\GGLGlobbehThree}{\refresh{8.4}}
+% the GGL cut with K0_cs = 0.2 (bias in sigma, FoM in thousands)
+\newcommand{\GGLcsNLA}{\refresh{0.23}}
+\newcommand{\GGLcsTATT}{\refresh{0.21}}
+\newcommand{\GGLcsNLAex}{\refresh{0.15}}
+\newcommand{\GGLcsTATTex}{\refresh{0.16}}
+\newcommand{\GGLallNLAFifteen}{\refresh{0.23}}
+\newcommand{\GGLallNLAFifteenS}{\refresh{0.30}}
+\newcommand{\GGLallNLATwo}{\refresh{0.33}}
+\newcommand{\GGLallNLATwoS}{\refresh{0.37}}
+\newcommand{\GGLbehMaxThree}{\refresh{0.22}}
+\newcommand{\GGLbehNLAFour}{\refresh{0.28}}
+\newcommand{\GGLbehRoomThree}{\refresh{13}}
+\newcommand{\GGLFoMcs}{\refresh{12}}
+\newcommand{\GGLFoMallFifteen}{\refresh{36}}
+\newcommand{\GGLFoMbehThree}{\refresh{43}}
+\newcommand{\GGLFoMbehFour}{\refresh{49}}
 % ---------------------------------------------------------------------
 % Part 2: inputs.
 \newcommand{\Tol}{0.3}
@@ -283,6 +319,22 @@ that relies on neither is $K_0 = 0.2$ for both models (bias at most
 \CutNLAMaxRobust$\sigma$, room for a further random error of
 \CutRoomNLATwo\%), at a cost of \CutFoMNLA\% of the $(\Om, S_8)$ figure
 of merit against $K_0 = 0.3$.
+
+\paragraph{Galaxy-galaxy lensing.}
+The same knobs move $\gamma_t$ of Roman 3x2pt through its GI term
+(Section~\ref{sec:ggl}). With every lens-source pair, $\gamma_t$ narrows the
+GI band to about \GGLBandGIallThree\% near $k \simeq 0.15\hMpc$, half the
+band of $\xi_\pm$ alone, and widens the II band to about
+\GGLBandIIallThree\% (Figure~\ref{fig:gglbands}). The narrowing comes from
+pairs whose lens and source overlap in redshift; with only sources behind
+their lenses the GI band is \GGLBandGIbehThree\%. With cosmic shear cut at
+$K_0 = 0.2$, NLA keeps the bias below \Tol$\sigma$ with every pair only for
+$K_0^{\rm GGL} \le 0.15$; with sources behind lenses both models stay
+below it up to $K_0^{\rm GGL} = 0.4$ on both truths, at most
+\GGLbehMaxThree$\sigma$ at 0.3 with \GGLFoMbehThree{} thousand in the
+figure of merit, against \GGLFoMcs{} thousand for cosmic shear alone
+(Figure~\ref{fig:gglcut}). There the GGL cut is set by the galaxy bias
+model, which this test does not probe, not by IA.
 
 \section{Setup}
 \label{sec:setup}
@@ -924,6 +976,110 @@ $K_0 = 0.3$. In this test TATT gains nothing over NLA that survives the
 check of its parameters. The shifts are linear; at $K_0 = 0.3$ full refits
 agree with them to about $0.03\sigma$ (Section~\ref{sec:models}).
 
+\section{Galaxy-galaxy lensing}
+\label{sec:ggl}
+
+\paragraph{The 3x2pt base.}
+The knobs of Section~\ref{sec:v9} also move the tangential shear $\gamma_t$
+of Roman 3x2pt (15 angular bins for 61 lens-source pairs; the clustering
+$w$ of 8 lens bins has no IA). IA enters $\gamma_t$ only through the GI term
+$b_i P_{\delta E}$ at the lens redshifts, with the same FLAMINGO $P_{\delta
+E}$ as $\xi_\pm$, so one error of $P_{\delta E}$ moves both probes; II
+enters $\xi_\pm$ alone. Each of the 1586 columns is recomputed on the full
+2115-point vector (\texttt{ia\_base\_3x2.py}). The lenses share the source
+$n(z)$ with linear biases $b_i$ from 1.24 to 2.52, Limber everywhere, and
+the rigid fit frees the eight $b_i$ (flat) besides $\Om$, $A_s$, $A$ and
+$\eta$. The shipped 3x2pt covariance is not positive definite (its
+$\xi_\pm$-$\gamma_t$ block is inconsistent; each auto block alone is fine),
+so this section uses a Gaussian 3x2pt covariance for every entry, $\xi_\pm$
+alone included; its $\xi_\pm$ variances are about \GGLxiVar{} of the
+example1 ones, which moves the numbers of $\xi_\pm$ alone from those of
+Section~\ref{sec:v9} (the budget with the cut from \NineCutLzinf{} to
+\GGLGlobcsThree\%). The cuts are $\kuv = K_0/D(z)$ for $\xi_\pm$ and
+$\gamma_t$, and $K_0 = 0.2$ for $w$; ``behind'' keeps only the $\gamma_t$
+pairs whose source bin is behind the lens bin.
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=3.5in]{plots/v9_bands_3x2/v9_bands_3x2.pdf}
+  \caption{The band of Figure~\ref{fig:v9bands} for 3x2pt with every
+    lens-source pair, at $K_0 = 0.3$ and 0.2: gray, the rms criterion;
+    black dashed, the 95\% criterion; dark dotted, the rms band of
+    $\xi_\pm$ alone with the same covariance. NLA and TATT are fitted to the
+    3x2pt vector with the same cut (IA parameters only). Production truth.}
+  \label{fig:gglbands}
+\end{figure}
+
+\paragraph{The band.}
+Figure~\ref{fig:gglbands} shows the band for an error equal at every
+redshift. $\gamma_t$ narrows the GI band at $k \simeq 0.1$ to $0.2\hMpc$
+from \GGLBandGIcsThree\% ($\xi_\pm$ alone) to \GGLBandGIallThree\% at $K_0 =
+0.3$, and from \GGLBandGIcsTwo{} to \GGLBandGIallTwo\% at $K_0 = 0.2$: in a
+pair whose lens and source overlap in redshift the GI term is most of the
+signal. With sources behind lenses only, the GI band is \GGLBandGIbehThree\%
+($K_0 = 0.3$) and \GGLBandGIbehTwo\% ($K_0 = 0.2$). The II band widens from
+\GGLBandIIcsThree{} to \GGLBandIIallThree\%: $\gamma_t$ fixes the
+cosmology that II would otherwise move. Over every $k$ at once, for GI and
+II together, the budget at $K_0 = 0.3$ is \GGLGlobcsThree\% ($\xi_\pm$
+alone), \GGLGloballThree\% (every pair) and \GGLGlobbehThree\% (behind).
+At $K_0 = 0.3$ the GI error of NLA, about $-3\%$ at $0.1$ to $0.2\hMpc$, sits
+at the edge of the 3x2pt band.
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=3.5in]{plots/v9_scalecut_3x2/v9_scalecut_3x2.pdf}
+  \caption{The GGL scale cut, with $\xi_\pm$ at $K_0 = 0.2$ and $w$ at 0.2.
+    Top two panels: the bias in $(\Om, S_8)$ caused by NLA (orange,
+    squares) and TATT (blue, circles), each refitted with the mask; solid,
+    every lens-source pair; dashed with open markers, sources behind
+    lenses; gray bars at the left, $\xi_\pm$ alone; dotted, \Tol. Bottom:
+    the figure of merit of $(\Om, S_8)$, production truth (dotted:
+    $\xi_\pm$ alone). Shaded: as Figure~\ref{fig:v9scalecut}.}
+  \label{fig:gglcut}
+\end{figure}
+
+\paragraph{The GGL cut.}
+With $\xi_\pm$ held at $K_0 = 0.2$, $\gamma_t$ is cut at $K_0^{\rm GGL} =
+0.1$ to 0.5 and the models are refitted at each mask as in
+Section~\ref{sec:scalecut} (Figure~\ref{fig:gglcut}). $\xi_\pm$ alone gives
+\GGLcsNLA$\sigma$ (NLA) and \GGLcsTATT$\sigma$ (TATT) on the production
+truth with this covariance (\GGLcsNLAex{} and \GGLcsTATTex$\sigma$ with
+example1). With every pair, NLA reaches \GGLallNLAFifteen$\sigma$
+(production) and \GGLallNLAFifteenS$\sigma$ (stitched) at $K_0^{\rm GGL} =
+0.15$ and \GGLallNLATwo{} and \GGLallNLATwoS$\sigma$ at 0.2. Its GI error
+alone moves $S_8$ by $-0.35$ to $-0.6\sigma$ at every $K_0^{\rm GGL}$,
+against the $+0.1$ to $+0.3\sigma$ of II; at $K_0^{\rm GGL} = 0.1$ the two
+cancel to $0.01\sigma$. With sources behind lenses the GI piece falls to
+between $+0.02$ and $-0.23\sigma$ and the bias is nearly flat in $K_0^{\rm
+GGL}$, set by the II error of $\xi_\pm$: 0.20 to 0.28$\sigma$ (production)
+and 0.04 to 0.29$\sigma$ (stitched) for both models up to 0.5. At
+$K_0^{\rm GGL} = 0.3$ it is at most \GGLbehMaxThree$\sigma$, with room for a
+further random error of \GGLbehRoomThree\% and a figure of merit of
+\GGLFoMbehThree{} thousand (\GGLFoMcs{} thousand for $\xi_\pm$ alone,
+\GGLFoMallFifteen{} thousand with every pair at its safe cut of 0.15); at
+0.4 NLA is at \GGLbehNLAFour$\sigma$ and the figure of merit
+\GGLFoMbehFour{} thousand.
+
+\paragraph{The fitted parameters.}
+NLA is stable: $A_1 = 3.3$ to 3.5 and $\eta_1 = 0.68$ to 0.81 (0.84 to
+0.94 on the stitched truth) at every mask. TATT with every pair is not: on
+the production truth it alternates between $A_2 \simeq 0.06$ with $\eta_2$
+at its bound of 5 and $A_2 = 0.4$ to 0.7 with $\eta_2 = -4.3$ to $-4.7$,
+and on the stitched truth it takes the second branch at every
+$K_0^{\rm GGL} \ge 0.15$; its every-pair curve is not counted. With sources
+behind lenses it is moderate on the production truth ($A_2 = -0.2$ to
+$-0.6$, $\eta_2 = -1.8$ to 0.9, $b_{\rm TA} = 0.15$ to 0.44, none at a
+bound) and close to NLA on the stitched truth ($A_2 \simeq 0$, $\eta_2$
+then unconstrained).
+
+\paragraph{The cut.}
+With every lens-source pair, the IA error of the overlapping pairs limits
+NLA to $K_0^{\rm GGL} \le 0.15$. With sources behind lenses, IA does not
+limit the GGL cut up to $K_0^{\rm GGL} = 0.4$, and $K_0^{\rm GGL} = 0.3$
+keeps both models below \GGLbehMaxThree$\sigma$ on both truths while giving
+more figure of merit than every pair at its safe cut. Beyond that, the GGL
+cut is set by the linear galaxy bias, which this test assumes exact.
+
 \appendix
 
 \section{Numerical checks}
@@ -967,6 +1123,13 @@ agree with them to about $0.03\sigma$ (Section~\ref{sec:models}).
     reaches its Woodbury limit; a matched prior gives $\eta = 1$
     exactly; coverages and the 95\% probability match Monte Carlo to
     0.003. All 46 checks are in \texttt{verify\_ia\_fisher.py}.
+  \item \textbf{The 3x2pt base of Section~\ref{sec:ggl}.} Its $\xi_\pm$
+    rows equal the base of Section~\ref{sec:v9} exactly (columns, data
+    vector and Jacobian); its columns sum to the injected IA to
+    $4\times10^{-10}$; the II columns are zero on $\gamma_t$ and $w$, and
+    $w$ carries no IA. Restricted to $\xi_\pm$ with the example1
+    covariance, it reproduces the errors and bands of
+    Section~\ref{sec:v9} to $10^{-14}$ on both truths.
 \end{itemize}
 
 \section{Where the code and results are}
@@ -993,6 +1156,10 @@ and to \texttt{v9/} next to it for Section~\ref{sec:v9}.
     direct injections & \texttt{validate\_direct.py} $\rightarrow$ \texttt{validate\_direct.json} \\
     scale-cut scan, NLA and TATT refits & \texttt{scale\_cut\_scan.py} $\rightarrow$ \texttt{scale\_cut\_scan.json} \\
     the shifts split by $k$ range & \texttt{scale\_cut\_pieces.py} $\rightarrow$ \texttt{scale\_cut\_pieces.json} \\
+    3x2pt base, Gaussian covariance & \texttt{ia\_base\_3x2.py} $\rightarrow$ \texttt{ia\_base\_3x2\_<truth>.npz} \\
+    NLA, TATT fitted to 3x2pt & \texttt{fits\_3x2.py} $\rightarrow$ \texttt{fits\_3x2.json} \\
+    3x2pt budget and bands & \texttt{ia\_budget\_3x2.py} $\rightarrow$ \texttt{ia\_budget\_3x2.json} \\
+    the GGL cut & \texttt{scale\_cut\_scan\_3x2.py} $\rightarrow$ \texttt{scale\_cut\_scan\_3x2.json} \\
     figure data & \texttt{notes/ia\_error\_budget/plots/make\_figure\_data.py} \\
     \bottomrule
   \end{tabular}
@@ -1013,6 +1180,10 @@ and to \texttt{v9/} next to it for Section~\ref{sec:v9}.
   \item One simulation and one galaxy selection, with a strong alignment
     ($A_1 \simeq 3.4$); the fractional budget scales roughly as $1/A_1$ for
     GI and $1/A_1^2$ for II.
+  \item The 3x2pt numbers use a Gaussian covariance, because the shipped
+    3x2pt matrix is not positive definite; the lenses share the source
+    $n(z)$, so neighboring bins overlap even for sources ``behind'' their
+    lenses; the galaxy bias is linear and exact.
 \end{itemize}
 
 \end{document}

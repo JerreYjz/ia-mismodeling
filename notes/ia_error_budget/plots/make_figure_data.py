@@ -161,6 +161,8 @@ def main():
     })
 
     v9_figures()
+    v9_3x2_figures()
+    v9_scalecut_3x2_figures()
 
 
 V9_COMMON = ('The v9 IA error budget (analysis/roman_dchi2/v9), the correlated residual prior and '
@@ -272,6 +274,74 @@ def v9_figures():
         'cuts': {cut: {'sigma': rs[0]['sigma'], 'full': [r['full'] for r in rs],
                        'linear': [r['linear'] for r in rs]} for cut, rs in vd['cuts'].items()},
     })
+
+
+def v9_3x2_figures():
+    """The data of the v9 3x2pt band figure."""
+    b = load('ia_budget_3x2.json', V9)
+    f = load('fits_3x2.json', V9)
+    zs = np.array(b['zs'])
+    core = [i for i, z in enumerate(zs) if 0.2 <= z <= 2.0]
+    band = lambda cut, X, key: b['truths']['prod'][cut]['band'][f'{X}|1|inf'][key]
+    cuts = ('0.2', '0.3')
+    write('v9_bands_3x2', {
+        'about': V9_COMMON + (' The band for Roman 3x2pt (xi_+-, gamma_t, w; analysis/roman_dchi2/v9/'
+                              'ia_base_3x2.py, ia_budget_3x2.py): the same knobs, with IA in gamma_t '
+                              'through the GI term b_i P_dE, the 8 linear biases free (flat), the '
+                              'Gaussian 3x2pt covariance (cocoa/cov3x2.py) for every entry, xi_+- and '
+                              'gamma_t cut at k_UV = K0/D(z), w at K0 = 0.2. The error of one spectrum '
+                              'X confined to one k range around k_c (Gaussian window, width 0.3 in ln '
+                              'k), equal at every z (L_z = inf), exp kernel ell = 1: sigma_max[K0][X] '
+                              '(3x2pt, every lens-source pair), sigma_95[K0][X] (the same, 95% '
+                              'criterion), cs[K0][X] (xi_+- alone, same covariance), behind[K0][X] '
+                              '(3x2pt with gamma_t of sources behind lenses only). errors[K0][model][X]: '
+                              'P^model/P^truth - 1 at the core snapshots (z_core) on k_dense, each model '
+                              'fitted to the 3x2pt vector at the fiducial cosmology and biases (IA '
+                              'parameters only) with the same cut (fits_3x2.py). Production truth.'),
+        'k_c': b['nodes'], 'k_dense': f_kdense(), 'z_core': [float(zs[i]) for i in core],
+        'sigma_max': {K: {X: band(f'3x2|{K}', X, 'sigma_max') for X in ('GI', 'II')} for K in cuts},
+        'sigma_95': {K: {X: band(f'3x2|{K}', X, 'sigma_95') for X in ('GI', 'II')} for K in cuts},
+        'cs': {K: {X: band(f'cs|{K}', X, 'sigma_max') for X in ('GI', 'II')} for K in cuts},
+        'behind': {K: {X: band(f'3x2b|{K}', X, 'sigma_max') for X in ('GI', 'II')} for K in cuts},
+        'errors': {K: {m: {X: [f['truths']['prod'][f'3x2|{K}'][m]['err'][X][i][::2] for i in core]
+                           for X in ('GI', 'II')} for m in ('NLA', 'TATT')} for K in cuts},
+        'fits': {K: {m: {k_: f['truths']['prod'][f'3x2|{K}'][m][k_] for k_ in ('best', 'chi2', 'npts', 'at_bound')}
+                     for m in ('NLA', 'TATT')} for K in cuts},
+    })
+
+
+def v9_scalecut_3x2_figures():
+    """The data of the v9 GGL scale-cut figure."""
+    sc = load('scale_cut_scan_3x2.json', V9)
+    Ks = sc['K0_ggl']
+    get = lambda tr, cf, m, key: [sc['truths'][tr][f'{cf}|{K}']['models'][m][key] for K in Ks]
+    write('v9_scalecut_3x2', {
+        'about': ('The GGL scale cut from the v9 3x2pt base (analysis/roman_dchi2/v9/scale_cut_scan_3x2.py): '
+                  'xi_+- cut at K0_cs = 0.2, w at 0.2, gamma_t at k_UV = K0_ggl/D(z), with every '
+                  'lens-source pair (all) or sources behind lenses only (behind); NLA and TATT refitted '
+                  'to the FLAMINGO 3x2pt vector at the fiducial cosmology and biases (IA parameters '
+                  'only), their error on the tents at every snapshot taken as a known error, and the '
+                  'linear shift of (Omega_m, S8) of the truth-as-model fit (cosmology, A, eta, 8 biases) '
+                  'with the same mask; Gaussian 3x2pt covariance. fob[truth][config][model]: the 2D '
+                  'figure of bias; cs[truth][model]: the same for xi_+- alone at K0_cs = 0.2; '
+                  'fom[config]: 1/sqrt(det C) of (Omega_m, S8) (production truth), fom_cs that of '
+                  'xi_+- alone; best[truth][config][model]: the fitted IA parameters. k_max_valid_K0: '
+                  'the largest K0 treated as within the range of validity of the models.'),
+        'K0': [float(K) for K in Ks], 'k_max_valid_K0': 0.4,
+        'fob': {tr: {cf: {m: get(tr, cf, m, 'fob') for m in ('NLA', 'TATT')} for cf in ('all', 'behind')}
+                for tr in ('prod', 'S1')},
+        'cs': {tr: {m: sc['truths'][tr]['cs']['models'][m]['fob'] for m in ('NLA', 'TATT')}
+               for tr in ('prod', 'S1')},
+        'fom': {cf: [sc['truths']['prod'][f'{cf}|{K}']['fom'] for K in Ks] for cf in ('all', 'behind')},
+        'fom_cs': sc['truths']['prod']['cs']['fom'],
+        'best': {tr: {cf: {m: get(tr, cf, m, 'best') for m in ('NLA', 'TATT')} for cf in ('all', 'behind')}
+                 for tr in ('prod', 'S1')},
+    })
+
+
+def f_kdense():
+    """k_dense of the band figures: FINE (61 tents) at every other tent, the 31 nodes."""
+    return np.logspace(-2, 1, 61)[::2].tolist()
 
 
 if __name__ == '__main__':

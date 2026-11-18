@@ -50,7 +50,7 @@ def toy_base(rng, nz=4, nn=6, nd=60):
     Je = (lnx[:, None]*(RX["GI"].sum(1) + 2*RX["II"].sum(1))).sum(0)
     J = np.column_stack([rng.standard_normal(nd), rng.standard_normal(nd), JA, Je])
     B = np.hstack([J] + [RX[X].reshape(nz*nf, -1).T for X in IF.XS])
-    b = SimpleNamespace(zs=zs, fine=fine, B=B, nb=B.shape[1], ij=np.arange(4),
+    b = SimpleNamespace(zs=zs, fine=fine, B=B, nb=B.shape[1], ij=np.arange(4), npar=4,
                         g=np.array([[1.0, 0, 0, 0], [0.4, 0.6, 0, 0]]),
                         iknob={X: 4 + q*nz*nf + np.arange(nz*nf).reshape(nz, nf)
                                for q, X in enumerate(IF.XS)})

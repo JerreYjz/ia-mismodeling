@@ -103,3 +103,30 @@ window it must reproduce v8's eps_95 (`correlated_budget.json`).
 
 Every number of the budget comes from `ia_budget.json`; nothing in stage 2
 evaluates cosmolike.
+
+## 3x2pt: galaxy-galaxy lensing
+
+The same knobs on the full Roman 3x2pt vector (2115 points: xi_+-, gamma_t,
+w). IA enters gamma_t through the GI term b_i P_dE, so one P_dE error moves
+xi_+- and gamma_t together; II enters xi_+- alone; w has no IA. The rigid
+fit frees the 8 linear biases (flat) besides Omega_m, A_s, A, eta
+(`ia_fisher.py` takes any number of rigid parameters from the base). The
+shipped example1 3x2pt covariance is not positive definite, so every 3x2pt
+number uses the Gaussian one of `../cocoa/cov3x2.py`
+(`analysis/cov3x2_gauss_d3a.npy`, not committed: 35 MB, 10 s to rebuild).
+
+| file | what | cosmolike |
+|---|---|---|
+| `ia_base_3x2.py` | the 3x2pt base and the masks per probe; `ia_base_3x2_<truth>.npz`, `ia_base_3x2_common.npz` | yes |
+| `fits_3x2.py` | NLA and TATT fitted to the 3x2pt vector at each band cut; `fits_3x2.json` | yes |
+| `ia_budget_3x2.py` | global budget, bands, model drifts; regression on `ia_budget.json`; `ia_budget_3x2.json` | no |
+| `scale_cut_scan_3x2.py` | the GGL cut at K0_cs = 0.2, every pair and sources behind lenses; `scale_cut_scan_3x2.json` | yes |
+
+    (cd ../cocoa && $PY -c "import numpy as np, runpy, sys; np.trapezoid = np.trapz; \
+        sys.argv = ['cov3x2.py', '$DATA']; runpy.run_path('cov3x2.py', run_name='__main__')")
+    $PY ia_base_3x2.py $SO $DATA               # about 3 min for both truths
+    $PY fits_3x2.py $SO $DATA --truths prod    # about 6 min
+    $PY ia_budget_3x2.py                       # about 2 min
+    $PY scale_cut_scan_3x2.py $SO $DATA        # about 22 min for both truths
+
+(The numpy shim is needed only where numpy is older than 2.0.)

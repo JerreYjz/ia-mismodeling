@@ -1,0 +1,45 @@
+[0s] S1: base (2115, 1598), npar 12
+  cs|none ex1 n 1080  sigma(Om, S8) 0.0037 0.0020  FoM  135419  global both ell 1: sigma_max 0.0184 (Lz 0.3) 0.0138 (inf)  band GI min 0.033  II min 0.049
+  cs|0.3 ex1 n  281  sigma(Om, S8) 0.0081 0.0068  FoM   19155  global both ell 1: sigma_max 0.0492 (Lz 0.3) 0.0303 (inf)  band GI min 0.068  II min 0.071
+  regression vs ia_budget.json: cs|none sigma 0.0e+00 band 1.0e-15, cs|0.3 sigma 1.7e-14 band 2.6e-14
+  cs|none    n 1080  sigma(Om, S8) 0.0039 0.0010  FoM  277227  global both ell 1: sigma_max 0.0151 (Lz 0.3) 0.0120 (inf)  band GI min 0.021  II min 0.049
+  cs|0.2     n  192  sigma(Om, S8) 0.0125 0.0073  FoM   12001  global both ell 1: sigma_max 0.1107 (Lz 0.3) 0.0726 (inf)  band GI min 0.134  II min 0.156
+  cs|0.3     n  281  sigma(Om, S8) 0.0102 0.0048  FoM   21282  global both ell 1: sigma_max 0.0777 (Lz 0.3) 0.0471 (inf)  band GI min 0.091  II min 0.103
+  3x2|none   n 2115  sigma(Om, S8) 0.0014 0.0007  FoM  981614  global both ell 1: sigma_max 0.0269 (Lz 0.3) 0.0182 (inf)  band GI min 0.048  II min 0.104
+  3x2|0.2    n  595  sigma(Om, S8) 0.0046 0.0057  FoM   40142  global both ell 1: sigma_max 0.0587 (Lz 0.3) 0.0431 (inf)  band GI min 0.047  II min 0.250
+  3x2|0.3    n  764  sigma(Om, S8) 0.0042 0.0039  FoM   63049  global both ell 1: sigma_max 0.0496 (Lz 0.3) 0.0361 (inf)  band GI min 0.041  II min 0.242
+  3x2b|none  n 1620  sigma(Om, S8) 0.0015 0.0007  FoM  940996  global both ell 1: sigma_max 0.0247 (Lz 0.3) 0.0149 (inf)  band GI min 0.050  II min 0.097
+  3x2b|0.2   n  391  sigma(Om, S8) 0.0050 0.0061  FoM   34165  global both ell 1: sigma_max 0.1145 (Lz 0.3) 0.0817 (inf)  band GI min 0.086  II min 0.214
+  3x2b|0.3   n  523  sigma(Om, S8) 0.0046 0.0040  FoM   55374  global both ell 1: sigma_max 0.0915 (Lz 0.3) 0.0836 (inf)  band GI min 0.129  II min 0.233
+[52s] prod: base (2115, 1598), npar 12
+  cs|none ex1 n 1080  sigma(Om, S8) 0.0036 0.0020  FoM  137367  global both ell 1: sigma_max 0.0180 (Lz 0.3) 0.0133 (inf)  band GI min 0.032  II min 0.046
+  cs|0.3 ex1 n  281  sigma(Om, S8) 0.0080 0.0068  FoM   19385  global both ell 1: sigma_max 0.0491 (Lz 0.3) 0.0304 (inf)  band GI min 0.070  II min 0.075
+  regression vs ia_budget.json: cs|none sigma 0.0e+00 band 1.3e-15, cs|0.3 sigma 0.0e+00 band 6.7e-16
+  cs|none    n 1080  sigma(Om, S8) 0.0039 0.0010  FoM  275927  global both ell 1: sigma_max 0.0151 (Lz 0.3) 0.0121 (inf)  band GI min 0.021  II min 0.050
+    NLA : mu (+19.851, +7.493), FoB 24.873, room 0.0000 / 0.0000
+    TATT: mu (+17.250, +4.251), FoB 20.260, room 0.0000 / 0.0000
+  cs|0.2     n  192  sigma(Om, S8) 0.0125 0.0073  FoM   12028  global both ell 1: sigma_max 0.1132 (Lz 0.3) 0.0737 (inf)  band GI min 0.141  II min 0.168
+    NLA : mu (+0.034, +0.224), FoB 0.234, room 0.0752 / 0.0490
+    TATT: mu (-0.035, +0.174), FoB 0.212, room 0.0921 / 0.0600
+  cs|0.3     n  281  sigma(Om, S8) 0.0100 0.0048  FoM   21651  global both ell 1: sigma_max 0.0768 (Lz 0.3) 0.0469 (inf)  band GI min 0.091  II min 0.096
+    NLA : mu (+0.113, +0.315), FoB 0.316, room 0.0000 / 0.0000
+    TATT: mu (-0.005, +0.279), FoB 0.294, room 0.0291 / 0.0172
+  3x2|none   n 2115  sigma(Om, S8) 0.0014 0.0007  FoM  981101  global both ell 1: sigma_max 0.0267 (Lz 0.3) 0.0178 (inf)  band GI min 0.048  II min 0.103
+    NLA : mu (+5.576, +2.406), FoB 6.085, room 0.0000 / 0.0000
+    TATT: mu (+4.317, +2.056), FoB 4.792, room 0.0000 / 0.0000
+  3x2|0.2    n  595  sigma(Om, S8) 0.0046 0.0057  FoM   40085  global both ell 1: sigma_max 0.0637 (Lz 0.3) 0.0475 (inf)  band GI min 0.053  II min 0.230
+    NLA : mu (+0.197, -0.181), FoB 0.331, room 0.0480 / 0.0359
+    TATT: mu (-0.079, -0.142), FoB 0.145, room 0.0614 / 0.0459
+  3x2|0.3    n  764  sigma(Om, S8) 0.0042 0.0039  FoM   62997  global both ell 1: sigma_max 0.0542 (Lz 0.3) 0.0401 (inf)  band GI min 0.045  II min 0.209
+    NLA : mu (+0.306, -0.100), FoB 0.358, room 0.0000 / 0.0000
+    TATT: mu (-0.096, -0.254), FoB 0.256, room 0.0446 / 0.0380
+  3x2b|none  n 1620  sigma(Om, S8) 0.0015 0.0007  FoM  939806  global both ell 1: sigma_max 0.0245 (Lz 0.3) 0.0148 (inf)  band GI min 0.050  II min 0.098
+    NLA : mu (+3.185, +7.822), FoB 8.521, room 0.0000 / 0.0000
+    TATT: mu (+2.448, +5.427), FoB 6.011, room 0.0000 / 0.0000
+  3x2b|0.2   n  391  sigma(Om, S8) 0.0050 0.0061  FoM   34411  global both ell 1: sigma_max 0.1169 (Lz 0.3) 0.0822 (inf)  band GI min 0.088  II min 0.195
+    NLA : mu (-0.064, +0.219), FoB 0.258, room 0.0799 / 0.0562
+    TATT: mu (-0.089, +0.218), FoB 0.271, room 0.0804 / 0.0566
+  3x2b|0.3   n  523  sigma(Om, S8) 0.0045 0.0040  FoM   55740  global both ell 1: sigma_max 0.0936 (Lz 0.3) 0.0837 (inf)  band GI min 0.128  II min 0.204
+    NLA : mu (-0.230, +0.193), FoB 0.339, room 0.0716 / 0.0641
+    TATT: mu (-0.219, +0.141), FoB 0.292, room 0.0814 / 0.0739
+done (112s)

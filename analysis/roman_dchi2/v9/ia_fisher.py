@@ -10,7 +10,8 @@ Coordinates.
     tent j of FINE (61 tents in ln k, 0.01 to 10 h/Mpc, flat outside) at
     snapshot s alone. Base column: the xi response to it, exact (xi is linear
     in the IA tables). The base also holds the 4 stencil columns of the
-    template, J = dxi/d(Omega_m, A_s, A, eta).
+    template, J = dxi/d(Omega_m, A_s, A, eta) (for 3x2pt also the 8 linear
+    galaxy biases b_i, flat; ia_base_3x2.py).
   Residual delta: the fractional error of P_X at the NODES (31 in ln k) and
     at every snapshot, ordered (X, s, i). R maps it to base knobs through
     the cubic spline in ln k: knob (X, s, j) = sum_i delta(X, s, i) S[i, j].
@@ -148,8 +149,9 @@ class Base:
         self.fine = d["fine"]
         self.xi0 = d["xi0"]
         self.xi_ia = d["xi_ia"]
-        self.J = d["J"]                                   # (1080, 4), TEMPLATE order
-        self.g = d["g_s8"]                                # (2, 4): Omega_m and S8 rows
+        self.J = d["J"]                                   # (ndv, npar): TEMPLATE, then any nuisance
+        self.g = d["g_s8"]                                # (2, npar): Omega_m and S8 rows
+        self.npar = self.J.shape[1]                       # 4 (xi_+-) or 12 (3x2pt: + 8 biases)
         self.R = {X: d[f"R_{X}"] for X in XS}             # (nz, 61, 1080)
         self.drift = {k[6:]: d[k] for k in d.files if k.startswith("drift|")}
         self.cov = c["cov"]
@@ -157,8 +159,9 @@ class Base:
         nz, nf = len(self.zs), len(self.fine)
         self.B = np.hstack([self.J] + [self.R[X].reshape(nz*nf, -1).T for X in XS])
         self.nb = self.B.shape[1]
-        self.ij = np.arange(4)
-        self.iknob = {X: 4 + q*nz*nf + np.arange(nz*nf).reshape(nz, nf) for q, X in enumerate(XS)}
+        self.ij = np.arange(self.npar)
+        self.iknob = {X: self.npar + q*nz*nf + np.arange(nz*nf).reshape(nz, nf)
+                      for q, X in enumerate(XS)}
 
     def knob_map(self, Xs=XS, nodes=NODES):
         """R (nb, n_res): residual (X, s, i) at the nodes -> base knobs."""
@@ -192,7 +195,9 @@ def stable_inverse(F):
     """Pseudo-inverse of a symmetric Fisher matrix (fit_system of the notes):
     unit diagonal, eigen-decomposition, directions below PINV_RTOL dropped.
     Returns (F^-1, number dropped)."""
-    s = 1.0/np.sqrt(np.diag(F))
+    d = np.diag(F)
+    # a parameter the data do not see (the biases on xi_+- alone) is a null direction
+    s = np.where(d > 0, 1.0/np.sqrt(np.where(d > 0, d, 1.0)), 1.0)
     w, V = np.linalg.eigh(F*s[:, None]*s[None, :])
     keep = w > PINV_RTOL*w.max()
     Finv = (s[:, None]*V[:, keep]) @ np.diag(1.0/w[keep]) @ (V[:, keep].T*s[None, :])
@@ -225,11 +230,19 @@ class Fit:
         return (self.g @ dp)/self.sig[:, None] if C.ndim == 2 else (self.g @ dp)/self.sig
 
 
+def template_prior(npar):
+    """Prior precision of the rigid parameters: Omega_m, A_s flat, A and eta
+    Gaussian (SIG_IA), any further nuisance (the 3x2pt galaxy biases) flat."""
+    P = np.zeros((npar, npar))
+    P[2, 2], P[3, 3] = 1/SIG_IA["A"]**2, 1/SIG_IA["eta"]**2
+    return P
+
+
 def rigid_fit(base, mask):
     G = gram(base.B, base.cov, mask)
-    M = np.zeros((base.nb, 4))
-    M[base.ij, np.arange(4)] = 1.0
-    P = np.diag([0.0, 0.0, 1/SIG_IA["A"]**2, 1/SIG_IA["eta"]**2])
+    M = np.zeros((base.nb, base.npar))
+    M[base.ij, base.ij] = 1.0
+    P = template_prior(base.npar)
     g = base.g.copy()
     return Fit(G, M, P, P, g), G
 
@@ -237,14 +250,15 @@ def rigid_fit(base, mask):
 def marginalised_fit(base, G, Rmap, S_fit):
     """Rigid + the residual with prior N(0, S_fit) in factor form."""
     L = factor(S_fit)
-    M0 = np.zeros((base.nb, 4))
-    M0[base.ij, np.arange(4)] = 1.0
+    n0 = base.npar
+    M0 = np.zeros((base.nb, n0))
+    M0[base.ij, base.ij] = 1.0
     M = np.hstack([M0, Rmap @ L])
     r = L.shape[1]
-    P0 = np.zeros((4 + r, 4 + r))
-    P0[2, 2], P0[3, 3] = 1/SIG_IA["A"]**2, 1/SIG_IA["eta"]**2
+    P0 = np.zeros((n0 + r, n0 + r))
+    P0[:n0, :n0] = template_prior(n0)
     P = P0.copy()
-    P[4:, 4:] += np.eye(r)
+    P[n0:, n0:] += np.eye(r)
     g = np.hstack([base.g, np.zeros((2, r))])
     return Fit(G, M, P, P0, g)
 
@@ -254,13 +268,14 @@ def marginalised_fit_projected(base, G, Rmap, S_fit, U):
     (S_fit must be invertible): the check of the factor form."""
     Pr = projected_precision(S_fit, U)
     n = Pr.shape[0]
-    M0 = np.zeros((base.nb, 4))
-    M0[base.ij, np.arange(4)] = 1.0
+    n0 = base.npar
+    M0 = np.zeros((base.nb, n0))
+    M0[base.ij, base.ij] = 1.0
     M = np.hstack([M0, Rmap])
-    P0 = np.zeros((4 + n, 4 + n))
-    P0[2, 2], P0[3, 3] = 1/SIG_IA["A"]**2, 1/SIG_IA["eta"]**2
+    P0 = np.zeros((n0 + n, n0 + n))
+    P0[:n0, :n0] = template_prior(n0)
     P = P0.copy()
-    P[4:, 4:] += Pr
+    P[n0:, n0:] += Pr
     g = np.hstack([base.g, np.zeros((2, n))])
     return Fit(G, M, P, P0, g)
 
