@@ -478,19 +478,51 @@ refit of Sec.~\ref{sec:addendum}: the $A_1$ terms on $I_1\Plin + \alpha(\PNL -
 I_1\Plin)$, $a_c \le 1$ on red centrals. With every galaxy red the code
 reproduces the one-population model to $10^{-16}$.
 
-\paragraph{The result.} Joint $\chi^2/\nu$, $X = (1+z)/1.62$ (the
-$\kmax = 0.39$ and 0.52 fits use the same $k$ bins):
+\paragraph{The models.} Table~\ref{tab:rbmodels} lists every variant fitted,
+by the name it has in \texttt{hmc\_rb\_fit.py}. They differ only in the
+2-halo amplitudes of the centrals: how each colour aligns, whether the II
+spectrum keeps the red-blue cross term, and what makes the amplitude change
+with redshift.
+
+\begin{table}[H]\centering\small
+\caption{The models of the joint fits. ``NLA'' is the linear tidal alignment
+($A_1$ term), ``torquing'' the quadratic tidal-torquing term of TATT ($A_2$
+term). $X = (1+z)/1.62$; $f_{rc}$, $f_{bc}$: red and blue central fractions; ``II cross term'': whether $P_{II}$ keeps the red-blue product (F21 drop it, their Eqs.~3, 4);
+$b_g$, $b_r$, $b_b$: the HOD bias of all, red and blue galaxies. Every model
+also has $\alpha$, $\bTA$, the satellite amplitude $a_{1h}$, the central
+1-halo $a_c \le 1$ and a white term $W$ per snapshot.}
+\label{tab:rbmodels}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{p{0.7in}p{1.45in}p{1.6in}p{0.95in}p{1.5in}}\toprule
+name & red centrals & blue centrals & II cross term & redshift dependence\\ \midrule
+\multicolumn{5}{l}{\emph{One population (no colour split), the references}}\\
+\texttt{1p} & \multicolumn{2}{l}{NLA $A_1X^{\eta_1}$ + torquing $A_2X^{\eta_2}$ on every central} & --- & power laws, $\eta_1$, $\eta_2$ free\\
+\texttt{1p0} & \multicolumn{2}{l}{as \texttt{1p}} & --- & none ($\eta_1 = \eta_2 = 0$)\\
+\texttt{1pB} & \multicolumn{2}{l}{NLA $A_1 b_g/1.5$ + torquing $A_2X^{\eta_2}$} & --- & NLA follows $b_g(z)$\\ \midrule
+\multicolumn{5}{l}{\emph{Red and blue, fractions from Zu \& Mandelbaum (2016) and Tinker et al.\ (2013)}}\\
+\texttt{rbF21} & NLA, $f_{rc}A_r$ & NLA, $f_{bc}A_b$ & no (F21) & fractions only; $A_r$, $A_b$ constant\\
+\texttt{rbTT} & NLA, $f_{rc}A_r$ & torquing, $f_{bc}A_{2,b}$ & yes (TATT) & fractions only; $A_r$, $A_{2,b}$ constant\\
+\texttt{rbTT\_q0} & \multicolumn{4}{l}{as \texttt{rbTT}, with blue satellites unaligned (elsewhere 0.6 of the red $a_{1h}$)}\\
+\texttt{rbTT\_zm} & \multicolumn{4}{l}{as \texttt{rbTT}, with the Zu \& Mandelbaum fractions at every $z$ (fractions do not evolve)}\\
+\texttt{rbTT\_eta} & NLA, $f_{rc}A_rX^{\eta_r}$ & torquing, $f_{bc}A_{2,b}$ & yes & fractions + power law $\eta_r$ on red\\
+\texttt{rbB} & NLA, $f_{rc}A_r b_r/1.5$ & NLA, $f_{bc}A_b b_b/1.5$, + torquing $f_{bc}A_{2,b}$ & yes & fractions + each colour's bias; $A_r$, $A_b$ constant\\
+\bottomrule\end{tabular}
+\end{table}
+
+\paragraph{The result.} Joint $\chi^2/\nu$ of the models of
+Table~\ref{tab:rbmodels}, best first (the $\kmax = 0.39$ and 0.52 fits use
+the same $k$ bins):
 \begin{center}\small
 \begin{tabular}{lccc}\toprule
-$\kmax$ [$h\,$Mpc$^{-1}$] & 0.52 & 0.70 & 0.94\\ \midrule
-one population, $A_1X^{\eta_1}$, $A_2X^{\eta_2}$ & 1.49 & 2.84 & 6.14\\
-one population, $A_1 b_g(z)/1.5$, $A_2X^{\eta_2}$ & 2.02 & 3.60 & 7.40\\
-red + blue NLA, each $A_X b_X/1.5$; blue torquing & 3.39 & 5.17 & 9.16\\
-red $A_r X^{\eta_r}$ NLA + blue tidal torquing & 9.12 & 12.7 & 18.9\\
-red + blue NLA, constant amplitudes, Eq.~\eqref{eq:f21rb} & 12.5 & 22.6 & 44.1\\
-red NLA + blue torquing, constant amplitudes, Zu \& Mandelbaum at every $z$ & 48.7 & 78.5 & 132\\
-one population, no evolution & 56.8 & 93.3 & 155\\
-red NLA + blue torquing, constant amplitudes & 133 & 167 & 232\\
+name & $\kmax = 0.52$ & 0.70 & 0.94 [$h\,$Mpc$^{-1}$]\\ \midrule
+\texttt{1p} & 1.49 & 2.84 & 6.14\\
+\texttt{1pB} & 2.02 & 3.60 & 7.40\\
+\texttt{rbB} & 3.39 & 5.17 & 9.16\\
+\texttt{rbTT\_eta} & 9.12 & 12.7 & 18.9\\
+\texttt{rbF21} & 12.5 & 22.6 & 44.1\\
+\texttt{rbTT\_zm} & 48.7 & 78.5 & 132\\
+\texttt{1p0} & 56.8 & 93.3 & 155\\
+\texttt{rbTT} (and \texttt{rbTT\_q0}, within 0.1) & 133 & 167 & 232\\
 \bottomrule\end{tabular}
 \end{center}
 For comparison, the per-snapshot fit of Sec.~\ref{sec:addendum} (nine sets of
