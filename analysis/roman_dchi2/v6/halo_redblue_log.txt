@@ -12,3 +12,17 @@ z 2.00: red fraction (zt) 0.260 [rc 0.118 bc 0.668 rs 0.142 bs 0.072], (zm) 0.53
 z 3.00: red fraction (zt) 0.213 [rc 0.105 bc 0.725 rs 0.108 bs 0.062], (zm) 0.501; lgM rc/bc 11.93/11.65; b red/blue 4.05/3.11  [523s]
 z 4.00: red fraction (zt) 0.179 [rc 0.096 bc 0.769 rs 0.083 bs 0.051], (zm) 0.483; lgM rc/bc 11.85/11.62; b red/blue 5.66/4.56  [567s]
 done (567s)
+z 0.00: central bias red/blue/all (zt) 0.97/0.87/0.94; galaxies b_g 1.16
+z 0.10: central bias red/blue/all (zt) 0.95/0.86/0.92; galaxies b_g 1.19
+z 0.20: central bias red/blue/all (zt) 0.96/0.87/0.91; galaxies b_g 1.23
+z 0.30: central bias red/blue/all (zt) 1.01/0.90/0.94; galaxies b_g 1.26
+z 0.40: central bias red/blue/all (zt) 1.08/0.94/0.98; galaxies b_g 1.29
+z 0.50: central bias red/blue/all (zt) 1.14/0.98/1.02; galaxies b_g 1.33
+z 0.60: central bias red/blue/all (zt) 1.21/1.02/1.07; galaxies b_g 1.37
+z 0.75: central bias red/blue/all (zt) 1.31/1.09/1.14; galaxies b_g 1.44
+z 1.00: central bias red/blue/all (zt) 1.49/1.23/1.28; galaxies b_g 1.57
+z 1.50: central bias red/blue/all (zt) 1.90/1.55/1.61; galaxies b_g 1.89
+z 2.00: central bias red/blue/all (zt) 2.38/1.95/2.01; galaxies b_g 2.25
+z 3.00: central bias red/blue/all (zt) 3.62/3.02/3.09; galaxies b_g 3.31
+z 4.00: central bias red/blue/all (zt) 5.22/4.47/4.55; galaxies b_g 4.76
+updated /Users/yijiezhu/cocoa/ia_mismodeling/analysis/roman_dchi2/v6/halo_redblue_tables.npz

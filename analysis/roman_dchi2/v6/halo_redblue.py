@@ -34,11 +34,18 @@ Per snapshot and red-fraction model, stored:
                            amplitude 0.6 a_1h (the ratio of the blue and red
                            satellite amplitudes of Fortuna et al. 2021,
                            Table 3: 0.0006 / 0.0010), on A_GRID in a_1h;
-  SdI_b06, SII_bb06        the blue satellite terms at amplitude 0.6 a_1h.
+  SdI_b06, SII_bb06        the blue satellite terms at amplitude 0.6 a_1h;
+  b_rc, b_bc, b_c          the mean linear bias of red, blue and all central
+                           galaxies (number-weighted over their halos), for
+                           the halo-based alignment of hmc_rb_fit.py (alignment
+                           of a central = alignment of its halo, which scales
+                           with the halo bias, times a colour-dependent
+                           misalignment factor). `--light` adds only these
+                           to an existing halo_redblue_tables.npz.
 Checks printed per snapshot: n_g against halo_tables.npz, and the fractions
 adding to 1; the red fraction of the whole sample against the observed range.
 
-    ~/cocoa/Cocoa/.local/bin/python halo_redblue.py      -> halo_redblue_tables.npz
+    ~/cocoa/Cocoa/.local/bin/python halo_redblue.py [--light]   -> halo_redblue_tables.npz
 """
 import os
 import sys
@@ -105,14 +112,53 @@ def sat_ii(hm, Nx, Ny, Gx, Gy):
     return out
 
 
+def central_bias(hm, z, m):
+    """Mean linear bias of red, blue and all centrals at one snapshot."""
+    qc = fq_central(hm.M, float(z), m)
+    w = hm.dndlnM
+    mean_b = lambda N: trapezoid(w*hm.b*N, hm.lnM)/trapezoid(w*N, hm.lnM)
+    return mean_b(hm.Nc*qc), mean_b(hm.Nc*(1 - qc)), mean_b(hm.Nc)
+
+
+def light():
+    """Add b_rc, b_bc, b_c to the existing tables (no satellite grids)."""
+    path = os.path.join(HERE, "halo_redblue_tables.npz")
+    out = dict(np.load(path))
+    tab = np.load(os.path.join(HERE, "halo_tables.npz"))
+    zs, k_all, hod = tab["zs"], tab["k_all"], tab["hod"]
+    assert np.allclose(out["zs"], zs)
+    lin = H.Linear(list(zs))
+    for m in MODELS:
+        for kk in ("b_rc", "b_bc", "b_c"):
+            out[f"{m}|{kk}"] = np.zeros(len(zs))
+    for s, z in enumerate(zs):
+        hm = H.Halo(lin, float(z), k_all, nM=140, nx=10)
+        hm.set_hod(hod[s, 0], SIG_LGM, hod[s, 1], alpha=ALPHA)
+        assert abs(hm.ng/hod[s, 3] - 1) < 1e-3, (hm.ng, hod[s, 3])
+        for m in MODELS:
+            b = central_bias(hm, z, m)
+            for kk, v in zip(("b_rc", "b_bc", "b_c"), b):
+                out[f"{m}|{kk}"][s] = v
+            # the fractions of the full build must be reproduced
+            qc = fq_central(hm.M, float(z), m)
+            frc = trapezoid(hm.dndlnM*hm.Nc*qc, hm.lnM)/hm.ng
+            assert abs(frc/out[f"{m}|f_rc"][s] - 1) < 1e-6, (frc, out[f"{m}|f_rc"][s])
+        print(f"z {z:4.2f}: central bias red/blue/all (zt) {out['zt|b_rc'][s]:.2f}/{out['zt|b_bc'][s]:.2f}/"
+              f"{out['zt|b_c'][s]:.2f}; galaxies b_g {hod[s, 4]:.2f}", flush=True)
+    np.savez(path, **out)
+    print("updated", path)
+
+
 def main():
+    if "--light" in sys.argv:
+        return light()
     t0 = time.time()
     tab = np.load(os.path.join(HERE, "halo_tables.npz"))
     zs, k_all, hod = tab["zs"], tab["k_all"], tab["hod"]
     lin = H.Linear(list(zs))
     nsn, nk, na = len(zs), k_all.size, A_GRID.size
     out = {"zs": zs, "k_all": k_all, "a_grid": A_GRID, "q_blue": Q_BLUE, "models": np.array(MODELS)}
-    keys = ("f_rc", "f_bc", "f_rs", "f_bs", "lgM_rc", "lgM_bc", "b_r", "b_b")
+    keys = ("f_rc", "f_bc", "f_rs", "f_bs", "lgM_rc", "lgM_bc", "b_r", "b_b", "b_rc", "b_bc", "b_c")
     for m in MODELS:
         for kk in keys:
             out[f"{m}|{kk}"] = np.zeros(nsn)
@@ -141,6 +187,8 @@ def main():
             out[f"{m}|lgM_bc"][s] = trapezoid(w*Nbc*hm.lnM, hm.lnM)/nint(Nbc)/np.log(10)
             out[f"{m}|b_r"][s] = trapezoid(w*hm.b*(Nrc + Nrs), hm.lnM)/nint(Nrc + Nrs)
             out[f"{m}|b_b"][s] = trapezoid(w*hm.b*(Nbc + Nbs), hm.lnM)/nint(Nbc + Nbs)
+            for kk, v in zip(("b_rc", "b_bc", "b_c"), central_bias(hm, z, m)):
+                out[f"{m}|{kk}"][s] = v
             for kk, N in (("Pc_r", Nrc), ("Pc_b", Nbc)):
                 out[f"{m}|{kk}"][s] = 0.5*trapezoid(w[:, None]*(N/hm.ng*hm.M/H.RHO_M*se2)[:, None]*UE,
                                                     hm.lnM, axis=0)

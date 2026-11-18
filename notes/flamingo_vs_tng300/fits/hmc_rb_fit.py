@@ -40,6 +40,44 @@ the galaxy bias does (A1/b_g of the per-snapshot fits is 2.4 to 2.6):
           red-blue cross term: two linear populations share the tidal
           field); blue tidal torquing f_bc A2_b; satellites and a_c as rbTT.
           A_b = A_r means alignment that does not care about colour.
+Halo-based colour split (added after scrutiny of the models above, which
+give each colour an amplitude that ignores its halo): a central takes the
+alignment of its halo, which scales with the halo bias (Xia et al. 2017:
+the mass and formation-time dependence of halo alignment is explained by
+halo bias; Kurita et al. 2021), times a misalignment factor that depends on
+colour (Tenneti et al. 2016: discs are more misaligned with their halos
+than ellipticals), 1 for red and kappa_b for blue:
+    a1(z) = A_h [f_rc b_rc + kappa_b f_bc b_bc],
+b_rc, b_bc the mean bias of red and blue centrals (halo_redblue.py), the
+satellites not aligned on large scales (F21). Both colours align linearly
+with the same tidal field, so P_II keeps the red-blue cross term.
+  rbH     kappa_b free in [0, 2] (physical: 0 to 1), blue tidal torquing
+          f_bc A2_b
+  rbH_A2  rbH with torquing on every central, A2 X^eta2, not by colour
+  rbH_k1  kappa_b = 1 (colour-blind)
+  rbH_kF  kappa_b = 0.04 (the F21 ratio A_blue/A_red = 0.21/5.3)
+  rbH_zm  rbH with the Zu & Mandelbaum fractions at every z
+The rbH fits need the satellites to carry large-scale alignment (with the
+centrals alone the amplitude rises too steeply with z), so:
+  rbS     every galaxy, central or satellite, aligned like its host halo:
+          a1 = A_h [(f_rc + f_rs) b_r + kappa_b (f_bc + f_bs) b_b]/1.5,
+          torquing A2 X^eta2 on every galaxy. kappa_b = 1 is 1pB exactly
+          (the bracket is then b_g), so the colour split can only improve it.
+  rbS_bt  rbS with the torquing on blue galaxies only, f_bc A2_b
+  rbS_zm  rbS with the Zu & Mandelbaum fractions at every z
+Diagnostics of what limits the joint fits (added after rbS fell short of 1p):
+  1pF     one population with A1 free at every snapshot (nine values), the
+          rest shared: the floor any law A1(z), colour-based or not, can reach
+  1pA     1p with alpha X^eta_alpha (the per-snapshot alpha rises with z)
+  1pFA    1pF with alpha X^eta_alpha
+  1pBb    one population, A1 (b_g/1.5)^beta: alignment growing as a power of
+          the bias (misalignment falls with halo mass, Tenneti et al. 2016)
+  1pBbA   1pBb with alpha X^eta_alpha
+  rbSb    rbS with b^beta for each colour (beta = 1 is rbS)
+  rbSbA   rbSb with alpha X^eta_alpha
+  rbSbP, rbSbAP   rbSb and rbSbA with kappa_b in its physical range [0, 1]
+          (the free fits reach the bound kappa_b = 2: blue galaxies twice as
+          aligned as red, which uses the rising blue fraction as an evolution law)
 The red fractions are fixed inputs (FLAMINGO has no colour split): model
 "zt" (Zu & Mandelbaum 2016 at z <= 0.1, Tinker et al. 2013 at z = 0.36 to
 0.88, held above) unless stated.
@@ -96,7 +134,46 @@ MODELS = {
             (0, -10, -5, 0, 0, 0, -1), (40, 10, 5, 2, 3, AC_CAP, 2), None, None),
     'rbB': (('A_r', 'A_b', 'A2_b', 'bTA', 'a_1h', 'a_c', 'alpha'),
             (0, -40, -40, 0, 0, 0, -1), (60, 60, 40, 2, 3, AC_CAP, 2), 'zt', Q_BLUE),
+    'rbH': (('A_h', 'kappa_b', 'A2_b', 'bTA', 'a_1h', 'a_c', 'alpha'),
+            (0, 0, -40, 0, 0, 0, -1), (60, 2, 40, 2, 3, AC_CAP, 2), 'zt', Q_BLUE),
+    'rbH_A2': (('A_h', 'kappa_b', 'A2', 'eta2', 'bTA', 'a_1h', 'a_c', 'alpha'),
+               (0, 0, -10, -5, 0, 0, 0, -1), (60, 2, 10, 5, 2, 3, AC_CAP, 2), 'zt', Q_BLUE),
+    'rbH_k1': (('A_h', 'A2_b', 'bTA', 'a_1h', 'a_c', 'alpha'),
+               (0, -40, 0, 0, 0, -1), (60, 40, 2, 3, AC_CAP, 2), 'zt', Q_BLUE),
+    'rbH_kF': (('A_h', 'A2_b', 'bTA', 'a_1h', 'a_c', 'alpha'),
+               (0, -40, 0, 0, 0, -1), (60, 40, 2, 3, AC_CAP, 2), 'zt', Q_BLUE),
+    'rbH_zm': (('A_h', 'kappa_b', 'A2_b', 'bTA', 'a_1h', 'a_c', 'alpha'),
+               (0, 0, -40, 0, 0, 0, -1), (60, 2, 40, 2, 3, AC_CAP, 2), 'zm', Q_BLUE),
+    'rbS': (('A_h', 'kappa_b', 'A2', 'eta2', 'bTA', 'a_1h', 'a_c', 'alpha'),
+            (0, 0, -10, -5, 0, 0, 0, -1), (60, 2, 10, 5, 2, 3, AC_CAP, 2), 'zt', Q_BLUE),
+    'rbS_bt': (('A_h', 'kappa_b', 'A2_b', 'bTA', 'a_1h', 'a_c', 'alpha'),
+               (0, 0, -40, 0, 0, 0, -1), (60, 2, 40, 2, 3, AC_CAP, 2), 'zt', Q_BLUE),
+    'rbS_zm': (('A_h', 'kappa_b', 'A2', 'eta2', 'bTA', 'a_1h', 'a_c', 'alpha'),
+               (0, 0, -10, -5, 0, 0, 0, -1), (60, 2, 10, 5, 2, 3, AC_CAP, 2), 'zm', Q_BLUE),
 }
+NCORE = 9
+_COMMON = (('bTA', 0, 2), ('a_1h', 0, 3), ('a_c', 0, AC_CAP), ('alpha', -1, 2))
+_A2 = (('A2', -10, 10), ('eta2', -5, 5))
+_EA = (('eta_alpha', -5, 5),)
+_A1S = tuple((f'a1_{i}', 0, 40) for i in range(NCORE))
+
+
+def _model(spec, rf=None, q=None):
+    return (tuple(n for n, _, _ in spec), tuple(l for _, l, _ in spec), tuple(h for _, _, h in spec), rf, q)
+
+
+MODELS.update({
+    '1pF': _model(_A2 + _COMMON + _A1S),
+    '1pA': _model((('A1', 0, 40), ('eta1', -5, 5)) + _A2 + _COMMON + _EA),
+    '1pFA': _model(_A2 + _COMMON + _EA + _A1S),
+    '1pBb': _model((('A1', 0, 40), ('beta', -2, 5)) + _A2 + _COMMON),
+    '1pBbA': _model((('A1', 0, 40), ('beta', -2, 5)) + _A2 + _COMMON + _EA),
+    'rbSb': _model((('A_h', 0, 60), ('kappa_b', 0, 2), ('beta', -2, 5)) + _A2 + _COMMON, 'zt', Q_BLUE),
+    'rbSbA': _model((('A_h', 0, 60), ('kappa_b', 0, 2), ('beta', -2, 5)) + _A2 + _COMMON + _EA, 'zt', Q_BLUE),
+    'rbSbP': _model((('A_h', 0, 60), ('kappa_b', 0, 1), ('beta', -2, 5)) + _A2 + _COMMON, 'zt', Q_BLUE),
+    'rbSbAP': _model((('A_h', 0, 60), ('kappa_b', 0, 1), ('beta', -2, 5)) + _A2 + _COMMON + _EA, 'zt', Q_BLUE),
+})
+KAPPA_FIXED = {'rbH_k1': 1.0, 'rbH_kF': 0.21/5.3}
 B_PIV = 1.5
 
 
@@ -133,6 +210,7 @@ class Snapshot:
             d = {kk: float(rb[f'{m}|{kk}'][s]) for kk in ('f_rc', 'f_bc', 'f_rs', 'f_bs')}
             d['pc_r'] = rb[f'{m}|Pc_r'][s][idr]
             d['b_r'], d['b_b'] = float(rb[f'{m}|b_r'][s]), float(rb[f'{m}|b_b'][s])
+            d['b_rc'], d['b_bc'] = float(rb[f'{m}|b_rc'][s]), float(rb[f'{m}|b_bc'][s])
             for kk in ('SdI_r', 'SdI_b06', 'SII_rr', 'SII_bb06', 'SII_rb06'):
                 d[kk] = rb[f'{m}|{kk}'][s][:, idr]
             self.rb[m] = d
@@ -161,7 +239,8 @@ class Snapshot:
     def predict(self, name, p, w):
         '''[P_hE, P_EE, P_BB] for model name with global parameters p (dict) and white term w.'''
         rf, q = MODELS[name][3], MODELS[name][4]
-        alpha, bta, a1h, ac = p['alpha'], p['bTA'], p['a_1h'], p['a_c']
+        alpha = p['alpha']*self.X**p.get('eta_alpha', 0.0)
+        bta, a1h, ac = p['bTA'], p['a_1h'], p['a_c']
         if rf is None:
             a1, a2 = self.effective(name, p)
             dE, EE, BB = self.two_halo(a1, a2, bta, alpha)
@@ -170,7 +249,7 @@ class Snapshot:
             dE_c = -ac*self.pc_all
         else:
             d = self.rb[rf]
-            ar = p['A_r']*self.X**p.get('eta_r', 0.0)
+            ar = p.get('A_r', 0.0)*self.X**p.get('eta_r', 0.0)
             if name.startswith('rbF21'):
                 a1 = d['f_rc']*ar + d['f_bc']*p['A_b']
                 dE, EE, BB = self.two_halo(a1, 0.0, bta, alpha,
@@ -192,10 +271,27 @@ class Snapshot:
         '''The effective one-population amplitudes a1(z), a2(z) of a model.'''
         rf = MODELS[name][3]
         if rf is None:
-            a1 = p['A1']*(self.bg/B_PIV if name == '1pB' else self.X**p.get('eta1', 0.0))
+            if name.startswith('1pF'):
+                a1 = p[f'a1_{self.idx}']
+            elif name.startswith('1pB'):
+                a1 = p['A1']*(self.bg/B_PIV)**p.get('beta', 1.0)
+            else:
+                a1 = p['A1']*self.X**p.get('eta1', 0.0)
             return a1, p['A2']*self.X**p.get('eta2', 0.0)
         d = self.rb[rf]
-        ar = p['A_r']*self.X**p.get('eta_r', 0.0)
+        ar = p.get('A_r', 0.0)*self.X**p.get('eta_r', 0.0)
+        if name.startswith('rbS'):
+            be = p.get('beta', 1.0)
+            kap = KAPPA_FIXED.get(name, p.get('kappa_b'))
+            a1 = p['A_h']*((d['f_rc'] + d['f_rs'])*(d['b_r']/B_PIV)**be
+                           + kap*(d['f_bc'] + d['f_bs'])*(d['b_b']/B_PIV)**be)
+            a2 = d['f_bc']*p['A2_b'] if name == 'rbS_bt' else p['A2']*self.X**p['eta2']
+            return a1, a2
+        if name.startswith('rbH'):
+            kap = KAPPA_FIXED.get(name, p.get('kappa_b'))
+            a1 = p['A_h']*(d['f_rc']*d['b_rc'] + kap*d['f_bc']*d['b_bc'])
+            a2 = p['A2']*self.X**p['eta2'] if name == 'rbH_A2' else d['f_bc']*p['A2_b']
+            return a1, a2
         if name == 'rbB':
             return ((d['f_rc']*p['A_r']*d['b_r'] + d['f_bc']*p['A_b']*d['b_b'])/B_PIV,
                     d['f_bc']*p['A2_b'])
@@ -207,6 +303,8 @@ class Snapshot:
 def fit_joint(snaps, name, kmax, warm=None):
     names, lo, hi = MODELS[name][0], np.array(MODELS[name][1], float), np.array(MODELS[name][2], float)
     ng = len(names)
+    for i, s in enumerate(snaps):
+        s.idx = i
     lo_w = np.array([-s.ns for s in snaps])
     hi_w = np.array([5*s.ns for s in snaps])
     LO, HI = np.r_[lo, lo_w], np.r_[hi, hi_w]
@@ -218,9 +316,18 @@ def fit_joint(snaps, name, kmax, warm=None):
                                for i, (s, m) in enumerate(zip(snaps, masks))])
     starts = []
     base = {'A1': 3.5, 'A2': -1.0, 'eta1': 0.0, 'eta2': 0.0, 'bTA': 0.3, 'a_1h': 1e-3, 'a_c': 0.5,
-            'alpha': 0.5, 'A_r': 12.0, 'A_b': 1.0, 'A2_b': -2.0, 'eta_r': 0.0}
+            'alpha': 0.5, 'A_r': 12.0, 'A_b': 1.0, 'A2_b': -2.0, 'eta_r': 0.0, 'A_h': 10.0, 'kappa_b': 0.3,
+            'beta': 1.0, 'eta_alpha': 0.0, **{f'a1_{i}': 3.5 + 0.2*i for i in range(NCORE)}}
     for over in ({}, {'A_r': 6.0, 'A1': 2.5, 'alpha': 0.2}, {'A_r': 20.0, 'A2_b': -6.0, 'A2': -3.0, 'bTA': 0.6},
-                 {'A_b': 5.0, 'A2_b': 2.0, 'A2': 1.0, 'a_1h': 0.05, 'alpha': 0.8}, {'eta1': 1.0, 'eta_r': -1.0}):
+                 {'A_b': 5.0, 'A2_b': 2.0, 'A2': 1.0, 'a_1h': 0.05, 'alpha': 0.8}, {'eta1': 1.0, 'eta_r': -1.0},
+                 {'kappa_b': 1.0, 'A_h': 6.0}, {'kappa_b': 0.05, 'A_h': 14.0, 'A2_b': 1.0},
+                 # the 1pB solution, which rbS contains at kappa_b = 1
+                 {'kappa_b': 1.0, 'A_h': 3.54, 'A1': 3.54, 'A2': 0.67, 'eta2': 1.73, 'bTA': 0.0, 'alpha': 0.5,
+                  'a_1h': 0.0, 'a_c': 0.0},
+                 # the 1p solution, which 1pA and 1pF contain
+                 {'A1': 3.54, 'eta1': 0.54, 'A2': 0.19, 'eta2': 4.1, 'bTA': 0.01, 'alpha': 0.64,
+                  'a_1h': 0.0, 'a_c': 0.0, **{f'a1_{i}': 3.54*((1 + z)/X0)**0.54 for i, z in
+                                              enumerate((0.2, 0.3, 0.4, 0.5, 0.6, 0.75, 1.0, 1.5, 2.0))}}):
         b = dict(base, **over)
         starts.append(np.r_[[b[n] for n in names], 0.3*np.array([s.ns for s in snaps])])
     if warm is not None:

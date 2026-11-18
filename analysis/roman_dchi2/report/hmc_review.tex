@@ -22,13 +22,17 @@
 \section*{Summary}
 \begin{itemize}[itemsep=3pt]
 \item \textbf{Red and blue galaxies, 18 November 2026 (Sec.~\ref{sec:redblue}).}
-  With red and blue fractions from halo-quenching fits to observed galaxies
-  and one alignment amplitude per colour at every redshift, as Fortuna et al.\
-  (2021), the halo model cannot fit FLAMINGO jointly over $z = 0.2$ to 2
-  ($\chi^2/\nu = 12$ to 130 at $\kmax = 0.52$, against 1.5 for one population
-  with a power-law evolution). FLAMINGO's amplitude rises with redshift as the
-  galaxy bias does while the red fraction falls; with each colour's amplitude
-  scaled by its bias, the fit sets the blue amplitude equal to the red one.
+  With red and blue fractions from halo-quenching fits to observed galaxies,
+  the halo model was fitted jointly to FLAMINGO over $z = 0.2$ to 2. One
+  alignment amplitude per colour, as Fortuna et al.\ (2021), fails
+  ($\chi^2/\nu = 12$ to 130 at $\kmax = 0.52$). A physically consistent split
+  (alignment from the host halo, scaled with its bias; blue scaled by a
+  misalignment factor $\kappa_b$; satellites aligned; nested on one
+  population) gives $\kappa_b = 0.7$ to 1.1 and no gain: every colour fit
+  that beats one population needs $\kappa_b > 1$. FLAMINGO's amplitude
+  follows the host-halo bias whatever the colour; the remaining misfit is in
+  the nonlinear share $\alpha$ of the 2-halo term ($\chi^2/\nu$ 1.49 to 1.18
+  with $\alpha(z)$, partly by degeneracy).
 \item \textbf{Correction, 17 November 2026 (Sec.~\ref{sec:addendum}).} The
   central 1-halo amplitudes fitted to FLAMINGO below ($a_c = 13$ to 190) are 30
   to 400 times the physical size of that amplitude ($a_c \simeq 0.5$ for a
@@ -478,11 +482,11 @@ refit of Sec.~\ref{sec:addendum}: the $A_1$ terms on $I_1\Plin + \alpha(\PNL -
 I_1\Plin)$, $a_c \le 1$ on red centrals. With every galaxy red the code
 reproduces the one-population model to $10^{-16}$.
 
-\paragraph{The models.} Table~\ref{tab:rbmodels} lists every variant fitted,
-by the name it has in \texttt{hmc\_rb\_fit.py}. They differ only in the
-2-halo amplitudes of the centrals: how each colour aligns, whether the II
-spectrum keeps the red-blue cross term, and what makes the amplitude change
-with redshift.
+\paragraph{First pass: colour amplitudes as in F21.} Table~\ref{tab:rbmodels}
+lists the variants of the first pass, by the name each has in
+\texttt{hmc\_rb\_fit.py}. They differ only in the 2-halo amplitudes of the
+centrals: how each colour aligns, whether the II spectrum keeps the red-blue
+cross term, and what makes the amplitude change with redshift.
 
 \begin{table}[H]\centering\small
 \caption{The models of the joint fits. ``NLA'' is the linear tidal alignment
@@ -496,9 +500,9 @@ also has $\alpha$, $\bTA$, the satellite amplitude $a_{1h}$, the central
 \begin{tabular}{p{0.7in}p{1.45in}p{1.6in}p{0.95in}p{1.5in}}\toprule
 name & red centrals & blue centrals & II cross term & redshift dependence\\ \midrule
 \multicolumn{5}{l}{\emph{One population (no colour split), the references}}\\
-\texttt{1p} & \multicolumn{2}{l}{NLA $A_1X^{\eta_1}$ + torquing $A_2X^{\eta_2}$ on every central} & --- & power laws, $\eta_1$, $\eta_2$ free\\
-\texttt{1p0} & \multicolumn{2}{l}{as \texttt{1p}} & --- & none ($\eta_1 = \eta_2 = 0$)\\
-\texttt{1pB} & \multicolumn{2}{l}{NLA $A_1 b_g/1.5$ + torquing $A_2X^{\eta_2}$} & --- & NLA follows $b_g(z)$\\ \midrule
+\texttt{1p} & \multicolumn{2}{l}{NLA $A_1X^{\eta_1}$ + torquing $A_2X^{\eta_2}$ on every central} & n/a & power laws, $\eta_1$, $\eta_2$ free\\
+\texttt{1p0} & \multicolumn{2}{l}{as \texttt{1p}} & n/a & none ($\eta_1 = \eta_2 = 0$)\\
+\texttt{1pB} & \multicolumn{2}{l}{NLA $A_1 b_g/1.5$ + torquing $A_2X^{\eta_2}$} & n/a & NLA follows $b_g(z)$\\ \midrule
 \multicolumn{5}{l}{\emph{Red and blue, fractions from Zu \& Mandelbaum (2016) and Tinker et al.\ (2013)}}\\
 \texttt{rbF21} & NLA, $f_{rc}A_r$ & NLA, $f_{bc}A_b$ & no (F21) & fractions only; $A_r$, $A_b$ constant\\
 \texttt{rbTT} & NLA, $f_{rc}A_r$ & torquing, $f_{bc}A_{2,b}$ & yes (TATT) & fractions only; $A_r$, $A_{2,b}$ constant\\
@@ -532,14 +536,14 @@ central fraction falls by 2.5 over the same range, so red centrals alone would
 need their amplitude to grow 4.4 times. $A_1$ follows the HOD galaxy bias
 instead: $A_1/b_g = 2.4$ to 2.7 at every snapshot (Fig.~\ref{fig:rb}, top).
 
-\paragraph{Physical-sensibility checks.}
+\paragraph{Physical-sensibility checks of the first pass.}
 \begin{itemize}[itemsep=1pt]
 \item \emph{Failed: the colour of the alignment.} With constant amplitudes
   (Eq.~\ref{eq:f21rb}) the fit puts the alignment on the blue galaxies,
   $A_{\rm blue} = 7.7$ against $A_{\rm red} = 0.56$, because their fraction
   rises with $z$ as the signal does; F21 assume $A_{\rm blue}/A_{\rm red}
   \simeq 0.04$. The missing red-blue cross term then leaves $P_{EE}$ short by
-  up to 20\% (Fig.~\ref{fig:rbfit}).
+  up to 20\%.
 \item \emph{Failed: the torquing amplitude.} Where blue centrals carry the
   tidal-torquing term, its amplitude is positive (2 to 6) while the
   per-snapshot $A_2$ is $-0.5$ to $-1$: the term compensates rather than
@@ -557,15 +561,150 @@ instead: $A_1/b_g = 2.4$ to 2.7 at every snapshot (Fig.~\ref{fig:rb}, top).
   stable with the fit range.
 \end{itemize}
 
-\paragraph{Reading.} With the observed red fractions, FLAMINGO's alignments
-do not separate by colour: the amplitude scales with the bias of the host
-haloes, the same for red and blue galaxies, and its redshift evolution comes
-from the rising bias of a fixed-mass sample, not from the red fraction. Either
-FLAMINGO's disc galaxies are aligned as strongly as its ellipticals (stellar
-inertia tensors of all bound stars), or FLAMINGO's own quenched fractions
-differ from the observed ones. Spectra measured separately for red and blue
-FLAMINGO galaxies (colours from the SOAP star-formation rates) would decide;
-the extraction has to be rerun on COSMA for that.
+\paragraph{What was not physical in the first pass.} Four things.
+(1) Each colour had an amplitude that ignores its halo, while in simulations
+a galaxy's alignment follows its host halo, whose alignment scales with the
+halo bias (Xia et al.\ 2017: the mass and formation-time dependence of halo
+alignment is explained by halo bias; Kurita et al.\ 2021); colour should
+enter as a misalignment on top of that (Tenneti et al.\ 2016: discs are more
+misaligned with their haloes than ellipticals). (2) When both colours align
+linearly with the same tidal field, $P_{II}$ must keep the red-blue cross
+term that Eq.~\eqref{eq:f21rb} drops. (3) The satellites carried no
+large-scale alignment, although they are part of FLAMINGO's shape sample.
+(4) The colour models did not contain the best one-population model, so a
+worse $\chi^2$ did not say that colour hurts.
+
+\paragraph{Second pass: a halo-based colour split.} Every galaxy, central or
+satellite, takes the alignment of its host halo, proportional to its bias to
+a power $\beta$, and blue galaxies are scaled by a misalignment factor
+$\kappa_b$:
+\begin{equation}
+a_1(z) = A_h\Big[(f_{rc} + f_{rs})\Big(\frac{b_r}{1.5}\Big)^{\beta}
+ + \kappa_b(f_{bc} + f_{bs})\Big(\frac{b_b}{1.5}\Big)^{\beta}\Big],
+\label{eq:rbS}
+\end{equation}
+with $b_r$, $b_b$ the mean bias of red and blue galaxies on the HOD; the TATT
+terms then carry the red-blue cross terms. At $\kappa_b = 1$ the bracket is
+$b_g^\beta$ (to $10^{-5}$): the colour split contains the one-population
+model with $A_1 \propto b_g^\beta$ and can only match or improve it.
+$\kappa_b < 1$ is the physical range (discs less aligned than ellipticals);
+F21's ratio is $\kappa_b = 0.21/5.3 = 0.04$. Table~\ref{tab:rbmodels2}
+lists these models and three diagnostics: the floor (the amplitude free at
+every snapshot, the best any law $a_1(z)$ can reach), and $\alpha$ evolving
+with $z$.
+
+\begin{table}[H]\centering\small
+\caption{The models of the second pass. $X = (1+z)/1.62$. All keep a
+torquing term $A_2X^{\eta_2}$ on every galaxy (\texttt{rbH}: on blue centrals,
+$f_{bc}A_{2,b}$), and $\bTA$, $a_{1h}$, $a_c \le 1$, $\alpha$ and a white
+term per snapshot.}
+\label{tab:rbmodels2}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{p{0.75in}p{3.2in}p{2.0in}}\toprule
+name & linear alignment $a_1(z)$ & also\\ \midrule
+\texttt{rbH} & centrals only: $A_h(f_{rc}b_{rc} + \kappa_b f_{bc}b_{bc})$ & $\kappa_b$ free\\
+\texttt{rbS} & Eq.~\eqref{eq:rbS} with $\beta = 1$ & $\kappa_b$ free\\
+\texttt{rbS\_zm} & as \texttt{rbS} & Zu \& Mandelbaum fractions at every $z$\\
+\texttt{rbSb}, \texttt{rbSbP} & Eq.~\eqref{eq:rbS}, $\beta$ free & $\kappa_b \in [0, 2]$; $[0, 1]$\\
+\texttt{rbSbA}, \texttt{rbSbAP} & as \texttt{rbSb}, \texttt{rbSbP} & $\alpha X^{\eta_\alpha}$\\ \midrule
+\texttt{1pBb} & one population, $A_1(b_g/1.5)^{\beta}$ & ($\kappa_b = 1$ of \texttt{rbSb})\\
+\texttt{1pBbA} & as \texttt{1pBb} & $\alpha X^{\eta_\alpha}$\\
+\texttt{1pA} & one population, $A_1X^{\eta_1}$ & $\alpha X^{\eta_\alpha}$\\
+\texttt{1pF}, \texttt{1pFA} & floor: $a_1$ free at each of the nine snapshots & $\alpha$ fixed; $\alpha X^{\eta_\alpha}$\\
+\bottomrule\end{tabular}
+\end{table}
+
+\paragraph{The result of the second pass} (Fig.~\ref{fig:rbmodels}).
+At $\kmax = 0.52$:
+\begin{itemize}[itemsep=1pt]
+\item \emph{The satellites must align.} With the centrals alone
+  (\texttt{rbH}) $\chi^2/\nu = 4.55$: $f_c b_c$ rises 2.8 times from
+  $z = 0.2$ to 2, too steeply for FLAMINGO's 1.75; with every galaxy
+  (\texttt{rbS}) 2.01.
+\item \emph{The fit chooses no colour dependence.} \texttt{rbS} gives
+  $\kappa_b = 1.09 \pm 0.06$ and improves $\chi^2$ over $\kappa_b = 1$
+  (\texttt{1pB}) by 2.8; with the Zu \& Mandelbaum fractions at every $z$,
+  $\kappa_b = 0.72 \pm 0.11$ and 6.3. The change of fraction model moves
+  $\kappa_b$ by six times its fit error, so FLAMINGO says $\kappa_b \approx
+  0.7$ to 1.1, not more.
+\item \emph{The $\chi^2$ profile has no minimum in the physical range}
+  (Fig.~\ref{fig:rbprofile}): with $\kappa_b$ fixed and everything else
+  refitted, $\chi^2$ falls steadily as $\kappa_b$ grows. At F21's 0.04 it is
+  60 (79 with $\alpha$ evolving) above $\kappa_b = 1$, and $\beta$ rises to
+  1.9 to 2.0: without blue alignment the red galaxies must align as the bias
+  squared to produce FLAMINGO's rise with $z$. Every fit that beats one
+  population sits at $\kappa_b > 1$, blue more aligned than red: free,
+  \texttt{rbSb} and \texttt{rbSbA} reach the bound $\kappa_b = 2$
+  ($\chi^2/\nu = 1.26$ and 0.99); bounded to $[0, 1]$ they return to
+  $\kappa_b = 1$ (1.95 and 1.27), the one-population values.
+\item \emph{At larger $\kmax$, $\kappa_b$ grows} (1.19 and 1.38 at
+  $\kmax = 0.70$ and 0.94 for \texttt{rbS}; Fig.~\ref{fig:rbprofile}, right): the
+  colour factor then absorbs small-scale misfit.
+\item \emph{What does improve the fit is not colour.} The floor is
+  $\chi^2/\nu = 1.15$; one population with a power law (\texttt{1p}, 1.49)
+  is within $\Delta\chi^2 = 66$ of it for 7 fewer parameters. Letting $\alpha$
+  evolve, $\alpha_0X^{\eta_\alpha}$ (\texttt{1pA}), gives 1.18 for one more
+  parameter, against a floor of 0.95.
+\end{itemize}
+
+\paragraph{Physical-sensibility checks of the second pass.}
+\begin{itemize}[itemsep=1pt]
+\item \emph{Failed: every colour fit that beats one population} needs
+  $\kappa_b > 1$ (at the bound 2): the rising blue fraction is then used as a
+  redshift law, not as physics of discs.
+\item \emph{Failed in part: $\alpha(z)$.} The joint \texttt{1pA} gives
+  $\alpha = 0.60X^{0.74}$, 0.52 at $z = 0.2$ to 0.96 at $z = 2$ (below 1 at
+  $\kmax = 0.52$, above it at larger $\kmax$). The per-snapshot $\alpha$ does
+  not rise cleanly (Fig.~\ref{fig:rbalpha}): 0.31 to 0.56 up to $z = 1$, 0.76
+  at 1.5 and $0.37 \pm 0.21$ at 2. The joint curve runs above most of these
+  points; part of its gain is a trade with the shared $\bTA$ and $A_2$ terms.
+  With $A_1 \propto b_g^\beta$ (\texttt{1pBbA}), $\alpha$ exceeds 1 at
+  $z = 2$, $\eta_2$ sits at its bound and $a_{1h} = 2.4$.
+\item \emph{Passed.} \texttt{rbS}: $\alpha = 0.51$, $A_2 = +0.68$ with
+  $\eta_2 = 1.6$, stable with the fraction model; \texttt{1pA}:
+  $A_1 = 3.55$, $\eta_1 = 0.52$, $\alpha$ physical at $\kmax = 0.52$ ($A_2 =
+  0.10$ too small for its $\eta_2$, at a bound, to matter).
+\end{itemize}
+
+\paragraph{Reading.} With physically consistent ingredients (alignment from
+the host halo, scaled with its bias; a colour misalignment factor; satellites
+aligned; the red-blue cross term kept; one population nested), FLAMINGO's
+alignment amplitude follows the bias of the host haloes for centrals and
+satellites alike, with blue galaxies aligned at 0.7 to 1.1 of red. A colour
+split cannot improve the fit, because the total spectra fix only $a_1(z)$
+and $a_2(z)$, which one-population laws already describe close to the floor;
+the remaining misfit is in the nonlinear share of the 2-halo term, which
+colour does not touch. Either FLAMINGO's disc galaxies align almost as
+strongly as its ellipticals (stellar inertia tensors of all bound stars), or
+its quenched fractions differ from the observed ones imposed here. Spectra
+measured separately for red and blue FLAMINGO galaxies (colours from the SOAP
+star-formation rates) would decide; the extraction has to be rerun on COSMA
+for that.
+
+\begin{figure}[H]\centering
+\includegraphics[width=0.78\textwidth]{\figdir/ia_rb_models/ia_rb_models}
+\caption{Every joint model ranked by $\chi^2/\nu$ at $\kmax = 0.52$. Blue
+circles: one population; black diamonds: the floor ($a_1$ free at every
+snapshot); pink squares: colour splits. Open with a cross: fails a physical
+check (reason beside it). Dotted: one population with $\alpha(z)$.}
+\label{fig:rbmodels}
+\end{figure}
+
+\begin{figure}[H]\centering
+\includegraphics[width=0.48\textwidth]{\figdir/ia_rb_profile/ia_rb_profile}\hfill
+\includegraphics[width=0.48\textwidth]{\figdir/ia_redblue_kappa/ia_redblue_kappa}
+\caption{Left: the joint $\chi^2$ of the halo-based colour split with
+$\kappa_b$ fixed (everything else refitted), relative to $\kappa_b = 1$ (top),
+and the fitted bias power $\beta$ (bottom); shaded: $\kappa_b > 1$. Right:
+$\kappa_b$ fitted against $\kmax$ (top) and the joint $\chi^2/\nu$ (bottom).}
+\label{fig:rbprofile}
+\end{figure}
+\begin{figure}[H]\centering
+\includegraphics[width=0.48\textwidth]{\figdir/ia_rb_alpha/ia_rb_alpha}
+\caption{The nonlinear share $\alpha$ of the 2-halo term against $z$: per
+snapshot (black) and in the joint fits (lines); shaded: $\alpha > 1$.}
+\label{fig:rbalpha}
+\end{figure}
 
 \begin{figure}[H]\centering
 \includegraphics[width=0.5\textwidth]{\figdir/ia_redblue/ia_redblue}
@@ -578,19 +717,26 @@ sample, centrals solid, satellites dashed.}
 
 \begin{figure}[H]\centering
 \includegraphics[width=0.85\textwidth]{\figdir/ia_redblue_fit/ia_redblue_fit}
-\caption{The joint fits against the FLAMINGO spectra. Top: $-P_{\delta E}$
-and $P_{EE}$ at $z = 1$. Below: model / FLAMINGO $- 1$ at $z = 0.3$, 1 and 2;
-gray: the FLAMINGO error; dotted: the fit range, 0.05 to 0.52$\hmpc$ at all
-nine snapshots at once.}
+\caption{The joint fits against the FLAMINGO spectra: one population
+(\texttt{1p}), with $\alpha(z)$ (\texttt{1pA}), the halo-based colour split
+with $\kappa_b \le 1$ (\texttt{rbSbP}, at $\kappa_b = 1$) and with $\kappa_b$
+free and $\alpha(z)$ (\texttt{rbSbA}, at $\kappa_b = 2$). Top: $-P_{\delta
+E}$ and $P_{EE}$ at $z = 1$. Below: model / FLAMINGO $- 1$ at $z = 0.3$, 1
+and 2; gray: the FLAMINGO error; dotted: the fit range, 0.05 to
+0.52$\hmpc$ at all nine snapshots at once.}
 \label{fig:rbfit}
 \end{figure}
 
 \section*{Code}
 \sloppy
 Addendum of 18 November: \texttt{v6/halo\_redblue.py} (red and blue tables,
-\texttt{halo\_redblue\_tables.npz}), \texttt{notes/flamingo\_vs\_tng300/fits/hmc\_rb\_fit.py}
-(joint fits, \texttt{hmc\_rb\_fits.json}, \texttt{hmc\_rb\_fit\_log.txt}),
-figures \texttt{ia\_redblue}, \texttt{ia\_redblue\_fit}.
+\texttt{halo\_redblue\_tables.npz}; \texttt{--light} adds the central biases),
+\texttt{notes/flamingo\_vs\_tng300/fits/hmc\_rb\_fit.py} (joint fits,
+\texttt{hmc\_rb\_fits.json}, \texttt{hmc\_rb\_fit\_log.txt}),
+\texttt{hmc\_rb\_kappa\_profile.py} (the $\kappa_b$ profile,
+\texttt{hmc\_rb\_kappa\_profile.json}), figures \texttt{ia\_redblue},
+\texttt{ia\_redblue\_fit}, \texttt{ia\_redblue\_kappa}, \texttt{ia\_rb\_models},
+\texttt{ia\_rb\_profile}, \texttt{ia\_rb\_alpha}.
 
 Addendum of 17 November: \texttt{notes/flamingo\_vs\_tng300/fits/hmc\_alpha\_fit.py} (the refit,
 \texttt{hmc\_alpha\_fits.json}), \texttt{hmc\_alpha\_checks.py} (the checks,

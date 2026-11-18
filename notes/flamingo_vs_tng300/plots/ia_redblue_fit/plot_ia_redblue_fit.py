@@ -6,10 +6,11 @@ nine core snapshots at once (dotted vertical lines: the fit range). Top row:
 -P_dE = -P_hE/b(k) (left) and P_EE (right) at z = 1, FLAMINGO black points
 with errors. Lower rows: the model over FLAMINGO minus one, at z = 0.3, 1 and
 2; gray: the FLAMINGO error. Models, with chi2/nu of the joint fit: one
-population with a power law in (1 + z) (blue, circles), one population with
-A1 proportional to the galaxy bias (green, squares), red and blue centrals
-each with amplitude times its own bias (pink, diamonds), red and blue
-centrals with constant amplitudes as Fortuna et al. 2021 (vermillion, down
+population with a power law in (1 + z) (blue, circles), the same with the
+2-halo nonlinear share alpha evolving with z (green, squares), the halo-based
+colour split with the blue factor kappa_b in its physical range, which
+takes kappa_b = 1 (pink, diamonds), and the colour split with kappa_b free
+and alpha evolving, which takes the unphysical kappa_b = 2 (vermillion, down
 triangles). The y axis of the lower rows stops at +-40%.
 
 Run from any folder: python plot_ia_redblue_fit.py
@@ -211,9 +212,9 @@ SHADE = '0.9'
 
 STYLE = {
     '1p': {'color': '#0072B2', 'lw': 2.0, 'ls': '-', 'marker': 'o', 'label': r'one population, $A_1 X^{\eta_1}$'},
-    '1pB': {'color': '#009E73', 'lw': 1.6, 'ls': (0, (5, 2)), 'marker': 's', 'label': r'one population, $A_1 b_g$'},
-    'rbB': {'color': '#CC79A7', 'lw': 1.4, 'ls': (0, (6, 2, 1, 2)), 'marker': 'D', 'label': r'red + blue, $A_X b_X$'},
-    'rbF21': {'color': '#D55E00', 'lw': 1.2, 'ls': (0, (8, 2.5)), 'marker': 'v', 'label': 'red + blue, constant (F21)'},
+    '1pA': {'color': '#009E73', 'lw': 1.8, 'ls': (0, (5, 2)), 'marker': 's', 'label': r'the same, $\alpha(z)$'},
+    'rbSbP': {'color': '#CC79A7', 'lw': 1.5, 'ls': (0, (6, 2, 1, 2)), 'marker': 'D', 'label': r'colour split, $\kappa_b \leq 1$'},
+    'rbSbA': {'color': '#D55E00', 'lw': 1.2, 'ls': (0, (8, 2.5)), 'marker': 'v', 'label': r'colour split, $\kappa_b = 2$, $\alpha(z)$'},
 }
 YLIM = 0.4
 

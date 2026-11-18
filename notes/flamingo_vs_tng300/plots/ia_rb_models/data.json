@@ -1,0 +1,141 @@
+{
+ "about": "Joint chi2/nu at k_max = 0.52 h/Mpc of the models of fits/hmc_rb_fit.py, fitted to the nine core FLAMINGO snapshots at once. group: one population, floor (A1 free at every snapshot: the best any A1(z) law can do), or colour split. status: ok, or bad when a physical check fails (why). npar: shared parameters (plus one white term per snapshot).",
+ "kmax": 0.52,
+ "rows": [
+  {
+   "name": "1p",
+   "label": "one population, $A_1 X^{\\eta_1}$",
+   "group": "one",
+   "status": "ok",
+   "why": "",
+   "chi2_nu": 1.4875137889120216,
+   "npar": 8
+  },
+  {
+   "name": "1pA",
+   "label": "one population, $A_1 X^{\\eta_1}$, $\\alpha(z)$",
+   "group": "one",
+   "status": "ok",
+   "why": "",
+   "chi2_nu": 1.1839085303954306,
+   "npar": 9
+  },
+  {
+   "name": "1pB",
+   "label": "one population, $A_1 b_g$",
+   "group": "one",
+   "status": "ok",
+   "why": "",
+   "chi2_nu": 2.0188594569883818,
+   "npar": 7
+  },
+  {
+   "name": "1pBb",
+   "label": "one population, $A_1 b_g^{\\beta}$",
+   "group": "one",
+   "status": "ok",
+   "why": "",
+   "chi2_nu": 1.9253147125727255,
+   "npar": 8
+  },
+  {
+   "name": "1pBbA",
+   "label": "one population, $A_1 b_g^{\\beta}$, $\\alpha(z)$",
+   "group": "one",
+   "status": "bad",
+   "why": "alpha > 1 at z = 2; eta2 at bound",
+   "chi2_nu": 1.2635065791458275,
+   "npar": 9
+  },
+  {
+   "name": "1pF",
+   "label": "floor: $A_1$ free per snapshot",
+   "group": "floor",
+   "status": "ok",
+   "why": "",
+   "chi2_nu": 1.15073321274377,
+   "npar": 15
+  },
+  {
+   "name": "1pFA",
+   "label": "floor: $A_1$ free per snapshot, $\\alpha(z)$",
+   "group": "floor",
+   "status": "ok",
+   "why": "",
+   "chi2_nu": 0.9483597828705477,
+   "npar": 16
+  },
+  {
+   "name": "rbF21",
+   "label": "red + blue, constant (F21)",
+   "group": "colour",
+   "status": "bad",
+   "why": "A_blue = 14 A_red",
+   "chi2_nu": 12.485448430183004,
+   "npar": 6
+  },
+  {
+   "name": "rbTT_eta",
+   "label": "red $A_r X^{\\eta_r}$ + blue torquing",
+   "group": "colour",
+   "status": "bad",
+   "why": "A2_b sign opposite to data",
+   "chi2_nu": 9.122067984621863,
+   "npar": 7
+  },
+  {
+   "name": "rbH",
+   "label": "halo-based, centrals only",
+   "group": "colour",
+   "status": "ok",
+   "why": "",
+   "chi2_nu": 4.546759812036311,
+   "npar": 7
+  },
+  {
+   "name": "rbS",
+   "label": "halo-based, $\\kappa_b$ free",
+   "group": "colour",
+   "status": "ok",
+   "why": "kappa_b = 1.09",
+   "chi2_nu": 2.01436621079294,
+   "npar": 8
+  },
+  {
+   "name": "rbSbP",
+   "label": "halo-based, $b^{\\beta}$, $\\kappa_b \\leq 1$",
+   "group": "colour",
+   "status": "ok",
+   "why": "kappa_b -> 1",
+   "chi2_nu": 1.954478765306928,
+   "npar": 9
+  },
+  {
+   "name": "rbSbAP",
+   "label": "halo-based, $b^{\\beta}$, $\\kappa_b \\leq 1$, $\\alpha(z)$",
+   "group": "colour",
+   "status": "bad",
+   "why": "kappa_b -> 1; alpha > 1 at z = 2",
+   "chi2_nu": 1.2719579292545153,
+   "npar": 10
+  },
+  {
+   "name": "rbSb",
+   "label": "halo-based, $b^{\\beta}$, $\\kappa_b$ free",
+   "group": "colour",
+   "status": "bad",
+   "why": "kappa_b = 2 (bound)",
+   "chi2_nu": 1.2646041874873024,
+   "npar": 9
+  },
+  {
+   "name": "rbSbA",
+   "label": "halo-based, $b^{\\beta}$, $\\kappa_b$ free, $\\alpha(z)$",
+   "group": "colour",
+   "status": "bad",
+   "why": "kappa_b = 2 (bound)",
+   "chi2_nu": 0.992283285943954,
+   "npar": 10
+  }
+ ]
+}

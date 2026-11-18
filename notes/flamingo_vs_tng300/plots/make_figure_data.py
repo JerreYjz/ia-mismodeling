@@ -554,7 +554,7 @@ def sims_figure():
 
 
 RB_KMAX = 0.52
-RB_MODELS = ('1p', '1pB', 'rbB', 'rbTT_eta', 'rbF21')
+RB_MODELS = ('1p', '1pB', 'rbS', 'rbS_zm', 'rbH', 'rbF21')
 
 
 def redblue_figure():
@@ -576,8 +576,10 @@ def redblue_figure():
                      'nonlinear power and no satellites (fits/hmc_alpha_fit.py, alpha_cap_nosat), with '
                      'its error; a1_joint[model]: the effective amplitude of each joint model at each '
                      'snapshot; chi2_nu[model]: its chi2/nu. Models: 1p one population, A1 ((1+z)/1.62)^eta1; '
-                     '1pB one population, A1 b_g(z)/1.5; rbB red and blue centrals, each amplitude times '
-                     'its own bias; rbTT_eta red centrals NLA A_r X^eta_r, blue tidal torquing; rbF21 '
+                     '1pB one population, A1 b_g(z)/1.5; rbS every galaxy aligned like its host halo, '
+                     'A_h [f_red b_red + kappa_b f_blue b_blue]/1.5, kappa_b free (1pB at kappa_b = 1), '
+                     'fiducial red fractions; rbS_zm the same with the Zu and Mandelbaum fractions at every '
+                     'z; rbH centrals only, A_h [f_rc b_rc + kappa_b f_bc b_bc], blue torquing; rbF21 '
                      'red and blue centrals with constant amplitudes (Fortuna et al. 2021 Eqs. 3-4). '
                      'f_rc, f_bc, f_rs, f_bs: red and blue central and satellite fractions of the sample '
                      '(Zu and Mandelbaum 2016 at z <= 0.1, Tinker et al. 2013 at 0.36 to 0.88, held '
@@ -595,7 +597,7 @@ def redblue_figure():
     print('wrote', os.path.relpath(path, HERE))
 
 
-RBFIT_MODELS = ('1p', '1pB', 'rbB', 'rbF21')
+RBFIT_MODELS = ('1p', '1pA', 'rbSbP', 'rbSbA')
 RBFIT_ZS = (0.3, 1.0, 2.0)
 
 
@@ -615,12 +617,15 @@ def redblue_fit_figure():
     core = np.where(np.load(os.path.join(R.V3, 'v3.npz'))['core'])[0]
     model = R.F.TATTModel(halofit='takahashi')
     snaps = [R.Snapshot(s, fits, central, sat, tabs, model) for s in core]
+    for i, sn in enumerate(snaps):
+        sn.idx = i
     out = {'about': ('FLAMINGO P_dE = P_hE/b(k) and P_EE (with errors) at the core snapshots, and the '
                      'joint fits of fits/hmc_rb_fit.py at k_max = 0.52 h/Mpc (fitted to 0.05 <= k <= '
                      '0.52 at all nine snapshots at once): 1p one population, A1 ((1+z)/1.62)^eta1; '
-                     '1pB one population, A1 b_g/1.5; rbB red and blue centrals each with amplitude '
-                     'times its own bias; rbF21 red and blue centrals with constant amplitudes '
-                     '(Fortuna et al. 2021 Eqs. 3-4, no red-blue II cross term). chi2_snap: chi2 of '
+                     '1pA the same with alpha ((1+z)/1.62)^eta_alpha; rbSbP every galaxy aligned like its '
+                     'host halo, alignment ~ b^beta, blue scaled by kappa_b in [0, 1] (the fit takes '
+                     'kappa_b = 1); rbSbA the same with alpha evolving and kappa_b free (the fit takes the '
+                     'bound kappa_b = 2, unphysical). chi2_snap: chi2 of '
                      'each model at each snapshot over its 3 x n_k fitted points.'),
            'kmin': R.KMIN, 'kmax': RB_KMAX, 'zs': [s.z for s in snaps], 'show_zs': list(RBFIT_ZS),
            'k': [s.k.tolist() for s in snaps],
@@ -644,10 +649,136 @@ def redblue_fit_figure():
     print('wrote', os.path.relpath(path, HERE))
 
 
+def redblue_kappa_figure():
+    """The blue misalignment factor kappa_b of the halo-based colour models
+    against the fit range, and the chi2 gain over kappa_b = 1."""
+    with open(os.path.join(HERE, '..', 'fits', 'hmc_rb_fits.json')) as fh:
+        rb = json.load(fh)
+    km = rb['kmaxes']
+    j0 = km.index(0.39)
+    keep = [i for i in range(len(km)) if i != j0]          # 0.39 and 0.52 use the same k bins
+    get = lambda m, key: [rb['models'][m][i][key] for i in keep]
+    kap = lambda m: [rb['models'][m][i]['x'][rb['models'][m][i]['names'].index('kappa_b')] for i in keep]
+    sig = lambda m: [rb['models'][m][i]['sig'][rb['models'][m][i]['names'].index('kappa_b')] for i in keep]
+    out = {'about': ('The blue misalignment factor kappa_b (blue alignment over red at the same host '
+                     'bias) of the joint fits of fits/hmc_rb_fit.py against k_max: rbS (every galaxy '
+                     'aligned like its host halo, fiducial red fractions), rbS_zm (Zu and Mandelbaum '
+                     'fractions at every z), rbH (centrals only), with the error from the fit Jacobian. '
+                     'dchi2[model]: chi2(1pB) - chi2(model), the gain over kappa_b = 1 (rbS only; rbS '
+                     'contains 1pB). kappa_F21 = 0.21/5.3, the blue/red ratio of Fortuna et al. 2021.'),
+           'kmax': [km[i] for i in keep], 'kappa_F21': 0.21/5.3,
+           'kappa': {m: kap(m) for m in ('rbS', 'rbS_zm', 'rbH')},
+           'kappa_sig': {m: sig(m) for m in ('rbS', 'rbS_zm', 'rbH')},
+           'dchi2': {m: [a - b for a, b in zip(get('1pB', 'chi2'), get(m, 'chi2'))] for m in ('rbS', 'rbS_zm')},
+           'chi2_nu': {m: [c/n for c, n in zip(get(m, 'chi2'), get(m, 'nu'))]
+                       for m in ('1p', '1pB', 'rbS', 'rbS_zm', 'rbH')}}
+    path = os.path.join(HERE, 'ia_redblue_kappa', 'data.json')
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, 'w') as fh:
+        json.dump(out, fh, indent=1)
+    print('wrote', os.path.relpath(path, HERE))
+
+
+RB_SUMMARY = (
+    ('1p', 'one population, $A_1 X^{\\eta_1}$', 'one', 'ok', ''),
+    ('1pA', 'one population, $A_1 X^{\\eta_1}$, $\\alpha(z)$', 'one', 'ok', ''),
+    ('1pB', 'one population, $A_1 b_g$', 'one', 'ok', ''),
+    ('1pBb', 'one population, $A_1 b_g^{\\beta}$', 'one', 'ok', ''),
+    ('1pBbA', 'one population, $A_1 b_g^{\\beta}$, $\\alpha(z)$', 'one', 'bad', 'alpha > 1 at z = 2; eta2 at bound'),
+    ('1pF', 'floor: $A_1$ free per snapshot', 'floor', 'ok', ''),
+    ('1pFA', 'floor: $A_1$ free per snapshot, $\\alpha(z)$', 'floor', 'ok', ''),
+    ('rbF21', 'red + blue, constant (F21)', 'colour', 'bad', 'A_blue = 14 A_red'),
+    ('rbTT_eta', 'red $A_r X^{\\eta_r}$ + blue torquing', 'colour', 'bad', 'A2_b sign opposite to data'),
+    ('rbH', 'halo-based, centrals only', 'colour', 'ok', ''),
+    ('rbS', 'halo-based, $\\kappa_b$ free', 'colour', 'ok', 'kappa_b = 1.09'),
+    ('rbSbP', 'halo-based, $b^{\\beta}$, $\\kappa_b \\leq 1$', 'colour', 'ok', 'kappa_b -> 1'),
+    ('rbSbAP', 'halo-based, $b^{\\beta}$, $\\kappa_b \\leq 1$, $\\alpha(z)$', 'colour', 'bad', 'kappa_b -> 1; alpha > 1 at z = 2'),
+    ('rbSb', 'halo-based, $b^{\\beta}$, $\\kappa_b$ free', 'colour', 'bad', 'kappa_b = 2 (bound)'),
+    ('rbSbA', 'halo-based, $b^{\\beta}$, $\\kappa_b$ free, $\\alpha(z)$', 'colour', 'bad', 'kappa_b = 2 (bound)'),
+)
+
+
+def redblue_models_figure():
+    """Joint chi2/nu of every model at k_max = 0.52, with its physical-check status."""
+    with open(os.path.join(HERE, '..', 'fits', 'hmc_rb_fits.json')) as fh:
+        rb = json.load(fh)
+    j = rb['kmaxes'].index(RB_KMAX)
+    rows = []
+    for name, label, group, status, why in RB_SUMMARY:
+        r = rb['models'][name][j]
+        rows.append({'name': name, 'label': label, 'group': group, 'status': status, 'why': why,
+                     'chi2_nu': r['chi2']/r['nu'], 'npar': len(r['names']) - len(rb['zs'])})
+    out = {'about': ('Joint chi2/nu at k_max = 0.52 h/Mpc of the models of fits/hmc_rb_fit.py, fitted to '
+                     'the nine core FLAMINGO snapshots at once. group: one population, floor (A1 free at '
+                     'every snapshot: the best any A1(z) law can do), or colour split. status: ok, or bad '
+                     'when a physical check fails (why). npar: shared parameters (plus one white term per '
+                     'snapshot).'), 'kmax': RB_KMAX, 'rows': rows}
+    path = os.path.join(HERE, 'ia_rb_models', 'data.json')
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, 'w') as fh:
+        json.dump(out, fh, indent=1)
+    print('wrote', os.path.relpath(path, HERE))
+
+
+def redblue_profile_figure():
+    """The chi2 profile against kappa_b (fits/hmc_rb_kappa_profile.py)."""
+    with open(os.path.join(HERE, '..', 'fits', 'hmc_rb_kappa_profile.json')) as fh:
+        pr = json.load(fh)
+    out = {'about': ('Joint chi2 at k_max = 0.52 of the halo-based colour split (every galaxy aligned '
+                     'like its host halo, alignment ~ b^beta, blue scaled by kappa_b) with kappa_b fixed '
+                     'on a grid and every other parameter refitted (fits/hmc_rb_kappa_profile.py): rbSb '
+                     '(alpha fixed) and rbSbA (alpha evolving). beta[model]: the fitted bias power at each '
+                     'kappa_b. kappa_b = 1: one population; > 1: blue more aligned than red; 0.04: the '
+                     'Fortuna et al. 2021 ratio.'),
+           'kappa': pr['kappa'],
+           'chi2': {b: [r['chi2'] for r in rows] for b, rows in pr['profiles'].items()},
+           'beta': {b: [r['params']['beta'] for r in rows] for b, rows in pr['profiles'].items()}}
+    path = os.path.join(HERE, 'ia_rb_profile', 'data.json')
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, 'w') as fh:
+        json.dump(out, fh, indent=1)
+    print('wrote', os.path.relpath(path, HERE))
+
+
+def redblue_alpha_figure():
+    """alpha against z: per snapshot and in the joint fits."""
+    with open(os.path.join(HERE, '..', 'fits', 'hmc_rb_fits.json')) as fh:
+        rb = json.load(fh)
+    with open(os.path.join(HERE, '..', 'fits', 'hmc_alpha_fits.json')) as fh:
+        ha = json.load(fh)
+    j = rb['kmaxes'].index(RB_KMAX)
+    jk = int(np.argmin(np.abs(np.array(ha['kgrid']) - RB_KMAX)))
+    core = [i for i, c in enumerate(ha['core']) if c]
+    x = ha['variants']['alpha_cap_nosat']['x']
+    sg = ha['variants']['alpha_cap_nosat']['sig']
+    zz = np.linspace(0.2, 2.0, 50)
+    X = (1 + zz)/1.62
+    curve = {}
+    for m in ('1p', '1pA', 'rbSbA'):
+        p = dict(zip(rb['models'][m][j]['names'], rb['models'][m][j]['x']))
+        curve[m] = (p['alpha']*X**p.get('eta_alpha', 0.0)).tolist()
+    out = {'about': ('The share alpha of nonlinear power in the 2-halo term against z: per snapshot '
+                     '(fits/hmc_alpha_fit.py, alpha_cap_nosat, k_max = 0.52, with errors) and in the joint '
+                     'fits of fits/hmc_rb_fit.py: 1p (one alpha for every z), 1pA (alpha ((1+z)/1.62)^eta_alpha), '
+                     'rbSbA (the colour split with kappa_b free, which reaches kappa_b = 2). Physical range 0 to 1.'),
+           'zs': rb['zs'], 'alpha_snap': [x[i][jk][6] for i in core], 'alpha_snap_sig': [sg[i][jk][6] for i in core],
+           'z_curve': zz.tolist(), 'curve': curve,
+           'chi2_nu': {m: rb['models'][m][j]['chi2']/rb['models'][m][j]['nu'] for m in curve}}
+    path = os.path.join(HERE, 'ia_rb_alpha', 'data.json')
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, 'w') as fh:
+        json.dump(out, fh, indent=1)
+    print('wrote', os.path.relpath(path, HERE))
+
+
 def main():
     figures = {'ia_ps_z1': sims_figure, 'ia_fit_z1': fit_figure, 'ia_hmc_z1': hmc_figure}
     figures['ia_redblue'] = redblue_figure
     figures['ia_redblue_fit'] = redblue_fit_figure
+    figures['ia_redblue_kappa'] = redblue_kappa_figure
+    figures['ia_rb_models'] = redblue_models_figure
+    figures['ia_rb_profile'] = redblue_profile_figure
+    figures['ia_rb_alpha'] = redblue_alpha_figure
     for name in HMCA_FIGURES:
         figures[name] = lambda name=name: hmca_figure(name)
     for name in (sys.argv[1:] or figures):
