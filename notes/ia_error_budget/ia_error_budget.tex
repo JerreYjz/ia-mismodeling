@@ -739,12 +739,56 @@ the exponential kernel of the lssty1xdesi prior in both arguments
 independent ($\rho_{\rm GI,II} = 0$) unless stated; $\rho = 1$ is the same
 error in both.
 
+\paragraph{The Fisher system.}
+The base is the matrix $B = [\,J \mid \bvec r_{X,s,j}\,]$: the Jacobian of
+the model~\eqref{eq:model} followed by the 1586 knob responses. For the
+points $\mathcal K$ kept by a cut, everything the fit needs is its Gram
+matrix, $G = B_{\mathcal K}\T C_{\mathcal K\mathcal K}^{-1} B_{\mathcal K}$.
+A fit is a choice of which base directions it varies, $M$ (for the fit with
+the template alone, $M$ picks the columns of $J$), and of their prior
+precision $P$; its Fisher matrix and parameter covariance are
+\begin{equation}
+  F = M\T G M + P,\qquad
+  \mathcal C = g F^{-1} g\T,
+  \label{eq:v9fisher}
+\end{equation}
+with $g$ the rows that turn the parameters into $(\Om, S_8)$ and $\sigma_p
+= \mathcal C_{pp}^{1/2}$ their marginalized errors. In the template fit $P$
+holds the Gaussian priors on $A$ and $\eta$ of Equation~\eqref{eq:resp}
+($\Om$ and $A_s$ flat; the eight galaxy biases of Section~\ref{sec:ggl}
+also flat). A change of the IA spectra with knob coefficients $\bvec c$
+changes the data by $B\bvec c$ and moves the best fit linearly by
+$\delta(\Om, S_8) = g F^{-1} M\T G \bvec c$. With $\bvec c = R\bvec\delta$,
+$R$ the cubic spline from the nodes onto the tents, the shifts in units of
+the errors are
+\begin{equation}
+  \bvec s = A\bvec\delta,\qquad
+  A = D^{-1} g F^{-1} M\T G R,\qquad D = {\rm diag}(\sigma_{\Om}, \sigma_{S_8}),
+  \label{eq:v9A}
+\end{equation}
+one $2 \times n$ matrix per truth and cut. For one spectrum, the same error
+at every redshift and the template fit, $M\T G\bvec c = J\T C^{-1}\bvec r_f$
+and Equation~\eqref{eq:v9A} is Equation~\eqref{eq:resp} node by node. A
+known error $\bvec\Delta$ on the tents (the error of NLA or TATT) enters as
+$\bvec c = -\bvec\Delta$, since a model wrong by $\bvec\Delta$ moves the fit
+as data moved by $-\bvec\Delta$, and gives the known shift $\bvec\mu$. To
+fit the residual instead, it is added to the fit in factor form, $\bvec\delta
+= L\bvec\zeta$ with $LL\T = \Sigma_{\rm fit}$ and $\bvec\zeta \sim
+\mathcal N(0, 1)$: $M \to [\,M \mid RL\,]$ and $P \to P \oplus 1$, so
+$F$ gains the block of the residual, $\sigma_p$ grows (the price in figure
+of merit) and $A$ shrinks. The scatter of that fit from data noise alone is
+$N = D^{-1} g F^{-1} F_0 F^{-1} g\T D^{-1}$, with $F_0$ the Fisher matrix
+without the residual's prior; for the template fit $N_{pp} = 1$. The code
+is \texttt{v9/ia\_fisher.py} (\texttt{rigid\_fit},
+\texttt{marginalised\_fit}).
+
 \paragraph{The criterion.}
-The shifts in units of their errors are $\bvec s = A\bvec\delta$, as in
-Section~\ref{sec:corr}. Averaged over the data noise and over random errors
-around a known error $\bvec\mu$ (zero, or the error of NLA or TATT), the
-$\chi^2$ of one parameter is $1 + \mu_p^2 + \sigma^2 (A K A\T)_{pp}$, and
-its root is $\eta_p$, the factor by which the scatter of the best fit
+Averaged over the data noise and over random errors $\sigma\bvec\delta$
+with correlation $K$ (Equation~\eqref{eq:v9prior}), on top of a known
+shift $\bvec\mu$ (zero, or that of NLA or TATT), the mean square shift of
+a parameter in units of its error is $\eta_p^2 = N_{pp} + \mu_p^2 +
+\sigma^2 (A K A\T)_{pp}$, which for the template fit is $1 + \mu_p^2 +
+\sigma^2 (A K A\T)_{pp}$; $\eta_p$ is the factor by which the scatter of the best fit
 exceeds its error. The budget $\sigma_{\rm max}$ is the rms at which the
 limiting parameter reaches $\eta = \sqrt{1 + \Tol^2}$, the rms shift
 \Tol$\sigma$ of the lssty1xdesi notes:
