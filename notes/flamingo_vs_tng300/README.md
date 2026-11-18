@@ -22,6 +22,15 @@ amplitude turned out to be unphysical. The written record is the addendum of
   alpha (0.31 to 0.83) and A1 pass and are stable against the fit range; a_c
   is unconstrained at a physical amplitude; the satellite amplitude a_1h is
   unconstrained below k of about 1 and drifts with the fit range above it.
+* Red and blue galaxies (18 November 2026, the second addendum of
+  `hmc_review.pdf`): with red fractions from halo-quenching fits to observed
+  galaxies (Zu & Mandelbaum 2016, Tinker et al. 2013) on the FLAMINGO HOD and
+  one amplitude per colour at every redshift (Fortuna et al. 2021), the joint
+  fit to the nine core snapshots gives chi2/nu = 12.5 (constant NLA amplitudes,
+  F21 Eqs. 3-4) to 133 at k_max = 0.52, against 1.49 for one population with
+  a power-law evolution. FLAMINGO's amplitude follows the galaxy bias
+  (A1/b_g = 2.4 to 2.7 at every snapshot) while the red fraction falls; with
+  each colour's amplitude scaled by its bias the fit sets A_blue = A_red.
 
 ## Layout
 
@@ -35,6 +44,9 @@ amplitude turned out to be unphysical. The written record is the addendum of
 | `fits/hmc_alpha_fit.py` | the refit of all variants, every snapshot and k_max; results in `fits/hmc_alpha_fits.json` |
 | `fits/hmc_alpha_checks.py` | the physical-sensibility checks; output for z = 1 in `fits/checks_z1.txt` |
 | `hmc_equations/` | the HMc equations on one slide-sized page (`.tex`, `.pdf`, `.png`) |
+| `fits/hmc_rb_fit.py` | the joint red/blue and one-population fits over the core snapshots; results in `fits/hmc_rb_fits.json`, log `fits/hmc_rb_fit_log.txt` (tables from `analysis/roman_dchi2/v6/halo_redblue.py`) |
+| `plots/ia_redblue/` | the effective amplitude against z, per snapshot and from the joint fits, with the red and blue fractions |
+| `plots/ia_redblue_fit/` | the joint fits against the FLAMINGO spectra at z = 0.3, 1 and 2 |
 
 Each figure folder redraws from its `data.json` alone
 (`python plot_<name>.py`). `make_figure_data.py` also knows a fifth figure,
@@ -48,7 +60,9 @@ PY=~/cocoa/Cocoa/.local/bin/python
 cd notes/flamingo_vs_tng300/fits
 $PY hmc_alpha_fit.py                 # all variants, about 20 minutes
 $PY hmc_alpha_checks.py 1.0 > checks_z1.txt
+(cd ../../../analysis/roman_dchi2/v6 && $PY halo_redblue.py > halo_redblue_log.txt)   # about 10 minutes
+$PY hmc_rb_fit.py > hmc_rb_fit_log.txt   # seconds
 cd ../plots
-$PY make_figure_data.py ia_fit_z1 ia_hmc_z1 ia_hmca_z1 ia_hmcas_z1
-for d in ia_fit_z1 ia_hmc_z1 ia_hmca_z1 ia_hmcas_z1; do (cd $d && $PY plot_$d.py); done
+$PY make_figure_data.py ia_fit_z1 ia_hmc_z1 ia_hmca_z1 ia_hmcas_z1 ia_redblue ia_redblue_fit
+for d in ia_fit_z1 ia_hmc_z1 ia_hmca_z1 ia_hmcas_z1 ia_redblue ia_redblue_fit; do (cd $d && $PY plot_$d.py); done
 ```

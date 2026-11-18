@@ -553,8 +553,101 @@ def sims_figure():
     print('wrote', path)
 
 
+RB_KMAX = 0.52
+RB_MODELS = ('1p', '1pB', 'rbB', 'rbTT_eta', 'rbF21')
+
+
+def redblue_figure():
+    """The red/blue halo-model refit (fits/hmc_rb_fit.py): the effective
+    linear-alignment amplitude against z, per snapshot and from the joint fits."""
+    with open(os.path.join(HERE, '..', 'fits', 'hmc_rb_fits.json')) as fh:
+        rb = json.load(fh)
+    with open(os.path.join(HERE, '..', 'fits', 'hmc_alpha_fits.json')) as fh:
+        ha = json.load(fh)
+    j = rb['kmaxes'].index(RB_KMAX)
+    jk = int(np.argmin(np.abs(np.array(ha['kgrid']) - RB_KMAX)))
+    core = [i for i, c in enumerate(ha['core']) if c]
+    x = ha['variants']['alpha_cap_nosat']['x']
+    sg = ha['variants']['alpha_cap_nosat']['sig']
+    tab = np.load(os.path.join(HMC, 'halo_tables.npz'))
+    out = {'about': ('The halo model with red and blue galaxies fitted jointly to the nine core '
+                     'FLAMINGO snapshots (fits/hmc_rb_fit.py, k_max = 0.52 h/Mpc). a1_snap: the '
+                     'linear-alignment amplitude A1 of the per-snapshot HMc fit with a free share of '
+                     'nonlinear power and no satellites (fits/hmc_alpha_fit.py, alpha_cap_nosat), with '
+                     'its error; a1_joint[model]: the effective amplitude of each joint model at each '
+                     'snapshot; chi2_nu[model]: its chi2/nu. Models: 1p one population, A1 ((1+z)/1.62)^eta1; '
+                     '1pB one population, A1 b_g(z)/1.5; rbB red and blue centrals, each amplitude times '
+                     'its own bias; rbTT_eta red centrals NLA A_r X^eta_r, blue tidal torquing; rbF21 '
+                     'red and blue centrals with constant amplitudes (Fortuna et al. 2021 Eqs. 3-4). '
+                     'f_rc, f_bc, f_rs, f_bs: red and blue central and satellite fractions of the sample '
+                     '(Zu and Mandelbaum 2016 at z <= 0.1, Tinker et al. 2013 at 0.36 to 0.88, held '
+                     'above; analysis/roman_dchi2/v6/halo_redblue.py); b_g: the HOD galaxy bias.'),
+           'kmax': RB_KMAX, 'zs': rb['zs'],
+           'a1_snap': [x[i][jk][0] for i in core], 'a1_snap_sig': [sg[i][jk][0] for i in core],
+           'a1_joint': {m: rb['models'][m][j]['a1_eff'] for m in RB_MODELS},
+           'chi2_nu': {m: rb['models'][m][j]['chi2']/rb['models'][m][j]['nu'] for m in RB_MODELS},
+           'best': {m: dict(zip(rb['models'][m][j]['names'], rb['models'][m][j]['x'])) for m in RB_MODELS},
+           'fractions': rb['fractions']['zt'], 'b_g': [float(tab['hod'][i, 4]) for i in core]}
+    path = os.path.join(HERE, 'ia_redblue', 'data.json')
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, 'w') as fh:
+        json.dump(out, fh, indent=1)
+    print('wrote', os.path.relpath(path, HERE))
+
+
+RBFIT_MODELS = ('1p', '1pB', 'rbB', 'rbF21')
+RBFIT_ZS = (0.3, 1.0, 2.0)
+
+
+def redblue_fit_figure():
+    """The joint red/blue fits of fits/hmc_rb_fit.py against the FLAMINGO
+    spectra: model P_dE and P_EE (and P_BB) at every core snapshot, from the
+    best fit at k_max = RB_KMAX."""
+    sys.path.insert(0, os.path.join(HERE, '..', 'fits'))
+    import hmc_rb_fit as R
+    with open(os.path.join(HERE, '..', 'fits', 'hmc_rb_fits.json')) as fh:
+        rb = json.load(fh)
+    j = rb['kmaxes'].index(RB_KMAX)
+    fits = np.load(os.path.join(R.V2, 'fits.npz'))
+    central = np.load(os.path.join(R.V6, 'halo_central_tables.npz'))
+    sat = np.load(os.path.join(R.V6, 'halo_tables.npz'))
+    tabs = np.load(os.path.join(R.V6, 'halo_redblue_tables.npz'))
+    core = np.where(np.load(os.path.join(R.V3, 'v3.npz'))['core'])[0]
+    model = R.F.TATTModel(halofit='takahashi')
+    snaps = [R.Snapshot(s, fits, central, sat, tabs, model) for s in core]
+    out = {'about': ('FLAMINGO P_dE = P_hE/b(k) and P_EE (with errors) at the core snapshots, and the '
+                     'joint fits of fits/hmc_rb_fit.py at k_max = 0.52 h/Mpc (fitted to 0.05 <= k <= '
+                     '0.52 at all nine snapshots at once): 1p one population, A1 ((1+z)/1.62)^eta1; '
+                     '1pB one population, A1 b_g/1.5; rbB red and blue centrals each with amplitude '
+                     'times its own bias; rbF21 red and blue centrals with constant amplitudes '
+                     '(Fortuna et al. 2021 Eqs. 3-4, no red-blue II cross term). chi2_snap: chi2 of '
+                     'each model at each snapshot over its 3 x n_k fitted points.'),
+           'kmin': R.KMIN, 'kmax': RB_KMAX, 'zs': [s.z for s in snaps], 'show_zs': list(RBFIT_ZS),
+           'k': [s.k.tolist() for s in snaps],
+           'data': {'dE': [(s.y[0]/s.bias).tolist() for s in snaps], 'dE_err': [(s.err[0]/s.bias).tolist() for s in snaps],
+                    'EE': [s.y[1].tolist() for s in snaps], 'EE_err': [s.err[1].tolist() for s in snaps]},
+           'models': {}, 'chi2_nu': {}, 'chi2_snap': {}, 'npts_snap': []}
+    for m in RBFIT_MODELS:
+        r = rb['models'][m][j]
+        ng = len(R.MODELS[m][0])
+        p = dict(zip(r['names'][:ng], r['x'][:ng]))
+        pred = [s.predict(m, p, r['x'][ng + i]) for i, s in enumerate(snaps)]
+        out['models'][m] = {'dE': [(pr[0]/s.bias).tolist() for pr, s in zip(pred, snaps)],
+                            'EE': [pr[1].tolist() for pr in pred]}
+        out['chi2_nu'][m] = r['chi2']/r['nu']
+        out['chi2_snap'][m] = r['chi2_snap']
+    out['npts_snap'] = [int(3*((s.k >= R.KMIN) & (s.k <= RB_KMAX*(1 + 1e-9))).sum()) for s in snaps]
+    path = os.path.join(HERE, 'ia_redblue_fit', 'data.json')
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, 'w') as fh:
+        json.dump(out, fh, indent=1)
+    print('wrote', os.path.relpath(path, HERE))
+
+
 def main():
     figures = {'ia_ps_z1': sims_figure, 'ia_fit_z1': fit_figure, 'ia_hmc_z1': hmc_figure}
+    figures['ia_redblue'] = redblue_figure
+    figures['ia_redblue_fit'] = redblue_fit_figure
     for name in HMCA_FIGURES:
         figures[name] = lambda name=name: hmca_figure(name)
     for name in (sys.argv[1:] or figures):
