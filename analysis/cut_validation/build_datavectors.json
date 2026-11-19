@@ -1,0 +1,42 @@
+{
+ "about": "Data vectors, mask and datasets of the cut-validation chains.\n\nAll vectors use the chain's own theory (emulmps P(k) + cosmolike, the\nuse_emulator 2 path) at the D3A fiducial cosmology with no nuisance shifts:\n    flam   GG + xi_IA^FLAMINGO(prod), xi_IA from v9/ia_base_prod.npz (the\n           Fisher base: FLAMINGO P_dE, P_EE tabulated into cosmolike)\n    nla    NLA at its K0 = 0.2 best fit to flam (A1 3.486, eta1 0.700)\n    tatt   TATT at its K0 = 0.2 best fit to flam\nThe mask keeps xi_+- at K0 = 0.2 (masks_n1 of cosmolike_xi_ia.npz) and\ndrops gamma_t and w. Checks, by running the chain likelihoods themselves:\n    chi2(flam | NLA, TATT at their best fits) against the Fisher fits\n    (scale_cut_scan.json), which used the CAMB/Takahashi path;\n    chi2 = 0 for each control at its truth;\n    chi2 between the emulator GG and the CAMB-path GG (emulator accuracy).\nOutput files go to ~/cocoa/Cocoa/projects/roman_real/data/cutval_k0p2_*.\n\nRun from ~/cocoa/Cocoa after start_cocoa.sh:\n    python ../ia_mismodeling/analysis/cut_validation/build_datavectors.py\n",
+ "K0": 0.2,
+ "npts": 192,
+ "best": {
+  "NLA": {
+   "roman_A1_1": 3.4862031144518735,
+   "roman_A1_2": 0.6998553260065911
+  },
+  "TATT": {
+   "roman_A1_1": 3.4241685191113356,
+   "roman_A1_2": 0.7403156747076135,
+   "roman_A2_1": -1.3168181440003235,
+   "roman_A2_2": -3.5409558643666816,
+   "roman_BTA_1": 0.6008244302926421
+  }
+ },
+ "checks": {
+  "chi2_GG_emul_vs_camb": 0.006771525335542494,
+  "NLA|cutval_k0p2_flam.dataset": {
+   "chi2": 0.7108329555274767,
+   "fisher": 0.7160352309515479
+  },
+  "TATT|cutval_k0p2_flam.dataset": {
+   "chi2": 0.5334840750181123,
+   "fisher": 0.5357097108755235
+  },
+  "NLA|cutval_k0p2_nla.dataset": {
+   "chi2": 9.10424037973398e-17,
+   "fisher": 0.0
+  },
+  "TATT|cutval_k0p2_tatt.dataset": {
+   "chi2": 1.0977300833996855e-16,
+   "fisher": 0.0
+  }
+ },
+ "truth": {
+  "omegam": 0.306,
+  "sigma8": 0.807720411928198,
+  "S8": 0.8157576289084688
+ }
+}

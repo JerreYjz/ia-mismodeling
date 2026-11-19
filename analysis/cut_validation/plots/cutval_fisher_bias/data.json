@@ -1,0 +1,163 @@
+{
+ "about": "Producer: make_fisher_figures.py from fisher_minimize.json.\ndata.json of the two minimizer-plus-Fisher figures, from fisher_minimize.json.\n\nplots/cutval_fisher_bias: mu(Omega_m), mu(S8) of every model and cut, on\n    both truths, for the MAP and for the linear estimate of the posterior\n    mean (flat priors as Gaussians), in units of the flat-prior Fisher sigma.\nplots/cutval_setups: the 2D figure of bias of NLA and TATT at both cuts, MAP\n    and linear posterior mean, for cosmic shear and 3x2pt, each without and\n    with the CMB prior (n_s, Omega_b h^2, H0), on both truths.\nplots/cutval_nlaz: the per-bin amplitudes of NLAz at the mean redshift of\n    each source bin (example1.nz) against the NLA power law fitted at the\n    same cut, and the (n_s, H0) of every MAP.\n\n    python make_fisher_figures.py\n",
+ "models": [
+  "NLA",
+  "NLAz",
+  "TATT"
+ ],
+ "cuts": [
+  "0.2",
+  "0.25"
+ ],
+ "truths": [
+  "prod",
+  "S1"
+ ],
+ "threshold": 0.3,
+ "rows": {
+  "NLA|0.2|prod": {
+   "map": [
+    0.08016056142517042,
+    0.3960240109058441
+   ],
+   "mean": [
+    0.032320341990252285,
+    0.16288121406888192
+   ],
+   "fob_map": 0.40337185963719796,
+   "fob_mean": 0.16578122991206942
+  },
+  "NLA|0.25|prod": {
+   "map": [
+    -0.20527664302397958,
+    -0.02667629402688516
+   ],
+   "mean": [
+    -0.0033808603108973294,
+    0.16100375539979347
+   ],
+   "fob_map": 0.20798312358657434,
+   "fob_mean": 0.16101512965931625
+  },
+  "NLAz|0.2|prod": {
+   "map": [
+    -0.46905324448486385,
+    -0.02396027640349601
+   ],
+   "mean": [
+    -0.05075585512765557,
+    0.3397126732750028
+   ],
+   "fob_map": 0.47166838394982125,
+   "fob_mean": 0.34124362447261664
+  },
+  "NLAz|0.25|prod": {
+   "map": [
+    -0.5376657420885569,
+    -0.0644464217949411
+   ],
+   "mean": [
+    -0.0905453366114132,
+    0.34004131362566153
+   ],
+   "fob_map": 0.5463048094955191,
+   "fob_mean": 0.34723983065672454
+  },
+  "TATT|0.2|prod": {
+   "map": [
+    -0.0346479989265314,
+    0.5340118096729872
+   ],
+   "mean": [
+    -0.036918768606535285,
+    0.163293070619263
+   ],
+   "fob_map": 0.5353210817780794,
+   "fob_mean": 0.16760337312755524
+  },
+  "TATT|0.25|prod": {
+   "map": [
+    0.008708321941458236,
+    0.633883820162341
+   ],
+   "mean": [
+    -0.012366299093385255,
+    0.20545975719115356
+   ],
+   "fob_map": 0.6347855940326369,
+   "fob_mean": 0.2055034517596467
+  },
+  "NLA|0.2|S1": {
+   "map": [
+    -0.004399979845075017,
+    0.15063208999339786
+   ],
+   "mean": [
+    -0.03922582642269129,
+    0.04788399300957922
+   ],
+   "fob_map": 0.1507107763146686,
+   "fob_mean": 0.061994250032660264
+  },
+  "NLA|0.25|S1": {
+   "map": [
+    -0.05519629111841912,
+    0.1588578364424457
+   ],
+   "mean": [
+    -0.09892847007073698,
+    0.017660948868469178
+   ],
+   "fob_map": 0.16636920074834644,
+   "fob_mean": 0.09992205755049069
+  },
+  "NLAz|0.2|S1": {
+   "map": [
+    -0.31236683485758904,
+    0.015005285797421084
+   ],
+   "mean": [
+    -0.0620709385904106,
+    0.24664035149310395
+   ],
+   "fob_map": 0.31256504047999045,
+   "fob_mean": 0.25012592796454364
+  },
+  "NLAz|0.25|S1": {
+   "map": [
+    -0.3562045903907091,
+    -0.02124899823231499
+   ],
+   "mean": [
+    -0.12170612582335309,
+    0.21983498179211164
+   ],
+   "fob_map": 0.3595189649961197,
+   "fob_mean": 0.24369229960866637
+  },
+  "TATT|0.2|S1": {
+   "map": [
+    -0.05972448335997511,
+    0.21234722172445153
+   ],
+   "mean": [
+    -0.06483277397092715,
+    0.05927487222549985
+   ],
+   "fob_map": 0.22084799892103832,
+   "fob_mean": 0.08804344877584813
+  },
+  "TATT|0.25|S1": {
+   "map": [
+    -0.07179594449626392,
+    0.24508507389942413
+   ],
+   "mean": [
+    -0.11074671708931844,
+    0.05207532107823712
+   ],
+   "fob_map": 0.2528163021659772,
+   "fob_mean": 0.12057618322139933
+  }
+ }
+}

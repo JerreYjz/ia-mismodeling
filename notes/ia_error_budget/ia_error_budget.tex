@@ -223,6 +223,62 @@
 \newcommand{\GGLFoMbehThree}{\refresh{43}}
 \newcommand{\GGLFoMbehFour}{\refresh{49}}
 % ---------------------------------------------------------------------
+% Part 1c: validation with every parameter free
+% (analysis/cut_validation/fisher_minimize.json, build_datavectors.json,
+% 18 November 2026). FoB = 2D figure of bias in (Omega_m, S8), in units
+% of the Fisher errors with the flat priors as Gaussians.
+% Statements that rest on Part 1c:
+%   - cosmic shear alone: MAP and posterior mean differ by up to 0.4 sigma
+%     (n_s, H0 unconstrained); with a CMB prior they agree;
+%   - 3x2pt + CMB prior: NLA and TATT below 0.3 to K0 = 0.25 on both
+%     truths; NLA to 0.3, TATT to 0.25 on the production truth;
+%   - TATT always has the lower chi2 and never the lower bias on the
+%     production truth.
+% checks of the chain likelihood against the Fisher pipeline (chi2)
+\newcommand{\CVchiNLA}{\refresh{0.711}}
+\newcommand{\CVchiNLAref}{\refresh{0.716}}
+\newcommand{\CVchiGG}{\refresh{0.007}}
+\newcommand{\CVchiThree}{\refresh{1.947}}
+\newcommand{\CVchiThreeRef}{\refresh{1.932}}
+% cosmic shear, no prior, production truth: MAP and mean FoB
+\newcommand{\CVcsNLAmap}{\refresh{0.40}}
+\newcommand{\CVcsNLAmean}{\refresh{0.17}}
+\newcommand{\CVcsTATTmap}{\refresh{0.63}}
+\newcommand{\CVcsTATTmean}{\refresh{0.21}}
+\newcommand{\CVsigSEight}{\refresh{0.0126}}
+\newcommand{\CVsigOm}{\refresh{0.026}}
+% cosmic shear + CMB prior, range over models, cuts, truths
+\newcommand{\CVcmbNLAlo}{\refresh{0.10}}
+\newcommand{\CVcmbNLAhi}{\refresh{0.22}}
+\newcommand{\CVcmbTATTlo}{\refresh{0.07}}
+\newcommand{\CVcmbTATThi}{\refresh{0.19}}
+\newcommand{\CVcmbZlo}{\refresh{0.28}}
+\newcommand{\CVcmbZhi}{\refresh{0.39}}
+% 3x2pt without prior, TATT K0 = 0.25 production: MAP and mean
+\newcommand{\CVthreeTATTmap}{\refresh{0.35}}
+\newcommand{\CVthreeTATTmean}{\refresh{0.13}}
+% 3x2pt + CMB prior: FoB at K0 = 0.2, 0.25, 0.3, 0.35, 0.4
+\newcommand{\CVNLAprodTwo}{\refresh{0.17}}
+\newcommand{\CVNLAprodQuarter}{\refresh{0.18}}
+\newcommand{\CVNLAprodThree}{\refresh{0.295}}
+\newcommand{\CVNLAprodThreeFive}{\refresh{0.34}}
+\newcommand{\CVNLAprodFour}{\refresh{0.53}}
+\newcommand{\CVTATTprodTwo}{\refresh{0.19}}
+\newcommand{\CVTATTprodQuarter}{\refresh{0.23}}
+\newcommand{\CVTATTprodThree}{\refresh{0.33}}
+\newcommand{\CVTATTprodThreeFive}{\refresh{0.38}}
+\newcommand{\CVTATTprodFour}{\refresh{0.56}}
+\newcommand{\CVNLASOneTwo}{\refresh{0.19}}
+\newcommand{\CVNLASOneQuarter}{\refresh{0.21}}
+\newcommand{\CVTATTSOneTwo}{\refresh{0.13}}
+\newcommand{\CVTATTSOneQuarter}{\refresh{0.16}}
+\newcommand{\CVSOneFour}{\refresh{0.30}}
+\newcommand{\CVsigThreeOm}{\refresh{0.0058}}
+\newcommand{\CVsigThreeTwo}{\refresh{0.0055}}
+\newcommand{\CVsigThreeFour}{\refresh{0.0041}}
+\newcommand{\CVdchiLo}{\refresh{0.04}}
+\newcommand{\CVdchiHi}{\refresh{0.46}}
+% ---------------------------------------------------------------------
 % Part 2: inputs.
 \newcommand{\Tol}{0.3}
 
@@ -335,6 +391,22 @@ below it up to $K_0^{\rm GGL} = 0.4$ on both truths, at most
 figure of merit, against \GGLFoMcs{} thousand for cosmic shear alone
 (Figure~\ref{fig:gglcut}). There the GGL cut is set by the galaxy bias
 model, which this test does not probe, not by IA.
+
+\paragraph{Validation with every parameter free.}
+The cuts were then tested with every parameter of the chains free (five
+cosmological, photo-$z$ shifts, shear calibrations, galaxy biases and the
+IA parameters), by a minimizer and a full Fisher matrix around the
+FLAMINGO data vector (Section~\ref{sec:cutval}). In cosmic shear alone,
+$n_s$ and $H_0$ are nearly unconstrained, and the best fit and the
+posterior mean differ by up to 0.4$\sigma$; a CMB prior on $n_s$,
+$\Omega_b h^2$ and $H_0$ removes the difference. In 3x2pt with that prior,
+NLA and TATT stay below \Tol$\sigma$ at $K_0 = 0.2$ and 0.25 on both
+truths, and the production truth sets the limit at $K_0 = 0.3$ for NLA
+(\CVNLAprodThree) and 0.25 for TATT (Figure~\ref{fig:cvscan}). TATT fits
+the FLAMINGO vector better at every cut but is not less biased: its extra
+terms fit to near zero where the cut is set, and where they switch on they
+run to their prior bounds (Figure~\ref{fig:cvfit}). Freer redshift
+evolution (one NLA amplitude per source bin) raises the bias.
 
 \section{Setup}
 \label{sec:setup}
@@ -1124,6 +1196,162 @@ keeps both models below \GGLbehMaxThree$\sigma$ on both truths while giving
 more figure of merit than every pair at its safe cut. Beyond that, the GGL
 cut is set by the linear galaxy bias, which this test assumes exact.
 
+\section{Validation with every parameter free}
+\label{sec:cutval}
+
+\paragraph{The question.}
+The cuts above come from fits of the IA parameters with $\Om$ and $A_s$
+(and in 3x2pt the galaxy biases) free. Do they hold when every parameter
+of a Roman analysis is free, and is TATT then better than NLA?
+
+\paragraph{The setup.}
+Every parameter of the Cobaya chains is free: $A_s$, $n_s$, $H_0$,
+$\Omega_b$ and $\Om$ with flat priors ($\Lambda$CDM, $\sum m_\nu = 0.06$
+eV fixed); eight source photo-$z$ shifts with $\mathcal N(0, 0.002)$ (the
+lenses share them); eight shear calibrations with $\mathcal N(0, 0.005)$;
+in 3x2pt eight linear galaxy biases in $[0.4, 4]$; and the IA parameters:
+NLA ($A_1$, $\eta_1$), TATT ($A_1$, $\eta_1$, $A_2$, $\eta_2$, $b_{\rm
+TA}$), and NLAz, NLA with one amplitude per source bin. The theory is the
+chains' own: the emulated matter power spectrum (emulmps, Halofit network)
+through cosmolike. The data vector is noise free, the GG part from that
+theory at D3A and the IA part the FLAMINGO $\xi_{\rm IA}$ of
+Section~\ref{sec:v9} (and of Section~\ref{sec:ggl} on $\gamma_t$). Cosmic
+shear uses $\xi_\pm$ cut at $\kuv = K_0/D(z)$ and the example1
+covariance; 3x2pt adds $\gamma_t$ of sources behind lenses at $K_0^{\rm
+GGL} = 0.3$ and $w$ at 0.2, with the Gaussian covariance and Limber for
+$\gamma_t$ and $w$. The CMB prior is Gaussian at D3A with the Planck 2018
+widths on $n_s$ (0.0042), $\Omega_b h^2$ (0.00015) and $H_0$ (0.54), and
+nothing on $A_s$ or $\Om$, which would constrain $S_8$ directly.
+
+\paragraph{The method.}
+A minimizer (least squares from three starts) gives the maximum a
+posteriori (MAP); its shift of $(\Om, S_8)$ from D3A has no projection
+effect. A Fisher matrix over every parameter at the reference point (D3A,
+the IA parameters fitted at fixed cosmology) gives the errors, with the
+flat priors as Gaussians of the same variance, and the linear estimate of
+the shift of the posterior mean, $\Delta\bvec\theta = (F + P)^{-1}
+J\T C^{-1} \bvec r$, with $\bvec r$ the residual at the reference point.
+The bias is the 2D figure of bias $\sqrt{\Delta\bvec p\T C_p^{-1}
+\Delta\bvec p}$ in $(\Om, S_8)$. These Fisher errors reproduce those of the
+test chains ($\sigma(S_8) = \CVsigSEight$ against 0.013, $\sigma(\Om) =
+\CVsigOm$ against 0.028 to 0.033 in cosmic shear). Chains run to
+convergence were replaced by this method after a TATT chain on cosmic
+shear stalled at $R - 1 \simeq 0.3$, one of its four chains wandering to
+$S_8 = 0.787$ and $H_0 = 74$: the degeneracy described next.
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=\textwidth]{plots/cutval_setups/cutval_setups.pdf}
+  \caption{The 2D figure of bias with every parameter free, NLA (orange
+    squares) and TATT (blue circles) at $\xi_\pm$ cuts $K_0 = 0.2$ and
+    0.25. Columns: cosmic shear and 3x2pt, each without and with the CMB
+    prior; rows: the production and stitched truths. Filled: the MAP;
+    open: the linear estimate of the posterior-mean shift. Dotted:
+    \Tol.}
+  \label{fig:cvsetups}
+\end{figure}
+
+\paragraph{Cosmic shear alone does not fix the bias.}
+Without a prior on $n_s$ and $H_0$, cosmic shear constrains them weakly,
+and the best fit slides along that direction to absorb the IA residual
+for a $\Delta\chi^2$ of 0.03 to 0.3: TATT to $n_s \simeq 1.01$ and $H_0
+\simeq 63$, which raises $S_8$; NLAz to $n_s \simeq 0.92$ and $H_0 \simeq
+80$, which lowers $\Om$ (Figure~\ref{fig:cvnlaz}, right). The MAP and the
+posterior mean then differ (Figure~\ref{fig:cvsetups}, first column): on
+the production truth at $K_0 = 0.2$, \CVcsNLAmap{} against \CVcsNLAmean{}
+for NLA, and at 0.25, \CVcsTATTmap{} against \CVcsTATTmean{} for TATT. The
+bias is not defined well enough to validate a cut. With the CMB prior the
+two agree to 0.02 and every NLA and TATT case is below \Tol{}
+(\CVcmbNLAlo{} to \CVcmbNLAhi{} for NLA, \CVcmbTATTlo{} to \CVcmbTATThi{}
+for TATT). In 3x2pt without the prior, $H_0$ still moves to about 66.5,
+and TATT at $K_0 = 0.25$ on the production truth reaches \CVthreeTATTmap{}
+at the MAP against \CVthreeTATTmean{} for the mean; with the prior every
+3x2pt case has MAP and mean equal to 0.02. The results below are 3x2pt
+with the CMB prior.
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=3.5in]{plots/cutval_k0scan/cutval_k0scan.pdf}
+  \caption{Roman 3x2pt with the CMB prior against the $\xi_\pm$ cut $K_0$.
+    Top two panels: the figure of bias of NLA (orange squares) and TATT
+    (blue circles) on the production and stitched truths; dotted: \Tol.
+    Bottom: TATT's $A_2$ (solid, filled) and $b_{\rm TA}$ (dashed, open) at
+    the MAP, production truth in blue and stitched in gray.}
+  \label{fig:cvscan}
+\end{figure}
+
+\paragraph{The cut in 3x2pt.}
+At $K_0 = 0.2$ the figure of bias is \CVNLAprodTwo{} (NLA) and
+\CVTATTprodTwo{} (TATT) on the production truth and \CVNLASOneTwo{} and
+\CVTATTSOneTwo{} on the stitched truth; at 0.25, \CVNLAprodQuarter,
+\CVTATTprodQuarter, \CVNLASOneQuarter{} and \CVTATTSOneQuarter{}
+(Figure~\ref{fig:cvscan}). The production truth sets the limit: NLA
+reaches \CVNLAprodThree{} at $K_0 = 0.3$, \CVNLAprodThreeFive{} at 0.35
+and \CVNLAprodFour{} at 0.4; TATT \CVTATTprodThree, \CVTATTprodThreeFive{}
+and \CVTATTprodFour. On the stitched truth both stay below \Tol{} up to
+0.35 and reach \CVSOneFour{} at 0.4. The cut is $K_0 = 0.25$ for both
+models with margin, and 0.3 for NLA at the edge. The errors are the same
+for both models at every cut, $\sigma(\Om) \simeq \CVsigThreeOm$ and
+$\sigma(S_8) = \CVsigThreeTwo$ at $K_0 = 0.2$ to \CVsigThreeFour{} at 0.4.
+Every case has the three minimizer starts agreeing except TATT at
+$K_0 = 0.25$ on the production truth (two minima, $\chi^2 = 1.73$ and
+1.63; the lower kept); the galaxy biases stay within 0.02 of the truth
+(half their error) and the photo-$z$ and calibration shifts below
+$7\times10^{-4}$, a third of their prior widths or less.
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=3.5in]{plots/cutval_fit_vs_bias/cutval_fit_vs_bias.pdf}
+  \caption{Fit and bias of NLA (orange squares) and TATT (blue circles) in
+    3x2pt with the CMB prior, production truth solid with filled markers,
+    stitched dashed with open. Top: $\chi^2$ of the MAP to the noise-free
+    FLAMINGO vector. Bottom: the squared figure of bias; dotted:
+    \Tol$^2$.}
+  \label{fig:cvfit}
+\end{figure}
+
+\paragraph{TATT fits better and is not less biased.}
+TATT has the lower $\chi^2$ at every cut, by \CVdchiLo{} to \CVdchiHi{}
+for three more parameters, a gain no noisy Roman realization could
+detect; on the production truth it is more biased at every cut, and on
+the stitched truth within 0.06 of NLA (Figure~\ref{fig:cvfit}). The bias
+is the part of the remaining misfit that resembles a change of $\Om$ or
+$S_8$, a $\Delta\chi^2$ of 0.03 to 0.3 against a total of 1 to 3.4; more
+parameters lower the total without lowering that part when their
+templates overlap the cosmological ones. TATT's terms show it
+(Figure~\ref{fig:cvscan}, bottom): up to $K_0 = 0.3$ they fit to near zero
+($|A_2| \le 0.17$, $b_{\rm TA} \le 0.16$), and TATT is NLA with more
+parameters; from 0.35 on the production truth $A_2$ rises to 0.25 to 0.29
+with $\eta_2$ at its bound of $-5$ and $b_{\rm TA}$ at 0, and the bias is
+higher than NLA's. For this alignment signal, NLA-like at these scales as
+the red and blue halo model of FLAMINGO also finds, TATT extends neither
+the cut nor the accuracy.
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=\textwidth]{plots/cutval_nlaz/cutval_nlaz.pdf}
+  \caption{Left: the amplitudes of NLAz (one per source bin, at the mean
+    redshift of the bin) fitted in cosmic shear without prior, against the
+    NLA power law fitted at the same cut; $K_0 = 0.2$ solid, 0.25 dashed;
+    gray: the stitched truth. Right: $(n_s, H_0)$ of the MAP of every
+    cosmic-shear fit without prior (production filled, stitched open);
+    dotted: D3A.}
+  \label{fig:cvnlaz}
+\end{figure}
+
+\paragraph{Freer redshift evolution.}
+NLAz tests whether TATT's extra freedom acts as freedom in redshift. In
+cosmic shear its amplitudes follow the NLA power law to within 7\% in
+bins 1 to 7 (Figure~\ref{fig:cvnlaz}, left; bin 8 is unconstrained,
+$\sigma \simeq 3$), it fits better than NLA ($\chi^2 = 0.51$ against 0.68
+with the CMB prior, production, $K_0 = 0.2$), and it is more biased
+(\CVcmbZlo{} to \CVcmbZhi{}): the extra freedom moves $S_8$. In 3x2pt the
+test is not valid. The per-bin amplitude is constant across a source bin,
+which drops the evolution within the bin that $\gamma_t$ sees where
+sources overlap the lenses, and NLAz fits worse than NLA there even at
+fixed cosmology ($\chi^2 = 3.2$ against 1.9); its figures of bias of 0.6
+to 1.1 are not counted.
+
 \appendix
 
 \section{Numerical checks}
@@ -1174,6 +1402,16 @@ cut is set by the linear galaxy bias, which this test assumes exact.
     $w$ carries no IA. Restricted to $\xi_\pm$ with the example1
     covariance, it reproduces the errors and bands of
     Section~\ref{sec:v9} to $10^{-14}$ on both truths.
+  \item \textbf{The validation of Section~\ref{sec:cutval}.} The chain
+    likelihood (emulator path) at the NLA best fit of the cosmic-shear scan
+    gives $\chi^2 = \CVchiNLA$ against \CVchiNLAref{} in the Fisher pipeline
+    (TATT 0.534 against 0.536); its GG vector differs from the CAMB path's
+    by $\chi^2 = \CVchiGG$ on the kept points; the matched controls give
+    $\chi^2 = 0$ at their truth. The 3x2pt setup reproduces the $\chi^2$ of
+    the GGL scan at its reference point (\CVchiThree{} against
+    \CVchiThreeRef{} on the same 434 points). Where the $\chi^2$ surface is
+    quadratic the MAP agrees with its own linear prediction to 0.02$\sigma$
+    in $S_8$.
 \end{itemize}
 
 \section{Where the code and results are}
@@ -1205,6 +1443,11 @@ and to \texttt{v9/} next to it for Section~\ref{sec:v9}.
     3x2pt budget and bands & \texttt{ia\_budget\_3x2.py} $\rightarrow$ \texttt{ia\_budget\_3x2.json} \\
     the GGL cut & \texttt{scale\_cut\_scan\_3x2.py} $\rightarrow$ \texttt{scale\_cut\_scan\_3x2.json} \\
     figure data & \texttt{notes/ia\_error\_budget/plots/make\_figure\_data.py} \\
+    \multicolumn{2}{l}{\textit{Section~\ref{sec:cutval}, in \texttt{analysis/cut\_validation/}:}} \\
+    data vectors, masks, checks & \texttt{build\_datavectors.py} $\rightarrow$ \texttt{build\_datavectors.json} \\
+    minimizer and full Fisher & \texttt{fisher\_minimize.py} $\rightarrow$ \texttt{fisher\_minimize.json} \\
+    chain configurations & \texttt{*\_k0p2.yaml}, \texttt{make\_yamls.py}, \texttt{analyze\_chains.py} \\
+    figure data & \texttt{make\_fisher\_figures.py}, \texttt{make\_k0\_figure.py} \\
     \bottomrule
   \end{tabular}
 \end{center}
@@ -1228,6 +1471,19 @@ and to \texttt{v9/} next to it for Section~\ref{sec:v9}.
     3x2pt matrix is not positive definite; the lenses share the source
     $n(z)$, so neighboring bins overlap even for sources ``behind'' their
     lenses; the galaxy bias is linear and exact.
+  \item Section~\ref{sec:cutval} has no converged chains; its posterior
+    means are the linear Fisher estimate, with the flat priors as
+    Gaussians. With the CMB prior the MAP agrees with it, without the prior
+    it does not, and only chains give the posterior mean there.
+  \item The CMB prior is centered on the truth with Planck widths on $n_s$,
+    $\Omega_b h^2$ and $H_0$ only; a full CMB likelihood also constrains
+    $A_s$ and $\Om$.
+  \item Freer redshift evolution is untested in 3x2pt: the test requires an
+    amplitude per bin that multiplies the power law (nested in NLA), while
+    cosmolike's per-bin mode is constant across each bin.
+  \item The comparison of NLA and TATT rests on one simulation whose
+    alignment is NLA-like at these scales; a sample with real tidal
+    torquing (blue galaxies) can rank them differently.
 \end{itemize}
 
 \end{document}
