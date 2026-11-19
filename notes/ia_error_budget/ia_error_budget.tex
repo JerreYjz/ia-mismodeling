@@ -279,6 +279,46 @@
 \newcommand{\CVdchiLo}{\refresh{0.04}}
 \newcommand{\CVdchiHi}{\refresh{0.46}}
 % ---------------------------------------------------------------------
+% Part 1d: halo-model alignments (Section sec:hm). Roman numbers from
+% analysis/cut_validation/fisher_minimize.json (keys <probe>+cmb|<model>|...,
+% models NLAa, TATTa, NLAf, TATTf, NLAfT; 19 November 2026), figure data
+% from make_hm_figures.py; template checks from fisher_minimize.py
+% --check-hm and hm_templates.py; FLAMINGO fits from
+% notes/flamingo_vs_tng300/fits/hmc_alpha_fits.json (variants
+% alpha_cap_nosat, nla_alpha_nosat, nla_nosat; summed chi2/nu over the core
+% snapshots at k_max = 0.52; TATT + W from the review).
+% Statements that rest on Part 1d:
+%   - alpha free: Roman does not measure alpha; FoB within 0.04 of the
+%     parent model where the cut is decided; cuts unchanged;
+%   - alpha from FLAMINGO: NLA-F fits better than NLA and is not less biased.
+\newcommand{\HMflamTATTa}{\refresh{0.97}}
+\newcommand{\HMflamTATT}{\refresh{5.73}}
+\newcommand{\HMflamNLAa}{\refresh{1.77}}
+\newcommand{\HMflamNLA}{\refresh{10.3}}
+\newcommand{\HMaNLAlo}{\refresh{0.61}}
+\newcommand{\HMaNLAhi}{\refresh{1.62}}
+\newcommand{\HMcorrThree}{\refresh{21}}
+\newcommand{\HMcorrOne}{\refresh{70}}
+\newcommand{\HMchkCS}{\refresh{0.009}}
+\newcommand{\HMchkThree}{\refresh{0.010}}
+\newcommand{\HMsigAlo}{\refresh{0.41}}
+\newcommand{\HMsigAThree}{\refresh{0.41}}
+\newcommand{\HMdTATTF}{\refresh{0.06}}
+\newcommand{\HMfitNLAFlo}{\refresh{0.12}}
+\newcommand{\HMfitNLAFhi}{\refresh{0.20}}
+\newcommand{\HMNLAFTwo}{\refresh{0.20}}
+\newcommand{\HMNLAFQuarter}{\refresh{0.21}}
+\newcommand{\HMNLAFThree}{\refresh{0.31}}
+\newcommand{\HMbiasNLAFT}{\refresh{0.14 to 0.26}}
+% gamma_t cut scan (keys ...|<xi K0>|<truth>|gt<K>; plots/hm_gt/data.json)
+\newcommand{\HMgtThreeLo}{\refresh{0.35}}
+\newcommand{\HMgtThreeHi}{\refresh{0.37}}
+\newcommand{\HMgtQuarterFour}{\refresh{0.27}}
+\newcommand{\HMgtNLAFive}{\refresh{0.31}}
+\newcommand{\HMgtNLAFFive}{\refresh{0.33}}
+\newcommand{\HMgtTATTmax}{\refresh{0.27}}
+\newcommand{\HMgtNLAsix}{\refresh{0.04}}
+% ---------------------------------------------------------------------
 % Part 2: inputs.
 \newcommand{\Tol}{0.3}
 
@@ -407,6 +447,20 @@ the FLAMINGO vector better at every cut but is not less biased: its extra
 terms fit to near zero where the cut is set, and where they switch on they
 run to their prior bounds (Figure~\ref{fig:cvfit}). Freer redshift
 evolution (one NLA amplitude per source bin) raises the bias.
+
+\paragraph{Halo-model alignments.}
+The halo model that passed its checks on FLAMINGO puts the tidal-alignment
+terms on $I_1 P_{\rm lin} + \alpha(\PNL - I_1 P_{\rm lin})$ and fits FLAMINGO
+far better than NLA or TATT. In the same validation (Section~\ref{sec:hm};
+cosmolike's NLA or TATT through the emulator, plus the halo-model correction
+as a template at the fiducial cosmology), it does not move the cuts: with
+$\alpha$ free, Roman does not measure it and the figure of bias stays within
+0.04 of NLA's and TATT's where the cut is decided; with $\alpha$ fixed to
+FLAMINGO's values the NLA form fits the production vector better than NLA
+and is more biased. The cuts are $K_0 = 0.3$ in cosmic shear for every
+model and 0.25 in 3x2pt (NLA 0.3 at the edge) (Table~\ref{tab:hmcuts}).
+With $\xi_\pm$ at 0.25, the $\gamma_t$ cut moves from 0.3 to 0.4 for every
+model, and to 0.6 for TATT and TATT-F (Figure~\ref{fig:hmgt}).
 
 \section{Setup}
 \label{sec:setup}
@@ -1352,6 +1406,189 @@ sources overlap the lenses, and NLAz fits worse than NLA there even at
 fixed cosmology ($\chi^2 = 3.2$ against 1.9); its figures of bias of 0.6
 to 1.1 are not counted.
 
+\section{Halo-model alignments}
+\label{sec:hm}
+
+\paragraph{The question.}
+The halo-model review of FLAMINGO (\texttt{hmc\_review.pdf}, with its
+addenda of 17 and 18 November; Appendix~\ref{app:code}) found models that fit the FLAMINGO
+spectra far better than NLA and TATT. Do they also move the cut of
+Section~\ref{sec:cutval} to smaller scales, or lower the bias at a given
+cut?
+
+\paragraph{The models.}
+Of the halo-model variants in the review, one passed its physical checks:
+the tidal-alignment ($A_1$) terms on
+\begin{equation}
+  P_{\rm GI} = I_1 P_{\rm lin} + \alpha\,(\PNL - I_1 P_{\rm lin}), \qquad
+  P_{\rm II} = P_{\rm lin} + \alpha\,(\PNL - P_{\rm lin}),
+  \label{eq:hmalpha}
+\end{equation}
+with $I_1(k)$ the bias-weighted halo profile integral, $\alpha$ the share of
+nonlinear power in the 2-halo term ($\alpha = 1$ is NLA and TATT, $\alpha =
+0$ the pure 2-halo term), the central 1-halo amplitude capped at its
+physical size and no satellite term. The two 1-halo terms failed their
+checks there (unconstrained at a physical amplitude, or drifting with the
+fit range) and are left out here. Fitted to the nine core FLAMINGO
+snapshots at $k_{\max} = 0.52\hMpc$, the TATT form of Eq.~\eqref{eq:hmalpha}
+reaches $\chi^2/\nu = \HMflamTATTa$ against \HMflamTATT{} for TATT, and the
+NLA form ($A_2 = b_{\rm TA} = 0$, fitted for this section)
+\HMflamNLAa{} against \HMflamNLA{} for NLA. Four Roman models follow: NLA$+\alpha$
+and TATT$+\alpha$, with $\alpha$ free in $[-1, 2]$ (wider than its physical
+range so that an unphysical preference shows), and NLA-F and TATT-F, with
+$\alpha$ held at FLAMINGO's own value at each snapshot, $\alpha_{\rm F}(z)$,
+fitted in the same form. The two forms give different values, because
+$\alpha$ is anticorrelated with $b_{\rm TA}$ ($-0.8$ to $-0.9$): at $k_{\max}
+= 0.70$, $\alpha_{\rm F} = 0.37$ to 0.79 in the TATT form and \HMaNLAlo{}
+to \HMaNLAhi{} in the NLA form, rising with redshift (errors 0.01 to 0.12).
+
+\paragraph{In the emulator pipeline.}
+Only the $A_1$ terms change, so each model is cosmolike's native NLA or TATT
+(the emulator pipeline of Section~\ref{sec:cutval}, every parameter free)
+plus
+\begin{equation}
+  \Delta\bvec d = \sum_s (1 - \alpha_s)\left[A_s\,\bvec u_{{\rm GI},s} +
+    A_s^2\,\bvec u_{{\rm II},s}\right], \qquad
+  A_s = A_1 \left(\frac{1 + z_s}{1.62}\right)^{\eta_1},
+  \label{eq:hmcorr}
+\end{equation}
+with $\bvec u_{{\rm GI},s}$ the response of $\xi_\pm$ and $\gamma_t$ to
+$\bar C_1(z_s)\,[\PNL - I_1 P_{\rm lin}]$ at snapshot $s$ and $\bvec u_{{\rm
+II},s}$ that to $-\bar C_1^2\,[\PNL - P_{\rm lin}]$, both built from the
+tent responses of Section~\ref{sec:v9} (exact, since the data vector is
+linear in the IA tables), $\bar C_1 = 0.01389\,\Om/D(z)$; the $\gamma_t$
+rows scale with the lens bias. The correction removes \HMcorrThree\% of the
+$A_1$ GI term at $k = 0.3\hMpc$ and \HMcorrOne\% at $1\hMpc$ ($z = 1$,
+$\alpha = 0$). It is held at the D3A cosmology: at the shifts found here
+(below $0.6\sigma$, $\Delta\Om \lesssim 0.004$) it would change by about
+1\%, which is below 0.3\% of the IA signal, well inside the budget of
+Section~\ref{sec:v9}. The same sum with $-\bar C_1$ and $\bar C_1^2$ in place
+of the brackets rebuilds the emulator's native NLA to $\Delta\chi^2 =
+\HMchkCS$ in cosmic shear and \HMchkThree{} in 3x2pt, against an IA signal
+of $\chi^2 \simeq 2400$ ($A_1 = 3.5$, $\eta_1 = 0.7$).
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=3.5in]{plots/hm_k0scan/hm_k0scan.pdf}
+  \caption{The figure of bias against the $\xi_\pm$ cut with every
+    parameter free and the CMB prior, NLA (orange squares) and TATT (blue
+    circles) solid, their halo-model variants with $\alpha$ free dashed with
+    open markers. Rows: cosmic shear and 3x2pt ($\gamma_t$ at 0.3, $w$ at
+    0.2), each on the production and stitched truths. Dotted: \Tol.}
+  \label{fig:hmscan}
+\end{figure}
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=3.5in]{plots/hm_alpha/hm_alpha.pdf}
+  \caption{$\alpha$ at the MAP with its marginalized Fisher error,
+    NLA$+\alpha$ (orange squares) and TATT$+\alpha$ (blue circles),
+    production truth solid and filled, stitched dashed and open; the four
+    series are offset in $K_0$ for legibility. Gray: the physical range.
+    Bottom: the $\chi^2$ gain over the parent model in 3x2pt.}
+  \label{fig:hmalpha}
+\end{figure}
+
+\paragraph{With $\alpha$ free, nothing changes.}
+Roman does not measure $\alpha$ at these cuts (Figure~\ref{fig:hmalpha}):
+its error is \HMsigAlo{} to 4.6 for NLA$+\alpha$ and 0.8 to 11 for
+TATT$+\alpha$, and the smallest, \HMsigAThree{} in 3x2pt at $K_0 = 0.6$,
+leaves $\alpha = 1.00$ consistent with both NLA and FLAMINGO's values. At
+the largest scales the fit moves $\alpha$ to its bound of 2 in three cases,
+where it changes the data vector by almost nothing. Where a cut is decided,
+$K_0 \le 0.35$, the figure of bias moves by $-0.04$ to $+0.04$ against the
+parent model, and by up to 0.10 beyond (Figure~\ref{fig:hmscan}); the
+$\chi^2$ gain is at most 0.16, and 0.89 for TATT$+\alpha$ at $K_0 = 0.6$ in
+3x2pt, still with the bias of TATT. The cuts are those of NLA and TATT
+(Table~\ref{tab:hmcuts}).
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=3.5in]{plots/hm_fixed/hm_fixed.pdf}
+  \caption{As Figure~\ref{fig:hmscan}, with the halo-model variants at
+    FLAMINGO's own $\alpha_{\rm F}(z)$ (fitted in the same form: NLA-F
+    in the NLA form, TATT-F in the TATT form) instead of $\alpha$ free.}
+  \label{fig:hmfixed}
+\end{figure}
+
+\paragraph{With FLAMINGO's $\alpha$, the fit improves and the bias does not.}
+NLA-F fits the production vector better than NLA in 3x2pt, by
+\HMfitNLAFlo{} to \HMfitNLAFhi{} in $\chi^2$ up to $K_0 = 0.5$, as the FLAMINGO
+fits say it should; on the stitched truth, NLA at large scales by
+construction, the two fit equally up to 0.35. Its figure of bias is not
+lower (Figure~\ref{fig:hmfixed}): \HMNLAFTwo, \HMNLAFQuarter{} and
+\HMNLAFThree{} at $K_0 = 0.2$, 0.25 and 0.3 in 3x2pt on the production
+truth, against \CVNLAprodTwo, \CVNLAprodQuarter{} and \CVNLAprodThree{} for
+NLA, and within 0.02 of NLA in cosmic shear up to 0.35. TATT-F follows TATT
+within \HMdTATTF{} up to $K_0 = 0.35$. The bias responds to $\alpha$ at the level
+of a few hundredths, but not to the quality of the fit: NLA with the
+TATT-form values (a test, not a model, since that $\alpha$ belongs with
+$b_{\rm TA}$) fits worse than NLA in 3x2pt on the production truth, by
+0.13 to 0.29 up to $K_0 = 0.4$, and is less biased, \HMbiasNLAFT{} on the production truth at
+$K_0 = 0.2$ to 0.35. As for TATT in Section~\ref{sec:cutval}, the residual
+that a better model removes is not the part that resembles a change of
+$\Om$ or $S_8$.
+
+\begin{table}[tbp]
+  \centering
+  \small
+  \caption{The largest $\xi_\pm$ cut $K_0$ [$h\,{\rm Mpc}^{-1}$] with the
+    figure of bias below \Tol{} on both truths at that cut and every larger
+    scale (CMB prior, every parameter free). Cuts at the edge (above 0.29)
+    are marked $^\ast$.}
+  \label{tab:hmcuts}
+  \begin{tabular}{lcccccc}
+    \toprule
+    & NLA & NLA$+\alpha$ & NLA-F & TATT & TATT$+\alpha$ & TATT-F \\
+    \midrule
+    cosmic shear & \refresh{0.3} & \refresh{0.3} & \refresh{0.3} & \refresh{0.3} & \refresh{0.3} & \refresh{0.3} \\
+    3x2pt & \refresh{0.3}$^\ast$ & \refresh{0.25} & \refresh{0.25} & \refresh{0.25} & \refresh{0.25} & \refresh{0.25} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=3.5in]{plots/hm_gt/hm_gt.pdf}
+  \caption{3x2pt: the figure of bias against the $\gamma_t$ cut
+    $K_0^{\rm GGL}$, with $\xi_\pm$ cut at $K_0 = 0.25$ (top two rows) and
+    0.3 (bottom two), $w$ at 0.2; NLA, TATT (solid) and NLA-F, TATT-F
+    (dashed, open). Dotted: \Tol.}
+  \label{fig:hmgt}
+\end{figure}
+
+\paragraph{The $\gamma_t$ cut.}
+The cut of Section~\ref{sec:cutval} held $\gamma_t$ at $K_0^{\rm GGL} =
+0.3$; here it moves to 0.4, 0.5 and 0.6 for NLA, TATT and the FLAMINGO-$\alpha$
+variants (Figure~\ref{fig:hmgt}). With $\xi_\pm$ at 0.3 the production
+truth is already near \Tol{} and every model crosses it at $K_0^{\rm GGL} =
+0.4$ (\HMgtThreeLo{} to \HMgtThreeHi). With $\xi_\pm$ at 0.25 every model
+stays below \Tol{} on both truths at 0.4 (at most \HMgtQuarterFour); at 0.5
+NLA and NLA-F cross it on the stitched truth (\HMgtNLAFive{} and
+\HMgtNLAFFive), while TATT and TATT-F stay at or below \HMgtTATTmax{} up to
+0.6, with $\eta_2$ at its bound in most of those fits. The halo model again
+follows its parent: NLA-F's $\gamma_t$ cut is NLA's, 0.4, and TATT-F's is
+TATT's. The figure of bias is not monotonic in $K_0^{\rm GGL}$ (NLA on the
+production truth falls to \HMgtNLAsix{} at 0.6 while the stitched truth
+stays near 0.2 to 0.3): the $\gamma_t$ and $\xi_\pm$ residuals push $\Om$
+and $S_8$ in different directions, so a cut placed where they cancel is
+not robust. That is why the cut asks for both truths to pass at every
+larger scale.
+
+\paragraph{Physical checks.}
+NLA-F's amplitude and evolution stay within 0.02 of NLA's at every cut
+($A_1 = 3.3$ to 3.5, $\eta_1 = 0.68$ to 0.90): the correction acts above
+$k \simeq 0.3\hMpc$ and the large scales still set $A_1$. In the NLA form
+FLAMINGO's $\alpha$ exceeds its physical range at $z \ge 1.5$ (1.2 and 1.6,
+more nonlinear power than $\PNL$), which the TATT form absorbs into
+$b_{\rm TA}$. TATT$+\alpha$ and TATT-F put $\eta_2$ at its bound of $\pm 5$
+in most 3x2pt fits on the production truth, where $|A_2| \le 0.25$ leaves
+$\eta_2$ undetermined, and five TATT-type fits have two minima ($\Delta\chi^2$
+up to 0.45; the lower is kept). Over all fits of this section the galaxy
+biases stay within 0.021 of the truth and the photo-$z$ and calibration
+shifts below $10^{-3}$.
+
+\clearpage
 \appendix
 
 \section{Numerical checks}
@@ -1412,6 +1649,22 @@ to 1.1 are not counted.
     \CVchiThreeRef{} on the same 434 points). Where the $\chi^2$ surface is
     quadratic the MAP agrees with its own linear prediction to 0.02$\sigma$
     in $S_8$.
+  \item \textbf{The halo-model correction of Section~\ref{sec:hm}.} Its
+    templates are the same for both truths to $3\times10^{-4}$ (the truth
+    cancels, as it must); the same construction rebuilds the emulator's
+    native NLA to $\Delta\chi^2 = \HMchkCS$ (cosmic shear) and \HMchkThree{}
+    (3x2pt) at $A_1 = 3.5$, $\eta_1 = 0.7$, and to 37 of 21700 at an extreme
+    $\eta_1 = 2$ (the interpolation between the 13 snapshots); the CAMB
+    $P_{\rm lin}$ agrees with the halo tables' to $4\times10^{-3}$. The
+    correction lowers the IA signal when $\alpha < 1$ (checked in sign for GI
+    and II).
+  \item \textbf{A Cobaya pitfall.} Cobaya keeps its last few parameter
+    states and returns them without calling the likelihood, so a hook on
+    the likelihood's data vector returns a stale vector when a point
+    repeats. \texttt{fisher\_minimize.py} now keeps its own cache by
+    parameter values. The fits of Section~\ref{sec:cutval} did not hit
+    it: one rerun with the fix reproduces its $\chi^2$ and figure of bias
+    to every digit.
 \end{itemize}
 
 \section{Where the code and results are}
@@ -1448,6 +1701,12 @@ and to \texttt{v9/} next to it for Section~\ref{sec:v9}.
     minimizer and full Fisher & \texttt{fisher\_minimize.py} $\rightarrow$ \texttt{fisher\_minimize.json} \\
     chain configurations & \texttt{*\_k0p2.yaml}, \texttt{make\_yamls.py}, \texttt{analyze\_chains.py} \\
     figure data & \texttt{make\_fisher\_figures.py}, \texttt{make\_k0\_figure.py} \\
+    \multicolumn{2}{l}{\textit{Section~\ref{sec:hm}, in \texttt{analysis/cut\_validation/}:}} \\
+    halo-model templates & \texttt{hm\_templates.py} $\rightarrow$ \texttt{hm\_templates\_*.npz} \\
+    the fits (NLAa, TATTa, NLAf, TATTf) & \texttt{fisher\_minimize.py}, \texttt{run\_hm\_scan.sh} \\
+    FLAMINGO fits, NLA form & \texttt{hmc\_alpha\_fit.py} in \texttt{notes/flamingo\_vs\_tng300/fits/} \\
+    the halo-model review & \texttt{analysis/roman\_dchi2/report/hmc\_review.pdf} \\
+    figure data & \texttt{make\_hm\_figures.py} \\
     \bottomrule
   \end{tabular}
 \end{center}
@@ -1481,6 +1740,13 @@ and to \texttt{v9/} next to it for Section~\ref{sec:v9}.
   \item Freer redshift evolution is untested in 3x2pt: the test requires an
     amplitude per bin that multiplies the power law (nested in NLA), while
     cosmolike's per-bin mode is constant across each bin.
+  \item The halo-model correction of Section~\ref{sec:hm} is held at the
+    fiducial cosmology and leaves out the 2-halo window of the FLAMINGO fits
+    ($e^{-(k/6)^2}$, above 0.97 below $k = 1\hMpc$); evaluating $I_1$ in
+    cosmolike at each cosmology removes both approximations.
+  \item FLAMINGO's $\alpha$ in the NLA form exceeds 1 at $z \ge 1.5$, and
+    both forms take the snapshots outside $z = 0.2$ to 2 from their
+    neighbors.
   \item The comparison of NLA and TATT rests on one simulation whose
     alignment is NLA-like at these scales; a sample with real tidal
     torquing (blue galaxies) can rank them differently.

@@ -34,6 +34,15 @@ amplitude turned out to be unphysical. The written record is the addendum of
   kappa_b = 0.7 to 1.1. Only kappa_b > 1 would gain. FLAMINGO's amplitude
   follows the host-halo bias (A1/b_g = 2.4 to 2.7 at every snapshot).
 
+* The NLA form (19 November 2026, for the Roman cut validation in
+  `notes/ia_error_budget`, Section 11): the alpha refit with A2 = b_TA = 0
+  (variant `nla_alpha_nosat`) reaches a summed chi2/nu of 1.77 at
+  k_max = 0.52, against 10.3 for NLA with the white term (`nla_nosat`) and
+  0.97 for the TATT form. Its alpha is higher than in the TATT form, 0.61 at
+  z = 0.2 rising to 0.90 at z = 1 and 1.2 to 1.6 at z = 1.5 to 2 (above the
+  physical range 0 to 1, more nonlinear power than P_NL), because alpha is
+  anticorrelated with b_TA. Log: `fits/hmc_alpha_fit_nla_log.txt`.
+
 ## Layout
 
 | path | what it holds |
@@ -64,6 +73,7 @@ repository, because the TNG300 spectra are a collaborator's measurements.
 PY=~/cocoa/Cocoa/.local/bin/python
 cd notes/flamingo_vs_tng300/fits
 $PY hmc_alpha_fit.py                 # all variants, about 20 minutes
+$PY hmc_alpha_fit.py nla_alpha_nosat nla_nosat > hmc_alpha_fit_nla_log.txt   # the NLA form only, under a minute
 $PY hmc_alpha_checks.py 1.0 > checks_z1.txt
 (cd ../../../analysis/roman_dchi2/v6 && $PY halo_redblue.py > halo_redblue_log.txt)   # about 10 minutes
 (cd ../../../analysis/roman_dchi2/v6 && $PY halo_redblue.py --light)   # central biases

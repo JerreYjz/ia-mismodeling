@@ -27,6 +27,13 @@ Variants (parameters A1, A2, b_TA, a_1h, a_c, W, alpha):
                 Added after the checks (hmc_alpha_checks.py) showed that a_1h is
                 unconstrained for k_max below about 1 (errors of hundreds) and
                 that its noise value then drives the model above the fit range.
+    nla_alpha_nosat   alpha_cap_nosat with A2 = b_TA = 0: the NLA form of the
+                model. Added on 19 November 2026 for the Roman cut validation
+                (analysis/cut_validation), which uses alpha in an NLA model:
+                alpha is anticorrelated with b_TA, so the TATT-form values do
+                not carry over.
+    nla_nosat   the same with alpha = 1: NLA (with the white term), the
+                reference for the gain from alpha.
 alpha is allowed outside its physical range [0, 1] on purpose, so that a
 fit that wants an unphysical value shows it instead of hiding at a bound.
 
@@ -69,7 +76,12 @@ NAMES = ('A1', 'A2', 'bTA', 'a_1h', 'a_c', 'W', 'alpha')
 # variants: (upper bound of a_c, alpha free?, a_1h free?)
 VARIANTS = {'base': (AC_FREE, False, True), 'cap': (AC_CAP, False, True),
             'alpha_cap': (AC_CAP, True, True), 'alpha_free': (AC_FREE, True, True),
-            'alpha_cap_nosat': (AC_CAP, True, False)}
+            'alpha_cap_nosat': (AC_CAP, True, False),
+            'nla_alpha_nosat': (AC_CAP, True, False), 'nla_nosat': (AC_CAP, False, False)}
+# variants with the TATT terms (A2, b_TA) held at 0, and with alpha held at 1
+# instead of 0 when it is not free
+NLA_FORM = ('nla_alpha_nosat', 'nla_nosat')
+ALPHA_ONE = ('nla_nosat',)
 # a parameter closer to a bound than this fraction of the bound width is
 # reported as sitting at the bound
 AT_BOUND = 1e-3
@@ -127,14 +139,17 @@ class Snapshot:
         errors (NaN for fixed parameters and for those at a bound) and the
         correlation matrix of the free parameters.'''
         ac_hi, alpha_free, sat_free = VARIANTS[variant]
-        lo = np.array([0.0, -5.0, 0.0, 0.0, 0.0, -self.ns, ALPHA_LO if alpha_free else 0.0])
-        hi = np.array([20.0, 5.0, 2.0, 3.0 if sat_free else 0.0, ac_hi, 5*self.ns,
-                       ALPHA_HI if alpha_free else 0.0])
-        free = np.array([True, True, True, sat_free, True, True, alpha_free])
+        tatt = variant not in NLA_FORM
+        a_fix = 1.0 if variant in ALPHA_ONE else 0.0
+        lo = np.array([0.0, -5.0 if tatt else 0.0, 0.0, 0.0, 0.0, -self.ns, ALPHA_LO if alpha_free else a_fix])
+        hi = np.array([20.0, 5.0 if tatt else 0.0, 2.0 if tatt else 0.0, 3.0 if sat_free else 0.0, ac_hi,
+                       5*self.ns, ALPHA_HI if alpha_free else a_fix])
+        free = np.array([True, tatt, tatt, sat_free, True, True, alpha_free])
         m = (self.k >= KMIN) & (self.k <= kmax*(1 + 1e-9))
 
         def full(xf):
             x = np.zeros(7)
+            x[6] = a_fix
             x[free] = xf
             return x
 
@@ -144,7 +159,7 @@ class Snapshot:
         for a1, a2, bta, a1h, ac in ([4.0, -1.0, 0.1, 1e-3, 0.0], [4.0, -1.0, 0.3, 0.02, 10.0],
                                      [3.0, -1.5, 0.3, 1e-3, 40.0], [4.0, 0.0, 0.5, 0.05, 0.5]):
             for w in (0.0, 0.5*self.ns):
-                for alpha in ((0.0, 0.5, 1.0) if alpha_free else (0.0,)):
+                for alpha in ((0.0, 0.5, 1.0) if alpha_free else (a_fix,)):
                     starts.append([a1, a2, bta, a1h, ac, w, alpha])
         if warm is not None:
             starts.append(list(warm))

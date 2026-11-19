@@ -1,0 +1,4 @@
+Warning: to_do list is no longer needed for FAST-PT initialization. Terms will now be calculated as needed. It may still be used to pre-compute matrices for faster initial runs.
+nla_alpha_nosat summed chi2/nu over the core snapshots at k_max 0.39, 0.52, 0.70, 0.94, 3.04:    1.26    1.77    2.58    3.94   48.28   cuts [0.39 0.7  0.52 0.52 0.29 0.39 0.39 0.39 0.22]  [16 s]
+nla_nosat  summed chi2/nu over the core snapshots at k_max 0.39, 0.52, 0.70, 0.94, 3.04:    4.48   10.31   18.66   26.11   55.37   cuts [0.16 0.16 0.22 0.22 0.22 0.39 0.39 0.39 0.16]  [19 s]
+wrote /Users/yijiezhu/cocoa/ia_mismodeling/notes/flamingo_vs_tng300/fits/hmc_alpha_fits.json

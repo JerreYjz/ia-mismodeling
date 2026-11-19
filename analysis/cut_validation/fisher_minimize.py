@@ -18,7 +18,26 @@ with N(0, 0.002), 8 m with N(0, 0.005), the IA parameters):
              projection effect. mu = shift/sigma_F, FoB = sqrt(dp C^-1 dp).
     linear   the Fisher prediction of the same shift, F^-1 J^T r(theta_ref).
 Models: NLA (A1, eta1 power law), NLAz (NLA with one A1 per source bin,
-IA_redshift_evolution 2), TATT (A1, eta1, A2, eta2, bTA).
+IA_redshift_evolution 2), TATT (A1, eta1, A2, eta2, bTA), and the halo-model
+variants NLAa and TATTa: NLA or TATT with the A1 terms on
+I_1 P_lin + alpha (P_NL - I_1 P_lin) (GI) and P_lin + alpha (P_NL - P_lin)
+(II), alpha free in [-1, 2] (physical range 0 to 1). Their data vector is
+cosmolike's native NLA or TATT (emulator pipeline, every parameter) plus
+(1 - alpha) sum_s [A_s U_GI[s] + A_s^2 U_II[s]], A_s = A1 ((1+z_s)/1.62)^eta1,
+the templates of hm_templates.py, held at the D3A cosmology; their gamma_t
+rows scale with the lens bias b_i/B1_FID_i.
+NLAf and TATTf hold alpha at FLAMINGO's own value per snapshot instead,
+from the halo-model refit of notes/flamingo_vs_tng300 (fits/
+hmc_alpha_fits.json, a_c <= 1, no satellites, k_max = 0.70) in the same
+form as the Roman model: TATTf the TATT form (variant alpha_cap_nosat,
+ALPHA_FLAMINGO_TATT), NLAf the NLA form (A2 = b_TA = 0, variant
+nla_alpha_nosat, ALPHA_FLAMINGO_NLA); alpha is anticorrelated with b_TA,
+so the two differ. NLAfT is NLA with the TATT-form values, a test of the
+sensitivity to alpha. The snapshots outside the core z = 0.2 to 2,
+unreliable there, take the nearest core value. The correction is
+sum_s (1 - alpha_s) [A_s U_GI[s] + A_s^2 U_II[s]].
+    --check-hm  compares the same template sum for native NLA (N_GI, N_II)
+                with the emulator pipeline's NLA, cs and 3x2, and exits.
 Probes:
     cs     xi_+- at K0, the example1 covariance (cov_example1_xi.npy)
     3x2    xi_+- at K0, gamma_t of sources behind lenses at K0 = 0.3, w at
@@ -30,8 +49,9 @@ Probes:
     +cmb   Gaussian priors at D3A of the width of Planck 2018 on n_s (0.0042),
            Omega_b h^2 (0.00015) and H0 (0.54); none on A_s or Omega_m.
 Run from ~/cocoa/Cocoa after start_cocoa.sh:
-    python <this> [--probe cs|3x2] [--cmb] <model> <K0> <truth> [...]
-Each run appends to fisher_minimize.json, key <probe>[+cmb]|<model>|<K0>|<truth>
+    python <this> [--probe cs|3x2] [--cmb] [--gt K] <model> <K0> <truth> [...]
+--gt sets the gamma_t cut (default 0.3; K0 sets the xi_+- cut).
+Each run appends to fisher_minimize.json, key <probe>[+cmb]|<model>|<K0>|<truth>[|gt<K>]
 (the first cosmic-shear runs, without prior, are under <model>|<K0>|<truth>).
 """
 import fcntl
@@ -75,14 +95,31 @@ IA = {
                                        "roman_A2_1": (-5, 5, 0.05), "roman_A2_2": (-5, 5, 0.1),
                                        "roman_BTA_1": (0, 2, 0.03)}),
 }
-IA_START = {"NLA": [3.5, 0.7], "NLAz": [3.0]*8, "TATT": [3.4, 0.7, -1.0, -2.0, 0.5]}
+ALPHA = {"hm_alpha": (-1, 2, 0.03)}
+IA["NLAa"] = dict(model=0, evo=3, free={**IA["NLA"]["free"], **ALPHA}, hm=True)
+IA["TATTa"] = dict(model=1, evo=3, free={**IA["TATT"]["free"], **ALPHA}, hm=True)
+IA["NLAf"] = dict(model=0, evo=3, free=dict(IA["NLA"]["free"]), hm="fixed", alpha="NLA")
+IA["NLAfT"] = dict(model=0, evo=3, free=dict(IA["NLA"]["free"]), hm="fixed", alpha="TATT")
+IA["TATTf"] = dict(model=1, evo=3, free=dict(IA["TATT"]["free"]), hm="fixed", alpha="TATT")
+# alpha per snapshot z = 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.75, 1, 1.5, 2, 3, 4 from
+# notes/flamingo_vs_tng300/fits/hmc_alpha_fits.json, variant alpha_cap_nosat at
+# k_max = 0.701 (errors 0.04 to 0.12 in the core); z = 0, 0.1 take z = 0.2, z = 3, 4 take z = 2
+ALPHA_FLAMINGO_TATT = [0.44, 0.44, 0.44, 0.46, 0.44, 0.45, 0.37, 0.44, 0.58, 0.79, 0.78, 0.78, 0.78]
+# the NLA form (variant nla_alpha_nosat, errors 0.01 to 0.03 in the core); alpha
+# exceeds its physical range 0 to 1 at z >= 1.5
+ALPHA_FLAMINGO_NLA = [0.61, 0.61, 0.61, 0.61, 0.62, 0.66, 0.71, 0.77, 0.90, 1.20, 1.62, 1.62, 1.62]
+ALPHA_FLAMINGO = {"TATT": ALPHA_FLAMINGO_TATT, "NLA": ALPHA_FLAMINGO_NLA}
+X0 = 1.62
+IA_START = {"NLA": [3.5, 0.7], "NLAz": [3.0]*8, "TATT": [3.4, 0.7, -1.0, -2.0, 0.5],
+            "NLAf": [3.5, 0.7], "NLAfT": [3.5, 0.7], "TATTf": [3.4, 0.7, -1.0, -2.0, 0.5],
+            "NLAa": [3.5, 0.7, 0.5], "TATTa": [3.4, 0.7, -1.0, -2.0, 0.5, 0.5]}
 ALL_IA = ["roman_A1_%d" % i for i in range(1, 9)] + ["roman_A2_1", "roman_A2_2", "roman_BTA_1"]
 
 
 class Setup:
     """The cobaya model of one IA model, the data, mask and whitening."""
 
-    def __init__(self, mdl, K0, truth, probe="cs", cmb=False):
+    def __init__(self, mdl, K0, truth, probe="cs", cmb=False, gt=0.3):
         info = yaml_load_file(os.path.join(HERE, "NLA_on_flam_k0p2.yaml"))
         for k in ("sampler", "output"):
             info.pop(k, None)
@@ -100,6 +137,8 @@ class Setup:
         for p in ALL_IA:
             pr[p] = {"value": 0.0}
         for p, (lo, hi, _) in IA[mdl]["free"].items():
+            if p in ALPHA:
+                continue
             pr[p] = {"prior": {"min": lo, "max": hi}, "ref": 1.0, "proposal": 0.1}
         if probe == "3x2":
             for p in BB:
@@ -112,7 +151,11 @@ class Setup:
 
         def keep(**params):                      # the logp call keeps its vector
             self.last = np.array(orig(**params))
+            self.called = True
             return self.last
+        # cobaya caches its last few states and then skips the likelihood (and
+        # keep); the vector of a repeated point comes from this cache instead
+        self.vcache = {}
         self.lik.get_datavector = keep
         self.names = COSMO + DZ + MM + (BB if probe == "3x2" else []) + list(IA[mdl]["free"])
         self.lo = np.array([BOUNDS[p][0] if p in BOUNDS else IA[mdl]["free"][p][0] if p in IA[mdl]["free"]
@@ -129,7 +172,7 @@ class Setup:
             self.n = NXI
         else:
             c = np.load(os.path.join(RD, "v9", "ia_base_3x2_common.npz"))
-            self.mask = np.concatenate([c[f"xi|{K0:g}"], c["gt|0.3"] & c["behind"], c["w|0.2"]]).astype(bool)
+            self.mask = np.concatenate([c[f"xi|{K0:g}"], c[f"gt|{gt:g}"] & c["behind"], c["w|0.2"]]).astype(bool)
             assert self.mask.size == NDV
             cov = c["cov"]
             self.n = NDV
@@ -137,6 +180,18 @@ class Setup:
         self.ip = np.array([self.names.index(p) for p in PRIOR])
         self.sp = np.array([PRIOR[p] for p in PRIOR])
         self.cmb = CMB if cmb else []
+        self.hm = None
+        self.zs_hm = np.load(os.path.join(HERE, "hm_templates_cs_prod.npz"))["zs"]
+        if IA[mdl].get("hm"):
+            t = np.load(os.path.join(HERE, f"hm_templates_{probe}_{truth}.npz"))
+            self.hm = dict(zs=t["zs"], U_GI=t["U_GI"], U_II=t["U_II"])
+            if IA[mdl]["hm"] == "fixed":       # (1 - alpha_s) folded into the templates
+                w = 1 - np.array(ALPHA_FLAMINGO[IA[mdl]["alpha"]])[:, None]
+                self.hm = dict(zs=t["zs"], U_GI=w*t["U_GI"], U_II=w*t["U_II"], fixed=True)
+        if probe == "3x2":       # lens bin of every gamma_t row (15 angles per pair)
+            pairs = np.load(os.path.join(RD, "v9", "ia_base_3x2_common.npz"))["pairs"]
+            self.gt_lens = np.repeat(pairs[:, 0], 15)
+            assert self.gt_lens.size == 915
         gg, _ = self.vector(self.theta(FID, {}, IA_START[mdl], zero_ia=True))
         base = "ia_base" if probe == "cs" else "ia_base_3x2"
         xi_ia = np.load(os.path.join(RD, "v9", f"{base}_{truth}.npz"))["xi_ia"]
@@ -151,12 +206,33 @@ class Setup:
 
     def vector(self, th):
         p = dict(zip(self.names, th))
+        alpha = p.pop("hm_alpha", None)
+        self.called = False
         r = self.model.logposterior(p, as_dict=True)
         self.neval += 1
+        key = tuple(np.round(list(p.values()), 12))
+        if self.called:
+            self.vcache[key] = self.last
+            if len(self.vcache) > 200:
+                self.vcache.pop(next(iter(self.vcache)))
+        else:
+            self.last = self.vcache[key]
         if "S8" not in r["derived"]:
             raise RuntimeError(f"no S8 (logpost {r.get('logpost')}, logpriors {r.get('logpriors')}) at "
                                + ", ".join(f"{k} {v:.4g}" for k, v in p.items()))
-        return self.last[:self.n].copy(), r["derived"]["S8"]
+        v = self.last[:self.n].copy()
+        if self.hm is not None:
+            v += (1 if self.hm.get("fixed") else 1 - alpha)*self.template(p, self.hm["U_GI"], self.hm["U_II"])
+        return v, r["derived"]["S8"]
+
+    def template(self, p, TG, TI):
+        """sum_s A_s TG[s] + A_s^2 TI[s], gamma_t rows scaled by b_i/B1_FID_i."""
+        a = p["roman_A1_1"]*((1 + self.zs_hm)/X0)**p["roman_A1_2"]
+        t = a @ TG + (a**2) @ TI
+        if self.probe == "3x2":
+            b = np.array([p[q] for q in BB])/np.array(B1_FID)
+            t[NXI:NXI + 915] *= b[self.gt_lens]
+        return t
 
     def resid(self, th):
         v, _ = self.vector(th)
@@ -206,9 +282,9 @@ def solve(S, th0, free):
     return th, float(r.fun @ r.fun), r
 
 
-def run(mdl, K0, truth, probe="cs", cmb=False):
+def run(mdl, K0, truth, probe="cs", cmb=False, gt=0.3):
     t0 = time.time()
-    S = Setup(mdl, K0, truth, probe, cmb)
+    S = Setup(mdl, K0, truth, probe, cmb, gt)
     n = len(S.names)
     iia = np.arange(n - len(IA[mdl]["free"]), n)
     ic = [S.names.index("omegam")]
@@ -261,7 +337,7 @@ def run(mdl, K0, truth, probe="cs", cmb=False):
     names = S.names
     at_bound = [p for p, v, lo, hi in zip(names, th, S.lo, S.hi)
                 if np.isfinite(lo) and ((v - lo) < 1e-3*(hi - lo) or (hi - v) < 1e-3*(hi - lo))]
-    row = dict(model=mdl, K0=K0, truth=truth, probe=probe, cmb=cmb, npts=int(S.mask.sum()), names=names,
+    row = dict(model=mdl, K0=K0, gt=gt, truth=truth, probe=probe, cmb=cmb, npts=int(S.mask.sum()), names=names,
                ref=dict(zip(names, ref.tolist())), chi2_ref=chi2_ref,
                best=dict(zip(names, th.tolist())), chi2_min=c2, starts=runs,
                S8_truth=s8_ref, S8_min=s8, shift=dp.tolist(), sigma=sig.tolist(),
@@ -274,7 +350,7 @@ def run(mdl, K0, truth, probe="cs", cmb=False):
                sigma_all=dict(zip(names, np.sqrt(np.diag(Finv)).tolist())),
                sigma_flatprior=np.sqrt(np.diag(G @ Fflat_inv @ G.T)).tolist(),
                at_bound=at_bound, neval=S.neval, seconds=time.time() - t0)
-    key = f"{probe}{'+cmb' if cmb else ''}|{mdl}|{K0:g}|{truth}"
+    key = f"{probe}{'+cmb' if cmb else ''}|{mdl}|{K0:g}|{truth}" + (f"|gt{gt:g}" if gt != 0.3 else "")
     with open(OUT + ".lock", "w") as lk:
         fcntl.flock(lk, fcntl.LOCK_EX)
         out = json.load(open(OUT)) if os.path.exists(OUT) else dict(about=__doc__, runs={})
@@ -293,8 +369,27 @@ def run(mdl, K0, truth, probe="cs", cmb=False):
           flush=True)
 
 
+def check_hm():
+    """Native NLA of the emulator pipeline against the template sum N_GI, N_II."""
+    for probe in ("cs", "3x2"):
+        S = Setup("NLA", 0.4, "prod", probe)
+        t = np.load(os.path.join(HERE, f"hm_templates_{probe}_prod.npz"))
+        for A1, eta in ((3.5, 0.7), (1.0, 0.0), (4.0, 2.0)):
+            th = S.theta(FID, {}, [A1, eta])
+            v, _ = S.vector(th)
+            v0, _ = S.vector(S.theta(FID, {}, [A1, eta], zero_ia=True))
+            p = dict(zip(S.names, th))
+            tpl = S.template(p, t["N_GI"], t["N_II"])
+            w = S.Lw @ ((v - v0)[S.mask])
+            d = S.Lw @ ((v - v0 - tpl)[S.mask])
+            print(f"{probe} A1 {A1} eta {eta}: chi2 of native NLA IA {w @ w:.1f}; chi2(native - template) "
+                  f"{d @ d:.4f}; max |diff|/max|IA| {np.abs(v - v0 - tpl).max()/np.abs(v - v0).max():.3f}", flush=True)
+
+
 def main():
     a = sys.argv[1:]
+    if "--check-hm" in a:
+        return check_hm()
     probe = "cs"
     if "--probe" in a:
         probe = a.pop(a.index("--probe") + 1)
@@ -302,8 +397,12 @@ def main():
     cmb = "--cmb" in a
     if cmb:
         a.remove("--cmb")
+    gt = 0.3
+    if "--gt" in a:
+        gt = float(a.pop(a.index("--gt") + 1))
+        a.remove("--gt")
     for i in range(0, len(a), 3):
-        run(a[i], float(a[i + 1]), a[i + 2], probe, cmb)
+        run(a[i], float(a[i + 1]), a[i + 2], probe, cmb, gt)
 
 
 if __name__ == "__main__":
