@@ -1,0 +1,11 @@
+% L1_m9 snapshot 77 (z = 0), unreduced tensor of all bound stars, 9.8 < log M* < 10.7 (wide, for matching)
+SoapFile      cosma:/FLAMINGO/L1_m9/L1_m9/SOAP-HBT/halo_properties_0077.hdf5
+SnapFile      cosma:/FLAMINGO/L1_m9/L1_m9/snapshots/flamingo_0077/flamingo_0077.hdf5
+OutDirBase    L1_m9/Galaxies/
+SnapNum       78
+M_min         0.4297
+M_max         3.414
+MassField     BoundSubhalo/StellarMass
+Select        all
+MinStars      10
+NThreads      4

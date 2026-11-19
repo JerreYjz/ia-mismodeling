@@ -1,0 +1,9 @@
+% Resolution test: SOAP 1 R_half stellar tensor, M* > 4.05e11 Msun, z = 0
+SoapFile      cosma:/FLAMINGO/L1_m9/L1_m9/SOAP-HBT/halo_properties_0077.hdf5
+OutDirBase    L1_m9/Galaxies/
+SnapNum       78
+M_min         27.58
+M_max         1e4
+ShapeField    BoundSubhalo/StellarInertiaTensorNoniterative
+MassField     BoundSubhalo/StellarMass
+Select        all

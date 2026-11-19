@@ -1,0 +1,4 @@
+GalCatDir     L1_m9_match/Galaxies/
+OutDirBase    L1_m9_match/Galaxy_DS_Field/
+SnapNum       78
+Ngrid         512

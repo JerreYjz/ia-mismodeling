@@ -1,0 +1,40 @@
+Config: no config file 'params.cfg' found; using defaults + CLI overrides.
+----- effective configuration -----
+  base = L1_m8_match/
+  boxsize = 681.0
+  e1_stem = e1z_fixng_ms_sub_red_sn
+  e2_stem = e2z_fixng_ms_sub_red_sn
+  gal_dir = Galaxy_DS_Field/
+  hdens_stem = galdens_fixng_ms_sub_red_sn
+  hinfo_dir = Galaxy_DS_Field/
+  kmax = 20
+  kmin = 0.003
+  munbin = 20
+  nbin = 30
+  nfold = 1
+  ng = 512
+  out_dir = PS/
+  shot_noise = 1
+  sn = 78
+-----------------------------------
+derived: boxlen=681 (Mpc/h), nfold=1
+boxsize check OK: 681 Mpc/h matches the catalogue.
+analytic shot-noise from L1_m8_match/Galaxy_DS_Field/hinfo_fixng_ms_sub_red_sn78_nfold1.dat
+  N_gal=1.21648e+06  e1_rms=0.252781  e2_rms=0.252901  V=3.15821e+08 (Mpc/h)^3  -> P_shot=16.5971
+  (Phh is written without subtraction; its Poisson level V/N_gal = 259.619)
+mapping fields...
+fields mapped.
+calculating power spectra...
+looping over 512 x-planes ...
+  plane 0/512
+  plane 64/512
+  plane 128/512
+  plane 192/512
+  plane 256/512
+  plane 320/512
+  plane 384/512
+  plane 448/512
+shot-noise floor (ANALYTIC Poisson): P_shot_EE=16.5971  P_shot_BB=16.5971
+Phh check: sum over bins = 123355
+writing output to L1_m8_match/PS/
+Yatta!

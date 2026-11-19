@@ -1,0 +1,4 @@
+GalCatDir     /Users/yijiezhu/ia_power_flamingo/run_L1_m8_particles/results/Galaxies/
+OutDirBase    L1_m8/Galaxy_DS_Field/
+SnapNum       78
+Ngrid         512

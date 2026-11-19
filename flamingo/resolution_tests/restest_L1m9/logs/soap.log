@@ -1,0 +1,15 @@
+                           SoapFile	cosma:/FLAMINGO/L1_m9/L1_m9/SOAP-HBT/halo_properties_0077.hdf5
+                         OutDirBase	/private/tmp/claude-501/-Users-yijiezhu-cocoa--claude-worktrees-flamingo-ia-particle-count-148631/c7f0623d-d3eb-4f8f-b79f-e34a9d0beee8/scratchpad/restest_L1m9/L1_m9/Galaxies/
+                            SnapNum	        78
+                              M_min	     27.58
+                              M_max	       1e4
+                         ShapeField	BoundSubhalo/StellarInertiaTensorNoniterative
+                          MassField	BoundSubhalo/StellarMass
+                             Select	       all
+BoxSize = 1000 cMpc = 681 cMpc/h, h = 0.681, z = 0, 15329653 subhalos (reading 15329653)
+ShapeField = BoundSubhalo/StellarInertiaTensorNoniterative (3D)
+MassField  = BoundSubhalo/StellarMass, 27.58 < M < 10000 [1e10 Msun/h]
+particle cut: BoundSubhalo/NumberOfStarParticles >= 100
+rows 0-15329653: 85473 selected (42 s)
+85473 galaxies selected (71892 centrals)
+wrote /private/tmp/claude-501/-Users-yijiezhu-cocoa--claude-worktrees-flamingo-ia-particle-count-148631/c7f0623d-d3eb-4f8f-b79f-e34a9d0beee8/scratchpad/restest_L1m9/L1_m9/Galaxies/galaxies_78.hdf5. Yatta!

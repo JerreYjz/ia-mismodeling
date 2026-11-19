@@ -1,0 +1,83 @@
+                           SoapFile	cosma:/FLAMINGO/L1_m9/L1_m9/SOAP-HBT/halo_properties_0077.hdf5
+                           SnapFile	cosma:/FLAMINGO/L1_m9/L1_m9/snapshots/flamingo_0077/flamingo_0077.hdf5
+                         OutDirBase	/private/tmp/claude-501/-Users-yijiezhu-cocoa--claude-worktrees-flamingo-ia-particle-count-148631/c7f0623d-d3eb-4f8f-b79f-e34a9d0beee8/scratchpad/lowmass_L1m9/L1_m9/Galaxies/
+                            SnapNum	        78
+                              M_min	    0.4297
+                              M_max	     3.414
+                          MassField	BoundSubhalo/StellarMass
+                             Select	       all
+                           MinStars	        10
+                           NThreads	         4
+BoxSize = 1000 cMpc, h = 0.681, z = 0; 541631305 star particles (reading 541631305)
+selection: 0.4297 < BoundSubhalo/StellarMass < 3.414 [1e10 Msun/h], NumberOfStarParticles >= 10, Select=all
+SOAP rows 0-15329653: 5867083 selected
+5867083 galaxies selected (32 s)
+block 1/65 (rows 0-8388608): 2245980 member stars; 0.5 min elapsed, ETA 32 min
+block 2/65 (rows 8388608-16777216): 2297584 member stars; 0.6 min elapsed, ETA 20 min
+block 3/65 (rows 16777216-25165824): 2297400 member stars; 0.8 min elapsed, ETA 16 min
+block 4/65 (rows 25165824-33554432): 2324186 member stars; 0.9 min elapsed, ETA 14 min
+block 5/65 (rows 33554432-41943040): 2348757 member stars; 1.0 min elapsed, ETA 13 min
+block 6/65 (rows 41943040-50331648): 2289225 member stars; 1.2 min elapsed, ETA 12 min
+block 7/65 (rows 50331648-58720256): 2273076 member stars; 1.3 min elapsed, ETA 11 min
+block 8/65 (rows 58720256-67108864): 2336027 member stars; 1.4 min elapsed, ETA 10 min
+block 9/65 (rows 67108864-75497472): 2292097 member stars; 1.5 min elapsed, ETA 10 min
+block 10/65 (rows 75497472-83886080): 2324865 member stars; 1.6 min elapsed, ETA 9 min
+block 11/65 (rows 83886080-92274688): 2332232 member stars; 1.7 min elapsed, ETA 9 min
+block 12/65 (rows 92274688-100663296): 2411419 member stars; 1.8 min elapsed, ETA 8 min
+block 13/65 (rows 100663296-109051904): 2304880 member stars; 2.0 min elapsed, ETA 8 min
+block 14/65 (rows 109051904-117440512): 2311299 member stars; 2.1 min elapsed, ETA 8 min
+block 15/65 (rows 117440512-125829120): 2371960 member stars; 2.2 min elapsed, ETA 7 min
+block 16/65 (rows 125829120-134217728): 2339679 member stars; 2.3 min elapsed, ETA 7 min
+block 17/65 (rows 134217728-142606336): 2269408 member stars; 2.4 min elapsed, ETA 7 min
+block 18/65 (rows 142606336-150994944): 2333856 member stars; 2.6 min elapsed, ETA 7 min
+block 19/65 (rows 150994944-159383552): 2233211 member stars; 2.7 min elapsed, ETA 7 min
+block 20/65 (rows 159383552-167772160): 2392176 member stars; 2.9 min elapsed, ETA 6 min
+block 21/65 (rows 167772160-176160768): 2277193 member stars; 3.0 min elapsed, ETA 6 min
+block 22/65 (rows 176160768-184549376): 2318283 member stars; 3.1 min elapsed, ETA 6 min
+block 23/65 (rows 184549376-192937984): 2271488 member stars; 3.3 min elapsed, ETA 6 min
+block 24/65 (rows 192937984-201326592): 2301539 member stars; 3.4 min elapsed, ETA 6 min
+block 25/65 (rows 201326592-209715200): 2261768 member stars; 3.5 min elapsed, ETA 6 min
+block 26/65 (rows 209715200-218103808): 2252682 member stars; 3.6 min elapsed, ETA 5 min
+block 27/65 (rows 218103808-226492416): 2223771 member stars; 3.7 min elapsed, ETA 5 min
+block 28/65 (rows 226492416-234881024): 2259640 member stars; 3.9 min elapsed, ETA 5 min
+block 29/65 (rows 234881024-243269632): 2386648 member stars; 4.0 min elapsed, ETA 5 min
+block 30/65 (rows 243269632-251658240): 2328906 member stars; 4.1 min elapsed, ETA 5 min
+block 31/65 (rows 251658240-260046848): 2250313 member stars; 4.2 min elapsed, ETA 5 min
+block 32/65 (rows 260046848-268435456): 2415720 member stars; 4.3 min elapsed, ETA 4 min
+block 33/65 (rows 268435456-276824064): 2325545 member stars; 4.4 min elapsed, ETA 4 min
+block 34/65 (rows 276824064-285212672): 2314361 member stars; 4.5 min elapsed, ETA 4 min
+block 35/65 (rows 285212672-293601280): 2341533 member stars; 4.6 min elapsed, ETA 4 min
+block 36/65 (rows 293601280-301989888): 2291298 member stars; 4.7 min elapsed, ETA 4 min
+block 37/65 (rows 301989888-310378496): 2269072 member stars; 4.8 min elapsed, ETA 4 min
+block 38/65 (rows 310378496-318767104): 2324964 member stars; 4.9 min elapsed, ETA 4 min
+block 39/65 (rows 318767104-327155712): 2323518 member stars; 5.0 min elapsed, ETA 3 min
+block 40/65 (rows 327155712-335544320): 2344412 member stars; 5.2 min elapsed, ETA 3 min
+block 41/65 (rows 335544320-343932928): 2306927 member stars; 5.3 min elapsed, ETA 3 min
+block 42/65 (rows 343932928-352321536): 2368518 member stars; 5.4 min elapsed, ETA 3 min
+block 43/65 (rows 352321536-360710144): 2281420 member stars; 5.5 min elapsed, ETA 3 min
+block 44/65 (rows 360710144-369098752): 2320439 member stars; 5.6 min elapsed, ETA 3 min
+block 45/65 (rows 369098752-377487360): 2298185 member stars; 5.7 min elapsed, ETA 3 min
+block 46/65 (rows 377487360-385875968): 2320316 member stars; 5.8 min elapsed, ETA 2 min
+block 47/65 (rows 385875968-394264576): 2283464 member stars; 5.9 min elapsed, ETA 2 min
+block 48/65 (rows 394264576-402653184): 2344258 member stars; 6.0 min elapsed, ETA 2 min
+block 49/65 (rows 402653184-411041792): 2375498 member stars; 6.1 min elapsed, ETA 2 min
+block 50/65 (rows 411041792-419430400): 2280647 member stars; 6.2 min elapsed, ETA 2 min
+block 51/65 (rows 419430400-427819008): 2244967 member stars; 6.3 min elapsed, ETA 2 min
+block 52/65 (rows 427819008-436207616): 2314916 member stars; 6.5 min elapsed, ETA 2 min
+block 53/65 (rows 436207616-444596224): 2248909 member stars; 6.6 min elapsed, ETA 1 min
+block 54/65 (rows 444596224-452984832): 2267009 member stars; 6.7 min elapsed, ETA 1 min
+block 55/65 (rows 452984832-461373440): 2237173 member stars; 6.8 min elapsed, ETA 1 min
+block 56/65 (rows 461373440-469762048): 2312180 member stars; 6.9 min elapsed, ETA 1 min
+block 57/65 (rows 469762048-478150656): 2324279 member stars; 7.0 min elapsed, ETA 1 min
+block 58/65 (rows 478150656-486539264): 2330172 member stars; 7.1 min elapsed, ETA 1 min
+block 59/65 (rows 486539264-494927872): 2278746 member stars; 7.2 min elapsed, ETA 1 min
+block 60/65 (rows 494927872-503316480): 2313315 member stars; 7.3 min elapsed, ETA 1 min
+block 61/65 (rows 503316480-511705088): 2333582 member stars; 7.4 min elapsed, ETA 0 min
+block 62/65 (rows 511705088-520093696): 2289242 member stars; 7.5 min elapsed, ETA 0 min
+block 63/65 (rows 520093696-528482304): 2299762 member stars; 7.6 min elapsed, ETA 0 min
+block 64/65 (rows 528482304-536870912): 2258902 member stars; 7.7 min elapsed, ETA 0 min
+block 65/65 (rows 536870912-541631305): 1283188 member stars; 7.8 min elapsed, ETA 0 min
+primary shapes: unreduced_all; e_rms(z) unreduced/all (TNG) = 0.3713, reduced/all = 0.2139, unreduced/2R_half = 0.3008
+star-count check: 60847 of 5867083 galaxies differ from SOAP NumberOfStarParticles (r = 0 particles are skipped, so a difference of 1 is expected for some)
+5867083 galaxies with shapes (3869319 centrals)
+wrote /private/tmp/claude-501/-Users-yijiezhu-cocoa--claude-worktrees-flamingo-ia-particle-count-148631/c7f0623d-d3eb-4f8f-b79f-e34a9d0beee8/scratchpad/lowmass_L1m9/L1_m9/Galaxies/galaxies_78.hdf5 (8.4 min). Yatta!

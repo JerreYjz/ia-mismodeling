@@ -1,0 +1,260 @@
+{
+ "L1_m8": {
+  "z": 0.0,
+  "nsub_total": 81415840,
+  "nrow": 4194304,
+  "mstar_particle": 88588172.1904762,
+  "mdm_particle": 707716866.3078678,
+  "logM_at_100": 9.947375741127349,
+  "thresholds": {
+   "StellarInertiaTensorNoniterative": {
+    "Mask Datasets": "BoundSubhalo/NumberOfStarParticles",
+    "Mask Threshold": "100",
+    "Masked": "1"
+   },
+   "DarkMatterInertiaTensorNoniterative": {
+    "Mask Datasets": "BoundSubhalo/NumberOfDarkMatterParticles",
+    "Mask Threshold": "100",
+    "Masked": "1"
+   },
+   "Proj30": {}
+  },
+  "bins": [
+   {
+    "logM": 9.625,
+    "n": 98578,
+    "Nstar_med": 48.0,
+    "frac_ge100": 0.0,
+    "NDM_cen_med": 314.0
+   },
+   {
+    "logM": 9.875,
+    "n": 74510,
+    "Nstar_med": 84.0,
+    "frac_ge100": 0.193786068984029,
+    "NDM_cen_med": 400.0
+   },
+   {
+    "logM": 10.125,
+    "n": 63969,
+    "Nstar_med": 144.0,
+    "frac_ge100": 0.9970454438868827,
+    "NDM_cen_med": 505.0
+   },
+   {
+    "logM": 10.375,
+    "n": 66998,
+    "Nstar_med": 249.0,
+    "frac_ge100": 1.0,
+    "NDM_cen_med": 664.0
+   },
+   {
+    "logM": 10.625,
+    "n": 79742,
+    "Nstar_med": 425.0,
+    "frac_ge100": 1.0,
+    "NDM_cen_med": 986.0
+   },
+   {
+    "logM": 10.875,
+    "n": 66919,
+    "Nstar_med": 708.0,
+    "frac_ge100": 1.0,
+    "NDM_cen_med": 1726.0
+   },
+   {
+    "logM": 11.125,
+    "n": 28224,
+    "Nstar_med": 1268.0,
+    "frac_ge100": 1.0,
+    "NDM_cen_med": 3939.0
+   },
+   {
+    "logM": 11.375,
+    "n": 10440,
+    "Nstar_med": 2352.0,
+    "frac_ge100": 1.0,
+    "NDM_cen_med": 9636.0
+   },
+   {
+    "logM": 11.625,
+    "n": 4384,
+    "Nstar_med": 4299.5,
+    "frac_ge100": 1.0,
+    "NDM_cen_med": 21724.0
+   }
+  ]
+ },
+ "L1_m9": {
+  "z": 0.0,
+  "nsub_total": 15329653,
+  "nrow": 4194304,
+  "mstar_particle": 758568563.6129032,
+  "mdm_particle": 5659722334.814815,
+  "logM_at_100": 10.879994840828758,
+  "thresholds": {
+   "StellarInertiaTensorNoniterative": {
+    "Mask Datasets": "BoundSubhalo/NumberOfStarParticles",
+    "Mask Threshold": "100",
+    "Masked": "1"
+   },
+   "DarkMatterInertiaTensorNoniterative": {
+    "Mask Datasets": "BoundSubhalo/NumberOfDarkMatterParticles",
+    "Mask Threshold": "100",
+    "Masked": "1"
+   },
+   "Proj30": {}
+  },
+  "bins": [
+   {
+    "logM": 9.625,
+    "n": 225845,
+    "Nstar_med": 7.0,
+    "frac_ge100": 0.0,
+    "NDM_cen_med": 32.0
+   },
+   {
+    "logM": 9.875,
+    "n": 515726,
+    "Nstar_med": 11.0,
+    "frac_ge100": 0.0,
+    "NDM_cen_med": 39.0
+   },
+   {
+    "logM": 10.125,
+    "n": 549083,
+    "Nstar_med": 18.0,
+    "frac_ge100": 0.0,
+    "NDM_cen_med": 57.0
+   },
+   {
+    "logM": 10.375,
+    "n": 418759,
+    "Nstar_med": 31.0,
+    "frac_ge100": 0.0,
+    "NDM_cen_med": 91.0
+   },
+   {
+    "logM": 10.625,
+    "n": 311254,
+    "Nstar_med": 54.0,
+    "frac_ge100": 0.0,
+    "NDM_cen_med": 150.0
+   },
+   {
+    "logM": 10.875,
+    "n": 244532,
+    "Nstar_med": 95.0,
+    "frac_ge100": 0.4116720919961396,
+    "NDM_cen_med": 268.0
+   },
+   {
+    "logM": 11.125,
+    "n": 142120,
+    "Nstar_med": 164.0,
+    "frac_ge100": 1.0,
+    "NDM_cen_med": 535.0
+   },
+   {
+    "logM": 11.375,
+    "n": 55602,
+    "Nstar_med": 296.0,
+    "frac_ge100": 1.0,
+    "NDM_cen_med": 1280.0
+   },
+   {
+    "logM": 11.625,
+    "n": 21113,
+    "Nstar_med": 550.0,
+    "frac_ge100": 1.0,
+    "NDM_cen_med": 3157.5
+   }
+  ]
+ },
+ "L2p8_m9": {
+  "z": 0.0,
+  "nsub_total": 393287590,
+  "nrow": 4194304,
+  "mstar_particle": 758928603.4285715,
+  "mdm_particle": 5659722334.814815,
+  "logM_at_100": 10.88020092135601,
+  "thresholds": {
+   "StellarInertiaTensorNoniterative": {
+    "Mask Datasets": "BoundSubhalo/NumberOfStarParticles",
+    "Mask Threshold": "100",
+    "Masked": "1"
+   },
+   "DarkMatterInertiaTensorNoniterative": {
+    "Mask Datasets": "BoundSubhalo/NumberOfDarkMatterParticles",
+    "Mask Threshold": "100",
+    "Masked": "1"
+   },
+   "Proj30": {}
+  },
+  "bins": [
+   {
+    "logM": 9.625,
+    "n": 192198,
+    "Nstar_med": 7.0,
+    "frac_ge100": 0.0,
+    "NDM_cen_med": 32.0
+   },
+   {
+    "logM": 9.875,
+    "n": 435204,
+    "Nstar_med": 11.0,
+    "frac_ge100": 0.0,
+    "NDM_cen_med": 39.0
+   },
+   {
+    "logM": 10.125,
+    "n": 463518,
+    "Nstar_med": 18.0,
+    "frac_ge100": 0.0,
+    "NDM_cen_med": 57.0
+   },
+   {
+    "logM": 10.375,
+    "n": 353965,
+    "Nstar_med": 31.0,
+    "frac_ge100": 0.0,
+    "NDM_cen_med": 91.0
+   },
+   {
+    "logM": 10.625,
+    "n": 261493,
+    "Nstar_med": 54.0,
+    "frac_ge100": 0.0,
+    "NDM_cen_med": 150.0
+   },
+   {
+    "logM": 10.875,
+    "n": 207474,
+    "Nstar_med": 95.0,
+    "frac_ge100": 0.413434936425769,
+    "NDM_cen_med": 269.0
+   },
+   {
+    "logM": 11.125,
+    "n": 120745,
+    "Nstar_med": 164.0,
+    "frac_ge100": 0.9999917180835646,
+    "NDM_cen_med": 534.0
+   },
+   {
+    "logM": 11.375,
+    "n": 47560,
+    "Nstar_med": 297.0,
+    "frac_ge100": 1.0,
+    "NDM_cen_med": 1295.0
+   },
+   {
+    "logM": 11.625,
+    "n": 17656,
+    "Nstar_med": 551.0,
+    "frac_ge100": 1.0,
+    "NDM_cen_med": 3152.0
+   }
+  ]
+ }
+}

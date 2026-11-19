@@ -1,0 +1,19 @@
+FFT by 1 threads ...
+FFT and normalization done.
+wrote 538968064 bytes to /private/tmp/claude-501/-Users-yijiezhu-cocoa--claude-worktrees-flamingo-ia-particle-count-148631/c7f0623d-d3eb-4f8f-b79f-e34a9d0beee8/scratchpad/lowmass_L1m9/L1_m8_match/Galaxy_DS_Field/galdens_fixng_ms_sub_red_sn78_nfold4.bin
+FFT by 1 threads ...
+FFT and normalization done.
+wrote 538968064 bytes to /private/tmp/claude-501/-Users-yijiezhu-cocoa--claude-worktrees-flamingo-ia-particle-count-148631/c7f0623d-d3eb-4f8f-b79f-e34a9d0beee8/scratchpad/lowmass_L1m9/L1_m8_match/Galaxy_DS_Field/e1z_fixng_ms_sub_red_sn78_nfold4.bin
+FFT by 1 threads ...
+FFT and normalization done.
+wrote 538968064 bytes to /private/tmp/claude-501/-Users-yijiezhu-cocoa--claude-worktrees-flamingo-ia-particle-count-148631/c7f0623d-d3eb-4f8f-b79f-e34a9d0beee8/scratchpad/lowmass_L1m9/L1_m8_match/Galaxy_DS_Field/e2z_fixng_ms_sub_red_sn78_nfold4.bin
+                          GalCatDir	/private/tmp/claude-501/-Users-yijiezhu-cocoa--claude-worktrees-flamingo-ia-particle-count-148631/c7f0623d-d3eb-4f8f-b79f-e34a9d0beee8/scratchpad/lowmass_L1m9/L1_m8_match/Galaxies/
+                         OutDirBase	/private/tmp/claude-501/-Users-yijiezhu-cocoa--claude-worktrees-flamingo-ia-particle-count-148631/c7f0623d-d3eb-4f8f-b79f-e34a9d0beee8/scratchpad/lowmass_L1m9/L1_m8_match/Galaxy_DS_Field/
+                            SnapNum	        78
+                              Ngrid	       512
+read galaxies from /private/tmp/claude-501/-Users-yijiezhu-cocoa--claude-worktrees-flamingo-ia-particle-count-148631/c7f0623d-d3eb-4f8f-b79f-e34a9d0beee8/scratchpad/lowmass_L1m9/L1_m8_match/Galaxies/galaxies_78.hdf5
+BoxSize = 681 Mpc/h, boxlen = 170.25 Mpc/h, cell = 0.33252 Mpc/h, z = 0
+catalogue: particles: unreduced tensor, all bound stars (TNG), BoundSubhalo/StellarMass, Select=all
+ngal=1216479  passing cut=1216479  NaN=0  used=1216479
+wrote /private/tmp/claude-501/-Users-yijiezhu-cocoa--claude-worktrees-flamingo-ia-particle-count-148631/c7f0623d-d3eb-4f8f-b79f-e34a9d0beee8/scratchpad/lowmass_L1m9/L1_m8_match/Galaxy_DS_Field/hinfo_fixng_ms_sub_red_sn78_nfold4.dat
+Hooray! Done!
