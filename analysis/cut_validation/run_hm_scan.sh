@@ -1,6 +1,7 @@
 #!/bin/bash
 # Halo-model scale-cut scan on the local Mac: every job one fisher_minimize.py
-# run (model, K0, truth), 4 at a time with 2 OpenMP threads each.
+# run (model, K0, truth), 4 at a time with 2 OpenMP threads each (NPAR=n
+# for n at a time; NICE=19 runs them at the lowest priority, behind another job).
 #
 # Battery guard: on a weak charger the battery can drain under full load. A
 # background loop pauses (SIGSTOP) every running fit when the battery falls
@@ -8,6 +9,7 @@
 # the fits only wait. Its log is hm_guard.log.
 #
 #   bash run_hm_scan.sh <jobs file>      (one "--probe P --cmb MODEL K0 TRUTH" per line)
+#   NPAR=2 NICE=19 bash run_hm_scan.sh <jobs file>
 HERE="$(cd "$(dirname "$0")" && pwd)"
 JOBS="$(cd "$(dirname "$1")" && pwd)/$(basename "$1")"
 LOW=15
@@ -39,8 +41,8 @@ trap 'kill $GPID 2>/dev/null; pkill -CONT -f fisher_minimize.py' EXIT
 
 mkdir -p "$HERE/logs_hm"
 export HERE
-grep -v '^#' "$JOBS" | grep -v '^$' | xargs -P 4 -L 1 bash -c '
+grep -v '^#' "$JOBS" | grep -v '^$' | xargs -P "${NPAR:-4}" -L 1 bash -c '
   name=$(echo "$*" | tr " " "_" | tr -d "-")
-  python ../ia_mismodeling/analysis/cut_validation/fisher_minimize.py "$@" > "$HERE/logs_hm/$name.log" 2>&1
+  nice -n "${NICE:-0}" python ../ia_mismodeling/analysis/cut_validation/${SCRIPT:-fisher_minimize.py} "$@" > "$HERE/logs_hm/$name.log" 2>&1
   echo "$(date) done $*: $(tail -1 "$HERE/logs_hm/$name.log" | cut -c1-200)"' worker
 echo "$(date) all done"

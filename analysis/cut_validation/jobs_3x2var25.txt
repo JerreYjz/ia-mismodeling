@@ -1,0 +1,5 @@
+--probe 3x2 --cmb --gt 0.5 NLAa 0.25 S1
+--probe 3x2 --cmb --gt 0.5 NLAa 0.25 EB
+--probe 3x2 --cmb --gt 0.5 TATTa 0.25 S1
+--probe 3x2 --cmb --gt 0.5 TATTa 0.25 EB
+--probe 3x2 --cmb --gt 0.5 TATTf 0.25 EB

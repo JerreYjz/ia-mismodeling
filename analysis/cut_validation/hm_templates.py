@@ -40,9 +40,10 @@ Output: hm_templates_<probe>_<truth>.npz (probe cs: the 1080 xi_+- rows of
 v9/ia_base_<truth>.npz; 3x2: the 2115 rows of ia_base_3x2_<truth>.npz,
 gamma_t at the biases B1_FID), with zs, U_GI, U_II, N_GI, N_II and the
 ratios used. Run with the cocoa Python (CAMB):
-    ~/cocoa/Cocoa/.local/bin/python hm_templates.py
+    ~/cocoa/Cocoa/.local/bin/python hm_templates.py [truth ...]     (default prod S1)
 """
 import os
+import sys
 
 import numpy as np
 
@@ -80,7 +81,7 @@ def main():
     zs = st["zs"]
     assert np.allclose(ht["zs"], zs)
     for probe, base in (("cs", "ia_base"), ("3x2", "ia_base_3x2")):
-        for truth in ("prod", "S1"):
+        for truth in (sys.argv[1:] or ["prod", "S1"]):
             b = np.load(os.path.join(RD, "v9", f"{base}_{truth}.npz"))
             fine = b["fine"]
             assert np.allclose(b["zs"], zs)

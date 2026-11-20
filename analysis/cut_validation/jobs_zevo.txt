@@ -1,0 +1,96 @@
+--probe cs --cmb NLAbk 0.2 S1
+--probe cs --cmb NLAbk 0.3 S1
+--probe cs --cmb NLAbk 0.4 S1
+--probe cs --cmb NLAbk 0.5 S1
+--probe 3x2 --cmb --gt 0.5 NLAbk 0.2 S1
+--probe 3x2 --cmb --gt 0.5 NLAbk 0.25 S1
+--probe 3x2 --cmb --gt 0.5 NLAbk 0.3 S1
+--probe 3x2 --cmb --gt 0.5 NLAbk 0.4 S1
+--probe cs --cmb NLAbk 0.2 EB
+--probe cs --cmb NLAbk 0.3 EB
+--probe cs --cmb NLAbk 0.4 EB
+--probe cs --cmb NLAbk 0.5 EB
+--probe 3x2 --cmb --gt 0.5 NLAbk 0.2 EB
+--probe 3x2 --cmb --gt 0.5 NLAbk 0.25 EB
+--probe 3x2 --cmb --gt 0.5 NLAbk 0.3 EB
+--probe 3x2 --cmb --gt 0.5 NLAbk 0.4 EB
+--probe cs --cmb NLAbk 0.2 lin
+--probe cs --cmb NLAbk 0.3 lin
+--probe cs --cmb NLAbk 0.4 lin
+--probe cs --cmb NLAbk 0.5 lin
+--probe 3x2 --cmb --gt 0.5 NLAbk 0.2 lin
+--probe 3x2 --cmb --gt 0.5 NLAbk 0.25 lin
+--probe 3x2 --cmb --gt 0.5 NLAbk 0.3 lin
+--probe 3x2 --cmb --gt 0.5 NLAbk 0.4 lin
+--probe cs --cmb NLAhz 0.2 S1
+--probe cs --cmb NLAhz 0.3 S1
+--probe cs --cmb NLAhz 0.4 S1
+--probe cs --cmb NLAhz 0.5 S1
+--probe 3x2 --cmb --gt 0.5 NLAhz 0.2 S1
+--probe 3x2 --cmb --gt 0.5 NLAhz 0.25 S1
+--probe 3x2 --cmb --gt 0.5 NLAhz 0.3 S1
+--probe 3x2 --cmb --gt 0.5 NLAhz 0.4 S1
+--probe cs --cmb NLAhz 0.2 EB
+--probe cs --cmb NLAhz 0.3 EB
+--probe cs --cmb NLAhz 0.4 EB
+--probe cs --cmb NLAhz 0.5 EB
+--probe 3x2 --cmb --gt 0.5 NLAhz 0.2 EB
+--probe 3x2 --cmb --gt 0.5 NLAhz 0.25 EB
+--probe 3x2 --cmb --gt 0.5 NLAhz 0.3 EB
+--probe 3x2 --cmb --gt 0.5 NLAhz 0.4 EB
+--probe cs --cmb NLAhz 0.2 lin
+--probe cs --cmb NLAhz 0.3 lin
+--probe cs --cmb NLAhz 0.4 lin
+--probe cs --cmb NLAhz 0.5 lin
+--probe 3x2 --cmb --gt 0.5 NLAhz 0.2 lin
+--probe 3x2 --cmb --gt 0.5 NLAhz 0.25 lin
+--probe 3x2 --cmb --gt 0.5 NLAhz 0.3 lin
+--probe 3x2 --cmb --gt 0.5 NLAhz 0.4 lin
+--probe cs --cmb TATTbk 0.2 S1
+--probe cs --cmb TATTbk 0.3 S1
+--probe cs --cmb TATTbk 0.4 S1
+--probe cs --cmb TATTbk 0.5 S1
+--probe 3x2 --cmb --gt 0.5 TATTbk 0.2 S1
+--probe 3x2 --cmb --gt 0.5 TATTbk 0.25 S1
+--probe 3x2 --cmb --gt 0.5 TATTbk 0.3 S1
+--probe 3x2 --cmb --gt 0.5 TATTbk 0.4 S1
+--probe cs --cmb TATTbk 0.2 EB
+--probe cs --cmb TATTbk 0.3 EB
+--probe cs --cmb TATTbk 0.4 EB
+--probe cs --cmb TATTbk 0.5 EB
+--probe 3x2 --cmb --gt 0.5 TATTbk 0.2 EB
+--probe 3x2 --cmb --gt 0.5 TATTbk 0.25 EB
+--probe 3x2 --cmb --gt 0.5 TATTbk 0.3 EB
+--probe 3x2 --cmb --gt 0.5 TATTbk 0.4 EB
+--probe cs --cmb TATTbk 0.2 lin
+--probe cs --cmb TATTbk 0.3 lin
+--probe cs --cmb TATTbk 0.4 lin
+--probe cs --cmb TATTbk 0.5 lin
+--probe 3x2 --cmb --gt 0.5 TATTbk 0.2 lin
+--probe 3x2 --cmb --gt 0.5 TATTbk 0.25 lin
+--probe 3x2 --cmb --gt 0.5 TATTbk 0.3 lin
+--probe 3x2 --cmb --gt 0.5 TATTbk 0.4 lin
+--probe cs --cmb TATThz 0.2 S1
+--probe cs --cmb TATThz 0.3 S1
+--probe cs --cmb TATThz 0.4 S1
+--probe cs --cmb TATThz 0.5 S1
+--probe 3x2 --cmb --gt 0.5 TATThz 0.2 S1
+--probe 3x2 --cmb --gt 0.5 TATThz 0.25 S1
+--probe 3x2 --cmb --gt 0.5 TATThz 0.3 S1
+--probe 3x2 --cmb --gt 0.5 TATThz 0.4 S1
+--probe cs --cmb TATThz 0.2 EB
+--probe cs --cmb TATThz 0.3 EB
+--probe cs --cmb TATThz 0.4 EB
+--probe cs --cmb TATThz 0.5 EB
+--probe 3x2 --cmb --gt 0.5 TATThz 0.2 EB
+--probe 3x2 --cmb --gt 0.5 TATThz 0.25 EB
+--probe 3x2 --cmb --gt 0.5 TATThz 0.3 EB
+--probe 3x2 --cmb --gt 0.5 TATThz 0.4 EB
+--probe cs --cmb TATThz 0.2 lin
+--probe cs --cmb TATThz 0.3 lin
+--probe cs --cmb TATThz 0.4 lin
+--probe cs --cmb TATThz 0.5 lin
+--probe 3x2 --cmb --gt 0.5 TATThz 0.2 lin
+--probe 3x2 --cmb --gt 0.5 TATThz 0.25 lin
+--probe 3x2 --cmb --gt 0.5 TATThz 0.3 lin
+--probe 3x2 --cmb --gt 0.5 TATThz 0.4 lin

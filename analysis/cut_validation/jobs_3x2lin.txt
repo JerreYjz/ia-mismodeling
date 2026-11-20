@@ -1,0 +1,4 @@
+--probe 3x2 --cmb --gt 0.5 NLA 0.2 lin
+--probe 3x2 --cmb --gt 0.5 TATT 0.2 lin
+--probe 3x2 --cmb --gt 0.5 NLA 0.25 lin
+--probe 3x2 --cmb --gt 0.5 TATT 0.25 lin

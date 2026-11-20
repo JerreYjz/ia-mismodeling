@@ -129,6 +129,8 @@ def main():
         drifts = {}
         for cut, lab in CUTS.items():
             for mdl in MODELS:
+                if f"{tr}|{cut}|{mdl}" not in fid_fits["fits"]:      # truths added later (lin)
+                    continue
                 bp = fid_fits["fits"][f"{tr}|{cut}|{mdl}"]["best"]
                 err = {"GI": np.zeros((nz, nf)), "II": np.zeros((nz, nf))}
                 for s in range(nz):

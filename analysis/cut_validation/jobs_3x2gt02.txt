@@ -1,0 +1,4 @@
+--probe 3x2 --cmb --gt 0.2 NLA 0.2 S1
+--probe 3x2 --cmb --gt 0.2 NLA 0.2 EB
+--probe 3x2 --cmb --gt 0.2 TATT 0.2 S1
+--probe 3x2 --cmb --gt 0.2 TATT 0.2 EB

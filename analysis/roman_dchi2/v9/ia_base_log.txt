@@ -30,3 +30,53 @@
 [118s] prod: checks stale 0.0e+00, sum_vs_xi_ia 3.9e-10, sum_vs_dA 7.1e-09, sum_vs_deta 1.5e-03
 [118s] prod: wrote ia_base_prod.npz
 done (118s)
+[6s] start: truths ('lin',), 1586 knobs per truth
+[6s] start: truths ('S1', 'lin'), 1586 knobs per truth
+[14s] S1: snapshot 1/13 (z = 0) done; 0.06 s per column, about 1 min left
+[23s] S1: snapshot 2/13 (z = 0.1) done; 0.07 s per column, about 2 min left
+[33s] S1: snapshot 3/13 (z = 0.2) done; 0.07 s per column, about 1 min left
+[41s] S1: snapshot 4/13 (z = 0.3) done; 0.07 s per column, about 1 min left
+[48s] S1: snapshot 5/13 (z = 0.4) done; 0.07 s per column, about 1 min left
+[59s] S1: snapshot 6/13 (z = 0.5) done; 0.07 s per column, about 1 min left
+[68s] S1: snapshot 7/13 (z = 0.6) done; 0.07 s per column, about 1 min left
+[75s] S1: snapshot 8/13 (z = 0.75) done; 0.07 s per column, about 1 min left
+[84s] S1: snapshot 9/13 (z = 1) done; 0.07 s per column, about 1 min left
+[94s] S1: snapshot 10/13 (z = 1.5) done; 0.07 s per column, about 0 min left
+[102s] S1: snapshot 11/13 (z = 2) done; 0.07 s per column, about 0 min left
+[109s] S1: snapshot 12/13 (z = 3) done; 0.07 s per column, about 0 min left
+[120s] S1: snapshot 13/13 (z = 4) done; 0.07 s per column, about 0 min left
+[127s] S1: checks stale 0.0e+00, sum_vs_xi_ia 6.6e-10, sum_vs_dA 9.0e-09, sum_vs_deta 1.5e-03
+[127s] S1: wrote ia_base_S1.npz
+[135s] lin: snapshot 1/13 (z = 0) done; 0.06 s per column, about 2 min left
+[142s] lin: snapshot 2/13 (z = 0.1) done; 0.06 s per column, about 1 min left
+[154s] lin: snapshot 3/13 (z = 0.2) done; 0.07 s per column, about 1 min left
+[164s] lin: snapshot 4/13 (z = 0.3) done; 0.08 s per column, about 1 min left
+[172s] lin: snapshot 5/13 (z = 0.4) done; 0.07 s per column, about 1 min left
+[181s] lin: snapshot 6/13 (z = 0.5) done; 0.07 s per column, about 1 min left
+[192s] lin: snapshot 7/13 (z = 0.6) done; 0.08 s per column, about 1 min left
+[201s] lin: snapshot 8/13 (z = 0.75) done; 0.08 s per column, about 1 min left
+[208s] lin: snapshot 9/13 (z = 1) done; 0.07 s per column, about 1 min left
+[219s] lin: snapshot 10/13 (z = 1.5) done; 0.08 s per column, about 0 min left
+[229s] lin: snapshot 11/13 (z = 2) done; 0.08 s per column, about 0 min left
+[237s] lin: snapshot 12/13 (z = 3) done; 0.08 s per column, about 0 min left
+[245s] lin: snapshot 13/13 (z = 4) done; 0.07 s per column, about 0 min left
+[246s] lin: checks stale 0.0e+00, sum_vs_xi_ia 5.5e-10, sum_vs_dA 5.6e-09, sum_vs_deta 1.5e-03
+[246s] lin: wrote ia_base_lin.npz
+done (246s)
+[18s] start: truths ('EB',), 1586 knobs per truth
+[31s] EB: snapshot 1/13 (z = 0) done; 0.10 s per column, about 3 min left
+[42s] EB: snapshot 2/13 (z = 0.1) done; 0.10 s per column, about 2 min left
+[53s] EB: snapshot 3/13 (z = 0.2) done; 0.10 s per column, about 2 min left
+[66s] EB: snapshot 4/13 (z = 0.3) done; 0.10 s per column, about 2 min left
+[80s] EB: snapshot 5/13 (z = 0.4) done; 0.10 s per column, about 2 min left
+[94s] EB: snapshot 6/13 (z = 0.5) done; 0.10 s per column, about 1 min left
+[106s] EB: snapshot 7/13 (z = 0.6) done; 0.10 s per column, about 1 min left
+[118s] EB: snapshot 8/13 (z = 0.75) done; 0.10 s per column, about 1 min left
+[130s] EB: snapshot 9/13 (z = 1) done; 0.10 s per column, about 1 min left
+[141s] EB: snapshot 10/13 (z = 1.5) done; 0.10 s per column, about 1 min left
+[152s] EB: snapshot 11/13 (z = 2) done; 0.10 s per column, about 0 min left
+[165s] EB: snapshot 12/13 (z = 3) done; 0.10 s per column, about 0 min left
+[178s] EB: snapshot 13/13 (z = 4) done; 0.10 s per column, about 0 min left
+[188s] EB: checks stale 0.0e+00, sum_vs_xi_ia 5.4e-10, sum_vs_dA 6.6e-09, sum_vs_deta 1.6e-03
+[188s] EB: wrote ia_base_EB.npz
+done (188s)

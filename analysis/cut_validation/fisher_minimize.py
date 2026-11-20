@@ -46,11 +46,16 @@ Probes:
            cocoa/driver3x2.py), lens Delta z = source Delta z, Limber for
            gamma_t and w (as the base the IA vector comes from), the IA part
            of the data xi_ia of v9/ia_base_3x2_<truth>.npz (xi_+- and gamma_t)
+    2x2    as 3x2 without xi_+-: gamma_t of sources behind lenses at K0 (K0
+           is the gamma_t cut here) and w at 0.2, the same covariance and
+           parameters; the cut of the lens probes on their own
     +cmb   Gaussian priors at D3A of the width of Planck 2018 on n_s (0.0042),
            Omega_b h^2 (0.00015) and H0 (0.54); none on A_s or Omega_m.
 Run from ~/cocoa/Cocoa after start_cocoa.sh:
-    python <this> [--probe cs|3x2] [--cmb] [--gt K] <model> <K0> <truth> [...]
---gt sets the gamma_t cut (default 0.3; K0 sets the xi_+- cut).
+    python <this> [--probe cs|3x2|2x2] [--cmb] [--gt K] [--w K] [--gbias NAME] <model> <K0> <truth> [...]
+--gt sets the gamma_t cut (default 0.3; K0 sets the xi_+- cut), --w the w cut
+(default 0.2; key suffix |w<K>), --gbias NAME adds the nonlinear-bias vector
+galaxy_bias/gbias_dv_NAME.npz to the 3x2pt data (key suffix |gbNAME).
 Each run appends to fisher_minimize.json, key <probe>[+cmb]|<model>|<K0>|<truth>[|gt<K>]
 (the first cosmic-shear runs, without prior, are under <model>|<K0>|<truth>).
 """
@@ -113,13 +118,49 @@ X0 = 1.62
 IA_START = {"NLA": [3.5, 0.7], "NLAz": [3.0]*8, "TATT": [3.4, 0.7, -1.0, -2.0, 0.5],
             "NLAf": [3.5, 0.7], "NLAfT": [3.5, 0.7], "TATTf": [3.4, 0.7, -1.0, -2.0, 0.5],
             "NLAa": [3.5, 0.7, 0.5], "TATTa": [3.4, 0.7, -1.0, -2.0, 0.5, 0.5]}
+# Freer redshift evolution, nested in the power law: A1(z) = A1 ((1+z)/1.62)^eta1 g(z),
+# added to the native model through the snapshot templates N_GI, N_II of
+# hm_templates.py (exact in the IA amplitudes, held at the fiducial cosmology):
+#   v += sum_s (a_s g_s - a_s) N_GI[s] + (a_s^2 g_s^2 - a_s^2) N_II[s],   a_s = A1 x_s^eta1.
+#   break  g = ((1+z)/(1+Z_BREAK))^zevo_deta above Z_BREAK, 1 below (slope eta1 + deta at z > 1.5)
+#   hz     g = 1 + zevo_d2 T_2(z) + zevo_d3 T_3(z): tents on z = 1.5, 2, 3 (g = 1 at z <= 1.5),
+#          held at its z = 3 value beyond (free amplitudes at z = 2 and 3)
+# For TATT only the A1 terms of NLA form move (the A1 A2 and A1 b_TA cross terms keep the
+# power law), an approximation flagged where TATT results are quoted.
+Z_BREAK = 1.5
+ZEVO = {"zevo_deta": (-5, 5, 0.05), "zevo_d2": (-0.9, 3, 0.02), "zevo_d3": (-0.9, 3, 0.03)}
+IA["NLAbk"] = dict(model=0, evo=3, free={**IA["NLA"]["free"], "zevo_deta": ZEVO["zevo_deta"]}, zevo="break")
+IA["TATTbk"] = dict(model=1, evo=3, free={**IA["TATT"]["free"], "zevo_deta": ZEVO["zevo_deta"]}, zevo="break")
+IA["NLAhz"] = dict(model=0, evo=3, free={**IA["NLA"]["free"], "zevo_d2": ZEVO["zevo_d2"],
+                                         "zevo_d3": ZEVO["zevo_d3"]}, zevo="hz")
+IA["TATThz"] = dict(model=1, evo=3, free={**IA["TATT"]["free"], "zevo_d2": ZEVO["zevo_d2"],
+                                          "zevo_d3": ZEVO["zevo_d3"]}, zevo="hz")
+IA_START.update(NLAbk=[3.5, 0.7, 0.0], TATTbk=[3.4, 0.7, -1.0, -2.0, 0.5, 0.0],
+                NLAhz=[3.5, 0.7, 0.0, 0.0], TATThz=[3.4, 0.7, -1.0, -2.0, 0.5, 0.0, 0.0])
+
+
+def zevo_g(kind, zs, p):
+    """g(z) of the freer redshift evolution at the snapshots zs."""
+    zs = np.asarray(zs, float)
+    if kind == "break":
+        return np.where(zs > Z_BREAK, ((1 + zs)/(1 + Z_BREAK))**p["zevo_deta"], 1.0)
+    if kind == "hz":
+        t2 = np.interp(zs, [Z_BREAK, 2.0, 3.0], [0.0, 1.0, 0.0])
+        t3 = np.interp(zs, [2.0, 3.0], [0.0, 1.0])
+        return 1 + p["zevo_d2"]*t2 + p["zevo_d3"]*t3
+    raise ValueError(kind)
+
+
 ALL_IA = ["roman_A1_%d" % i for i in range(1, 9)] + ["roman_A2_1", "roman_A2_2", "roman_BTA_1"]
 
 
 class Setup:
     """The cobaya model of one IA model, the data, mask and whitening."""
 
-    def __init__(self, mdl, K0, truth, probe="cs", cmb=False, gt=0.3):
+    def __init__(self, mdl, K0, truth, probe="cs", cmb=False, gt=0.3, wc=0.2, gb=None):
+        self.two = probe == "2x2"           # the 3x2 setup with xi_+- masked out
+        if self.two:
+            probe, gt = "3x2", K0
         info = yaml_load_file(os.path.join(HERE, "NLA_on_flam_k0p2.yaml"))
         for k in ("sampler", "output"):
             info.pop(k, None)
@@ -137,7 +178,7 @@ class Setup:
         for p in ALL_IA:
             pr[p] = {"value": 0.0}
         for p, (lo, hi, _) in IA[mdl]["free"].items():
-            if p in ALPHA:
+            if p in ALPHA or p in ZEVO:
                 continue
             pr[p] = {"prior": {"min": lo, "max": hi}, "ref": 1.0, "proposal": 0.1}
         if probe == "3x2":
@@ -172,7 +213,8 @@ class Setup:
             self.n = NXI
         else:
             c = np.load(os.path.join(RD, "v9", "ia_base_3x2_common.npz"))
-            self.mask = np.concatenate([c[f"xi|{K0:g}"], c[f"gt|{gt:g}"] & c["behind"], c["w|0.2"]]).astype(bool)
+            xi = np.zeros(NXI, bool) if self.two else c[f"xi|{K0:g}"]
+            self.mask = np.concatenate([xi, c[f"gt|{gt:g}"] & c["behind"], w_mask(c, wc)]).astype(bool)
             assert self.mask.size == NDV
             cov = c["cov"]
             self.n = NDV
@@ -188,6 +230,11 @@ class Setup:
             if IA[mdl]["hm"] == "fixed":       # (1 - alpha_s) folded into the templates
                 w = 1 - np.array(ALPHA_FLAMINGO[IA[mdl]["alpha"]])[:, None]
                 self.hm = dict(zs=t["zs"], U_GI=w*t["U_GI"], U_II=w*t["U_II"], fixed=True)
+        self.zevo = None
+        if IA[mdl].get("zevo"):
+            t = np.load(os.path.join(HERE, f"hm_templates_{probe}_{truth}.npz"))
+            assert np.allclose(t["zs"], self.zs_hm)
+            self.zevo = dict(kind=IA[mdl]["zevo"], N_GI=t["N_GI"], N_II=t["N_II"])
         if probe == "3x2":       # lens bin of every gamma_t row (15 angles per pair)
             pairs = np.load(os.path.join(RD, "v9", "ia_base_3x2_common.npz"))["pairs"]
             self.gt_lens = np.repeat(pairs[:, 0], 15)
@@ -197,6 +244,10 @@ class Setup:
         xi_ia = np.load(os.path.join(RD, "v9", f"{base}_{truth}.npz"))["xi_ia"]
         assert xi_ia.size == self.n
         self.d = gg + xi_ia
+        if gb is not None:       # nonlinear galaxy bias in the data (gbias_contamination.py)
+            dD = np.load(os.path.join(HERE, "galaxy_bias", f"gbias_dv_{gb}.npz"))["dD"]
+            assert dD.size == NDV and probe == "3x2"
+            self.d = self.d + dD
 
     def theta(self, cosmo, nuis, ia, zero_ia=False):
         t = [cosmo[p] for p in COSMO] + [nuis.get(p, 0.0) for p in DZ + MM]
@@ -207,6 +258,7 @@ class Setup:
     def vector(self, th):
         p = dict(zip(self.names, th))
         alpha = p.pop("hm_alpha", None)
+        zp = {q: p.pop(q) for q in list(p) if q in ZEVO}
         self.called = False
         r = self.model.logposterior(p, as_dict=True)
         self.neval += 1
@@ -223,7 +275,19 @@ class Setup:
         v = self.last[:self.n].copy()
         if self.hm is not None:
             v += (1 if self.hm.get("fixed") else 1 - alpha)*self.template(p, self.hm["U_GI"], self.hm["U_II"])
+        if self.zevo is not None:
+            v += self.zevo_correction(p, zp)
         return v, r["derived"]["S8"]
+
+    def zevo_correction(self, p, zp):
+        """sum_s (a_s g_s - a_s) N_GI[s] + (a_s^2 g_s^2 - a_s^2) N_II[s], gamma_t rows times b_i/B1_FID_i."""
+        a = p["roman_A1_1"]*((1 + self.zs_hm)/X0)**p["roman_A1_2"]
+        g = zevo_g(self.zevo["kind"], self.zs_hm, zp)
+        t = (a*g - a) @ self.zevo["N_GI"] + (a**2*g**2 - a**2) @ self.zevo["N_II"]
+        if self.probe == "3x2":
+            b = np.array([p[q] for q in BB])/np.array(B1_FID)
+            t[NXI:NXI + 915] *= b[self.gt_lens]
+        return t
 
     def template(self, p, TG, TI):
         """sum_s A_s TG[s] + A_s^2 TI[s], gamma_t rows scaled by b_i/B1_FID_i."""
@@ -264,6 +328,19 @@ class Setup:
         return J, g
 
 
+def w_mask(c, wc):
+    """w rows kept at the cut wc: the IR/UV rows of ia_base_3x2_common.npz, joined
+    with those of every smaller cut. The IR/UV fraction of w is not monotonic in
+    K0 at a few angles (bins 3, 4 and 7 lose a row from 0.3 to 0.35), so a row
+    kept at a smaller K0 stays kept; at K0 <= 0.3 nothing changes."""
+    ks = sorted(float(k[2:]) for k in c.files if k.startswith("w|") and k != "w|none")
+    m = np.zeros(c["w|none"].size, bool)
+    for k in ks:
+        if k <= wc + 1e-9:
+            m |= c[f"w|{k:g}"]
+    return m
+
+
 def solve(S, th0, free):
     """least_squares over the parameters free (indices), the others held."""
     def f(x):
@@ -282,9 +359,11 @@ def solve(S, th0, free):
     return th, float(r.fun @ r.fun), r
 
 
-def run(mdl, K0, truth, probe="cs", cmb=False, gt=0.3):
+def run(mdl, K0, truth, probe="cs", cmb=False, gt=0.3, wc=0.2, gb=None):
     t0 = time.time()
-    S = Setup(mdl, K0, truth, probe, cmb, gt)
+    if probe == "2x2":
+        gt = K0
+    S = Setup(mdl, K0, truth, probe, cmb, gt, wc, gb)
     n = len(S.names)
     iia = np.arange(n - len(IA[mdl]["free"]), n)
     ic = [S.names.index("omegam")]
@@ -336,8 +415,8 @@ def run(mdl, K0, truth, probe="cs", cmb=False, gt=0.3):
     mu_lin = dlin/sig
     names = S.names
     at_bound = [p for p, v, lo, hi in zip(names, th, S.lo, S.hi)
-                if np.isfinite(lo) and ((v - lo) < 1e-3*(hi - lo) or (hi - v) < 1e-3*(hi - lo))]
-    row = dict(model=mdl, K0=K0, gt=gt, truth=truth, probe=probe, cmb=cmb, npts=int(S.mask.sum()), names=names,
+                if np.isfinite(lo) and ((v - lo) < 0.02*(hi - lo) or (hi - v) < 0.02*(hi - lo))]
+    row = dict(model=mdl, K0=K0, gt=gt, wc=wc, gb=gb, truth=truth, probe=probe, cmb=cmb, npts=int(S.mask.sum()), names=names,
                ref=dict(zip(names, ref.tolist())), chi2_ref=chi2_ref,
                best=dict(zip(names, th.tolist())), chi2_min=c2, starts=runs,
                S8_truth=s8_ref, S8_min=s8, shift=dp.tolist(), sigma=sig.tolist(),
@@ -350,7 +429,8 @@ def run(mdl, K0, truth, probe="cs", cmb=False, gt=0.3):
                sigma_all=dict(zip(names, np.sqrt(np.diag(Finv)).tolist())),
                sigma_flatprior=np.sqrt(np.diag(G @ Fflat_inv @ G.T)).tolist(),
                at_bound=at_bound, neval=S.neval, seconds=time.time() - t0)
-    key = f"{probe}{'+cmb' if cmb else ''}|{mdl}|{K0:g}|{truth}" + (f"|gt{gt:g}" if gt != 0.3 else "")
+    key = f"{probe}{'+cmb' if cmb else ''}|{mdl}|{K0:g}|{truth}" + (f"|gt{gt:g}" if gt != 0.3 and probe != "2x2" else "")
+    key += (f"|w{wc:g}" if abs(wc - 0.2) > 1e-9 else "") + (f"|gb{gb}" if gb else "")
     with open(OUT + ".lock", "w") as lk:
         fcntl.flock(lk, fcntl.LOCK_EX)
         out = json.load(open(OUT)) if os.path.exists(OUT) else dict(about=__doc__, runs={})
@@ -401,8 +481,16 @@ def main():
     if "--gt" in a:
         gt = float(a.pop(a.index("--gt") + 1))
         a.remove("--gt")
+    wc = 0.2
+    if "--w" in a:
+        wc = float(a.pop(a.index("--w") + 1))
+        a.remove("--w")
+    gb = None
+    if "--gbias" in a:
+        gb = a.pop(a.index("--gbias") + 1)
+        a.remove("--gbias")
     for i in range(0, len(a), 3):
-        run(a[i], float(a[i + 1]), a[i + 2], probe, cmb, gt)
+        run(a[i], float(a[i + 1]), a[i + 2], probe, cmb, gt, wc, gb)
 
 
 if __name__ == "__main__":

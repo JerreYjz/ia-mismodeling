@@ -7,3 +7,15 @@
 [149s] prod: checks stale 0.0e+00, sum_vs_xi_ia 3.6e-10, xi_rows_vs_v9_GI 0.0e+00, xi_rows_vs_v9_II 0.0e+00, xi_ia_vs_v9 0.0e+00, J_xi_vs_v9 0.0e+00, II_off_xi 1.3e-13, w_ia 1.4e-16, sum_vs_dA 7.7e-09, sum_vs_deta 2.1e-04
 [149s] prod: wrote ia_base_3x2_prod.npz
 done (149s)
+[4s] masks: xi rows of the 3x2pt IR/UV masks differ from masks_n1 in [1, 3, 0, 0, 1, 0, 0, 1, 0] points (K0 [0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.5, 0.6, 0.8])
+[63s] cuts: cs|none 1080, 3x2|none 2115, 3x2b|none 1620, cs|0.15 118, 3x2|0.15 455, 3x2b|0.15 288, cs|0.2 192, 3x2|0.2 595, 3x2b|0.2 391, cs|0.25 244, 3x2|0.25 692, 3x2b|0.25 459, cs|0.3 281, 3x2|0.3 764, 3x2b|0.3 523, cs|0.35 317, 3x2|0.35 831, 3x2b|0.35 562, cs|0.4 336, 3x2|0.4 867, 3x2b|0.4 599, cs|0.5 385, 3x2|0.5 962, 3x2b|0.5 661, cs|0.6 417, 3x2|0.6 1020, 3x2b|0.6 708, cs|0.8 487, 3x2|0.8 1144, 3x2b|0.8 804
+[219s] lin: 1586 columns in 156s
+[228s] lin: checks stale 0.0e+00, sum_vs_xi_ia 3.3e-10, xi_rows_vs_v9_GI 0.0e+00, xi_rows_vs_v9_II 0.0e+00, xi_ia_vs_v9 0.0e+00, J_xi_vs_v9 0.0e+00, II_off_xi 0.0e+00, w_ia 0.0e+00, sum_vs_dA 8.6e-09, sum_vs_deta 2.1e-04
+[228s] lin: wrote ia_base_3x2_lin.npz
+done (228s)
+[14s] masks: xi rows of the 3x2pt IR/UV masks differ from masks_n1 in [1, 3, 0, 0, 1, 0, 0, 1, 0] points (K0 [0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.5, 0.6, 0.8])
+[16s] cuts: cs|none 1080, 3x2|none 2115, 3x2b|none 1620, cs|0.15 118, 3x2|0.15 455, 3x2b|0.15 288, cs|0.2 192, 3x2|0.2 595, 3x2b|0.2 391, cs|0.25 244, 3x2|0.25 692, 3x2b|0.25 459, cs|0.3 281, 3x2|0.3 764, 3x2b|0.3 523, cs|0.35 317, 3x2|0.35 831, 3x2b|0.35 562, cs|0.4 336, 3x2|0.4 867, 3x2b|0.4 599, cs|0.5 385, 3x2|0.5 962, 3x2b|0.5 661, cs|0.6 417, 3x2|0.6 1020, 3x2b|0.6 708, cs|0.8 487, 3x2|0.8 1144, 3x2b|0.8 804
+[234s] EB: 1586 columns in 218s
+[248s] EB: checks stale 0.0e+00, sum_vs_xi_ia 6.9e-10, xi_rows_vs_v9_GI 0.0e+00, xi_rows_vs_v9_II 0.0e+00, xi_ia_vs_v9 0.0e+00, J_xi_vs_v9 0.0e+00, II_off_xi 0.0e+00, w_ia 0.0e+00, sum_vs_dA 7.8e-09, sum_vs_deta 1.9e-04
+[248s] EB: wrote ia_base_3x2_EB.npz
+done (248s)
