@@ -432,6 +432,32 @@
 \newcommand{\SCfomFifteen}{\refresh{38.3}}
 \newcommand{\SCfinalMax}{\refresh{0.28}}
 % ---------------------------------------------------------------------
+% Part 1h: nonlinear galaxy bias (Section sec:gbias; analysis/cut_validation/galaxy_bias/:
+% gbias_configs.json, gbias_perbin.json, map_*.log). NLA, stitched truth, xi_+- at 0.2,
+% CMB prior unless stated; ranges over the stitched, E minus B (NLA) and stitched (TATT) references.
+\newcommand{\GBbase}{\refresh{1.24}}         % galaxy bias alone, gamma_t 0.5, w 0.2
+\newcommand{\GBbaseRange}{\refresh{1.24 to 1.27}}
+\newcommand{\GBbaseTot}{\refresh{1.31}}      % IA + galaxy bias, linear shift
+\newcommand{\GBbaseMAP}{\refresh{1.30}}      % the same from the minimizer (map_gt0.5_w0.2.log)
+\newcommand{\GBbaseWeight}{\refresh{1.05}}   % piece of w in lens bin 8
+\newcommand{\GBbaseGtSeven}{\refresh{0.61}}  % piece of gamma_t in lens bin 7
+\newcommand{\GBchiMAP}{\refresh{18.5}}       % chi2 at that MAP, 468 noiseless points
+\newcommand{\GBwEightTwo}{\refresh{1.63}}    % piece of w8 at 0.2, all other cuts 0.1
+\newcommand{\GBwSevenThree}{\refresh{0.67}}  % piece of w7 at 0.3
+\newcommand{\GBD}{\refresh{0.12}}            % configuration D: galaxy bias alone
+\newcommand{\GBDpiece}{\refresh{0.21}}
+\newcommand{\GBDia}{\refresh{0.22 to 0.27}}
+\newcommand{\GBDtot}{\refresh{0.34 to 0.39}}
+\newcommand{\GBDsig}{\refresh{0.0041}}
+\newcommand{\GBbaseSig}{\refresh{0.0043}}
+\newcommand{\GBEtot}{\refresh{0.27 to 0.29}}
+\newcommand{\GBFtot}{\refresh{0.20 to 0.25}}
+\newcommand{\GBFsig}{\refresh{0.0070}}
+\newcommand{\GBolBase}{\refresh{0.70}}       % one-loop, galaxy bias alone at A
+\newcommand{\GBolBtot}{\refresh{0.15 to 0.29}} % one-loop, configurations B and C, IA + galaxy bias
+\newcommand{\GBolSig}{\refresh{0.0061 to 0.0063}}
+\newcommand{\GBolBEight}{\refresh{3.7}}      % fitted b2 of lens bin 8 at A
+% ---------------------------------------------------------------------
 % Part 2: inputs.
 \newcommand{\Tol}{0.3}
 
@@ -458,7 +484,9 @@
 The recommended scale cuts are $\kuv = K_0/D(z)$ with $K_0 = 0.2\hMpc$ for
 Roman $\xi_\pm$ and $K_0^{\gamma_t} = 0.5\hMpc$ for $\gamma_t$ of sources
 behind lenses ($w$ at 0.2), for NLA, TATT and the halo-model variants
-except NLA-F, which needs $K_0 = 0.15$ (Section~\ref{sec:sepcuts}). Each probe's cut was set on that probe alone,
+except NLA-F, which needs $K_0 = 0.15$ (Section~\ref{sec:sepcuts}). These
+assume linear galaxy bias; with FLAMINGO's nonlinear bias the $\gamma_t$ and
+$w$ cuts are set per lens bin (Section~\ref{sec:gbias}, below). Each probe's cut was set on that probe alone,
 then the pair tested in 3x2pt, every parameter free with a CMB prior, on two
 FLAMINGO truths that bracket the small-scale II (the B modes subtracted as
 white noise, or as measured). 2x2pt alone allows $K_0^{\gamma_t} = 0.5$ on
@@ -614,6 +642,24 @@ does not lower the bias for two reasons (Figure~\ref{fig:hmeps}): the halo
 model corrects GI, whose error moves $(\Om, S_8)$ by at most 0.07$\sigma$,
 and it cannot raise small-scale II, part of which is the B-mode excess that
 the review's fits absorbed in a free white term given to every model.
+
+\paragraph{Nonlinear galaxy bias.}
+The cuts above were set with data that carry exactly the linear galaxy bias
+of the fit. With FLAMINGO's measured nonlinear bias in $\gamma_t$ and $w$
+(Section~\ref{sec:gbias}), the recommended pair fails: the galaxy bias
+alone moves $(\Om, S_8)$ by \GBbase$\sigma$, from $w$ of lens bin 8 ($\bar
+z = 2.69$) and $\gamma_t$ of bin 7, while the fit's $\chi^2$ does not show it.
+Cuts set per lens bin fix it and let $w$ go higher where the bias is linear:
+$w$ at 0.5 in bin 1 and 0.3 in bins 2 to 6 (from 0.2), 0.25 in bin 7 and
+0.15 in bin 8; $\gamma_t$ at 0.4 to 0.15 in bins 4 to 7. The galaxy bias is
+then \GBD$\sigma$ (every piece below \Tol) at $\sigma(S_8) = \GBDsig$,
+against \GBbaseSig{} for the failing pair. Counted in one budget with the IA
+error (0.17 to 0.28 by itself) the total is \GBDtot; a tuned per-bin
+configuration stays at \GBEtot, and uniform cuts at 0.15 at \GBFtot{} with
+63\% more error on $S_8$. A one-loop bias model with $b_2$ free keeps $w$ at
+0.2 except in bin 8, at $\sigma(S_8) = \GBolSig$. The FLAMINGO galaxies
+stand in for Roman's lenses by redshift, more biased in bin 8 and less in
+bin 7.
 
 \section{Setup}
 \label{sec:setup}
@@ -1498,8 +1544,9 @@ keeps both models below \GGLbehMaxThree$\sigma$ on both truths while giving
 more figure of merit than every pair at its safe cut. This test fits only
 the IA parameters, $\Om$, $A_s$ and the galaxy biases; with every parameter
 free, 2x2pt alone allows $K_0^{\gamma_t} = 0.5$
-(Section~\ref{sec:sepcuts}). Beyond that, the GGL cut is set by the linear
-galaxy bias, which these tests assume exact.
+(Section~\ref{sec:sepcuts}). These tests assume the linear galaxy bias
+exact; with FLAMINGO's nonlinear bias in the data, $\gamma_t$ of lens bins 6
+and 7 has to come down to 0.15 (Section~\ref{sec:gbias}).
 
 \section{Validation with every parameter free}
 \label{sec:cutval}
@@ -2086,7 +2133,8 @@ its amplitude error at $z \ge 2$ fails at any cut.
 \fbox{\parbox{0.92\textwidth}{\textbf{Recommended scale cuts.} Cosmic
 shear: $\kuv = K_0/D(z)$ with \textbf{$K_0 = 0.2\hMpc$}. Galaxy-galaxy
 lensing ($\gamma_t$ of sources behind lenses): \textbf{$K_0^{\gamma_t} =
-0.5\hMpc$}, with $w$ at 0.2. The $\gamma_t$ cut is set by 2x2pt alone; the
+0.5\hMpc$}, with $w$ at 0.2, both with linear galaxy bias exact in the data
+(per-bin cuts for nonlinear bias: Section~\ref{sec:gbias}). The $\gamma_t$ cut is set by 2x2pt alone; the
 cosmic-shear cut is the largest at which 3x2pt passes with it, for NLA, TATT,
 NLA$+\alpha$, TATT$+\alpha$ and TATT-F, on both the stitched and the E minus B
 truth (bias at most \SCfinalMax$\sigma$), every parameter free and the CMB
@@ -2378,6 +2426,156 @@ So the review and the Roman fits agree once they define II the same way:
 the halo model's advantage is in GI shape, which Roman's bias does not
 depend on.
 
+\section{Nonlinear galaxy bias and the $\gamma_t$ and $w$ cuts}
+\label{sec:gbias}
+
+\paragraph{The question.}
+Every test so far fits $\gamma_t$ and $w$ with linear galaxy bias, and every
+data vector so far is built with exactly that bias, so the galaxy-bias model
+could not fail: $w$ at 0.2 looked free only because its own systematic was
+missing from the data. This section puts the bias that real galaxies have
+into the data. How far do the $\gamma_t$ and $w$ cuts hold, and can $w$ go
+above 0.2?
+
+\paragraph{The nonlinear bias put into the data.}
+The galaxy-matter and galaxy-galaxy spectra of the FLAMINGO galaxies were
+measured at $z = 1.5$, 2 and 3 from every dark-matter particle of the box
+(note \texttt{notes/flamingo\_pgm}), and from the galaxy spectrum alone at the
+other ten snapshots. Written as
+\begin{equation}
+P_{\rm gm} = b_1\,\beta_{\rm gm}(k, z)\,\PNL, \qquad
+P_{\rm gg} = b_1^2\,\beta_{\rm gg}(k, z)\,\PNL,
+\end{equation}
+$\beta = 1$ is linear bias. The data vector is cosmolike's with $\PNL$
+multiplied by $\beta_{\rm gm}$ in $\gamma_t$ and by $\beta_{\rm gg}$ in $w$,
+the shape at each redshift applied to every lens bin there; $\xi_\pm$ is
+untouched. At $z \le 1$ the spectra are within 8\% of linear bias out to
+$k = 1\hMpc$; from $z = 1.5$ it rises with $k$, by 19, 41 and 92\% in
+$\beta_{\rm gm}$ at the $\gamma_t$ cut of $z = 1.5$, 2 and 3. Because
+$\kuv = K_0/D(z)$ grows with redshift, the high-redshift lens bins see most
+of it: bin 8 ($\bar z = 2.69$) keeps $k \le 0.58\hMpc$ in $w$ at 0.2.
+
+\paragraph{Method.}
+The shift of $(\Om, S_8)$ is the linear one of Section~\ref{sec:cancel},
+with every parameter free and the CMB prior, at the 3x2pt reference fits of
+Section~\ref{sec:sepcuts}. It splits exactly into pieces, one per probe and
+lens bin (``w8'' is $w$ of lens bin 8). The cuts are set per lens bin. Two
+budgets are used: the galaxy bias as a systematic of its own (its figure of
+bias and every piece below \Tol), and IA and galaxy bias together in one
+\Tol. The fits are linear ($b_1$ per bin), or one-loop: $P_{\rm gm} = b_1\PNL
++ \tfrac12(b_2 P_{\delta\delta_2} + b_{s^2} P_{\delta s^2} + b_3
+P_{\delta\psi_3})$ and the matching $P_{\rm gg}$, as cosmolike computes them,
+with $b_2$ free per bin and $b_{s^2} = -\tfrac47(b_1 - 1)$, $b_3 = b_1 - 1$.
+In both, $\gamma_t$ rows are nested in $K_0$, as $w$'s are: a row kept at a
+smaller cut stays kept (the raw masks drop 1 to 8 rows between neighboring
+cuts).
+
+\paragraph{The baseline fails, through two lens bins.}
+At the pair of Section~\ref{sec:sepcuts} ($\gamma_t$ at 0.5, $w$ at 0.2) the
+galaxy bias alone moves $(\Om, S_8)$ by \GBbase$\sigma$ (\GBbaseRange{} on
+the three references), and with the IA error by \GBbaseTot{}; the minimizer
+gives \GBbaseMAP. The largest pieces are $w$ of lens bin 8
+(\GBbaseWeight) and $\gamma_t$ of lens bin 7 (\GBbaseGtSeven). The fit hides
+it: $\chi^2 = \GBchiMAP$ for 468 noiseless points, well inside the scatter
+of a real $\chi^2$. Lowering $w$ alone does not help enough (0.15 everywhere:
+0.62 to 0.74), because $\gamma_t$ of bins 6 and 7 carries most of what is left.
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\textwidth]{plots/gbias_bins/gbias_bins.pdf}
+\caption{The galaxy-bias figure of bias that one lens bin brings in, against
+that bin's cut (all other cuts at 0.1): its $w$ rows (top) and its
+$\gamma_t$ rows (bottom; bin 8 has no source behind it), fitted with linear
+bias (left) and with the one-loop model, $b_2$ free (right). Lens bins by
+color, marker and line width. Dotted: \Tol. NLA, stitched truth, $\xi_\pm$
+at 0.2, CMB prior.}
+\label{fig:gbbins}
+\end{figure}
+
+\paragraph{Bin by bin.}
+Figure~\ref{fig:gbbins} raises one bin at a time. With linear bias, $w$ of
+bins 1 to 5 stays below \Tol{} to $K_0 = 0.6$ or 0.8, bin 6 to 0.5, bin 7 to
+0.25 (\GBwSevenThree{} at 0.3) and bin 8 only to 0.15 (\GBwEightTwo{} at
+0.2). $\gamma_t$ allows 0.8 in bins 1 to 3, 0.5 to 0.6 in bins 4 to 6 and
+0.25 in bin 7. The pieces add, though, so the single-bin limits cannot all
+be taken at once. The one-loop model removes most of the scale dependence
+the linear fit leaves at $z \le 2$ (right column) but not that of bin 8: at
+$w$ = 0.2 its piece stays near 1 with $b_2$ free.
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=0.5\textwidth]{plots/gbias_configs/gbias_configs.pdf}
+\caption{Precision against galaxy-bias error for the six cut
+configurations of Table~\ref{tab:gbconfigs}: the figure of bias of the
+galaxy bias alone (top) and of IA and galaxy bias together (bottom),
+against $\sigma(S_8)$. Filled circles: linear bias; open squares: one-loop,
+$b_2$ free. Dotted: \Tol. NLA, stitched truth.}
+\label{fig:gbconfigs}
+\end{figure}
+
+\begin{table}[tbp]
+\centering
+\small
+\begin{tabular}{lll}
+\toprule
+ & $\gamma_t$ cut, lens bins 1 to 7 & $w$ cut, lens bins 1 to 8 \\
+\midrule
+A baseline & 0.5 & 0.2 \\
+B & 0.5 & 0.2; bin 8: 0.15 \\
+C & 0.5; bins 6, 7: 0.15 & 0.2; bin 8: 0.15 \\
+D per bin & 0.8, 0.5, 0.5, 0.4, 0.35, 0.15, 0.15 & 0.5, 0.3, 0.3, 0.3, 0.3, 0.3, 0.25, 0.15 \\
+E tuned & 0.8, 0.35, 0.8, 0.4, 0.35, 0.15, 0.15 & 0.5, 0.25, 0.6, 0.35, 0.35, 0.5, 0.25, 0.15 \\
+F & 0.15 & 0.15 \\
+\bottomrule
+\end{tabular}
+\caption{The cut configurations of Figure~\ref{fig:gbconfigs} ($K_0$ in
+$\hMpc$, $\xi_\pm$ at 0.2). E is the end of a greedy search that raised one
+cut at a time, always the one that lowered $\sigma(S_8)$ most, while IA and
+galaxy bias together stayed below \Tol.}
+\label{tab:gbconfigs}
+\end{table}
+
+\paragraph{Configurations that pass.}
+Figure~\ref{fig:gbconfigs} and Table~\ref{tab:gbconfigs} show the trade.
+\begin{itemize}
+  \item \textbf{Galaxy bias as its own systematic.} The per-bin cuts D pass
+    with \GBD{} (largest piece \GBDpiece) on every reference, at
+    $\sigma(S_8) = \GBDsig$, below the baseline's \GBbaseSig: $w$ goes up to
+    0.3 in bins 2 to 6 and 0.5 in bin 1, and down to 0.25 and 0.15 in bins
+    7 and 8; $\gamma_t$ goes down to 0.4 to 0.15 in bins 4 to 7. The IA
+    error alone at D is \GBDia, still within its own \Tol. Variants with $\gamma_t$ of bin 1 at 0.5 and $w$ at 0.3
+    in bins 1 to 6 (0.13), or at 0.5 in bins 1 to 3 (0.16), also pass, at
+    $\sigma(S_8) = 0.0046$.
+  \item \textbf{IA and galaxy bias in one budget.} Here the IA error alone
+    already takes 0.17 to 0.28 of the \Tol{} at the baseline, and D gives
+    \GBDtot. The tuned
+    configuration E passes at \GBEtot{} with the baseline's precision, by a
+    margin of 0.01 to 0.03 and partly by cancellation between the two
+    errors; uniform cuts at 0.15 (F) pass at \GBFtot{} but at
+    $\sigma(S_8) = \GBFsig$, 63\% above the baseline.
+  \item \textbf{The one-loop model.} With $b_2$ free, B and C pass in one
+    budget (\GBolBtot) with $\gamma_t$ at 0.5 everywhere and $w$ at 0.2 in
+    bins 1 to 7, but $b_2$ costs precision: $\sigma(S_8) = \GBolSig$. The
+    fitted $b_2$ ($-0.14$ to 1.4) are of the size the coevolution relation
+    gives for these $b_1$. At the baseline it does not pass (\GBolBase): the
+    $b_2$ of bin 8 runs to \GBolBEight, beyond its natural size for
+    $b_1 = 2.44$ and beyond where the linear shift holds.
+\end{itemize}
+
+\paragraph{What this rests on.}
+The FLAMINGO galaxies stand in for Roman's lenses, matched by redshift, not
+by bias: at the mean redshift of bin 8 the FLAMINGO galaxies have
+$b_1 \simeq 2.9$ against Roman's 2.44, which overstates the nonlinear bias
+there, and at bin 7, 2.1 against 2.52, which understates it. The bias at
+the ten snapshots without $P_{\rm gm}$ takes the galaxy-matter correlation
+from the nearest of $z = 1.5$, 2, 3, and its noise level is uncertain above
+$k \approx 1\hMpc$ (note \texttt{flamingo\_pgm}). The linear shift agrees
+with the minimizer to 0.01 at the baseline, to 0.001 at F, and to 0.03 at
+$\gamma_t$ 0.5, $w$ 0.15 (where the minimizer keeps the raw $\gamma_t$
+rows); per-bin cuts were not run through the minimizer, and the one-loop
+shifts are linear about $b_2$ fitted at F, which they move by at most 0.25
+in every configuration but A.
+
 \clearpage
 \appendix
 
@@ -2472,6 +2670,18 @@ depend on.
     parameter values. The fits of Section~\ref{sec:cutval} did not hit
     it: one rerun with the fix reproduces its $\chi^2$ and figure of bias
     to every digit.
+  \item \textbf{The galaxy-bias data of Section~\ref{sec:gbias}.} The
+    contamination recomputes cosmolike's own 3x2pt vector exactly at
+    $\beta = 1$ and raises $\gamma_t$ and $w$ by exactly 10\% at a
+    constant $\beta = 1.1$; $\xi_\pm$ rows are untouched. The one-loop
+    columns leave $\xi_\pm$ untouched, and their linear-bias $b_1$ columns
+    match the Jacobian's to $2.5\times10^{-3}$. The galaxy-galaxy spectrum
+    of the dark-matter grids equals the IA pipeline's bin for bin. The
+    linear shifts agree with the minimizer to 0.01 at $\gamma_t$ 0.5, $w$
+    0.2 (\GBbaseMAP{} against \GBbaseTot), 0.001 at 0.15, 0.15, and 0.03
+    at 0.5, 0.15. At small angles of the low-redshift bins the one-loop $w$
+    is jagged in angle (the one-loop spectra do not fall off at high $k$);
+    those rows lie outside every cut used.
 \end{itemize}
 
 \section{Where the code and results are}
@@ -2525,6 +2735,14 @@ and to \texttt{v9/} next to it for Section~\ref{sec:v9}.
     2x2pt fits & \texttt{fisher\_minimize.py --probe 2x2}, \texttt{jobs\_2x2.txt} \\
     the 3x2pt bias split by probe & \texttt{probe\_split.py} $\rightarrow$ \texttt{probe\_split.json} \\
     figure data & \texttt{make\_combo\_figure.py}, \texttt{make\_hm\_eps.py}, \texttt{v3/truth\_eb\_data.py} \\
+    \multicolumn{2}{l}{\textit{Section~\ref{sec:gbias}, in \texttt{galaxy\_bias/}:}} \\
+    $P_{\rm gm}$ spectra & \texttt{matter\_cross.py} (\texttt{flamingo/extraction/}) \\
+    $\beta_{\rm gm}$, $\beta_{\rm gg}$ per snapshot & \texttt{flamingo\_beta.py} $\rightarrow$ \texttt{beta\_tables.npz} \\
+    the contaminated vectors & \texttt{gbias\_contamination.py} $\rightarrow$ \texttt{gbias\_dv\_*.npz} \\
+    one-loop columns & \texttt{gbias\_oneloop.py} $\rightarrow$ \texttt{gbias\_oneloop.npz} \\
+    uniform and per-bin scans & \texttt{gbias\_scan.py}, \texttt{gbias\_perbin.py} \\
+    the configurations A to F & \texttt{gbias\_configs.py} $\rightarrow$ \texttt{gbias\_configs.json} \\
+    figure data & \texttt{make\_gbias\_figures.py} \\
     \bottomrule
   \end{tabular}
 \end{center}
@@ -2547,7 +2765,17 @@ and to \texttt{v9/} next to it for Section~\ref{sec:v9}.
   \item The 3x2pt numbers use a Gaussian covariance, because the shipped
     3x2pt matrix is not positive definite; the lenses share the source
     $n(z)$, so neighboring bins overlap even for sources ``behind'' their
-    lenses; the galaxy bias is linear and exact.
+    lenses. Sections~\ref{sec:ggl} to \ref{sec:hm} put linear galaxy bias
+    in the data; Section~\ref{sec:gbias} puts in FLAMINGO's nonlinear bias,
+    taken from galaxies matched to Roman's lenses by redshift, not by bias
+    ($b_1 \simeq 2.9$ against 2.44 in lens bin 8, 2.1 against 2.52 in bin
+    7). A lens-like FLAMINGO sample (Roman's number density and bias per bin)
+    would set the $w$ cut of bins 7 and 8 more firmly.
+  \item The galaxy-bias cuts of Section~\ref{sec:gbias} were found with the
+    linear shift, checked against the minimizer only for uniform cuts; the
+    minimizer keeps the raw $\gamma_t$ masks, which drop 1 to 8 rows
+    between neighboring cuts (6 of 234 at 0.5), while the galaxy-bias scans
+    nest them. The IA fits of the other sections keep the raw masks.
   \item Section~\ref{sec:cutval} has no converged chains; its posterior
     means are the linear Fisher estimate, with the flat priors as
     Gaussians. With the CMB prior the MAP agrees with it, without the prior
@@ -2591,8 +2819,7 @@ and to \texttt{v9/} next to it for Section~\ref{sec:v9}.
     halo-model variants were checked at $K_0 = 0.2$ and 0.25, and NLA-F also
     at 0.15, where it passes by 0.004. Fits with $b_{\rm TA}$ at 0, its lower
     prior edge (no density weighting), are kept: TATT$+\alpha$ in cosmic
-    shear at 0.3 and 0.35 on the stitched truth. The $\gamma_t$ cut is
-    also limited by the galaxy bias model, which this test does not probe.
+    shear at 0.3 and 0.35 on the stitched truth.
 \end{itemize}
 
 \end{document}
