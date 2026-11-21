@@ -118,15 +118,17 @@ X0 = 1.62
 IA_START = {"NLA": [3.5, 0.7], "NLAz": [3.0]*8, "TATT": [3.4, 0.7, -1.0, -2.0, 0.5],
             "NLAf": [3.5, 0.7], "NLAfT": [3.5, 0.7], "TATTf": [3.4, 0.7, -1.0, -2.0, 0.5],
             "NLAa": [3.5, 0.7, 0.5], "TATTa": [3.4, 0.7, -1.0, -2.0, 0.5, 0.5]}
-# Freer redshift evolution, nested in the power law: A1(z) = A1 ((1+z)/1.62)^eta1 g(z),
-# added to the native model through the snapshot templates N_GI, N_II of
-# hm_templates.py (exact in the IA amplitudes, held at the fiducial cosmology):
-#   v += sum_s (a_s g_s - a_s) N_GI[s] + (a_s^2 g_s^2 - a_s^2) N_II[s],   a_s = A1 x_s^eta1.
-#   break  g = ((1+z)/(1+Z_BREAK))^zevo_deta above Z_BREAK, 1 below (slope eta1 + deta at z > 1.5)
+# Freer redshift evolution, nested in the power law: both amplitudes take the same g(z),
+#   a1(z) = A1 ((1+z)/1.62)^eta1 g(z),   a2(z) = A2 ((1+z)/1.62)^eta2 g(z),   b_TA unchanged,
+# added to the native model through the per-term snapshot templates of tatt_templates.py
+# (exact in the IA amplitudes, held at the fiducial cosmology). Every GI term is linear in
+# (a1, a2) and every II term quadratic, so
+#   v += sum_s (g_s - 1) GI_s + (g_s^2 - 1) II_s,
+# GI_s, II_s the native TATT GI and II parts at snapshot s (sum of the monomial templates
+# times their power-law coefficients; for NLA a2 = b_TA = 0 and only the a1, a1^2 rows act).
+#   break  g = ((1+z)/(1+Z_BREAK))^zevo_deta above Z_BREAK, 1 below (slope eta + deta at z > 1.5)
 #   hz     g = 1 + zevo_d2 T_2(z) + zevo_d3 T_3(z): tents on z = 1.5, 2, 3 (g = 1 at z <= 1.5),
 #          held at its z = 3 value beyond (free amplitudes at z = 2 and 3)
-# For TATT only the A1 terms of NLA form move (the A1 A2 and A1 b_TA cross terms keep the
-# power law), an approximation flagged where TATT results are quoted.
 Z_BREAK = 1.5
 ZEVO = {"zevo_deta": (-5, 5, 0.05), "zevo_d2": (-0.9, 3, 0.02), "zevo_d3": (-0.9, 3, 0.03)}
 IA["NLAbk"] = dict(model=0, evo=3, free={**IA["NLA"]["free"], "zevo_deta": ZEVO["zevo_deta"]}, zevo="break")
@@ -232,9 +234,9 @@ class Setup:
                 self.hm = dict(zs=t["zs"], U_GI=w*t["U_GI"], U_II=w*t["U_II"], fixed=True)
         self.zevo = None
         if IA[mdl].get("zevo"):
-            t = np.load(os.path.join(HERE, f"hm_templates_{probe}_{truth}.npz"))
+            t = np.load(os.path.join(HERE, f"tatt_templates_{probe}_{truth}.npz"))
             assert np.allclose(t["zs"], self.zs_hm)
-            self.zevo = dict(kind=IA[mdl]["zevo"], N_GI=t["N_GI"], N_II=t["N_II"])
+            self.zevo = dict(kind=IA[mdl]["zevo"], T_GI=t["T_GI"], T_II=t["T_II"])
         if probe == "3x2":       # lens bin of every gamma_t row (15 angles per pair)
             pairs = np.load(os.path.join(RD, "v9", "ia_base_3x2_common.npz"))["pairs"]
             self.gt_lens = np.repeat(pairs[:, 0], 15)
@@ -279,11 +281,22 @@ class Setup:
             v += self.zevo_correction(p, zp)
         return v, r["derived"]["S8"]
 
+    def tatt_parts(self, p, T_GI, T_II):
+        """(GI_s, II_s): the native TATT GI and II parts per snapshot, (13, n) each, from the
+        monomial templates of tatt_templates.py at the power-law amplitudes of p."""
+        x = (1 + self.zs_hm)/X0
+        a1 = p["roman_A1_1"]*x**p["roman_A1_2"]
+        a2 = p.get("roman_A2_1", 0.0)*x**p.get("roman_A2_2", 0.0)
+        b = p.get("roman_BTA_1", 0.0)
+        cg = np.array([a1, a1*b, a2])
+        ci = np.array([a1**2, a1**2*b, a1**2*b**2, a1*a2, a1*a2*b, a2**2])
+        return np.einsum("ms,msn->sn", cg, T_GI), np.einsum("ms,msn->sn", ci, T_II)
+
     def zevo_correction(self, p, zp):
-        """sum_s (a_s g_s - a_s) N_GI[s] + (a_s^2 g_s^2 - a_s^2) N_II[s], gamma_t rows times b_i/B1_FID_i."""
-        a = p["roman_A1_1"]*((1 + self.zs_hm)/X0)**p["roman_A1_2"]
+        """sum_s (g_s - 1) GI_s + (g_s^2 - 1) II_s, gamma_t rows times b_i/B1_FID_i."""
+        gi, ii = self.tatt_parts(p, self.zevo["T_GI"], self.zevo["T_II"])
         g = zevo_g(self.zevo["kind"], self.zs_hm, zp)
-        t = (a*g - a) @ self.zevo["N_GI"] + (a**2*g**2 - a**2) @ self.zevo["N_II"]
+        t = (g - 1) @ gi + (g**2 - 1) @ ii
         if self.probe == "3x2":
             b = np.array([p[q] for q in BB])/np.array(B1_FID)
             t[NXI:NXI + 915] *= b[self.gt_lens]
@@ -466,10 +479,37 @@ def check_hm():
                   f"{d @ d:.4f}; max |diff|/max|IA| {np.abs(v - v0 - tpl).max()/np.abs(v - v0).max():.3f}", flush=True)
 
 
+def check_tatt():
+    """Native TATT of the emulator pipeline against the template sum of tatt_templates.py,
+    and the zevo correction at a constant g = c against native TATT at (c A1, c A2)."""
+    for probe in ("cs", "3x2"):
+        S = Setup("TATT", 0.4, "S1", probe)
+        t = np.load(os.path.join(HERE, f"tatt_templates_{probe}_S1.npz"))
+        for ia in ((3.4, 0.7, -1.0, -2.0, 0.5), (1.0, 0.0, 2.0, 1.0, 1.0), (4.0, 2.0, -3.0, 0.5, 0.0)):
+            th = S.theta(FID, {}, list(ia))
+            v, _ = S.vector(th)
+            v0, _ = S.vector(S.theta(FID, {}, list(ia), zero_ia=True))
+            p = dict(zip(S.names, th))
+            gi, ii = S.tatt_parts(p, t["T_GI"], t["T_II"])
+            tpl = gi.sum(0) + ii.sum(0)
+            w = S.Lw @ ((v - v0)[S.mask])
+            d = S.Lw @ ((v - v0 - tpl)[S.mask])
+            c = 1.2
+            vc, _ = S.vector(S.theta(FID, {}, [c*ia[0], ia[1], c*ia[2], ia[3], ia[4]]))
+            corr = (c - 1)*gi.sum(0) + (c**2 - 1)*ii.sum(0)
+            dc = S.Lw @ ((vc - v - corr)[S.mask])
+            wc = S.Lw @ ((vc - v)[S.mask])
+            print(f"{probe} TATT {ia}: chi2 of native IA {w @ w:.1f}, chi2(native - template) {d @ d:.4f}; "
+                  f"g = {c}: chi2 of the change {wc @ wc:.1f}, chi2(native - correction) {dc @ dc:.4f}",
+                  flush=True)
+
+
 def main():
     a = sys.argv[1:]
     if "--check-hm" in a:
         return check_hm()
+    if "--check-tatt" in a:
+        return check_tatt()
     probe = "cs"
     if "--probe" in a:
         probe = a.pop(a.index("--probe") + 1)

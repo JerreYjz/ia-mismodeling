@@ -1,0 +1,427 @@
+{
+ "about": "Producer: notes/ia_zevo/plots/make_figure_data.py.\ndata.json of the figures of the redshift-evolution note (ia_zevo.tex).\n\namp_error: the amplitude error of NLA per snapshot, eps(z) = 1 - P_model/P_truth\nat k = 0.01 h/Mpc (bias_pieces.json, \"eps_flat\", the \"z|amplitude\" piece),\nof the NLA fits at xi_+- cut 0.2 and gamma_t cut 0.5 (3x2pt, CMB prior) on the\nstitched (S1) and linear-limit (lin) truths, GI and II; the figure of bias of\neach snapshot's amplitude error alone (the \"z|amplitude\" piece split by\nsnapshot: the error at k = 0.01 of snapshot s applied at every k, pushed\nthrough the linear map of pieces_maps/); and g(z) of the two freer\nevolutions of fisher_minimize.zevo_g at example values.\nzevo_3x2_nla, zevo_3x2_tatt: from analysis/cut_validation/zevo_summary.json, the\n3x2pt runs (gamma_t 0.5, w 0.2, CMB prior) against the xi_+- cut K0, per truth:\nthe total MAP figure of bias, the largest piece of the bias split, sigma(S8),\nwhether a parameter sits at a prior bound, and the reliable cut, for NLA and\nits two freer evolutions (NLAbk, NLAhz), and the same for TATT.\ntatt_exact: the change of the TATT freer evolutions from the first version\n(g on the NLA-form a1 terms only) to g on a1 and a2 in every term.\n\n    ~/cocoa/Cocoa/.local/bin/python make_figure_data.py      (from ~/cocoa/Cocoa)\n\ntatt_exact: new minus old (old: g on the NLA-form a1 terms only), total MAP figure of bias and largest piece, gamma_t 0.5 and w 0.2 for 3x2pt, CMB prior; also the reliable cuts of both versions.",
+ "panels": [
+  "3x2|S1",
+  "3x2|EB",
+  "3x2|lin",
+  "cs|S1",
+  "cs|EB",
+  "cs|lin"
+ ],
+ "models": [
+  "TATTbk",
+  "TATThz"
+ ],
+ "lines": {
+  "3x2|TATTbk|S1": {
+   "K0": [
+    0.2,
+    0.25,
+    0.3,
+    0.4,
+    0.5,
+    0.6
+   ],
+   "d_total": [
+    0.0002907046252117046,
+    0.0006477365419810741,
+    -0.0004633341792120438,
+    -4.682729678329167e-05,
+    -0.001463239511584738,
+    -0.0009409904988955733
+   ],
+   "d_largest": [
+    0.0002811267938580761,
+    0.0003519013538769572,
+    5.154582446671718e-05,
+    -0.00012682964306176547,
+    -0.001595027752753636,
+    -0.0036470729811302616
+   ],
+   "unphysical": [
+    false,
+    false,
+    false,
+    true,
+    false,
+    false
+   ]
+  },
+  "3x2|TATThz|S1": {
+   "K0": [
+    0.2,
+    0.25,
+    0.3,
+    0.4,
+    0.5,
+    0.6
+   ],
+   "d_total": [
+    2.7026445626458784e-05,
+    1.1025439445630503e-05,
+    -0.0007160413085655903,
+    -2.3891256403438255e-05,
+    0.008039864150987064,
+    -0.0010815363273438822
+   ],
+   "d_largest": [
+    1.6374023055754777e-05,
+    0.00040638805876101053,
+    1.2691519132648765e-05,
+    -2.810205785241937e-05,
+    -8.117918516345468e-05,
+    -0.004207729031906193
+   ],
+   "unphysical": [
+    true,
+    true,
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "3x2|TATTbk|EB": {
+   "K0": [
+    0.2,
+    0.25,
+    0.3,
+    0.4,
+    0.5,
+    0.6
+   ],
+   "d_total": [
+    0.00021467613589340462,
+    0.0006526093742632716,
+    -0.0006474796992393464,
+    -0.0014272665092874282,
+    -0.0008068319394477705,
+    -0.0012492537291636518
+   ],
+   "d_largest": [
+    0.0002910144310317789,
+    0.0003702859884333956,
+    7.385010026057792e-05,
+    0.00030322091633809556,
+    -0.0004396181712427033,
+    -0.0014836148494219992
+   ],
+   "unphysical": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "3x2|TATThz|EB": {
+   "K0": [
+    0.2,
+    0.25,
+    0.3,
+    0.4,
+    0.5,
+    0.6
+   ],
+   "d_total": [
+    -1.5897371920502168e-06,
+    -5.526064073814452e-05,
+    7.67155709114134e-06,
+    -0.0028306406305588228,
+    -0.0010646009962783053,
+    -0.0011591511856702333
+   ],
+   "d_largest": [
+    2.542772588707068e-05,
+    0.0001532559280981033,
+    5.362618950718878e-06,
+    0.0002400662329293951,
+    -0.0005172544700131759,
+    -0.002124920027583632
+   ],
+   "unphysical": [
+    true,
+    true,
+    true,
+    false,
+    false,
+    false
+   ]
+  },
+  "3x2|TATTbk|lin": {
+   "K0": [
+    0.2,
+    0.25,
+    0.3,
+    0.4,
+    0.5,
+    0.6
+   ],
+   "d_total": [
+    0.0009325334922618278,
+    0.0009228754670283501,
+    0.0010230431245515093,
+    0.0007285556918273928,
+    0.0015803651432994004,
+    0.002006642070436493
+   ],
+   "d_largest": [
+    -0.00020118123739004679,
+    -6.39472864687185e-05,
+    -0.0012744750393115234,
+    -0.002518514280786366,
+    -0.0007047472802430566,
+    -0.0008328761363325388
+   ],
+   "unphysical": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "3x2|TATThz|lin": {
+   "K0": [
+    0.2,
+    0.25,
+    0.3,
+    0.4,
+    0.5,
+    0.6
+   ],
+   "d_total": [
+    -5.575988367828577e-05,
+    0.00048310480859047045,
+    0.0011004151620608998,
+    0.0013907026790221655,
+    0.002103163908812683,
+    0.0022142097310078324
+   ],
+   "d_largest": [
+    -0.0012249135192622662,
+    -0.00036208666402123835,
+    -0.0011881126822643195,
+    -0.0018513762069761186,
+    -0.0004215400815057446,
+    -0.0004286018258649049
+   ],
+   "unphysical": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "cs|TATTbk|S1": {
+   "K0": [
+    0.2,
+    0.3,
+    0.4,
+    0.5
+   ],
+   "d_total": [
+    -9.56389183850298e-06,
+    -0.003674208007731425,
+    -0.004713777312264494,
+    -0.003934745819513585
+   ],
+   "d_largest": [
+    -0.00046502057000938346,
+    -0.0009690616404067764,
+    -0.003508389064746209,
+    -0.006159886095988776
+   ],
+   "unphysical": [
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "cs|TATThz|S1": {
+   "K0": [
+    0.2,
+    0.3,
+    0.4,
+    0.5
+   ],
+   "d_total": [
+    0.0002565543722343605,
+    -0.002723165895492402,
+    -0.003534352126240786,
+    -0.0022670590687462466
+   ],
+   "d_largest": [
+    -0.0005403576916442887,
+    -0.0010351257094233512,
+    -0.0042078072342944806,
+    -0.00734276288551261
+   ],
+   "unphysical": [
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "cs|TATTbk|EB": {
+   "K0": [
+    0.2,
+    0.3,
+    0.4,
+    0.5
+   ],
+   "d_total": [
+    0.00034193037768400283,
+    -0.0030001741858407434,
+    -0.003956825424369773,
+    -0.004190420644146105
+   ],
+   "d_largest": [
+    4.835736773164956e-07,
+    -0.00040759551297753216,
+    -0.0013737644070534183,
+    -0.0028026335608014458
+   ],
+   "unphysical": [
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "cs|TATThz|EB": {
+   "K0": [
+    0.2,
+    0.3,
+    0.4,
+    0.5
+   ],
+   "d_total": [
+    0.0005825695416343118,
+    -0.0032256059452331967,
+    -0.0035314092848273554,
+    -0.004173910042836876
+   ],
+   "d_largest": [
+    -1.4273019021772415e-05,
+    -0.0005939653233003883,
+    -0.0017651982661707477,
+    -0.0031030823354360887
+   ],
+   "unphysical": [
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "cs|TATTbk|lin": {
+   "K0": [
+    0.2,
+    0.3,
+    0.4,
+    0.5
+   ],
+   "d_total": [
+    0.0015594777947375016,
+    0.0005403229808105814,
+    -0.00031979608855325914,
+    0.0008595544050290505
+   ],
+   "d_largest": [
+    6.700401966311387e-05,
+    -0.003272503397441895,
+    -0.009563856817713656,
+    -0.007741494976444385
+   ],
+   "unphysical": [
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "cs|TATThz|lin": {
+   "K0": [
+    0.2,
+    0.3,
+    0.4,
+    0.5
+   ],
+   "d_total": [
+    0.002019752094863797,
+    0.0004207361355439698,
+    0.0005586043920659534,
+    0.0014521855861026334
+   ],
+   "d_largest": [
+    -0.0007769712897031933,
+    -0.0031580774512952603,
+    -0.008052912555944647,
+    -0.007381623370217749
+   ],
+   "unphysical": [
+    false,
+    false,
+    false,
+    false
+   ]
+  }
+ },
+ "reliable": {
+  "3x2|TATTbk|S1": {
+   "new": "0.6",
+   "old": "0.6"
+  },
+  "3x2|TATThz|S1": {
+   "new": "0.6",
+   "old": "0.6"
+  },
+  "3x2|TATTbk|EB": {
+   "new": "0.6",
+   "old": "0.6"
+  },
+  "3x2|TATThz|EB": {
+   "new": "0.6",
+   "old": "0.6"
+  },
+  "3x2|TATTbk|lin": {
+   "new": "0.3",
+   "old": "0.3"
+  },
+  "3x2|TATThz|lin": {
+   "new": "0.3",
+   "old": "0.3"
+  },
+  "cs|TATTbk|S1": {
+   "new": "0.3",
+   "old": "0.3"
+  },
+  "cs|TATThz|S1": {
+   "new": "0.5",
+   "old": "0.5"
+  },
+  "cs|TATTbk|EB": {
+   "new": "0.5",
+   "old": "0.5"
+  },
+  "cs|TATThz|EB": {
+   "new": "0.5",
+   "old": "0.5"
+  },
+  "cs|TATTbk|lin": {
+   "new": "0.2",
+   "old": "0.2"
+  },
+  "cs|TATThz|lin": {
+   "new": "0.2",
+   "old": "0.2"
+  }
+ }
+}

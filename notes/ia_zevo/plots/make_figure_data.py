@@ -14,6 +14,8 @@ zevo_3x2_nla, zevo_3x2_tatt: from analysis/cut_validation/zevo_summary.json, the
 the total MAP figure of bias, the largest piece of the bias split, sigma(S8),
 whether a parameter sits at a prior bound, and the reliable cut, for NLA and
 its two freer evolutions (NLAbk, NLAhz), and the same for TATT.
+tatt_exact: the change of the TATT freer evolutions from the first version
+(g on the NLA-form a1 terms only) to g on a1 and a2 in every term.
 
     ~/cocoa/Cocoa/.local/bin/python make_figure_data.py      (from ~/cocoa/Cocoa)
 """
@@ -67,3 +69,24 @@ for fam, models in (("nla", ["NLA", "NLAbk", "NLAhz"]), ("tatt", ["TATT", "TATTb
     os.makedirs(os.path.join(HERE, f"zevo_3x2_{fam}"), exist_ok=True)
     json.dump(d, open(os.path.join(HERE, f"zevo_3x2_{fam}", "data.json"), "w"), indent=1)
     print(f"wrote zevo_3x2_{fam}/data.json")
+# tatt_exact: the TATT freer evolutions with g on a1 and a2 in every term (tatt_templates.py)
+# minus the first version (g on the NLA-form a1 terms only, results_archive/zevo_summary_v1.json)
+Z1 = json.load(open(os.path.join(CV, "results_archive", "zevo_summary_v1.json")))["runs"]
+d = dict(about=f"Producer: notes/ia_zevo/plots/make_figure_data.py.\n{__doc__}\ntatt_exact: new minus old "
+         "(old: g on the NLA-form a1 terms only), total MAP figure of bias and largest piece, gamma_t 0.5 "
+         "and w 0.2 for 3x2pt, CMB prior; also the reliable cuts of both versions.",
+         panels=[], models=["TATTbk", "TATThz"], lines={}, reliable={})
+for probe in ("3x2", "cs"):
+    for tr in ("S1", "EB", "lin"):
+        d["panels"].append(f"{probe}|{tr}")
+        for m in d["models"]:
+            k = f"{probe}|{m}|{tr}"
+            new, old = Z[k]["rows"], Z1[k]["rows"]
+            d["lines"][k] = dict(K0=[float(x) for x in Z[k]["K0"]],
+                                 d_total=[a["fob"] - b["fob"] if a and b else None for a, b in zip(new, old)],
+                                 d_largest=[a["largest"] - b["largest"] if a and b else None for a, b in zip(new, old)],
+                                 unphysical=[bool(a["bound"]) if a else None for a in new])
+            d["reliable"][k] = dict(new=Z[k]["reliable"], old=Z1[k]["reliable"])
+os.makedirs(os.path.join(HERE, "tatt_exact"), exist_ok=True)
+json.dump(d, open(os.path.join(HERE, "tatt_exact", "data.json"), "w"), indent=1)
+print("wrote tatt_exact/data.json")

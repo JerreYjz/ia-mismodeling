@@ -21,8 +21,8 @@ For one run of fisher_minimize.json (probe, model, K0, truth):
                  dR_GI = (1 - alpha_s) A_s C1_s (1 - I_1 P_lin/P_NL),
                  dR_II = -(1 - alpha_s) A_s^2 C1_s^2 (1 - P_lin/P_NL),
              and, for the freer redshift evolutions (NLAbk, NLAhz, TATTbk,
-             TATThz), the amplitude A_s g_s in place of A_s on the NLA-form
-             terms (fisher_minimize.zevo_g).
+             TATThz), both amplitudes times g_s (fisher_minimize.zevo_g), so
+             P_GI^model times g_s and P_II^model times g_s^2.
     shift    of each piece, linear: dtheta = -F^-1 J^T r, r the whitened
              piece, F = J^T J + priors + the flat priors as Gaussians (the
              Fflat of fisher_minimize.py, the sigma its FoB is quoted in);
@@ -92,12 +92,10 @@ def model_ratios(mdl, p, zs, fine, hmt):
         C1 = np.array([C1RHO*OM/tm().D(float(z)) for z in zs])
         out[:, 0] += (w*A*C1)[:, None]*hmt["one_minus_I1Plin_over_PNL"]
         out[:, 1] -= (w*A**2*C1**2)[:, None]*hmt["one_minus_Plin_over_PNL"]
-    if cfg.get("zevo"):      # A1(z) = A x^eta1 g(z) on the NLA-form terms (fisher_minimize.zevo_g)
-        A = best["A1"]*((1 + zs)/FM.X0)**best["eta1"]
+    if cfg.get("zevo"):      # a1 and a2 both times g(z) (fisher_minimize.zevo_g): GI x g, II x g^2
         g = FM.zevo_g(cfg["zevo"], zs, p)
-        C1 = np.array([C1RHO*OM/tm().D(float(z)) for z in zs])
-        out[:, 0] -= ((A*g - A)*C1)[:, None]
-        out[:, 1] += ((A*g)**2 - A**2)[:, None]*(C1**2)[:, None]
+        out[:, 0] *= g[:, None]
+        out[:, 1] *= (g**2)[:, None]
     return out
 
 

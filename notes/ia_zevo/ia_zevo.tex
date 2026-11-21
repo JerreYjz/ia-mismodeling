@@ -37,6 +37,18 @@
 \newcommand{\TplTx}{0.010}
 \newcommand{\TplSteepCs}{37}
 \newcommand{\TplSteepTx}{51}
+% TATT template check (fisher_minimize.py --check-tatt), at A1 3.4, eta1 0.7, A2 -1, eta2 -2, bTA 0.5:
+% chi2(native - template); and g = 1.2: chi2 of the change, chi2(native - correction)
+\newcommand{\TattTplCs}{0.011}
+\newcommand{\TattTplTx}{0.011}
+\newcommand{\TattGChgCs}{220}
+\newcommand{\TattGChgTx}{171}
+\newcommand{\TattGErrCs}{0.002}
+\newcommand{\TattGErrTx}{0.001}
+\newcommand{\TattAtwoNoBB}{0.5}   % relative norm of the A2-only mismatch without B modes
+\newcommand{\TattDmax}{0.01}
+\newcommand{\TattAtwoMax}{0.6}    % largest |A2| at the MAP of the 60 TATT freer-evolution fits (fisher_minimize.json)
+\newcommand{\TattBtaMax}{0.17}    % largest b_TA, same      % largest |change| of the TATT figures of bias, first version to exact (tatt_exact)
 % per-bin NLA (NLAz) in 3x2pt, rejected earlier (ia_error_budget.tex, "Freer redshift evolution")
 \newcommand{\NLAzLo}{0.6}
 \newcommand{\NLAzHi}{1.1}
@@ -136,10 +148,15 @@ inside every bin and adds freedom on top of it, as a function of $z$.
 
 \section{The models}
 \label{sec:models}
-Each model multiplies the tidal-alignment amplitude by a factor $g(z)$:
+Each model multiplies the alignment amplitudes by a common factor $g(z)$:
 \begin{equation}
-  A_1(z) = A_1 \left(\frac{1+z}{1.62}\right)^{\eta_1} g(z).
+  a_1(z) = A_1 \left(\frac{1+z}{1.62}\right)^{\eta_1} g(z), \qquad
+  a_2(z) = A_2 \left(\frac{1+z}{1.62}\right)^{\eta_2} g(z),
 \end{equation}
+with $b_{\rm TA}$ unchanged ($A_2 = b_{\rm TA} = 0$ for NLA). A common
+factor treats the departure from the power law as a change of the whole
+alignment signal of the sample, so every TATT term that carries $a_1$ or
+$a_2$, the $a_1 b_{\rm TA}$ and $a_1 a_2$ terms included, moves with it.
 \begin{description}
   \item[Break (NLAbk, TATTbk).] The slope changes by $\Delta\eta$ above
     $z_b = \Zb$:
@@ -175,19 +192,28 @@ outlying snapshot. Figure~\ref{fig:amp} (bottom) shows both at example values.
 
 \section{Implementation}
 \paragraph{Templates.}
-The data vector is linear in the IA spectra, so the change of the model is
-added to cosmolike's native NLA or TATT through the snapshot templates of
-hm\_templates.py, $N_{GI}[s]$ and $N_{II}[s]$ (the native NLA at $A = 1$ at
-snapshot $s$):
+The data vector is linear in the IA spectra. Every GI term of TATT is
+linear in $(a_1, a_2)$ and every II term quadratic, so at snapshot $s$ the
+common factor changes GI by $(g_s - 1)$ and II by $(g_s^2 - 1)$ times its
+native value:
 \begin{equation}
-  v \to v + \sum_s (a_s g_s - a_s) N_{GI}[s] + (a_s^2 g_s^2 - a_s^2) N_{II}[s],
-  \qquad a_s = A_1 x_s^{\eta_1},
+  v \to v + \sum_s (g_s - 1)\, {\rm GI}_s + (g_s^2 - 1)\, {\rm II}_s,
 \end{equation}
 with the $\gamma_t$ rows scaled by $b_i/b_i^{\rm fid}$, as for the
-halo-model correction. The extra parameters are not cosmolike parameters;
+halo-model correction. ${\rm GI}_s$ and ${\rm II}_s$ are the native TATT
+parts at the power-law amplitudes, built from per-term snapshot templates
+(tatt\_templates.py): the data-vector response, on the base of the note, of
+each amplitude product at unit coefficient, three for GI ($a_1$,
+$a_1 b_{\rm TA}$, $a_2$) and six for II ($a_1^2$, $a_1^2 b_{\rm TA}$,
+$a_1^2 b_{\rm TA}^2$, $a_1 a_2$, $a_1 a_2 b_{\rm TA}$, $a_2^2$), the last
+three with their B modes, which enter $\xi_+$ as the E modes do and $\xi_-$
+with the opposite sign. For NLA only the $a_1$ and $a_1^2$ rows act; they
+equal the native-NLA templates of hm\_templates.py to $10^{-6}$. The extra parameters are not cosmolike parameters;
 the minimizer removes them before the likelihood call.
 (fisher\_minimize.py: \texttt{ZEVO}, \texttt{zevo\_g},
-\texttt{Setup.zevo\_correction}; bias\_pieces.py: \texttt{model\_ratios}.)
+\texttt{Setup.tatt\_parts}, \texttt{Setup.zevo\_correction}; bias\_pieces.py:
+\texttt{model\_ratios}, where the model's $P_{GI}$ is multiplied by $g_s$ and
+$P_{II}$ by $g_s^2$.)
 
 \paragraph{Checks done.}
 \begin{itemize}
@@ -200,20 +226,45 @@ the minimizer removes them before the likelihood call.
     snapshots (1.5, 2, 3, 4) the templates interpolate the tables linearly,
     while cosmolike evaluates the power law at every $z$. A fit that drives
     $g$ far from 1 is flagged for this reason.
-  \item The sign convention of the model ratios used by the bias split
-    ($R_{dE} = -A C_1$, $R_{EE} = A^2 C_1^2$) was checked against the TATT
-    model code.
+  \item The TATT template sum reproduces cosmolike's native TATT at
+    $A_1 = 3.4$, $\eta_1 = 0.7$, $A_2 = -1$, $\eta_2 = -2$, $b_{\rm TA} = 0.5$
+    to $\chi^2 = \TattTplCs$ (cosmic shear) and \TattTplTx{} (3x2pt). A
+    constant $g = 1.2$ is the same as native TATT at $1.2 A_1$ and $1.2 A_2$:
+    the correction reproduces that change ($\chi^2 = \TattGChgCs$ and
+    \TattGChgTx) to $\chi^2 = \TattGErrCs$ and \TattGErrTx. Without the B modes
+    the $a_2$-only part misses the native vector by half its norm
+    (\TattAtwoNoBB); with them, by 2 to 3\%.
+  \item The fitted amplitudes stay near $A_1 \simeq 3.4$, $\eta_1 \simeq 0.7$,
+    where the templates are accurate; the steep case above is the same for
+    NLA and TATT, a limit of the snapshot base, not of the TATT terms.
 \end{itemize}
 
-\paragraph{Approximations.}
-\begin{itemize}
-  \item The correction is held at the fiducial cosmology (D3A); the native
-    part responds fully. The same approximation is used for the halo-model
-    models in the note.
-  \item TATT: only the terms of NLA form move with $g$; the $A_1 A_2$ and
-    $A_1 b_{\rm TA}$ cross terms keep the power law. The NLA variants are
-    exact in this respect; TATT results are quoted with this caveat.
-\end{itemize}
+\paragraph{Approximation.}
+The correction is held at the fiducial cosmology (D3A); the native part
+responds fully. The same approximation is used for the halo-model models in
+the note.
+
+\paragraph{First version of the TATT variants.}
+The first TATT runs moved only the terms of NLA form with $g$ ($a_1 P_{\rm
+NL}$ in GI, $a_1^2 P_{\rm NL}$ in II) and left the $a_1 b_{\rm TA}$,
+$a_1 a_2$ and $a_2$ terms on the power law. All 60 TATT fits were rerun with
+the common factor of Section~\ref{sec:models}. The figures of bias change by
+at most \TattDmax{} (Figure~\ref{fig:tattexact}) and no reliable cut moves:
+at the MAP, $|A_2| \le \TattAtwoMax$ and $b_{\rm TA} \le \TattBtaMax$
+(the largest values on the linear-limit truth), so the terms the first
+version missed carry little of the signal.
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=0.5\textwidth]{plots/tatt_exact/tatt_exact.pdf}
+  \caption{Change of the TATT figures of bias from the first version ($g$ on
+    the NLA-form terms only) to the common factor on $a_1$ and $a_2$ in every
+    term, against the $\xi_\pm$ cut, per probe and truth (3x2pt: $\gamma_t$
+    0.5, $w$ 0.2). Solid, filled: the total MAP figure of bias; dashed, open:
+    the largest piece of the bias split. A grey cross marks a fit with
+    $\eta_2$ at its bound. The dotted line is zero.}
+  \label{fig:tattexact}
+\end{figure}
 
 \section{Runs}
 \begin{center}
@@ -346,9 +397,10 @@ linear-limit truth it rises from none to 0.2 with any freer evolution.
     the same stellar-mass range); a freer model that absorbs it is fitting the
     least certain snapshot of the truth.
   \item The 3x2pt runs use $\gamma_t$ at 0.5 and $w$ at 0.2, the protocol of
-    the note. Nonlinear galaxy bias, tested separately with FLAMINGO's own
-    galaxies, may tighten those cuts; the freer models then need rerunning
-    at the cuts it sets.
+    the IA note. With FLAMINGO's nonlinear galaxy bias in the data that pair
+    fails, and the $\gamma_t$ and $w$ cuts are set per lens bin instead
+    (IA note, Section ``Nonlinear galaxy bias''); the freer models were not
+    rerun at those cuts.
   \item The grid ends at $K_0 = 0.6$, where the freer models still pass on
     the stitched and E minus B truths; their limit there is not found.
   \item The $\gamma_t$ and $w$ cuts were not raised with the freer models;
