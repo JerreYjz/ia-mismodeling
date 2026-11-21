@@ -117,6 +117,11 @@ def stream(sn, max_rows=None):
     from common import flamingo_header, open_hdf5
 
     os.makedirs(GRID_DIR, exist_ok=True)
+    tag = "" if max_rows is None else "_test"
+    info = os.path.join(GRID_DIR, f"dm_info{tag}_sn{sn}.json")
+    if os.path.exists(info) and not os.path.exists(os.path.join(GRID_DIR, f"dm_ckpt{tag}_sn{sn}.json")):
+        log(f"snapshot {sn}: already streamed ({info}), nothing to do")
+        return
     f = open_hdf5(SNAP.format(sn=sn))
     box, h, z = flamingo_header(f)
     dset = f["PartType1/Coordinates"]

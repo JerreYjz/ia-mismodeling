@@ -1,7 +1,8 @@
 # ia-power for FLAMINGO (SOAP catalogue only)
 
 Intrinsic-alignment power spectra for FLAMINGO, measured straight from the
-SOAP-HBT halo catalogue: no particle data, no matter field. Adapted from the
+SOAP-HBT halo catalogue: no particle data, no matter field (the one exception,
+`matter_cross.py`, is described below). Adapted from the
 TNG300 Python pipeline (`ia_power_py`).
 
 | stage | script | input | output |
@@ -60,6 +61,19 @@ On COSMA, point `SoapFile` at the local file instead.
   `SubhaloPos`).
 * Config keys `den_sn` and `ellip_sn` are now a single `sn`. `dens_dir` and
   `dens_stem` are gone.
+
+## Galaxy-matter cross spectrum (`matter_cross.py`)
+
+No FLAMINGO product holds P_gm, and the reduced snapshots keep particles by
+halo membership, so `matter_cross.py stream <sn>` reads every dark-matter
+particle of a full snapshot from the server (46.7 billion for L1_m8, about
+2e6 rows/s, 5.5 to 7 h per snapshot) onto the folded grids of the galaxy
+field, with a checkpoint every 30 min. `matter_cross.py power <sn>` then
+writes `Pmm_dm`, `Pgm` and `Pgg` per fold (no shot-noise subtraction, V/N in
+`matter_cross_sn<sn>.json`). `run_matter_cross.sh` runs the queue (z = 3, 2,
+1.5), restarting a failed stream from its checkpoint. The spectra are in
+`flamingo/data/PS_matter/`; the measurement is written up in
+`notes/flamingo_pgm/`.
 
 ## Things to know
 
