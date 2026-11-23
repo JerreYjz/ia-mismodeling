@@ -37,10 +37,10 @@
 % correlated_bands.json, 14 November 2026), production truth unless stated. Part 2: inputs.
 %
 % Statements that rest on Part 1; re-check after a rerun:
-%   - without a cut the budget is a few to 15% for one k range and about
-%     2% for a coherent error, at every k up to about 3 h/Mpc (Summary;
-%     "The budget");
-%   - with the cut it is 6 to 18% (GI) at k <= 0.2 and opens above k_UV;
+%   - spline budget (v9/spline_budget.json), no cut: the band (every node
+%     wrong at once) is 1.8 to 4.2% (GI) and 2.9 to 7.8% (II) at 68%; NLA and
+%     TATT leave it from k ~ 0.2 to 0.6; freeing the coefficients costs 5 to
+%     7% in sigma(S8) (Summary; "The budget");
 %   - without a cut both models leave the budget from k ~ 0.1 to 0.2,
 %     with the cut GI stays inside, II leaves it near k ~ 0.1 on the
 %     production truth ("The models against the budget");
@@ -72,17 +72,44 @@
 \newcommand{\SigSNone}{\refresh{0.0020}}
 \newcommand{\SigOmCut}{\refresh{0.0080}}
 \newcommand{\SigSCut}{\refresh{0.0068}}
-% budget, no cut (percent): one k range, GI and II; coherent steps
-\newcommand{\BumpNoCutLo}{\refresh{3}}
-\newcommand{\BumpNoCutHi}{\refresh{15}}
-\newcommand{\AboveNoCutGI}{\refresh{1.5 to 2}}
-\newcommand{\BelowNoCutGI}{\refresh{2 to 3}}
-% budget, K_0 = 0.3 (percent)
-\newcommand{\BumpCutGILo}{\refresh{6}}
-\newcommand{\BumpCutGIHi}{\refresh{18}}
-\newcommand{\BumpCutIILo}{\refresh{7}}
-\newcommand{\BelowCutGI}{\refresh{9}}
-\newcommand{\BelowCutII}{\refresh{18}}
+% the spline budget (analysis/roman_dchi2/v9/spline_budget.json and _log.txt,
+% plots/spline_band/data.json; 23 November 2026): stitched truth, no cut,
+% cardinal splines 3 per decade (2 where stated), free nodes 0.2 to 2 h/Mpc,
+% same error at every z; percent unless stated
+\newcommand{\SplSigOm}{\refresh{0.0037}}
+\newcommand{\SplSigS}{\refresh{0.0020}}
+% the band, 68% and 95% ranges over 0.2 to 2 h/Mpc; lambda
+\newcommand{\SplBandGILo}{\refresh{1.8}}
+\newcommand{\SplBandGIHi}{\refresh{4.2}}
+\newcommand{\SplBandIILo}{\refresh{2.9}}
+\newcommand{\SplBandIIHi}{\refresh{7.8}}
+\newcommand{\SplBandGIninefive}{\refresh{3.5 to 8.2}}
+\newcommand{\SplBandIIninefive}{\refresh{5.7 to 15}}
+\newcommand{\SplLambda}{\refresh{0.56}}
+% one node alone (3 per decade)
+\newcommand{\SplNoCutNodeGIThree}{\refresh{3.1 to 7.5}}
+\newcommand{\SplNoCutNodeIIThree}{\refresh{5.3 to 14}}
+% 2 per decade: II band 68%; the GI node at 0.63 h/Mpc (band, 68%)
+\newcommand{\SplTwoBandII}{\refresh{2.6 to 4.0}}
+\newcommand{\SplOddNode}{\refresh{56}}
+% independent errors equal at every node, rms (2 and 3 per decade)
+\newcommand{\SplNoCutRmsGI}{\refresh{2.3 and 3.1}}
+\newcommand{\SplNoCutRmsII}{\refresh{3.1 and 3.8}}
+% the models (mean over 0.2 <= z <= 2, fitted at the fiducial cosmology, no cut)
+\newcommand{\SplNLAGIlo}{\refresh{8 to 11}}
+\newcommand{\SplNLAGIhi}{\refresh{25}}
+\newcommand{\SplTATTGIhi}{\refresh{33}}
+\newcommand{\SplNLAIIlo}{\refresh{$-12$}}
+\newcommand{\SplNLAIIhi}{\refresh{$-42$}}
+\newcommand{\SplTATTIIhi}{\refresh{19}}
+% coefficients free (GI and II together, flat prior unless stated)
+\newcommand{\SplFreeSNoCut}{\refresh{5 to 7}}
+\newcommand{\SplFreeOmNoCut}{\refresh{11 to 15}}
+\newcommand{\SplFreeSNoCutThree}{\refresh{2 to 4}}
+\newcommand{\SplSigPNoCut}{\refresh{2.6 to 5.7}}
+\newcommand{\SplPCNoCut}{\refresh{2.0 to 6.9}}
+% the E minus B truth, rms of II (2 and 3 per decade)
+\newcommand{\SplEBRmsII}{\refresh{3.9 and 5.1}}
 % verification: full refits at linear tolerances (sigma)
 \newcommand{\VerLo}{\refresh{0.27}}
 \newcommand{\VerHi}{\refresh{0.33}}
@@ -154,6 +181,18 @@
 \newcommand{\NineTATTIIn}{\refresh{2.9}}
 \newcommand{\NineNLAIIopt}{\refresh{1.1}}
 \newcommand{\NineTATTIIopt}{\refresh{0.8}}
+% why the GI band (no cut) has two narrow peaks (v9/band_kernel.py ->
+% plots/band_kernel/data.json): its two peaks (percent), sigma(Omega_m) with
+% A, eta fixed and free, the zeros of the Omega_m shift (h/Mpc), the band
+% with A, eta fixed at 0.25 to 0.6 h/Mpc (percent)
+\newcommand{\NineKerPeakLo}{\refresh{23}}
+\newcommand{\NineKerPeakHi}{\refresh{22}}
+\newcommand{\NineKerSigFix}{\refresh{0.0023}}
+\newcommand{\NineKerSigFree}{\refresh{0.0036}}
+\newcommand{\NineKerCrossLo}{\refresh{0.11}}
+\newcommand{\NineKerCrossHi}{\refresh{0.7}}
+\newcommand{\NineKerFixLo}{\refresh{13}}
+\newcommand{\NineKerFixHi}{\refresh{17}}
 % known drifts (sigma) and the room left (percent)
 \newcommand{\NineNLANoCut}{\refresh{+19}}
 \newcommand{\NineTATTNoCut}{\refresh{+16}}
@@ -514,14 +553,15 @@ by more than \Tol{} of its marginalized error? And where do NLA and TATT sit
 against that budget?
 
 \paragraph{The budget.}
-Without a scale cut, one range of $k$ may be wrong by \BumpNoCutLo{} to
-\BumpNoCutHi\%, and a coherent error over all smaller (or all larger) scales
-by only about 2\%, at every $k$ up to about $3\hMpc$; beyond that the 2.5
-arcmin angular limit of the data hides the spectra. With the production cut
-$\kuv = 0.3/D(z)$, one range at $k \le 0.2\hMpc$ may be wrong by \BumpCutGILo{}
-to \BumpCutGIHi\% (GI), a coherent error over every kept scale by about
-\BelowCutGI\% (GI) and \BelowCutII\% (II), and errors above $k \simeq 0.3$ to
-$1\hMpc$ are not seen at all (Figure~\ref{fig:bands}).
+The error of one spectrum is written on cardinal cubic splines in $\ln k$, 3
+nodes per decade from 0.2 to $2\hMpc$, the basis of Miranda, Hu and Dvorkin
+(arXiv:1411.5956), each coefficient being the fractional error at its node
+(Section~\ref{sec:pert}). Without a scale cut, with every node wrong at once,
+the band of allowed errors is \SplBandGILo{} to \SplBandGIHi\% (GI) and
+\SplBandIILo{} to \SplBandIIHi\% (II) at 68\%, and NLA and TATT leave it from
+$k \simeq 0.2$ to $0.6\hMpc$ (Figure~\ref{fig:bands}). Fitting the
+coefficients with the cosmology instead, as that paper does, costs
+\SplFreeSNoCut\% in $\sigma(S_8)$.
 
 \paragraph{Random errors correlated in k.}
 If the error is instead a random function of $k$ (up here, down there), with
@@ -531,7 +571,7 @@ range of $k$, it is a band (Figure~\ref{fig:corrbands}): \BandNoCutGILo{} to
 \BandNoCutGIHi\% (GI) and \BandNoCutIILo{} to \BandNoCutIIHi\% (II) up to
 $3\hMpc$ without a cut; with the cut, \BandCutLo{} to \BandCutHi\% at $k \le
 0.1\hMpc$, opening above $0.2\hMpc$, with no limit above about $1.5\hMpc$.
-It is about half the one-sign tolerance of Figure~\ref{fig:bands}. Spread over every $k$ at once, the rms may be only
+It is about half the tolerance of a one-sign bump (open circles in Figure~\ref{fig:corrbands}). Spread over every $k$ at once, the rms may be only
 \CorrNoCutGIMin{} to \CorrNoCutIIMax\% without a cut and \CorrCutMin{} to
 5\% with it (Figure~\ref{fig:corr}).
 
@@ -790,89 +830,157 @@ $|\delta S_8|/\sigma(S_8) < \Tol$, with $\sigma$ the marginalized errors:
 $\sigma(\Om) = \SigOmNone$ and $\sigma(S_8) = \SigSNone$ without a cut,
 \SigOmCut{} and \SigSCut{} with it.
 
-\section{The perturbations}
+\section{The perturbations: a cardinal spline basis}
 \label{sec:pert}
 
-A perturbation multiplies one spectrum (GI or II) by $1 + \varepsilon f(k)$,
-the same at every redshift, with $f \ge 0$, so the spectrum moves in one
-direction only ($\varepsilon > 0$ too high, $\varepsilon < 0$ too low).
-Three shapes, each centered on a scale $k_c$ from 0.01 to $10\hMpc$:
-\begin{align}
-  \text{one $k$ range wrong:}\quad & f = \exp\!\left[-\frac{\ln^2(k/k_c)}{2\cdot0.3^2}\right],\\
-  \text{every scale larger than $k_c$ wrong:}\quad & f = \left[1 + e^{\ln(k/k_c)/0.25}\right]^{-1},\\
-  \text{every scale smaller than $k_c$ wrong:}\quad & f = \left[1 + e^{-\ln(k/k_c)/0.25}\right]^{-1}.
-\end{align}
-The first is a bump about a factor of 1.4 wide; the other two are smooth
-steps.
+Miranda, Hu and Dvorkin (arXiv:1411.5956, Section II B) write a deviation of
+a function of a scale as a sum over a spline basis whose coefficients are the
+deviations at a set of nodes, and fit the coefficients with everything else.
+Here the function is the fractional error of one injected spectrum $X$ (GI
+or II), the same at every redshift:
+\begin{equation}
+  P_X(k, z) \to P_X(k, z)\Big[1 + \delta_X(k)\Big],\qquad
+  \delta_X(k) = \sum_i p_i\,B_i(\ln k),
+  \qquad B_i(\ln k_j) = \delta_{ij}.
+  \label{eq:spline}
+\end{equation}
+$B_i$ is the natural cubic spline in $\ln k$ through the unit vector of node
+$i$ (a cardinal spline), so $p_i$ is the fractional error at $k_i$ and the
+error between nodes follows the spline. The nodes sit $n$ per decade on
+$k_j = 0.2\times10^{j/n}\hMpc$: for $n = 3$ the free nodes are 0.2, 0.43, 0.93
+and $2\hMpc$, for $n = 2$ they are 0.2, 0.63 and $2\hMpc$. Only the nodes
+from 0.2 to $2\hMpc$ carry a coefficient; the grid continues with zeros past
+0.01 and $10\hMpc$, as the reference extends its grid so that the basis has
+negligible support outside the range studied. Each $B_i$ is then confined to
+its two neighbouring nodes, with side lobes of about 0.13 beyond them
+(Figure~\ref{fig:splinebasis}), so the range perturbed is 0.093 to
+$4.3\hMpc$ (3 per decade) or 0.063 to $6.3\hMpc$ (2 per decade). The budget
+is computed without a scale cut, on the stitched truth.
 
-\paragraph{How the tolerance is found.}
+The previous version of this section perturbed with one-sign shapes. Its
+one-range bump, $f = \exp[-\ln^2(k/k_c)/(2\cdot0.3^2)]$, about a factor of
+1.4 wide, is the window of Sections~\ref{sec:corr} and \ref{sec:v9}.
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=3.5in]{plots/spline_basis/spline_basis.pdf}
+  \caption{The perturbation basis: natural cubic cardinal splines in $\ln k$,
+    one line per free node (dots), 2 per decade (top) and 3 per decade
+    (bottom). Each is 1 at its own node and 0 at every other node of the
+    grid, which continues with zero coefficients outside 0.2 to $2\hMpc$
+    (grey).}
+  \label{fig:splinebasis}
+\end{figure}
+
+\paragraph{How the budget is found.}
 $\xi_{\rm IA}$ is linear in the injected tables, so the change of the data
-vector, $\delta\bvec d = \varepsilon\,\bvec r_f$, is computed exactly: each
-$f$ is written on 61 narrow tents in $\ln k$, each tent's response is one
+vector, $\delta\bvec d = \sum_i p_i\,\bvec r_i$, is computed exactly: each
+$B_i$ is written on 61 narrow tents in $\ln k$, each tent's response is one
 cosmolike run, and the responses add. The fit responds as
 \begin{equation}
-  \delta\bvec p = \varepsilon\, F^{-1} J\T C^{-1} \bvec r_f,
+  \delta\bvec p_{\rm fit} = F^{-1} J\T C^{-1} \delta\bvec d,
   \qquad F = J\T C^{-1} J + \Pi^{-1},
   \label{eq:resp}
 \end{equation}
 with $J$ the Jacobian of the model~\eqref{eq:model} in $(\Om, A_s, A, \eta)$
-and $\Pi$ Gaussian priors on $A$ and $\eta$ of the chain-prior width. The
-tolerance is the $\varepsilon$ at which $\delta\Om$ or $\delta S_8$ reaches
-\Tol$\sigma$. Full non-linear refits at the tolerances land at \VerLo{} to
-\VerHi$\sigma$ up to $\varepsilon \simeq 20\%$. Above 20\% (only at $k \lesssim
-0.6\hMpc$ with the cut, mostly II) the refit moves far and the linear values,
-also after a refit-based search, overestimate the limit; those points are
-upper estimates.
+and $\Pi$ Gaussian priors on $A$ and $\eta$ of the chain-prior width. Its
+$\Om$ and $S_8$ rows, in units of their marginalized errors, give the shift
+per unit coefficient, $s_\alpha = \sum_i a_{\alpha i}\,p_i$ ($\alpha = \Om,
+S_8$). One coefficient alone may then reach $t_i = \Tol/\max_\alpha
+|a_{\alpha i}|$. The band lets every coefficient be wrong at once,
+independently, each with an rms proportional to its own tolerance,
+$\sigma_i = \lambda\,t_i$, and scales them together until the rms shift of
+$\Om$ or $S_8$ is \Tol$\sigma$:
+\begin{equation}
+  \lambda = \frac{\Tol}{\max_\alpha \big(\sum_i a_{\alpha i}^2 t_i^2\big)^{1/2}},
+  \qquad
+  \sigma_\delta(k)^2 = \sum_i \sigma_i^2\,B_i(\ln k)^2 .
+  \label{eq:splineband}
+\end{equation}
+$\sigma_\delta(k)$ is the rms of the allowed error at $k$; as in Figure 1 of
+the reference, the band is drawn as the 68\% ($\pm\sigma_\delta$) and 95\%
+($\pm1.96\,\sigma_\delta$) ranges of the error function. It is the
+reference's Equations 20 to 23 with a diagonal coefficient covariance, the
+one that keeps the cosmology within \Tol$\sigma$. Full non-linear refits of
+the one-sign shapes at tolerances below 20\% land at \VerLo{} to
+\VerHi$\sigma$ (Appendix~\ref{app:checks}).
 
 \section{The budget}
 \label{sec:budget}
 
-Figure~\ref{fig:bands} shows the budget for the production truth; the
-stitched truth gives the same figure to within 10\%, because the budget is
-set by the size of the IA signal and the precision of the data, which the two
-truths share.
-
 \begin{figure}[tbp]
   \centering
-  \includegraphics[width=3.5in]{plots/bands_prod/bands_prod.pdf}
-  \caption{The error budget of the production FLAMINGO IA spectra: the
-    fractional error, positive (too high) or negative (too low) and the same
-    at every redshift, that keeps $\Om$ and $S_8$ within \Tol$\sigma$.
-    Shaded with markers: one $k$ range wrong; black dashed: every scale
-    larger than $k$ wrong; vermillion dash-dot: every scale smaller than
-    $k$ wrong. Panels: GI and II, without a cut and with $\kuv = 0.3/D(z)$.
-    Linear axis; tolerances above 30\% run off the panel (with the cut,
-    no limit above about $1\hMpc$).}
+  \includegraphics[width=3.5in]{plots/spline_band/spline_band.pdf}
+  \caption{The error band of the stitched FLAMINGO IA spectra on the spline
+    basis (3 nodes per decade, dots), without a scale cut: the 68\% (light)
+    and 95\% (dark) ranges of the fractional error, the same at every
+    redshift, with every node wrong at once and the rms shift of $\Om$ or
+    $S_8$ at \Tol$\sigma$. Lines: the error of NLA (orange squares) and TATT
+    (blue circles) fitted to the truth at the fiducial cosmology, mean over
+    $0.2 \le z \le 2$ (thick) and range (thin). Top: GI; bottom: II. Errors
+    beyond 30\% run off the panel.}
   \label{fig:bands}
 \end{figure}
 
-\paragraph{Without a cut: about 1 to 15\% everywhere.}
-One $k$ range may be wrong by \BumpNoCutLo{} to \BumpNoCutHi\%, a coherent
-error over every smaller scale by \AboveNoCutGI\% (GI), over every larger
-scale by \BelowNoCutGI\%, at every $k$ up to about $3\hMpc$. Two facts set
-this level. In FLAMINGO the alignment is strong (amplitude $A_1 \simeq 3.4$),
-so IA is 20 to 55\% of $\xi_\pm$; and with every point kept Roman measures
-$S_8$ to 0.25\%. A 1\% IA error is then a 0.3\% change of the data, which
-moves $S_8$ by a sizable fraction of its error unless the free amplitude
-absorbs it, and an error confined to some range of $k$ is not an amplitude
-change. Above $3$ to $5\hMpc$ the budget opens because the data stop at 2.5
-arcmin, which those wavenumbers project below.
+\paragraph{The band: \SplBandGILo{} to \SplBandGIHi\% (GI) and \SplBandIILo{} to \SplBandIIHi\% (II).}
+Figure~\ref{fig:bands} shows the band ($\sigma(\Om) = \SplSigOm$, $\sigma(S_8)
+= \SplSigS$). Its 68\% range is \SplBandGILo{} to \SplBandGIHi\% in GI and
+\SplBandIILo{} to \SplBandIIHi\% in II from 0.2 to $2\hMpc$, and the 95\%
+range is \SplBandGIninefive\% and \SplBandIIninefive\%; each node gets
+$\lambda = \SplLambda$ of its own tolerance. It is narrowest at $2\hMpc$,
+whose spline reaches the scales Roman measures best, and widest in II near
+$0.4\hMpc$. One coefficient alone may be wrong by \SplNoCutNodeGIThree\% (GI)
+and \SplNoCutNodeIIThree\% (II). The level has the reasons given in the
+previous version: in FLAMINGO the alignment is strong ($A_1 \simeq 3.4$), so
+IA is 20 to 55\% of $\xi_\pm$, and with every point kept Roman measures
+$S_8$ to 0.25\%; an error confined to some range of $k$ is not an amplitude
+change, which the free $A$ would absorb.
 
-\paragraph{With the cut: room above $\kuv$, and about 10\% below.}
-The cut removes the small-angle bins, so errors at $k \gtrsim 0.3$ to
-$1\hMpc$ no longer matter (the band runs off the panel in
-Figure~\ref{fig:bands}). The kept scales,
-which feed the large-angle bins, still constrain the IA: one range at $k \le
-0.2\hMpc$ may be wrong by \BumpCutGILo{} to \BumpCutGIHi\% in GI and from
-\BumpCutIILo\% in II, and a coherent error over every kept scale by about
-\BelowCutGI\% in GI and \BelowCutII\% in II. Large scales are not more
-fragile than small ones; they are simply the scales every cut keeps.
+\paragraph{The models leave the band from $k \simeq 0.2$ to $0.6\hMpc$.}
+In GI, NLA is \SplNLAGIlo\% high already at 0.2 to $0.3\hMpc$, at the edge of
+the 95\% band, and \SplNLAGIhi\% at $0.9\hMpc$; TATT is inside to about
+$0.3\hMpc$ and \SplTATTGIhi\% high at $0.9\hMpc$. In II, NLA leaves the band
+near $0.25\hMpc$ (\SplNLAIIlo\% at 0.3, \SplNLAIIhi\% at $0.9\hMpc$); TATT is
+inside the 95\% band to about $0.6\hMpc$ and \SplTATTIIhi\% low at
+$0.9\hMpc$. The range over redshift is wider than the band at every $k$ for
+both models. Without a cut neither model is within the budget anywhere above
+$0.3\hMpc$, as in the previous version; the cuts of the later sections remove
+these scales.
+
+\paragraph{Where the nodes fall.}
+With 2 nodes per decade the band of II is about the same (68\% range
+\SplTwoBandII\%), but the GI band reaches \SplOddNode\% at the node at
+$0.63\hMpc$. That node sits where the shift of $\Om$ per unit GI error
+changes sign when the IA amplitude is free (Figure~\ref{fig:bandkernel}): it
+is not a scale where GI errors are harmless, and with 3 per decade the nodes
+at 0.43 and $0.93\hMpc$ straddle that zero. The rms of independent errors
+equal at every node, \SplNoCutRmsGI\% (GI) and \SplNoCutRmsII\% (II) for 2
+and 3 per decade, does not depend on where the nodes fall.
+
+\paragraph{Fitting the coefficients.}
+Fitted with the cosmology without a prior, as in the reference, the
+coefficients are measured to \SplSigPNoCut\% each and the principal
+components of their covariance to \SplPCNoCut\%: Roman calibrates an error of
+this form from its own small scales, at the price of \SplFreeSNoCut\% in
+$\sigma(S_8)$ and \SplFreeOmNoCut\% in $\sigma(\Om)$ (GI and II freed
+together); with a 3\% prior on each coefficient the price is
+\SplFreeSNoCutThree\% in $\sigma(S_8)$.
+
+\paragraph{The other truths and checks.}
+The production and E minus B truths give the band to within about 20\% of
+the stitched one, except II on the E minus B truth, which is wider (rms
+\SplEBRmsII\% for 2 and 3 per decade, against \SplNoCutRmsII\%) because its
+small-scale II is smaller. The rigid-fit errors reproduce those of the
+previous version; the one-sign bump run through the same code reproduces its
+band to $10^{-12}$ wherever the band is below 10\%; $B_i(k_j) = \delta_{ij}$
+to $10^{-12}$; and the shift of one node agrees with a direct least-squares
+fit in data space to four digits (\texttt{spline\_budget\_log.txt}).
 
 \section{Random errors correlated in k}
 \label{sec:corr}
 
-The shapes of Section~\ref{sec:pert} move the spectrum one way over one
-range of $k$. A real error is more likely a random function of $k$: up here,
+The one-sign bump of the previous version (Section~\ref{sec:pert}) moves the
+spectrum one way over one range of $k$. A real error is more likely a random function of $k$: up here,
 down there, with nearby wavenumbers wrong together. This section asks how
 large such an error may be.
 
@@ -923,8 +1031,8 @@ one range of $k$ around $k_c$: $\delta_i \to w(k_i)\,\delta_i$, with the
 window $w = \exp[-\ln^2(k/k_c)/(2\cdot0.3^2)]$, the bump of
 Section~\ref{sec:pert}. The budget $\varepsilon_{95}(k_c)$, the rms at $k_c$, drawn as
 $\pm\varepsilon_{95}$ against $k_c$, is the band of
-Figure~\ref{fig:corrbands}, the analogue of Figure~\ref{fig:bands} for
-random errors. Where the linear $\varepsilon_{95}$ exceeds 5\%, it is found
+Figure~\ref{fig:corrbands}, the analogue of the one-sign bump's tolerance (open
+circles) for random errors. Where the linear $\varepsilon_{95}$ exceeds 5\%, it is found
 again by refitting 200 errors with the IA amplitude and evolution exact and
 bisecting on the fraction inside; the refitted values differ from linear
 response by at most \BandRefitDiff\%, about the sampling noise of 200
@@ -940,7 +1048,7 @@ one node changes sign every factor of 3 to 10 in $k$, and a random error
 gains nothing from those sign changes, so a decade-wide window sums the
 squared sensitivity over about ten nodes, and every decade contains a
 sensitive stretch. With the window of the one-range bump, the band resolves
-the same structure as Figure~\ref{fig:bands}.
+the same structure as the one-sign bump.
 
 \begin{figure}[tbp]
   \centering
@@ -952,8 +1060,8 @@ the same structure as Figure~\ref{fig:bands}.
     in $\ln k$. The band is $\pm\varepsilon_{95}$, the rms at which 95\% of
     such errors keep $\Om$ and $S_8$ within \Tol$\sigma$. Shaded: $\ell =
     1$; black dashed: $\ell = 0.3$; vermillion dash-dot: $\ell = 3$; gray
-    with open circles: the one-sign tolerance of Figure~\ref{fig:bands}
-    for the same window. Linear axis; budgets above 30\% run off the panel
+    with open circles: the tolerance of the one-sign bump of
+    Section~\ref{sec:pert}, the same window. Linear axis; budgets above 30\% run off the panel
     (with the cut, no limit above about $1.5\hMpc$).}
   \label{fig:corrbands}
 \end{figure}
@@ -964,7 +1072,7 @@ The rms may be \BandNoCutGILo{} to \BandNoCutGIHi\% in GI and
 to 80\% at $10\hMpc$. The band is tightest at $k \simeq 0.03$ and 2 to
 $4\hMpc$, where the response of the data is largest, and widest at $k
 \simeq 0.1$ and 0.6, where the shift in $\Om$ changes sign within the
-window. Within a window this narrow the random error is close to a bump
+window (because the IA amplitude is free: Figure~\ref{fig:bandkernel}). Within a window this narrow the random error is close to a bump
 of random sign, so $\ell$ matters little (up to 30\%, more only at the
 sign changes, where a smooth error is cancelled and a wiggly one is not), and the band is
 about half the one-sign tolerance (gray): 95\% of a Gaussian lies within
@@ -1263,11 +1371,55 @@ $\pm$\NineBandNoCutGILo{} to \NineBandNoCutGIHi\% (GI) and
 $\pm$\NineBandNoCutIILo{} to \NineBandNoCutIIHi\% (II) up to $3\hMpc$
 without a cut; with the cut, \NineBandCutGILo{} to \NineBandCutGIHi\% (GI)
 and \NineBandCutIILo{} to \NineBandCutIIHi\% (II) at $k \le 0.1\hMpc$,
-opening above 0.2 to $0.3\hMpc$. It agrees with the one-sign tolerance of
-Figure~\ref{fig:bands} (median ratio 1.0 to 1.1): within a narrow window a
+opening above 0.2 to $0.3\hMpc$. It agrees with the tolerance of the one-sign bump
+(open circles in Figure~\ref{fig:corrbands}; median ratio 1.0 to 1.1): within a narrow window a
 random error is a bump of random sign, and an rms shift of \Tol$\sigma$ is
 the bump's tolerance. The 95\% band is half as wide, close to
 Figure~\ref{fig:corrbands} (exponential instead of Gaussian kernel).
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=3.5in]{plots/band_kernel/band_kernel.pdf}
+  \caption{Why the GI band has two narrow peaks. Top: the GI band of
+    Figure~\ref{fig:v9bands} without a cut (rms criterion, $\ell = 1$,
+    the same error at every redshift), recomputed with the template
+    amplitude $A$ and evolution $\eta$ fixed (green, diamonds, dashed),
+    with $A$ free (orange, open squares, dash-dot) and with both free
+    (blue, filled circles: the band of Figure~\ref{fig:v9bands}). Bottom:
+    the shift of $\Om$ that a one-sign 100\% error of $P_{\rm GI}$,
+    confined to the window around $k$, causes in each fit. Production
+    truth.}
+  \label{fig:bandkernel}
+\end{figure}
+
+\paragraph{Why the GI band has two narrow peaks.}
+Without a cut the GI band is narrowest at $k \simeq 0.03$ and 2 to
+$3\hMpc$ (5 and 3\%) and has two narrow peaks, at 0.13 and $0.6\hMpc$
+(\NineKerPeakLo{} and \NineKerPeakHi\%). The band is about \Tol$\sigma$
+divided by the shift that a one-sign error inside the window causes, so it
+is wide where that shift is small. Figure~\ref{fig:bandkernel} recomputes
+it for three fits. With $A$ and $\eta$ fixed, a GI excess at any $k$ below
+$2\hMpc$ lowers $\Om$ (by up to 9$\sigma$ for a 100\% error at
+$0.06\hMpc$), and the band is a smooth bowl with a broad maximum of
+\NineKerFixLo{} to \NineKerFixHi\% at 0.25 to $0.6\hMpc$. Freeing $A$
+opens a second, opposite path: part of the error is fitted as more GI at
+every $k$, and $A$ is degenerate with $\Om$ (freeing it raises
+$\sigma(\Om)$ from \NineKerSigFix{} to \NineKerSigFree), so moving $A$
+raises $\Om$. That path is strongest at 0.1 to $0.7\hMpc$, where GI
+carries most of its signal, and lifts the shift there by about 6$\sigma$.
+The shift then crosses zero near \NineKerCrossLo{} and
+\NineKerCrossHi$\hMpc$, where the two paths cancel and the band peaks, and
+reaches $+5\sigma$ between them, at $0.3\hMpc$, where the band pinches to
+7\%. Freeing $\eta$ as well changes little. The II band, whose $\Om$ shift
+crosses zero only once ($0.09\hMpc$), has no such pair of peaks. The peaks
+are therefore not scales where GI errors are harmless: where they fall
+depends on which parameters are free, and an error spread over a decade
+averages across them. Away from the peaks the three fits agree within a
+factor of 1.5 at $k \le 0.05\hMpc$ and 1 to $6\hMpc$, where the band is
+narrowest, and fixing $A$ halves the band at 0.25 to $0.4\hMpc$. The shift
+agrees with a direct least-squares fit in data space to $10^{-3}\sigma$,
+and the recomputed band with that of Figure~\ref{fig:v9bands} to
+$10^{-13}$.
 
 Without a cut NLA is outside both bands at nearly every $k$ (II at $k \le
 0.06\hMpc$ by 3.5 times the rms band), TATT is inside the rms band at 0.06
@@ -2595,7 +2747,7 @@ in every configuration but A.
     through CAMB at every step) at 16 tolerances below 20\% give \VerLo{} to
     \VerHi$\sigma$ in the limiting parameter.
   \item \textbf{Random errors.} The spline from the 31 nodes reproduces the
-    shifts of the one-range bumps of Figure~\ref{fig:bands} to 0.01$\sigma$;
+    shifts of the one-sign bumps of Section~\ref{sec:pert} to 0.01$\sigma$;
     a pure amplitude change (GI by $1 + \delta$, II by $1 + 2\delta$ at every
     $k$) built from the same responses moves $\Om$ and $S_8$ by at most
     0.05$\sigma$ per unit $\delta$ (the prior on $A$); a separate free
@@ -2706,6 +2858,8 @@ and to \texttt{v9/} next to it for Section~\ref{sec:v9}.
     every budget from the base & \texttt{ia\_budget.py} $\rightarrow$ \texttt{ia\_budget.json} \\
     the method (numpy only), checks & \texttt{ia\_fisher.py}, \texttt{verify\_ia\_fisher.py} \\
     direct injections & \texttt{validate\_direct.py} $\rightarrow$ \texttt{validate\_direct.json} \\
+    GI band, $A$ and $\eta$ fixed or free & \texttt{band\_kernel.py} $\rightarrow$ figure data \\
+    spline basis and band (Sections~\ref{sec:pert}, \ref{sec:budget}) & \texttt{spline\_budget.py} $\rightarrow$ \texttt{spline\_budget.json}, figure data \\
     scale-cut scan, NLA and TATT refits & \texttt{scale\_cut\_scan.py} $\rightarrow$ \texttt{scale\_cut\_scan.json} \\
     the shifts split by $k$ range & \texttt{scale\_cut\_pieces.py} $\rightarrow$ \texttt{scale\_cut\_pieces.json} \\
     3x2pt base, Gaussian covariance & \texttt{ia\_base\_3x2.py} $\rightarrow$ \texttt{ia\_base\_3x2\_<truth>.npz} \\
@@ -2751,8 +2905,9 @@ and to \texttt{v9/} next to it for Section~\ref{sec:v9}.
 \label{app:open}
 
 \begin{itemize}
-  \item Tolerances between about 20 and 100\% at $k \lesssim 0.6\hMpc$ with
-    the cut are upper estimates (Section~\ref{sec:pert}).
+  \item One-sign tolerances between about 20 and 100\% at $k \lesssim
+    0.6\hMpc$ with the cut are upper estimates, and the spline band of
+    Section~\ref{sec:budget} is linear response only, without a cut.
   \item Sections~\ref{sec:pert} to \ref{sec:corr} perturb one spectrum,
     the same at every redshift; Section~\ref{sec:v9} lifts both, for
     random errors only (no one-sign shapes varying with redshift).
