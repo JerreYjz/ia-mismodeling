@@ -29,6 +29,7 @@ from clean_budget import T, B, ME                                  # noqa: E402
 import bias_v2 as V                                                # noqa: E402
 import ia_fisher as IF                                             # noqa: E402
 from ia_base_3x2 import CL3, BN                                    # noqa: E402
+import bmode_tables as BT                                          # noqa: E402
 
 MODELS = ("NLA", "TATT")
 CUTS = ("cs|none", "cs|0.3", "3x2|none", "3x2|0.3", "3x2b|none", "3x2b|0.3",
@@ -49,7 +50,7 @@ def main():
     os.chdir(T.TB.COCOA)
     cl = CL3(so_dir, data, threads=8)
     cl.at(B.FID)
-    st = np.load(os.path.join(T.TB.ROOT, "v3", "stitched_truths.npz"))
+    st = BT.load_truths(os.path.join(T.TB.ROOT, "v3", "stitched_truths.npz"))
     tm = ME.F.TATTModel(halofit="takahashi")
     common = np.load(os.path.join(HERE, "ia_base_3x2_common.npz"))
     cov = common["cov"]

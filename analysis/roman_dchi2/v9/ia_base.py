@@ -26,6 +26,9 @@ Also stored, per truth (S1, prod):
            -Delta, and every score uses the drift squared);
   checks   the tents summed over (X, s) against xi_ia, and against J's A and
            eta columns.
+A truth with a B-mode II table (CP, v3/cp_truth.py; bmode_tables.py) adds the
+B part (xi_+, -xi_-) to xi_ia, J and the II knobs: a knob of II moves E and
+B together (R_II = R_II_E + R_II_B, both parts stored), 3 x 13 x 61 columns.
 ia_base_common.npz: the example1 covariance and the masks (none and
 k_UV = 0.3/D(z)).
 
@@ -45,6 +48,7 @@ sys.path.insert(0, HERE)
 import clean_budget as CB                                          # noqa: E402
 from clean_budget import T, B, ME, KW                              # noqa: E402
 import ia_fisher as IF                                             # noqa: E402
+import bmode_tables as BT                                          # noqa: E402
 
 SCRATCH = "v9_scratch"
 CUTS = {"none": "none", "K0/D 0.3": "K03"}                         # mask name -> file label
@@ -73,7 +77,7 @@ def main():
                                                      cl.PKLcb, cl.sigma8)
     gg = cl.model("NLA", B.FID, [0.0, 0.0])                       # before any sim table
     T.GG["fid"] = gg
-    st = np.load(os.path.join(T.TB.ROOT, "v3", "stitched_truths.npz"))
+    st = BT.load_truths(os.path.join(T.TB.ROOT, "v3", "stitched_truths.npz"))
     cov = np.load("analysis/cov_example1_xi.npy")
     R0 = np.load("run/cosmolike_xi_ia.npz")
     M1, K1 = R0["masks_n1"], [round(float(k), 4) for k in R0["K_n1"]]
@@ -95,8 +99,16 @@ def main():
         PdE, PEE = model.RdE*P, model.REE*P
         zero = np.zeros_like(PdE)
         xi_ia = T.TB_xi(cl, model, PdE, PEE, SCRATCH)
+        withb = BT.has_b(st, tr)
+        if withb:
+            # B-mode II (decision of 2026-11-23): a knob of II moves E and B
+            # together, R_II = R_II_E + R_II_B; both parts are stored
+            mB = CB.Truth(cl, st, tr + "_B")
+            PBB = mB.REE*P
+            xi_ia = xi_ia + BT.flip_b(T.TB_xi(cl, mB, zero, PBB, SCRATCH))
+            RB = np.zeros((nz, nf, 1080))
         R = {X: np.zeros((nz, nf, 1080)) for X in IF.XS}
-        n, ntot, tl = 0, 2*nz*nf, time.time()
+        n, ntot, tl = 0, (3 if withb else 2)*nz*nf, time.time()
         for s in range(nz):
             for j in range(nf):
                 for X in IF.XS:
@@ -104,6 +116,11 @@ def main():
                     tab[s] = (PdE if X == "GI" else PEE)[s]*Hf[j]
                     R[X][s, j] = T.TB_xi(cl, model, tab if X == "GI" else zero,
                                          tab if X == "II" else zero, SCRATCH)
+                    n += 1
+                if withb:
+                    tab = zero.copy()
+                    tab[s] = PBB[s]*Hf[j]
+                    RB[s, j] = BT.flip_b(T.TB_xi(cl, mB, zero, tab, SCRATCH))
                     n += 1
             el = time.time() - tl
             log(f"[{time.time() - t0:.0f}s] {tr}: snapshot {s + 1}/{nz} (z = {zs[s]:g}) done; "
@@ -113,7 +130,14 @@ def main():
         tab[nz//2] = PdE[nz//2]*Hf[nf//2]
         again = T.TB_xi(cl, model, tab, zero, SCRATCH)
         stale = float(np.max(np.abs(again - R["GI"][nz//2, nf//2]))/np.max(np.abs(again)))
-        J = T.jacobian(model, FREE_T, IAP, x_fid)
+        extra = {}
+        if withb:
+            RE = R["II"]
+            R["II"] = RE + RB
+            extra = dict(R_II_E=RE, R_II_B=RB)
+            J = T.jacobian(BT.EBModel(model, mB, CB.Truth(cl, st, "ZERO")), FREE_T, IAP, x_fid)
+        else:
+            J = T.jacobian(model, FREE_T, IAP, x_fid)
         g = T.s8_row(cl, FREE_T, IAP, x_fid)
         lnx = np.log((1 + zs)/IF.X0)
         tot = R["GI"].sum((0, 1)) + R["II"].sum((0, 1))
@@ -143,7 +167,7 @@ def main():
                     drifts[f"drift|{lab}|{mdl}|{X}"] = err[X]
         np.savez(os.path.join(HERE, f"ia_base_{tr}.npz"), truth=tr, zs=zs, fine=CB.FINE,
                  xi0=gg + xi_ia, xi_ia=xi_ia, J=J, template=np.array(IF.TEMPLATE), g_s8=g,
-                 R_GI=R["GI"], R_II=R["II"], checks=json.dumps(checks), **drifts)
+                 R_GI=R["GI"], R_II=R["II"], checks=json.dumps(checks), **drifts, **extra)
         log(f"[{time.time() - t0:.0f}s] {tr}: wrote ia_base_{tr}.npz")
     log(f"done ({time.time() - t0:.0f}s)")
 

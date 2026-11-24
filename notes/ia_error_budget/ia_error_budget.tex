@@ -358,11 +358,12 @@
 \newcommand{\HMgtTATTmax}{\refresh{0.27}}
 \newcommand{\HMgtNLAsix}{\refresh{0.04}}
 % ---------------------------------------------------------------------
-% Part 1e: bias cancellation and the recommended cut (stitched truth, every
+% Part 1e: bias cancellation, the earlier split on the stitched truth (every
 % parameter free, CMB prior; analysis/cut_validation/bias_pieces.json, split
-% "zshape", and fisher_minimize.json; 19 November 2026).
+% "zshape", and fisher_minimize.json; 19 November 2026). Quoted at the end of
+% Section sec:cancel and by Sections sec:sepcuts and sec:hm.
 % Statements that rest on Part 1e:
-%   - the recommended cut is K0 = 0.35 for NLA and TATT, cosmic shear and 3x2pt;
+%   - on the stitched truth the earlier split's reliable cut is K0 = 0.35;
 %   - at K0 = 0.4 the II error above 0.3 h/Mpc exceeds 0.3 by itself and is
 %     held back by cancellation.
 % at K0 = 0.35: total (MAP) and largest piece
@@ -384,9 +385,64 @@
 % checks: |linear - MAP| and the base remainder at K0 = 0.3 to 0.4
 \newcommand{\CClinMap}{\refresh{0.005}}
 \newcommand{\CCrem}{\refresh{0.04}}
-% sigma(S8) gain from K0 = 0.2 to 0.35 (percent)
-\newcommand{\CCgainCS}{\refresh{28}}
-\newcommand{\CCgainThree}{\refresh{21}}
+% ---------------------------------------------------------------------
+% Part 1g: bias cancellation on the close-pair truth CP (Fisher only, every
+% parameter free, CMB prior; analysis/cut_validation/fisher_minimize.json,
+% keys "...|CP...|fisher", bias_pieces.json, spline_pieces.json,
+% make_cp_fisher_figure.py, make_cp_pieces_figures.py; RERUN_PLAN_NBall.md
+% steps 2 and 3; 23 November 2026).
+% Statements that rest on Part 1g:
+%   - on CP the reliable cut is K0 = 0.25 (NLA and TATT in cosmic shear,
+%     TATT in 3x2pt) and 0.3 (NLA in 3x2pt), with gamma_t at 0.3;
+%   - the recommended pair (0.2, gamma_t 0.5) passes on CP;
+%   - per-bin amplitudes raise the 3x2pt bias, from gamma_t.
+% Fisher against MAP, 81 runs with the CMB prior (S1, NB, NBall)
+\newcommand{\FMmed}{\refresh{$-0.004$}}
+\newcommand{\FMninety}{\refresh{0.018}}
+\newcommand{\FMmax}{\refresh{0.058}}
+% CP against S1, same estimator, 62 matched runs
+\newcommand{\CPvsSOneMed}{\refresh{$-0.001$}}
+\newcommand{\CPvsSOneFrac}{\refresh{87}}
+% the recommended pair on CP (3x2pt, K0 0.2, gamma_t 0.5)
+\newcommand{\CPrecNLA}{\refresh{0.26}}
+\newcommand{\CPrecTATT}{\refresh{0.17}}
+\newcommand{\CPrecBig}{\refresh{0.17}}
+% checks: amplitude piece (max), base against direct (median, max)
+\newcommand{\CPamp}{\refresh{0.028}}
+\newcommand{\CPbaseMed}{\refresh{0.009}}
+\newcommand{\CPbaseMax}{\refresh{0.028}}
+% cosmic shear: total / random-sign figure of bias, over K0 = 0.2 to 0.6
+\newcommand{\CPcancCSLo}{\refresh{0.24}}
+\newcommand{\CPcancCSHi}{\refresh{0.61}}
+% at K0 = 0.25: total and largest piece (gamma_t 0.3)
+\newcommand{\CPtotCSNLA}{\refresh{0.19}}
+\newcommand{\CPtotCSTATT}{\refresh{0.14}}
+\newcommand{\CPtotTNLA}{\refresh{0.19}}
+\newcommand{\CPtotTTATT}{\refresh{0.17}}
+\newcommand{\CPbigCSNLA}{\refresh{0.27}}
+\newcommand{\CPbigCSTATT}{\refresh{0.297}}
+\newcommand{\CPbigTNLA}{\refresh{0.12}}
+\newcommand{\CPbigTTATT}{\refresh{0.11}}
+% at K0 = 0.3: largest piece; 3x2pt NLA total
+\newcommand{\CPthrCSNLA}{\refresh{0.39}}
+\newcommand{\CPthrCSTATT}{\refresh{0.47}}
+\newcommand{\CPthrTNLA}{\refresh{0.29}}
+\newcommand{\CPthrTTATT}{\refresh{0.35}}
+\newcommand{\CPthrTotTNLA}{\refresh{0.25}}
+% at K0 = 0.35: largest piece (3x2pt NLA; range over the four)
+\newcommand{\CPfiveTNLA}{\refresh{0.36}}
+\newcommand{\CPfiveLo}{\refresh{0.36}}
+\newcommand{\CPfiveHi}{\refresh{0.50}}
+% sigma(S8) gain from K0 = 0.2 to 0.25 (percent, NLA)
+\newcommand{\CPgainCS}{\refresh{11}}
+\newcommand{\CPgainThree}{\refresh{8}}
+% per-bin models, K0 = 0.2 to 0.6: cosmic shear range; 3x2pt gamma_t 0.5
+\newcommand{\CPzCSLo}{\refresh{0.05}}
+\newcommand{\CPzCSHi}{\refresh{0.24}}
+\newcommand{\CPzNLAzLo}{\refresh{0.86}}
+\newcommand{\CPzNLAzHi}{\refresh{0.98}}
+\newcommand{\CPzTATTzLo}{\refresh{0.42}}
+\newcommand{\CPzTATTzHi}{\refresh{0.68}}
 % ---------------------------------------------------------------------
 % Part 1f: the linear-limit truth and the halo-model variants (every
 % parameter free, CMB prior; bias_pieces.json "zshape", fisher_minimize.json
@@ -537,8 +593,10 @@ cut alone, 3x2pt passes on both truths at $K_0 = 0.2$ (NLA-F at 0.15; at most
 \SCfinalMax$\sigma$), at nearly the figure of merit of the earlier pair
 ($K_0 = 0.35$, $\gamma_t$ at 0.3). What is left for NLA there is the
 redshift-amplitude error of the power law $(1+z)^{\eta_1}$, which no scale
-cut removes. The cuts assume that FLAMINGO's alignment is NLA-like on large
-scales. On the linear-limit truth, which takes the large scales from the
+cut removes. The pair also passes on a third truth that keeps the one-halo
+II of close galaxy pairs, which the B modes turn out to be (\CPrecNLA{} for
+NLA, \CPrecTATT{} for TATT). The cuts assume that FLAMINGO's alignment is
+NLA-like on large scales. On the linear-limit truth, which takes the large scales from the
 measured points, that amplitude error at $z \ge 2$ moves $(\Om, S_8)$ by
 \LLampCSlo{} to \LLampThi$\sigma$ at every cut, so no cut passes there; a
 freer redshift model is the open test. The production truth, which holds a
@@ -658,6 +716,22 @@ terms fit to near zero where the cut is set, and where they switch on they
 run to their prior bounds (Figure~\ref{fig:cvfit}). Freer redshift
 evolution (one NLA amplitude per source bin) raises the bias.
 
+\paragraph{Bias cancellation on the close-pair truth.}
+The FLAMINGO B modes, subtracted as white noise by the other truths, are the
+shape correlation of close galaxy pairs, a one-halo signal equal in E and B;
+the close-pair truth keeps it (Section~\ref{sec:setup}). Its totals, from the
+Fisher matrix alone, are within 0.03 of the stitched truth's in
+\CPvsSOneFrac\% of runs, but its pieces are not (Section~\ref{sec:cancel},
+Figure~\ref{fig:cancelscan}). In cosmic shear the total is
+\CPcancCSLo{} to \CPcancCSHi{} of what the pieces would give with random
+signs: NLA's II error has one sign and rises with $k$, and the $S_8$
+response to it changes sign near $0.3\hMpc$. With every piece required below
+\Tol, the cut with $\gamma_t$ at 0.3 is $K_0 = 0.25$ (0.3 for NLA in
+3x2pt), against 0.35 on the stitched truth with the earlier split; the
+recommended pair passes. One amplitude per source bin lowers the bias in
+cosmic shear but raises it in 3x2pt to \CPzNLAzLo{} to \CPzNLAzHi{} (NLAz),
+from $\gamma_t$, which sees the low-redshift part of each bin.
+
 \paragraph{Halo-model alignments.}
 The halo model that passed its checks on FLAMINGO puts the tidal-alignment
 terms on $I_1 P_{\rm lin} + \alpha(\PNL - I_1 P_{\rm lin})$ and fits FLAMINGO
@@ -705,7 +779,7 @@ bin 7.
 \label{sec:setup}
 
 \paragraph{Truths.}
-Four versions of the FLAMINGO IA spectra, at the FLAMINGO D3A cosmology
+Five versions of the FLAMINGO IA spectra, at the FLAMINGO D3A cosmology
 ($\Om = 0.306$, $10^9 A_s = 2.099$, $n_s = 0.967$, $H_0 = 68.1$, $\Omega_b =
 0.0486$):
 \begin{itemize}
@@ -722,7 +796,10 @@ Four versions of the FLAMINGO IA spectra, at the FLAMINGO D3A cosmology
     logistic step at $0.08\hMpc$ (width 0.3 in $\ln k$);
   \item \textbf{E minus B} (Section~\ref{sec:sepcuts} only): the stitched
     truth with the measured B-mode spectrum $P_{\rm BB}$ subtracted from II
-    instead of its high-$k$ plateau $N_s$ (below); GI is the stitched one.
+    instead of its high-$k$ plateau $N_s$ (below); GI is the stitched one;
+  \item \textbf{close pairs} (Section~\ref{sec:cancel}): the stitched truth
+    with the one-halo shape correlation of close galaxy pairs kept in II, in
+    E and in B (below); GI is the stitched one.
 \end{itemize}
 All are injected into cosmolike as tables (the sim-IA path), so the truth
 and every model share the Limber integrals and the Hankel transforms.
@@ -751,8 +828,9 @@ below $k = 0.02$ are too noisy for a spline (a few modes each; after the
 shape-noise subtraction II is negative in some), which is why the constant
 is fitted rather than the spline extended. Because the production truth's
 large scales are an artifact, the cuts recommended in this note rest on the
-stitched and E minus B truths (Section~\ref{sec:sepcuts}), with the
-linear-limit truth as the check that does not favour NLA's form.
+stitched and E minus B truths (Section~\ref{sec:sepcuts}) and pass on the
+close-pair truth (Section~\ref{sec:cancel}), with the linear-limit truth as
+the check that does not favour NLA's form.
 
 \paragraph{The B-mode excess, and the E minus B truth.}
 The production, stitched and linear-limit truths take II as $\PEE - N_s$,
@@ -775,9 +853,37 @@ both), stitched to NLA on large scales as the stitched truth is, with
 $w$ the stitching weight. II over NLA is then 1.03 to 1.15 at $k = 0.3$ and
 1.0 to 1.3 at $k = 1\hMpc$ for $z \le 1$, against 1.3 to 1.45 and 1.8 to 2.1
 on the stitched truth; a rise remains at $z \ge 2$ (about 2 at $k = 1$ for
-$z = 2$). Unlike every other truth, its II is positive at every $k$. The two
-readings bracket the truth's small-scale II; which holds needs the FLAMINGO
-catalogue (Appendix~\ref{app:open}).
+$z = 2$). Unlike every other truth, its II is positive at every $k$. The
+catalogue test below decides between the two readings: it is a signal.
+
+\paragraph{The B modes are close pairs, and the close-pair truth.}
+In the FLAMINGO catalogue (\texttt{flamingo/bmode\_noise/}) the Poisson
+floor of the shape noise is the analytic one: with the orientations
+shuffled, $\PEE$ and $P_{\rm BB}$ vanish within errors at $z = 0$ to 3.
+The plateau $N_s$ that every truth above subtracts is instead predicted,
+with no free parameter, by the shape correlation of galaxy pairs closer than
+$1\,h^{-1}$Mpc, $(V/N^2)\sum_{ij} c_{ij}\,j_0(k r_{ij})$, mostly central and
+satellite of one halo: $(\PEE + P_{\rm BB})/2$ matches it to 0.9 to 1.07 at
+$k > 4\hMpc$. It is a one-halo alignment signal, equal in E and B, not
+noise. The pair sum is flat below $k \simeq 1\hMpc$ and falls to $N_s$
+only at 5 to $10\hMpc$, so its large-scale level $N_{\rm low}$ is about
+twice $N_s$: the inverse-variance mean of the measured $P_{\rm BB}$ over
+$0.15 \le k \le 0.6\hMpc$ is 1.8 to 2.4 times $N_s$ at $0.2 \le z \le 2$
+(25 to 29$\sigma$), and the pair sum agrees with it to 0.93 to 0.98 at
+$z = 0$, 1 and 2 (0.86 at $z = 3$). The close-pair truth keeps it:
+\begin{equation}
+  R_{\rm II}^{\rm CP} = R_{\rm II}^{\rm S1} + w\,\frac{N_s}{\PNL}
+    + (1 - w)\,\frac{N_{\rm low}}{\PNL},\qquad
+  R_{\rm BB}^{\rm CP} = w\,\frac{P_{\rm BB}}{\PNL}
+    + (1 - w)\,\frac{N_{\rm low}}{\PNL},
+\end{equation}
+with $w$ the stitching weight and $P_{\rm BB}$ the measured spectrum. Its II
+is 1.19 to 1.31 times the stitched truth's at $k = 0.3\hMpc$ and 1.41 to
+1.68 times at $1\hMpc$ ($0.2 \le z \le 2$), and its B modes are about a
+third of its E modes at $0.3\hMpc$. cosmolike's IA tables carry E modes
+only; the B part enters $\xi_+$ with a plus sign and $\xi_-$ with a minus
+sign, and nothing in $\gamma_t$ or $w$. The stitched truth then removes
+part of a signal ($N_s$ at every $k$) and the E minus B truth more of it.
 
 \begin{figure}[tbp]
   \centering
@@ -917,7 +1023,8 @@ the one-sign shapes at tolerances below 20\% land at \VerLo{} to
     redshift, with every node wrong at once and the rms shift of $\Om$ or
     $S_8$ at \Tol$\sigma$. Lines: the error of NLA (orange squares) and TATT
     (blue circles) fitted to the truth at the fiducial cosmology, mean over
-    $0.2 \le z \le 2$ (thick) and range (thin). Top: GI; bottom: II. Errors
+    the nine snapshots from $z = 0.2$ to 2; shaded in the same colour, its
+    range over them (drawn under the band). Top: GI; bottom: II. Errors
     beyond 30\% run off the panel.}
   \label{fig:bands}
 \end{figure}
@@ -1588,7 +1695,9 @@ $K_0 = 0.2$ is set by the production truth, whose large-scale error is an
 artifact of its held edge (Section~\ref{sec:setup}); with every parameter
 free, a split that keeps each snapshot's amplitude error whole, and the
 stitched truth, the cut that relies on no cancellation is $K_0 = 0.35$
-with $\gamma_t$ at 0.3 (Section~\ref{sec:cancel}); with each probe's cut set
+with $\gamma_t$ at 0.3, and on the close-pair truth, with a split that
+removes only what $A_1$ and $\eta_1$ absorb, it is 0.25
+(Section~\ref{sec:cancel}); with each probe's cut set
 on that probe alone and the pair tested in 3x2pt, it is $K_0 = 0.2$ with
 $\gamma_t$ at 0.5 (Section~\ref{sec:sepcuts}), the cut recommended.
 
@@ -1869,59 +1978,123 @@ the total can be small while each is large, and a slightly different truth,
 galaxy sample or survey would not reproduce the balance. A reliable cut is
 one where no single error is larger than the tolerance. This section
 splits the bias of the fits of Section~\ref{sec:cutval} (every parameter
-free, CMB prior) into such pieces on the stitched truth, the truth whose
-large scales are not an artifact (Section~\ref{sec:setup}).
+free, CMB prior) into such pieces on the close-pair truth
+(Section~\ref{sec:setup}): the stitched truth with the measured one-halo II
+kept, in E and in B. The result of an earlier version of the split, on the
+stitched truth, closes the section.
+
+\paragraph{The total, from the Fisher matrix alone.}
+Every shift here is the linearized maximum-likelihood shift of Kable,
+Addison and Bennett (arXiv:1908.01626), with no minimizer. At the reference
+point (D3A, $\Delta z = m = 0$, the galaxy biases at the truth, the IA
+parameters fitted to the data at that fixed cosmology) the model misses the
+data by $\bvec E = \bvec d - \bvec m(\bvec\theta_{\rm ref})$, and
+\begin{equation}
+  \Delta\bvec\theta = (F + P)^{-1} J\T C^{-1} \bvec E \equiv M\bvec E,
+  \label{eq:fishershift}
+\end{equation}
+with $F = J\T C^{-1} J$ and $P$ the Gaussian priors (photo-$z$,
+calibration, CMB) plus the flat priors as Gaussians of variance
+width$^2/12$. The figure of bias uses the marginalized $(\Om, S_8)$
+covariance of the same matrix. On the 81 runs of Section~\ref{sec:cutval}
+with the CMB prior (NLA and TATT on three truths) it differs from the
+minimizer's MAP by \FMmed{} (median), by less than \FMninety{} in 90\% of
+runs and by at most \FMmax, and 80 of the 81 fall on the same side of \Tol.
+Both priors are needed: without the flat priors $F$ is nearly singular along
+TATT's poorly constrained terms, and without the CMB prior the estimate is
+up to 60\% low. Halving and doubling every derivative step moves the figure
+of bias by at most 0.007.
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=3.5in]{plots/cp_fisher_k0scan/cp_fisher_k0scan.pdf}
+  \caption{The figure of bias on the close-pair truth against the
+    $\xi_\pm$ cut, from the Fisher matrix alone, every parameter free, CMB
+    prior. Panels: cosmic shear, 3x2pt with $\gamma_t$ cut at 0.3 and at
+    0.5 ($w$ at 0.2), 2x2pt ($\gamma_t$ and $w$ cut at $K_0$). Solid,
+    filled: NLA (orange squares) and TATT (blue circles), a power law in
+    redshift. Dashed, open: NLAz and TATTz, amplitudes per source bin. Gray:
+    the same estimator on the stitched truth, where it was run (not cosmic
+    shear NLAz, whose old reference fit sat in a local minimum). Dotted:
+    \Tol.}
+  \label{fig:cpfisher}
+\end{figure}
+
+\paragraph{The total barely moves.}
+Over 62 matched runs (cosmic shear, 3x2pt with $\gamma_t$ at 0.3 to 0.6,
+2x2pt, $K_0 = 0.15$ to 0.6; Figure~\ref{fig:cpfisher}), the figure of bias
+on the close-pair truth differs from that on the stitched truth by
+\CPvsSOneMed{} (median), and by less than 0.03 in \CPvsSOneFrac\% of runs.
+The largest differences are at $K_0 = 0.6$: TATT in cosmic shear, 0.27
+against 0.40 (with $\eta_2$ and $b_{\rm TA}$ at their bounds on the stitched
+truth), and in 3x2pt, 0.34 against 0.26. 2x2pt is identical, as it carries
+no II. At the recommended pair ($K_0 = 0.2$, $K_0^{\gamma_t} = 0.5$) the
+bias is \CPrecNLA{} (NLA) and \CPrecTATT{} (TATT), with every piece at most \CPrecBig. The close-pair term leaves the totals nearly alone; the
+split shows that it moves the pieces a lot.
 
 \paragraph{The split.}
-At the reference point of Section~\ref{sec:cutval} (D3A, the IA parameters
-fitted at fixed cosmology) the model misses the data by
-$\bvec E = \bvec d - \bvec m(\bvec\theta_{\rm ref})$, and the whole bias is
-the response to it, $\Delta\bvec\theta = (F + P)^{-1} J\T C^{-1} \bvec E$.
-This is linear in $\bvec E$, so if $\bvec E = \sum_i \bvec E_i$, then
-$\Delta\bvec\theta = \sum_i \Delta\bvec\theta_i$ with each piece pushed
-through the same Fisher matrix, and each piece has its own figure of bias.
-The pieces come from the tent responses of Section~\ref{sec:v9}: the model
-error on the tent $j$ at snapshot $s$ is
-$\varepsilon_X(k_j, z_s) = 1 - P_X^{\rm model}/P_X^{\rm truth}$, and
+Equation~\eqref{eq:fishershift} is linear in $\bvec E$, so if $\bvec E =
+\sum_i \bvec E_i$, then $\Delta\bvec\theta = \sum_i M\bvec E_i$, each piece
+with its own figure of bias. The pieces come from the tent responses of
+Section~\ref{sec:v9}. The model error on tent $j$ at snapshot $s$ is
+$\varepsilon_X(k_j, z_s) = 1 - P_X^{\rm model}/P_X^{\rm truth}$, for $X$ =
+GI, II in E modes and II in B modes (NLA has no B modes, so its
+$\varepsilon_{\rm B} = 1$; TATT's are cosmolike's), and
 $\bvec E = \sum_{X,s,j} \varepsilon_X(k_j, z_s)\,\bvec R_X[s, j]$, with
 $\bvec R_X[s,j]$ the response of the data vector to the truth's own $P_X$ on
-that tent. Seven pieces:
-\begin{itemize}
-  \item \textbf{amplitude}: $\varepsilon_X(k_{\min}, z_s)$, each snapshot's
-    error at the largest scale ($k = 0.01\hMpc$), applied at every $k$,
-    GI and II together. Where both truth and model are proportional to
-    $\PNL$ this is the whole error, a constant per snapshot: the mismatch
-    between the model's redshift evolution and the truth's amplitudes;
-  \item \textbf{scale dependence}: the rest,
-    $\varepsilon_X(k, z_s) - \varepsilon_X(k_{\min}, z_s)$, of GI and of II
-    in three ranges: $k < 0.06$ (linear), 0.06 to 0.3 (quasi-linear) and
-    above $0.3\hMpc$ (nonlinear).
-\end{itemize}
-The amplitude is one piece because a constant error is absorbed by the free
-amplitude as a whole: split at $k = 0.06\hMpc$ it would show two large
-pieces of opposite sign that are one error (the split by $k$ alone, also
-stored, puts 0.3 to 0.4$\sigma$ in II below $0.06\hMpc$ of 3x2pt NLA for
-exactly this reason).
+that tent (the B-mode response enters $\xi_+$ with a plus sign and $\xi_-$
+with a minus sign, and nothing else). The error is split in three steps.
+\begin{enumerate}
+  \item \textbf{Amplitude.} The part of the error that a change of $A_1$
+    and $\eta_1$ reproduces is projected out first:
+    $\varepsilon_{\rm amp} = D\bvec\delta$, with $D =
+    \partial\varepsilon/\partial(A_1, \eta_1)$ by finite differences and
+    $\bvec\delta$ the least-squares fit of $D\bvec\delta$ to $\varepsilon$,
+    each tent weighted by its $\chi^2$ per unit error on the masked data.
+    One $\bvec\delta$ serves every snapshot and spectrum. This piece moves
+    the figure of bias by at most \CPamp: the fit absorbs it.
+  \item \textbf{Nodes.} The rest, $\varepsilon - \varepsilon_{\rm amp}$, is
+    written on 12 cubic B-splines in $\ln k$ with knots every third of a
+    decade from 0.01 to $10\hMpc$, which sum to one at every $k$. Node $i$'s
+    piece is $\sum_{s,j} B_i(k_j)\,(\varepsilon - \varepsilon_{\rm
+    amp})\,\bvec R_X[s, j]$, summed over snapshots.
+  \item \textbf{Ranges.} Each node is assigned to $k < 0.06$, 0.06 to 0.3
+    or above $0.3\hMpc$ by its centre (0.011 to 0.046; 0.10 and 0.22; 0.46
+    and above), and II is E plus B. The ranges are soft: the 0.22 node
+    reaches to about $0.46\hMpc$.
+\end{enumerate}
+The earlier split (end of this section) differs in its amplitude piece and
+its windows. Its amplitude piece was each snapshot's error at $k = 0.01$,
+applied at every $k$; that holds each snapshot's own amplitude error, which
+one $A_1$ and $\eta_1$ do not absorb. Here that redshift-evolution error
+stays in the nodes below $0.06\hMpc$. Its hard windows cut a flat error into
+pieces of opposite sign; here only what $A_1$ and $\eta_1$ absorb is
+removed first, and the B-spline nodes overlap. Projecting TATT's $A_2$,
+$\eta_2$ and $b_{\rm TA}$ as well was tried and dropped: in cosmic shear
+they rest on their flat priors, so an error along them is not absorbed, and
+the projected piece reached 0.46, which the nodes then cancelled.
 
 \paragraph{Checks.}
-The pieces add up to the linear shift of the base's $\bvec E$ to round-off,
-and that linear shift agrees with the minimizer's MAP to \CClinMap{} in the
-figure of bias at $K_0 = 0.3$ to 0.4 (to 0.04 everywhere up to 0.5). The
-direct $\bvec E$ from cosmolike differs from the base's by its snapshot
-interpolation, at most \CCrem{} in the figure of bias at those cuts (0.10
-for TATT at $K_0 = 0.25$ in 3x2pt, with $\eta_2$ at its bound of 5).
+The node pieces add up to the base's total to $10^{-15}$. With the hard
+windows, the same responses reproduce the earlier code's pieces to
+$10^{-14}$, and a stitched-truth run repeated through the updated code
+reproduces its stored pieces to $10^{-14}$. The direct $\bvec E$ from
+cosmolike differs from the base's by its snapshot interpolation, by
+\CPbaseMed{} (median) and at most \CPbaseMax{} in the figure of bias; its
+shift is the total of Figure~\ref{fig:cpfisher} to $10^{-13}$.
 
 \begin{figure}[tbp]
   \centering
   \includegraphics[width=\textwidth]{plots/cancel_scan/cancel_scan.pdf}
-  \caption{The bias of NLA (left) and TATT (right) on the stitched truth,
+  \caption{The bias of NLA (left) and TATT (right) on the close-pair truth,
     cosmic shear (top) and 3x2pt (bottom; $\gamma_t$ of sources behind
     lenses at 0.3, $w$ at 0.2), every parameter free, CMB prior. Black: the
-    figure of bias of the MAP. Colored: the figure of bias each piece of
-    the model error causes alone; green, the amplitude error of every
-    snapshot; vermillion, II's scale dependence at $k < 0.06$, 0.06 to 0.3
-    and above $0.3\hMpc$ (dotted, solid, dashed); blue, the same for GI.
-    A piece above the black line is being cancelled. Dotted: \Tol.}
+    Fisher figure of bias. Colored: the figure of bias each piece of the
+    model error causes alone; green, the error along $A_1$ and $\eta_1$,
+    projected out first; vermillion, II (E plus B) at $k < 0.06$, 0.06 to
+    0.3 and above $0.3\hMpc$ (dotted, solid, dashed), B-spline nodes grouped
+    by their centre; blue, the same for GI. A piece above the black line is
+    being cancelled. Dotted: \Tol.}
   \label{fig:cancelscan}
 \end{figure}
 
@@ -1929,50 +2102,71 @@ for TATT at $K_0 = 0.25$ in 3x2pt, with $\eta_2$ at its bound of 5).
   \centering
   \includegraphics[width=\textwidth]{plots/cancel_signed/cancel_signed.pdf}
   \caption{The signed shifts behind Figure~\ref{fig:cancelscan}: $\Om$
-    (top) and $S_8$ (bottom) in units of their errors, the MAP in black and
-    each piece in the colors of Figure~\ref{fig:cancelscan}. Dotted:
-    $\pm\Tol$.}
+    (top) and $S_8$ (bottom) in units of their errors, the Fisher total in
+    black and each piece in the colors of Figure~\ref{fig:cancelscan}.
+    Dotted: $\pm\Tol$.}
   \label{fig:cancelsigned}
 \end{figure}
 
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=\textwidth]{plots/cp_spline_nodes/cp_spline_nodes.pdf}
+  \caption{NLA's bias on the close-pair truth node by node, for cosmic shear
+    at $K_0 = 0.2$ and 0.4 and 3x2pt ($\gamma_t$ at 0.5) at 0.2. Top: the
+    $S_8$ shift of a unit fractional error of the spectrum at every
+    snapshot, per node. Middle: the error left after the amplitude
+    projection, at $z = 1$ (thick) and $z = 0.5$ and 1.5 (thin). Bottom:
+    each node's $S_8$ contribution (markers) and their running sum over $k$
+    (black); dotted, the total. Blue: GI; vermillion: II, E modes; reddish
+    purple, dashed: II, B modes.}
+  \label{fig:cpnodes}
+\end{figure}
+
 \paragraph{What the pieces show.}
-Figures~\ref{fig:cancelscan} and \ref{fig:cancelsigned} give the answer
-in three findings.
+Figures~\ref{fig:cancelscan} to \ref{fig:cpnodes} give four findings.
 \begin{enumerate}
-  \item \textbf{GI is not the problem.} Every GI piece stays below 0.07 at
-    every cut, for both models and both probes.
-  \item \textbf{The amplitude error sets $\Om$ in 3x2pt.} Its piece is
-    0.17 to 0.30 for NLA and 0.08 to 0.26 for TATT in 3x2pt, almost all in
-    $\Om$ (down to $-0.28\sigma$), and is the largest piece up to $K_0 =
-    0.35$ (for TATT tied there with II above $0.3\hMpc$). It grows slowly
-    with the cut and stays below \Tol. In cosmic shear it is 0.08 to 0.15.
-  \item \textbf{The II error above $0.3\hMpc$ sets the cut.} FLAMINGO's II
-    rises steeply above $C_1^2\PNL$ at nonlinear scales (to 1.5 to 2 times
-    at $k \simeq 0.5$ to $1\hMpc$; Figure~\ref{fig:truths}), which neither
-    model follows (TATT is NLA there: $A_2 \simeq -0.1$, $b_{\rm TA} <
-    0.1$). Its piece is below 0.25 up to $K_0 = 0.35$ and jumps at $K_0 =
-    0.4$ to \CCfourCSNLA{} (NLA) and \CCfourCSTATT{} (TATT) in cosmic shear
-    and \CCfourTNLA{} and \CCfourTTATT{} in 3x2pt, mostly in $S_8$
-    ($-0.31$ to $-0.34\sigma$). The II error at 0.06 to $0.3\hMpc$
-    ($+0.14$ to $+0.23\sigma$) and the amplitude error ($+0.07$ to
-    $+0.14\sigma$) push $S_8$ the other way, and the total stays at
-    \CCfourTotLo{} to \CCfourTotHi. From $K_0 = 0.4$ on, the totals that look
-    acceptable are cancellations.
+  \item \textbf{In cosmic shear the total is a cancellation at every cut.}
+    The total stays at 0.07 to 0.27 while the largest piece is 0.19 to 1.2.
+    The total is \CPcancCSLo{} to \CPcancCSHi{} of the figure of bias the
+    node pieces would give with random signs. Already at $K_0 = 0.2$ the
+    largest piece (GI below $0.06\hMpc$) is 0.19 to 0.21 against totals of
+    0.07 to 0.09.
+  \item \textbf{The two II pieces above $0.06\hMpc$ push $S_8$ in opposite
+    directions because the response changes sign, not the error}
+    (Figure~\ref{fig:cpnodes}). NLA's II error has one sign and rises with
+    $k$: at $z = 1$ it is 0.25 at the 0.22 node, 0.49 at 0.46 and 0.69 at
+    $1\hMpc$, the close-pair term, which NLA has nothing like. Its B-mode
+    error is 1 at every $k$. The $S_8$ response to II changes sign between
+    the 0.22 and 0.46 nodes ($+1.6$ and $-0.65$ at $K_0 = 0.4$). From $K_0 =
+    0.4$ on, each of the two II pieces is 0.7 to 1.2 by itself.
+  \item \textbf{In 3x2pt the pieces add, up to $K_0 = 0.3$.} With $\gamma_t$
+    at 0.3, every piece is below 0.13 up to $K_0 = 0.25$, and the total is
+    0.93 to 1.03 of the random-sign value up to 0.3. From 0.35 on the same
+    II cancellation appears (0.50 to 0.80; largest piece 0.36 to 1.2). At the
+    recommended $\gamma_t$ cut of 0.5 and $K_0 = 0.2$, GI carries NLA's
+    bias (0.17 below $0.06\hMpc$ and 0.17 at 0.06 to 0.3), with no
+    cancellation.
+  \item \textbf{GI below $0.06\hMpc$ matters on this split.} It reaches 0.55
+    in cosmic-shear NLA (in $\Om$). GI is the same in the close-pair and
+    stitched truths; what this piece holds is the power law's
+    redshift-evolution error, which the earlier split counted in its
+    amplitude piece, at the $A_1 = 3.33$ to 3.42 and $\eta_1 = 0.81$ to
+    0.88 fitted with the close-pair II.
 \end{enumerate}
 
 \paragraph{The criterion.}
 A cut $K_0$ is reliable when, at $K_0$ and at every larger-scale cut of
 the scan (every smaller $K_0$):
 \begin{enumerate}
-  \item the total figure of bias of the MAP is below \Tol;
-  \item every one of the seven pieces is below \Tol, so the total rests on
-    no cancellation of errors larger than the tolerance;
-  \item the fitted parameters are physical and stable: no parameter that
-    matters at a prior bound, one minimum from all three starts.
+  \item the total figure of bias is below \Tol;
+  \item every piece is below \Tol, so the total rests on no cancellation of
+    errors larger than the tolerance;
+  \item the reference fit is physical: no parameter that matters at a prior
+    bound, and stable with the cut.
 \end{enumerate}
 
 \paragraph{The result.}
-At $K_0 = 0.35$ every condition holds for both models and both probes:
+At $K_0 = 0.25$ every condition holds for both models and both probes:
 \begin{center}
   \small
   \begin{tabular}{lcccc}
@@ -1980,73 +2174,121 @@ At $K_0 = 0.35$ every condition holds for both models and both probes:
     & \multicolumn{2}{c}{cosmic shear} & \multicolumn{2}{c}{3x2pt} \\
     & NLA & TATT & NLA & TATT \\
     \midrule
-    total figure of bias & \CCtotCSNLA & \CCtotCSTATT & \CCtotTNLA & \CCtotTTATT \\
-    largest piece & \CCbigCSNLA & \CCbigCSTATT & \CCbigTNLA & \CCbigTTATT \\
-    largest piece at $K_0 = 0.4$ & \CCfourCSNLA & \CCfourCSTATT & \CCfourTNLA & \CCfourTTATT \\
+    total figure of bias & \CPtotCSNLA & \CPtotCSTATT & \CPtotTNLA & \CPtotTTATT \\
+    largest piece & \CPbigCSNLA & \CPbigCSTATT & \CPbigTNLA & \CPbigTTATT \\
+    largest piece at $K_0 = 0.3$ & \CPthrCSNLA & \CPthrCSTATT & \CPthrTNLA & \CPthrTTATT \\
     \bottomrule
   \end{tabular}
 \end{center}
-At $K_0 = 0.4$ condition 2 fails for every model and probe. The fits are
-physical at every $K_0 \le 0.4$ but one, TATT in 3x2pt at $K_0 = 0.25$, with
-$\eta_2 = 5$ at its bound, which is not used (nor are the halo-model
-variants' fits there, Section~\ref{sec:hm}): NLA's $A_1 = 3.3$ to 3.4 with $\eta_1$
-drifting slowly from 0.89 to 0.80; TATT is NLA from $K_0 = 0.3$ on
-($A_2 = -0.08$ to $-0.13$, $b_{\rm TA} \le 0.10$, $\eta_2$ then
-unconstrained), while in cosmic shear at 0.2 and 0.25 its $A_2$ drifts to
-$-1.3$ (the redshift absorption of Section~\ref{sec:scalecut}); the
-galaxy biases stay within 0.018 of the truth and the photo-$z$ and
-calibration shifts below $8\times10^{-4}$; the three starts agree in every
-fit.
+At $K_0 = 0.3$ condition 2 fails in cosmic shear and for TATT in 3x2pt.
+NLA in 3x2pt passes at 0.3 as well (total \CPthrTotTNLA) and fails at 0.35
+(largest piece \CPfiveTNLA). The reference fits are physical at every
+$K_0 \le 0.35$. NLA's $A_1 = 3.33$ to 3.42 and $\eta_1 = 0.81$ to 0.88 at
+every cut. In 3x2pt TATT is NLA up to 0.35 ($|A_2| \le 0.28$, $b_{\rm TA}
+\le 0.23$); from 0.4 on, $\eta_2$ and $b_{\rm TA}$ sit at their bounds
+($-5$ and 0). In cosmic shear TATT's $A_2$ drifts with the cut, from $-1.3$
+at $K_0 = 0.2$ (with $\eta_2 = -3.5$, the redshift absorption of
+Section~\ref{sec:scalecut}) to $+0.25$ at 0.6, where $\eta_2$ and $b_{\rm
+TA}$ reach their bounds.
 
 \begin{center}
-\fbox{\parbox{0.92\textwidth}{\textbf{The reliable cut with $\gamma_t$ at
-0.3.} On the stitched truth the reliable cut for Roman $\xi_\pm$ is $\kuv =
-K_0/D(z)$ with \textbf{$K_0 = 0.35\hMpc$}, for NLA and for TATT, in cosmic
-shear and in 3x2pt (there with $\gamma_t$ of sources behind lenses cut at
-$K_0^{\rm GGL} = 0.3$ and $w$ at 0.2). Section~\ref{sec:sepcuts} sets the
-$\gamma_t$ cut from 2x2pt instead and tests the pair in 3x2pt; the
-recommended cuts are there. At this cut the
-bias in $(\Om, S_8)$ is at most \CCtotTNLA$\sigma$ and no single error of
-the model moves it by more than \CCbigCSNLA$\sigma$, on the stitched
-FLAMINGO truth with every parameter free and the CMB prior. It shrinks
-$\sigma(S_8)$ by \CCgainCS\% in cosmic shear and \CCgainThree\% in 3x2pt
-against $K_0 = 0.2$. TATT buys no smaller scale than NLA: both are limited by
-the same II error above $0.3\hMpc$, which neither describes. The halo-model
-variants have the same cut.\\[0.5em]
-\textbf{Its condition.} The stitched truth is NLA on large scales. On the
-linear-limit truth, which takes them from the measured points, the II rise at
-0.06 to $0.3\hMpc$ at $z \ge 1.5$ limits the cut to $K_0 = 0.25$ (0.3 for
-TATT in cosmic shear), and an amplitude error at $z \ge 2$ alone moves
-$(\Om, S_8)$ by \LLampCSlo{} to \LLampThi$\sigma$ at every cut. No scale cut removes that
-error; a freer redshift model is the test (Appendix~\ref{app:open}).}}
+\fbox{\parbox{0.92\textwidth}{\textbf{The reliable cut on the close-pair
+truth, with $\gamma_t$ at 0.3.} For Roman $\xi_\pm$ it is $\kuv = K_0/D(z)$
+with \textbf{$K_0 = 0.25\hMpc$} for NLA and TATT in cosmic shear and for
+TATT in 3x2pt, and 0.3 for NLA in 3x2pt ($\gamma_t$ of sources behind lenses
+at 0.3, $w$ at 0.2). At 0.25 the bias in $(\Om, S_8)$ is at most
+\CPtotTNLA$\sigma$ and no single error moves it by more than
+\CPbigCSTATT$\sigma$; the cut shrinks $\sigma(S_8)$ by \CPgainCS\% in cosmic
+shear and \CPgainThree\% in 3x2pt against $K_0 = 0.2$. The earlier cut of
+0.35, set on the stitched truth, does not hold here: at 0.35 the largest
+piece is \CPfiveLo{} to \CPfiveHi, the close-pair II on both sides of the
+response's change of sign near $0.3\hMpc$. The recommended pair of
+Section~\ref{sec:sepcuts} ($K_0 = 0.2$, $K_0^{\gamma_t} = 0.5$) passes on
+this truth, at \CPrecNLA{} and \CPrecTATT.\\[0.5em]
+\textbf{Its condition.} The close-pair truth, like the stitched one, is NLA
+on large scales. On the linear-limit truth, which takes them from the
+measured points, an amplitude error at $z \ge 2$ moves $(\Om, S_8)$ by
+\LLampCSlo{} to \LLampThi$\sigma$ at every cut (below). No scale cut removes
+that error; a freer redshift model is the test (Appendix~\ref{app:open}).}}
 \end{center}
 
-\paragraph{What changed against the earlier cuts.}
-Section~\ref{sec:scalecut} recommended $K_0 = 0.2$ as the cut that relies on
-no cancellation on both truths; that was set by the production truth,
-whose large-scale pieces come from its held edge value
-(Section~\ref{sec:setup}). The same split on the production truth gives
-larger pieces at every cut (0.36 to 0.50 at $K_0 = 0.35$, 0.20 to 0.31
-already at 0.2), consistent with an error that is not in the measured
-spectra; it is not used for the recommendation. The stitched truth is the
-optimistic one on large scales, where it is NLA by construction; the
-linear-limit truth, which is not, is the check below.
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=\textwidth]{plots/cp_data_blocks/cp_data_blocks.pdf}
+  \caption{Which data carry the bias on the close-pair truth: the direct
+    model error through the linear map of Eq.~\eqref{eq:fishershift}, split
+    by data block, $\xi_+$ (vermillion), $\xi_-$ (blue), $\gamma_t$ (green)
+    and $w$ (gray; no IA, so zero), with the total in black. Rows: the $\Om$
+    and $S_8$ shifts in units of their errors, for cosmic shear (top two)
+    and 3x2pt with $\gamma_t$ at 0.5 (bottom two). Columns: NLA, TATT (power
+    law in redshift), NLAz, TATTz (amplitudes per source bin). Dotted:
+    $\pm\Tol$.}
+  \label{fig:cpblocks}
+\end{figure}
+
+\paragraph{Amplitudes per source bin.}
+The power law $(1+z)^{\eta_1}$ was also replaced by one amplitude per
+source bin: NLAz (8 amplitudes) and TATTz (8 $A_1$, 8 $A_2$ and one shared
+$b_{\rm TA}$). In cosmic shear their reference fits need a second start:
+$A_1$ of bin 8 otherwise stays in the basin near 0, where II, which goes as
+$A_1^2$, barely constrains it; the second start puts it at 7.4 and halves
+the $\chi^2$. An amplitude per bin is not a function of redshift, so these
+fits have no tent split; their direct error is split by data block instead
+(Figure~\ref{fig:cpblocks}). In cosmic shear the per-bin models lower or match
+the bias (\CPzCSLo{} to \CPzCSHi; Figure~\ref{fig:cpfisher}), and in 2x2pt they
+remove it (at most 0.06). In 3x2pt they raise it, at every $\gamma_t$ cut:
+\CPzNLAzLo{} to \CPzNLAzHi{} for NLAz and \CPzTATTzLo{} to \CPzTATTzHi{}
+for TATTz with $\gamma_t$ at 0.5. Their reference $\chi^2$ is also worse
+than NLA's (4.8 against 1.7 at $K_0 = 0.2$, the same minimum from four
+starts). The data blocks place the excess in $\gamma_t$: its rows shift
+$\Om$ by $-0.38$ to $-0.70\sigma$ (NLAz) and $-0.27$ to $-0.50\sigma$
+(TATTz), against $-0.01$ to $-0.09\sigma$ for NLA and TATT. $\gamma_t$ sees
+the low-redshift part of each source bin, $\xi_\pm$ all of it, so one
+constant per bin cannot serve both, while a power law inside each bin can.
+Fitted alone, cosmic shear and 2x2pt prefer different amplitudes for the
+upper bins (bin 7: $5.51 \pm 0.25$ against $5.00 \pm 0.67$).
+
+\paragraph{The stitched truth and the earlier split.}
+An earlier version of this split used the stitched truth and the
+minimizer's MAP as the total, with the amplitude piece described above
+(each snapshot's error at $k = 0.01$, applied at every $k$) and hard windows
+in $k$. With the same criterion it gave $K_0 = 0.35$ for both models and
+both probes: totals \CCtotCSTATT{} to \CCtotTNLA{} and largest pieces at
+most \CCbigCSNLA{} at 0.35, while at 0.4 II above $0.3\hMpc$ alone reached
+\CCfourCSTATT{} to \CCfourCSNLA, held back by the II at 0.06 to $0.3\hMpc$
+and the amplitude error (totals \CCfourTotLo{} to \CCfourTotHi). Its linear
+shift agreed with the MAP to \CClinMap{} at $K_0 = 0.3$ to 0.4, and its
+snapshot interpolation cost at most \CCrem. Its amplitude piece reached 0.30 in 3x2pt,
+mostly in $\Om$. On the production truth the same split gave
+larger pieces at every cut (0.36 to 0.50 at 0.35, 0.20 to 0.31 already at
+0.2), an error that is not in the measured spectra, and it was not used.
+The cut moves from 0.35 to 0.25 for two reasons: the close-pair II (1.2 to
+1.3 times the stitched II at $k = 0.3\hMpc$, 1.4 to 1.7 times at 1) makes
+the II pieces on both sides of the response's change of sign larger, and
+the amplitude projection leaves the redshift-evolution error in GI and II
+below $0.06\hMpc$. Sections~\ref{sec:sepcuts} and \ref{sec:hm}, which set
+the cosmic-shear-alone cut on the stitched and E minus B truths, use the
+earlier split.
 
 \begin{figure}[tbp]
   \centering
   \includegraphics[width=\textwidth]{plots/cancel_scan_lin/cancel_scan_lin.pdf}
-  \caption{As Figure~\ref{fig:cancelscan}, on the linear-limit truth, whose
-    large scales are the measured FLAMINGO ratios.}
+  \caption{The earlier split on the linear-limit truth, whose large scales
+    are the measured FLAMINGO ratios: as Figure~\ref{fig:cancelscan}, but
+    with the MAP as the total, the amplitude piece taken as each snapshot's
+    error at $k = 0.01\hMpc$ applied at every $k$ (green), and hard windows
+    in $k$ for the scale dependence of II and GI.}
   \label{fig:cancelscanlin}
 \end{figure}
 
 \paragraph{The check on the linear-limit truth.}
-The stitched truth is NLA below $k_t$ by construction, so it cannot show an
-error of NLA's form on large scales, nor a large-scale amplitude that differs
-from the NLA fit's. The linear-limit truth takes the large scales from the
-measured points instead (Section~\ref{sec:setup}). The same fits and the
-same split on it (Figure~\ref{fig:cancelscanlin}) change the answer in two
-ways.
+The stitched and close-pair truths are NLA below $k_t$ by construction, so
+they cannot show an error of NLA's form on large scales, nor a large-scale
+amplitude that differs from the NLA fit's. The linear-limit truth takes the
+large scales from the measured points instead (Section~\ref{sec:setup}).
+The minimizer fits and the earlier split on it
+(Figure~\ref{fig:cancelscanlin}) change the answer of the stitched truth in
+two ways.
 \begin{enumerate}
   \item \textbf{The amplitude error exceeds the tolerance at every cut in
     3x2pt.} Its piece is \LLampTlo{} to \LLampThi{} for every model at every
@@ -2058,7 +2300,7 @@ ways.
     alone moves $\Om$ by $-0.20$ to $-0.34\sigma$. The measurement errors of
     the constants move the piece by \LLnoise{} (median over random draws, at
     most 0.27 at 84\%), so the piece is not noise. The same snapshots carry
-    most of the amplitude piece on the stitched truth as well ($-0.17\sigma$
+    most of the earlier split's amplitude piece on the stitched truth as well ($-0.17\sigma$
     of the $-0.23\sigma$ in $\Om$ of 3x2pt NLA at $K_0 = 0.35$), where the
     NLA-fit amplitudes are closer to the power law. An error that is the same
     at every $k$ cannot be cut away: it is a limit of the power-law redshift
@@ -2140,7 +2382,8 @@ agrees with the MAP to 0.04 in the figure of bias (to 0.01 in most fits); $w$ co
 Figure~\ref{fig:cutprobes} gives the two cuts.
 \begin{itemize}
   \item \textbf{Cosmic shear.} On the stitched truth the cut is $K_0 = 0.35$
-    for every model (Section~\ref{sec:cancel}). On the E minus B truth every
+    for every model (Section~\ref{sec:cancel}, earlier split; on the
+    close-pair truth the split there gives 0.25). On the E minus B truth every
     model passes to the end of the scan, $K_0 = 0.6$: the total is
     \SCebTotLo{} to \SCebTotHi{} and the largest piece at most \SCebBig,
     because the II above $0.3\hMpc$ that set the stitched cut is mostly the
@@ -2233,7 +2476,10 @@ small ($A_2 = -0.21$ to $-0.30$, $b_{\rm TA} = 0.21$ to 0.35), and the free
 $\alpha = 0.98$ (NLA$+\alpha$) and 0.50 (TATT$+\alpha$). The two truths agree there to 0.01, as they should at a cut that
 removes the small scales where they differ. The figure of merit is
 \SCfomNLA{} thousand (NLA), against \SCfomOld{} thousand for the earlier
-pair of Section~\ref{sec:cancel} ($K_0 = 0.35$, $K_0^{\gamma_t} = 0.3$).
+stitched-truth pair of Section~\ref{sec:cancel} ($K_0 = 0.35$,
+$K_0^{\gamma_t} = 0.3$). On the close-pair truth the pair passes as well,
+at \CPrecNLA{} (NLA) and \CPrecTATT{} (TATT), every piece at most
+\CPrecBig.
 
 \paragraph{NLA-F.}
 NLA with $\alpha$ fixed at FLAMINGO's $\alpha_{\rm F}(z)$ fails at $K_0 =
@@ -2268,7 +2514,7 @@ both truths, the two options end at nearly the same figure of merit.
 
 NLA's 3x2pt bias stays at 0.26 or above at every pair of cuts tested
 (0.28 at $K_0 = 0.2$, 0.26 with $\gamma_t$ at 0.2). That floor is the
-amplitude piece of Section~\ref{sec:cancel} (0.24 of the 0.28 at $K_0 =
+amplitude piece of the earlier split of Section~\ref{sec:cancel} (0.24 of the 0.28 at $K_0 =
 0.2$, the same on both truths), which a scale cut cannot remove and 3x2pt
 amplifies: in cosmic shear alone it is 0.11. TATT's is 0.12 there, with
 $A_2 = -0.21$, $\eta_2 = 2.4$ and $b_{\rm TA} = 0.21$, inside their
@@ -2290,8 +2536,10 @@ lensing ($\gamma_t$ of sources behind lenses): \textbf{$K_0^{\gamma_t} =
 cosmic-shear cut is the largest at which 3x2pt passes with it, for NLA, TATT,
 NLA$+\alpha$, TATT$+\alpha$ and TATT-F, on both the stitched and the E minus B
 truth (bias at most \SCfinalMax$\sigma$), every parameter free and the CMB
-prior. NLA-F needs $K_0 = 0.15$ (bias \SCnlafS$\sigma$).
-Cosmic shear alone would allow 0.35 (stitched) to 0.6 (E minus B); in
+prior; NLA and TATT also pass on the close-pair truth (\CPrecNLA{} and
+\CPrecTATT$\sigma$, Section~\ref{sec:cancel}). NLA-F needs $K_0 = 0.15$
+(bias \SCnlafS$\sigma$). Cosmic shear alone would allow 0.25 (close
+pairs) or 0.35 (stitched) to 0.6 (E minus B); in
 3x2pt, $\gamma_t$ and $w$ break the degeneracy that hides its IA error, so
 its cut is lowered, not the $\gamma_t$ cut, because the error is in
 $\xi_\pm$.\\[0.5em]
@@ -2798,9 +3046,16 @@ in every configuration but A.
     $P_{\rm lin}$ agrees with the halo tables' to $4\times10^{-3}$. The
     correction lowers the IA signal when $\alpha < 1$ (checked in sign for GI
     and II).
-  \item \textbf{The bias split of Section~\ref{sec:cancel}.} In every run
-    the pieces add up to the linear shift of the base's model error to
-    $10^{-8}$, for both splits. The linear shift of the direct error agrees
+  \item \textbf{The bias split of Section~\ref{sec:cancel}.} On the
+    close-pair truth the B-spline pieces add up to the base's total to
+    $10^{-15}$ and the data blocks to the direct total to $10^{-16}$; the
+    Fisher shift is stable to 0.007 when every derivative step is halved or
+    doubled. The per-bin reference fits with an $A_1$ off its neighbours'
+    trend get a second start (it fired in all 14 cosmic-shear runs and no
+    3x2pt run); 16 per-bin runs have a source bin with no data, where only
+    the Fisher matrix with the flat priors is defined. In every run of the
+    earlier split the pieces add up to the linear shift of the base's model
+    error to $10^{-8}$, for both of its splits. The linear shift of the direct error agrees
     with the MAP to \CClinMap{} in the figure of bias at $K_0 = 0.3$ to 0.4
     on the stitched truth and to 0.02 on the linear-limit truth. The
     linear-limit base, built with a separately compiled sim-IA library
@@ -2843,7 +3098,7 @@ Paths relative to \texttt{analysis/roman\_dchi2/v8/} of the repository,
 and to \texttt{v9/} next to it for Section~\ref{sec:v9}.
 
 \begin{center}
-  \small
+  \footnotesize
   \begin{tabular}{ll}
     \toprule
     step & script $\rightarrow$ output \\
@@ -2884,6 +3139,14 @@ and to \texttt{v9/} next to it for Section~\ref{sec:v9}.
     the bias split, its linear maps & \texttt{bias\_pieces.py} $\rightarrow$ \texttt{bias\_pieces.json}, \texttt{pieces\_maps/} \\
     the reliable cuts (cs, 2x2pt, 3x2pt) & \texttt{cancel\_cuts.py} $\rightarrow$ \texttt{cancel\_cuts.json} \\
     figure data & \texttt{make\_cancel\_figures.py} \\
+    \multicolumn{2}{l}{\textit{Section~\ref{sec:cancel}, the close-pair truth:}} \\
+    close-pair truth & \texttt{v3/cp\_truth.py} $\rightarrow$ \texttt{cp\_truth.npz} \\
+    its bases with B modes & \texttt{v9/bmode\_tables.py} $\rightarrow$ \texttt{ia\_base*\_CP.npz} \\
+    Fisher-only totals & \texttt{fisher\_minimize.py --fisher-only} \\
+    linear maps, E and B & \texttt{bias\_pieces.py} $\rightarrow$ \texttt{pieces\_maps/} \\
+    B-spline split, data blocks & \texttt{spline\_pieces.py} $\rightarrow$ \texttt{spline\_pieces.json} \\
+    figure data & \texttt{make\_cp\_fisher\_figure.py}, \texttt{make\_cp\_pieces\_figures.py} \\
+    the plan and its results & \texttt{RERUN\_PLAN\_NBall.md} \\
     \multicolumn{2}{l}{\textit{Section~\ref{sec:sepcuts}:}} \\
     E minus B truth & \texttt{v3/eb\_truth.py} $\rightarrow$ \texttt{stitched\_truths.npz} \\
     2x2pt fits & \texttt{fisher\_minimize.py --probe 2x2}, \texttt{jobs\_2x2.txt} \\
@@ -2938,9 +3201,10 @@ and to \texttt{v9/} next to it for Section~\ref{sec:v9}.
   \item The CMB prior is centered on the truth with Planck widths on $n_s$,
     $\Omega_b h^2$ and $H_0$ only; a full CMB likelihood also constrains
     $A_s$ and $\Om$.
-  \item Freer redshift evolution is untested in 3x2pt: the test requires an
-    amplitude per bin that multiplies the power law (nested in NLA), while
-    cosmolike's per-bin mode is constant across each bin.
+  \item cosmolike's per-bin IA mode is constant across each source bin, and
+    on the close-pair truth it raises the 3x2pt bias (Section~\ref{sec:cancel}).
+    An amplitude per bin that multiplies the power law, nested in NLA, is
+    untested.
   \item The halo-model correction of Section~\ref{sec:hm} is held at the
     fiducial cosmology and leaves out the 2-halo window of the FLAMINGO fits
     ($e^{-(k/6)^2}$, above 0.97 below $k = 1\hMpc$); evaluating $I_1$ in
@@ -2964,12 +3228,18 @@ and to \texttt{v9/} next to it for Section~\ref{sec:v9}.
     from one box, whose low-$k$ modes are shared by every snapshot; the
     noise of the amplitude piece is estimated as if the snapshots were
     independent.
-  \item The B-mode excess over the plateau (13 to 49\% of the II signal at
-    $k = 0.2$ to $1\hMpc$) is treated as II signal by the stitched truth and
-    as noise by the E minus B truth. Which is right decides whether cosmic
-    shear alone allows $K_0 = 0.35$ or 0.6; it needs the FLAMINGO catalogue
-    (B modes of shuffled orientations, or of a random-orientation sample of
-    the same galaxies). The recommended cuts hold on both.
+  \item The B modes are the shape correlation of close pairs, a signal
+    (Section~\ref{sec:setup}), so the close-pair truth is the reading the
+    catalogue supports. Two parts of it are untested: the pair sum is not
+    converged at its $1\,h^{-1}$Mpc limit (the 0.3 to $1\,h^{-1}$Mpc shell
+    gives 28\% of $N_{\rm low}$), and 11 to 20\% of it comes from pairs
+    closer than 10 to $30\,h^{-1}$kpc, which a resolution test can show to
+    be numerical. Sections~\ref{sec:sepcuts} and \ref{sec:hm} still rest on
+    the stitched and E minus B truths and the earlier split; the recommended
+    cuts hold on all three.
+  \item On the close-pair truth TATT's reference fit puts $\eta_2$ and
+    $b_{\rm TA}$ at their bounds from $K_0 = 0.4$ in 3x2pt, and the
+    halo-model variants were not rerun on it.
   \item The 3x2pt cuts were scanned for NLA and TATT only; the four
     halo-model variants were checked at $K_0 = 0.2$ and 0.25, and NLA-F also
     at 0.15, where it passes by 0.004. Fits with $b_{\rm TA}$ at 0, its lower

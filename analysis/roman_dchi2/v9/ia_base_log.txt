@@ -80,3 +80,20 @@ done (246s)
 [188s] EB: checks stale 0.0e+00, sum_vs_xi_ia 5.4e-10, sum_vs_dA 6.6e-09, sum_vs_deta 1.6e-03
 [188s] EB: wrote ia_base_EB.npz
 done (188s)
+[3s] start: truths ('CP',), 1586 knobs per truth
+[9s] CP: snapshot 1/13 (z = 0) done; 0.04 s per column, about 1 min left
+[16s] CP: snapshot 2/13 (z = 0.1) done; 0.04 s per column, about 1 min left
+[23s] CP: snapshot 3/13 (z = 0.2) done; 0.04 s per column, about 1 min left
+[29s] CP: snapshot 4/13 (z = 0.3) done; 0.04 s per column, about 1 min left
+[36s] CP: snapshot 5/13 (z = 0.4) done; 0.04 s per column, about 1 min left
+[42s] CP: snapshot 6/13 (z = 0.5) done; 0.04 s per column, about 1 min left
+[49s] CP: snapshot 7/13 (z = 0.6) done; 0.04 s per column, about 1 min left
+[55s] CP: snapshot 8/13 (z = 0.75) done; 0.04 s per column, about 1 min left
+[62s] CP: snapshot 9/13 (z = 1) done; 0.04 s per column, about 0 min left
+[68s] CP: snapshot 10/13 (z = 1.5) done; 0.04 s per column, about 0 min left
+[75s] CP: snapshot 11/13 (z = 2) done; 0.04 s per column, about 0 min left
+[81s] CP: snapshot 12/13 (z = 3) done; 0.04 s per column, about 0 min left
+[88s] CP: snapshot 13/13 (z = 4) done; 0.04 s per column, about 0 min left
+[91s] CP: checks stale 0.0e+00, sum_vs_xi_ia 2.3e-09, sum_vs_dA 2.0e-08, sum_vs_deta 1.8e-03
+[91s] CP: wrote ia_base_CP.npz
+done (91s)

@@ -38,6 +38,14 @@ For one run of fisher_minimize.json (probe, model, K0, truth):
              together, which a split by k would cut into artificial pieces of
              one flat error); the scale dependence left over is split by
              spectrum and RANGES as above.
+B-mode II (truth CP, v9/bmode_tables.py): the base has R_II_E and R_II_B;
+the II error is split into "II" (E, as above) and "IIB", with
+1 - P_BB^model/P_BB^truth, P_BB^model native TATT's (zero for NLA, so the
+whole truth B is error). Per-bin models (NLAz, TATTz: amplitudes per source
+bin, not functions of z) have no tent split: only the direct E, its shift
+and the linear map are stored (decomposed by data block in
+spline_pieces.py). Runs with galaxy-bias errors (gb) are not split: the base
+holds only IA.
 A cut that rests on no cancellation has every piece below the tolerance,
 not only the total. The linear map from the data-minus-model vector to the
 shift is saved per run in pieces_maps/, so other splits need no cosmolike.
@@ -60,6 +68,8 @@ sys.path.insert(0, os.path.join(RD, "v7"))
 sys.path.insert(0, os.path.join(HERE, "..", "tatt_fit"))
 import fisher_minimize as FM                                      # noqa: E402
 import model_errors as ME                                         # noqa: E402
+sys.path.insert(0, os.path.join(RD, "v9"))
+import bmode_tables as BT                                         # noqa: E402
 
 OUT = os.path.join(HERE, "bias_pieces.json")
 RANGES = [(0.0, 0.06), (0.06, 0.3), (0.3, np.inf)]
@@ -99,13 +109,28 @@ def model_ratios(mdl, p, zs, fine, hmt):
     return out
 
 
+def model_b_ratio(mdl, p, zs, fine):
+    """(13, nfine): P_BB^model/P_NL; native TATT has B modes, NLA none."""
+    if FM.IA[mdl]["model"] != 1:
+        return np.zeros((len(zs), len(fine)))
+    out = np.zeros((len(zs), len(fine)))
+    for s, z in enumerate(zs):
+        x = (1 + z)/ME.X0
+        a1 = p["roman_A1_1"]*x**p["roman_A1_2"]
+        a2 = p["roman_A2_1"]*x**p["roman_A2_2"]
+        P = tm().Pnl(float(z), fine)
+        out[s] = tm().predict(float(z), fine, a1, a2, p["roman_BTA_1"], 1.0, PNL=P)["BB"]/P
+    return out
+
+
 def run(key):
     t0 = time.time()
     with open(FM.OUT + ".lock", "w") as lk:          # fisher_minimize.py may be writing it
         fcntl.flock(lk, fcntl.LOCK_EX)
         row = json.load(open(FM.OUT))["runs"][key]
     probe, mdl, K0, truth, gt = row["probe"], row["model"], row["K0"], row["truth"], row.get("gt", 0.3)
-    S = FM.Setup(mdl, K0, truth, probe, row["cmb"], gt)
+    wc, gb = row.get("wc", 0.2), row.get("gb")
+    S = FM.Setup(mdl, K0, truth, probe, row["cmb"], gt, wc, gb)
     assert S.names == row["names"]
     n = len(S.names)
     ref = np.array([row["ref"][q] for q in S.names])
@@ -130,24 +155,49 @@ def run(key):
 
     v_ref, _ = S.vector(ref)
     E_direct = S.d - v_ref
+    M = -(G @ Finv @ J[:S.mask.sum()].T) @ S.Lw
+    mapfile = os.path.join(HERE, "pieces_maps", key.replace("|", "_").replace("+", "p") + ".npz")
+    os.makedirs(os.path.join(HERE, "pieces_maps"), exist_ok=True)
+    perbin = FM.IA[mdl].get("evo") == 2
+    if perbin or gb:
+        mu_d, fob_d = shift(E_direct)
+        np.savez(mapfile, M=M, sig=sig, C2=C2, mask=S.mask, E_direct=E_direct)
+        out = dict(key=key, probe=probe, model=mdl, K0=K0, truth=truth, gt=gt, wc=wc, gb=gb,
+                   sigma=sig.tolist(), fob_map=row["flatprior"]["fob_map"],
+                   fob_mean_linear=row["flatprior"]["fob_mean_linear"],
+                   direct=dict(mu=mu_d.tolist(), fob=fob_d), split=None, seconds=time.time() - t0)
+        save(key, out)
+        print(f"{key}: no tent split ({'per-bin' if perbin else 'galaxy bias'}); linear direct {fob_d:.3f}, "
+              f"step 2 {out['fob_mean_linear']:.3f} [{out['seconds']:.0f}s]", flush=True)
+        return
     # the base and the truth's ratios on its grid
     bname = "ia_base" if probe == "cs" else "ia_base_3x2"
     b = np.load(os.path.join(RD, "v9", f"{bname}_{truth}.npz"))
     zs, fine = b["zs"], b["fine"]
-    st = np.load(os.path.join(RD, "v3", "stitched_truths.npz"))
+    st = BT.load_truths(os.path.join(RD, "v3", "stitched_truths.npz"))
     Rt = np.array([[np.interp(np.log(fine), np.log(st["k"]), st[f"R_{truth}"][s, i]) for i in (0, 1)]
                    for s in range(len(zs))])
-    hmt = np.load(os.path.join(HERE, f"hm_templates_{S.probe}_{truth}.npz"))
+    hmt = (np.load(os.path.join(HERE, f"hm_templates_{S.probe}_{truth}.npz"))
+           if FM.IA[mdl].get("hm") else None)
     p = dict(zip(S.names, ref))
     Rm = model_ratios(mdl, p, zs, fine, hmt)
     c = 1 - Rm/Rt                                     # (13, 2, nfine): data minus model per tent
-    col = {"GI": b["R_GI"], "II": b["R_II"]}          # (13, nfine, n)
+    withb = BT.has_b(st, truth)
+    if withb:
+        RtB = np.array([np.interp(np.log(fine), np.log(st["k"]), st[f"R_{truth}_B"][s, 1])
+                        for s in range(len(zs))])
+        cB = 1 - model_b_ratio(mdl, p, zs, fine)/RtB
+        c = np.concatenate([c, cB[:, None]], axis=1)  # (13, 3, nfine): GI, II (E), IIB
+        col = {"GI": b["R_GI"], "II": b["R_II_E"], "IIB": b["R_II_B"]}
+    else:
+        col = {"GI": b["R_GI"], "II": b["R_II"]}      # (13, nfine, n)
+    XS = list(col)
+    IX = {X: i for i, X in enumerate(XS)}
 
     def piece(X, lo, hi):
         sel = (fine >= lo) & (fine < hi)
-        i = 0 if X == "GI" else 1
-        return np.einsum("sj,sjn->n", c[:, i, sel], col[X][:, sel])
-    E_base = piece("GI", 0, np.inf) + piece("II", 0, np.inf)
+        return np.einsum("sj,sjn->n", c[:, IX[X], sel], col[X][:, sel])
+    E_base = sum(piece(X, 0, np.inf) for X in XS)
     dw = S.Lw @ (E_direct - E_base)[S.mask]
     ew = S.Lw @ E_direct[S.mask]
     mu_d, fob_d = shift(E_direct)
@@ -157,7 +207,7 @@ def run(key):
                fob_mean_linear=row["flatprior"]["fob_mean_linear"],
                direct=dict(mu=mu_d.tolist(), fob=fob_d), base=dict(mu=mu_b.tolist(), fob=fob_b),
                chi2_E=float(ew @ ew), chi2_base_error=float(dw @ dw), ranges={}, bins={})
-    for X in ("GI", "II"):
+    for X in XS:
         for name, edges in (("ranges", RANGES), ("bins", list(zip(BINS[:-1], BINS[1:])))):
             for lo, hi in edges:
                 mu, fob = shift(piece(X, lo, hi))
@@ -168,12 +218,12 @@ def run(key):
     # applied at every k (the amplitude, i.e. redshift-evolution, error of both
     # spectra), and the scale dependence left over, by spectrum and range of k
     flat = np.repeat(c[:, :, :1], len(fine), axis=2)
-    E_z = np.einsum("sj,sjn->n", flat[:, 0], col["GI"]) + np.einsum("sj,sjn->n", flat[:, 1], col["II"])
+    E_z = sum(np.einsum("sj,sjn->n", flat[:, IX[X]], col[X]) for X in XS)
     mu, fob = shift(E_z)
     out["zshape"] = {"z|amplitude": dict(mu=mu.tolist(), fob=fob)}
     cshape = c - flat
-    for X in ("GI", "II"):
-        i = 0 if X == "GI" else 1
+    for X in XS:
+        i = IX[X]
         for lo, hi in RANGES:
             sel = (fine >= lo) & (fine < hi)
             mu, fob = shift(np.einsum("sj,sjn->n", cshape[:, i, sel], col[X][:, sel]))
@@ -181,28 +231,31 @@ def run(key):
     zsum = np.array([v["mu"] for v in out["zshape"].values()]).sum(0)
     assert np.allclose(zsum, mu_b, atol=1e-8)
     out["largest_zshape_fob"] = max(v["fob"] for v in out["zshape"].values())
-    out["eps_flat"] = dict(GI=flat[:, 0, 0].tolist(), II=flat[:, 1, 0].tolist(), zs=zs.tolist())
+    out["eps_flat"] = dict(**{X: flat[:, IX[X], 0].tolist() for X in XS}, zs=zs.tolist())
     # the linear map from the (unwhitened, masked) data-minus-model vector to the
     # (Omega_m, S8) shift, so any other split needs no cosmolike
-    M = -(G @ Finv @ J[:S.mask.sum()].T) @ S.Lw
-    os.makedirs(os.path.join(HERE, "pieces_maps"), exist_ok=True)
-    np.savez(os.path.join(HERE, "pieces_maps", key.replace("|", "_").replace("+", "p") + ".npz"),
-             M=M, sig=sig, C2=C2, mask=S.mask, E_direct=E_direct, c=c, zs=zs, fine=fine)
+    np.savez(mapfile, M=M, sig=sig, C2=C2, mask=S.mask, E_direct=E_direct, c=c, zs=zs, fine=fine,
+             spectra=np.array(XS), E_base=E_base)
     mu_r, fob_r = shift(E_direct - E_base)      # what the base misses (snapshot interpolation)
     out["remainder"] = dict(mu=mu_r.tolist(), fob=fob_r)
     out["largest_range_fob"] = max(v["fob"] for v in out["ranges"].values())
     out["rss"] = np.sqrt((rng**2).sum(0)).tolist()
     out["seconds"] = time.time() - t0
+    save(key, out)
+    pcs = " ".join(f"{k}:{v['fob']:.2f}" for k, v in out["ranges"].items())
+    fm = "none" if out["fob_map"] is None else f"{out['fob_map']:.3f}"
+    print(f"{key}: FoB MAP {fm}, step 2 {out['fob_mean_linear']:.3f}, linear direct {fob_d:.3f}, base {fob_b:.3f} "
+          f"(chi2 E {out['chi2_E']:.2f}, base error {out['chi2_base_error']:.4f}); pieces {pcs}; "
+          f"largest {out['largest_range_fob']:.2f} [{out['seconds']:.0f}s]", flush=True)
+
+
+def save(key, out):
     with open(OUT + ".lock", "w") as lk:
         fcntl.flock(lk, fcntl.LOCK_EX)
         allr = json.load(open(OUT)) if os.path.exists(OUT) else dict(about=__doc__, runs={})
         allr["about"] = __doc__
         allr["runs"][key] = out
         json.dump(allr, open(OUT, "w"), indent=1)
-    pcs = " ".join(f"{k}:{v['fob']:.2f}" for k, v in out["ranges"].items())
-    print(f"{key}: FoB MAP {out['fob_map']:.3f}, linear direct {fob_d:.3f}, base {fob_b:.3f} "
-          f"(chi2 E {out['chi2_E']:.2f}, base error {out['chi2_base_error']:.4f}); pieces {pcs}; "
-          f"largest {out['largest_range_fob']:.2f} [{out['seconds']:.0f}s]", flush=True)
 
 
 def main():

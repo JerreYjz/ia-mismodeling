@@ -17,6 +17,15 @@ with N(0, 0.002), 8 m with N(0, 0.005), the IA parameters):
              bounds, the same J); its shift of (Omega_m, S8) from D3A has no
              projection effect. mu = shift/sigma_F, FoB = sqrt(dp C^-1 dp).
     linear   the Fisher prediction of the same shift, F^-1 J^T r(theta_ref).
+--fisher-only stops there (Kable, Addison & Bennett 2019, arXiv:1908.01626,
+Eq. 6): FoB = the linear shift with the flat priors as Gaussians, no
+minimizer; key suffix |fisher. --hscale s multiplies every derivative step
+(key suffix |h<s>), the step-size check. TATTz: TATT with one A1 and one A2
+per source bin and one shared b_TA. The reference fit of NLAz and TATTz gets
+a second start when one A1_i falls off its neighbours' trend (trend_restart:
+the A1 ~ 0 basin of II); the lower chi2 is kept and recorded as ref_restart.
+A singular F (parameters the data do not see, no_info) leaves only the
+flat-prior Fisher.
 Models: NLA (A1, eta1 power law), NLAz (NLA with one A1 per source bin,
 IA_redshift_evolution 2), TATT (A1, eta1, A2, eta2, bTA), and the halo-model
 variants NLAa and TATTa: NLA or TATT with the A1 terms on
@@ -99,7 +108,13 @@ IA = {
     "TATT": dict(model=1, evo=3, free={"roman_A1_1": (-5, 5, 0.03), "roman_A1_2": (-5, 5, 0.02),
                                        "roman_A2_1": (-5, 5, 0.05), "roman_A2_2": (-5, 5, 0.1),
                                        "roman_BTA_1": (0, 2, 0.03)}),
+    # TATT with one A1 and one A2 per source bin (IA_REDSHIFT_BINNING) and one
+    # b_TA shared by every bin: "roman_BTA" is written into roman_BTA_1..8 (TIES)
+    "TATTz": dict(model=1, evo=2, free={**{f"roman_A1_{i}": (-5, 10, 0.03) for i in range(1, 9)},
+                                        **{f"roman_A2_{i}": (-5, 5, 0.05) for i in range(1, 9)},
+                                        "roman_BTA": (0, 2, 0.03)}),
 }
+TIES = {"roman_BTA": [f"roman_BTA_{i}" for i in range(1, 9)]}
 ALPHA = {"hm_alpha": (-1, 2, 0.03)}
 IA["NLAa"] = dict(model=0, evo=3, free={**IA["NLA"]["free"], **ALPHA}, hm=True)
 IA["TATTa"] = dict(model=1, evo=3, free={**IA["TATT"]["free"], **ALPHA}, hm=True)
@@ -116,6 +131,7 @@ ALPHA_FLAMINGO_NLA = [0.61, 0.61, 0.61, 0.61, 0.62, 0.66, 0.71, 0.77, 0.90, 1.20
 ALPHA_FLAMINGO = {"TATT": ALPHA_FLAMINGO_TATT, "NLA": ALPHA_FLAMINGO_NLA}
 X0 = 1.62
 IA_START = {"NLA": [3.5, 0.7], "NLAz": [3.0]*8, "TATT": [3.4, 0.7, -1.0, -2.0, 0.5],
+            "TATTz": [3.0]*8 + [-0.5]*8 + [0.5],
             "NLAf": [3.5, 0.7], "NLAfT": [3.5, 0.7], "TATTf": [3.4, 0.7, -1.0, -2.0, 0.5],
             "NLAa": [3.5, 0.7, 0.5], "TATTa": [3.4, 0.7, -1.0, -2.0, 0.5, 0.5]}
 # Freer redshift evolution, nested in the power law: both amplitudes take the same g(z),
@@ -153,7 +169,8 @@ def zevo_g(kind, zs, p):
     raise ValueError(kind)
 
 
-ALL_IA = ["roman_A1_%d" % i for i in range(1, 9)] + ["roman_A2_1", "roman_A2_2", "roman_BTA_1"]
+ALL_IA = ([f"roman_A1_{i}" for i in range(1, 9)] + [f"roman_A2_{i}" for i in range(1, 9)]
+          + [f"roman_BTA_{i}" for i in range(1, 9)])
 
 
 class Setup:
@@ -182,7 +199,8 @@ class Setup:
         for p, (lo, hi, _) in IA[mdl]["free"].items():
             if p in ALPHA or p in ZEVO:
                 continue
-            pr[p] = {"prior": {"min": lo, "max": hi}, "ref": 1.0, "proposal": 0.1}
+            for q in TIES.get(p, [p]):
+                pr[q] = {"prior": {"min": lo, "max": hi}, "ref": 1.0, "proposal": 0.1}
         if probe == "3x2":
             for p in BB:
                 pr[p] = {"prior": {"min": 0.4, "max": 4.0}, "ref": 1.5, "proposal": 0.03}
@@ -261,6 +279,10 @@ class Setup:
         p = dict(zip(self.names, th))
         alpha = p.pop("hm_alpha", None)
         zp = {q: p.pop(q) for q in list(p) if q in ZEVO}
+        for q, targets in TIES.items():
+            if q in p:
+                v = p.pop(q)
+                p.update({t: v for t in targets})
         self.called = False
         r = self.model.logposterior(p, as_dict=True)
         self.neval += 1
@@ -372,20 +394,59 @@ def solve(S, th0, free):
     return th, float(r.fun @ r.fun), r
 
 
-def run(mdl, K0, truth, probe="cs", cmb=False, gt=0.3, wc=0.2, gb=None):
+def trend_restart(S, ref, chi2_ref, iia, tol=2.0):
+    """A second start for the per-bin fits. II goes as A1^2, so the chi2 of
+    one A1_i has a second basin near A1_i = 0 where the data barely constrain
+    it (cs NLAz at K0 0.35 on CP: A1_8 = 0.01, chi2 0.92, against A1_8 = 7.4,
+    chi2 0.41). The A1_i farthest from the straight line through its (up to
+    four) neighbours, if more than tol away, is reset onto that line, moved
+    one more tol along the way it was pulled, and the IA fit redone; the
+    caller keeps the lower chi2."""
+    a1 = np.array([S.names.index(f"roman_A1_{i}") for i in range(1, 9)])
+    v = ref[a1]
+    trend = np.array([np.polyval(np.polyfit(nb, v[nb], 1), j)
+                      for j, nb in ((j, [q for q in (j - 2, j - 1, j + 1, j + 2) if 0 <= q < 8])
+                                    for j in range(8))])
+    j = int(np.argmax(np.abs(v - trend)))
+    if abs(v[j] - trend[j]) <= tol:
+        return None
+    st = ref.copy()
+    st[a1[j]] = np.clip(trend[j] + tol*np.sign(trend[j] - v[j]), S.lo[a1[j]] + 0.05, S.hi[a1[j]] - 0.05)
+    alt, c2, _ = solve(S, st, iia)
+    return dict(param=S.names[a1[j]], first=float(v[j]), start=float(st[a1[j]]), value=float(alt[a1[j]]),
+                chi2_first=chi2_ref, chi2=c2, used=False, theta=alt.tolist())
+
+
+def run(mdl, K0, truth, probe="cs", cmb=False, gt=0.3, wc=0.2, gb=None, fisher_only=False, hscale=1.0):
     t0 = time.time()
     if probe == "2x2":
         gt = K0
     S = Setup(mdl, K0, truth, probe, cmb, gt, wc, gb)
+    S.h = S.h*hscale
     n = len(S.names)
     iia = np.arange(n - len(IA[mdl]["free"]), n)
     ic = [S.names.index("omegam")]
     # reference: IA fitted at the fiducial cosmology
     ref, chi2_ref, _ = solve(S, S.theta(FID, {}, IA_START[mdl]), iia)
+    restart = trend_restart(S, ref, chi2_ref, iia) if mdl in ("NLAz", "TATTz") else None
+    if restart is not None and restart["chi2"] < chi2_ref - 1e-6:
+        ref, chi2_ref = np.array(restart.pop("theta")), restart["chi2"]
+        restart["used"] = True
+    elif restart is not None:
+        restart.pop("theta")
     # the flat priors as Gaussians only where no Gaussian prior already acts
     J, g = S.jac(ref)
     F = J.T @ J
-    Finv = np.linalg.inv(F)
+    # parameters the data do not see (e.g. A1 of a source bin with no gamma_t
+    # in 2x2): F is singular, only the flat-prior Fisher below is defined
+    dF = np.diag(F)
+    no_info = [S.names[i] for i in np.where(dF <= 1e-12*dF.max())[0]]
+    try:
+        Finv = np.linalg.inv(F)
+    except np.linalg.LinAlgError:
+        if not fisher_only:
+            raise
+        Finv = None
     # the flat priors as Gaussians of the same variance (width^2/12): for the
     # starts of the minimizer, and quoted as a second sigma
     wflat = np.where(np.isfinite(S.lo), (S.hi - S.lo)**2/12, np.inf)
@@ -396,16 +457,58 @@ def run(mdl, K0, truth, probe="cs", cmb=False, gt=0.3, wc=0.2, gb=None):
     G = np.zeros((2, n))
     G[0, ic[0]] = 1.0
     G[1] = g
-    C2 = G @ Finv @ G.T
-    sig = np.sqrt(np.diag(C2))
     r_ref = S.resid(ref)
-    lin = -Finv @ J.T @ r_ref                  # Gauss-Newton step from ref
-    dlin = G @ lin
+    if Finv is not None:
+        C2 = G @ Finv @ G.T
+        sig = np.sqrt(np.diag(C2))
+        lin = -Finv @ J.T @ r_ref              # Gauss-Newton step from ref
+        dlin = G @ lin
     # the same with the flat priors as Gaussians: the linear (Gaussian)
     # estimate of the shift of the posterior mean, the chains' measure
     dlinP = G @ (-Fflat_inv @ J.T @ r_ref)
     C2P = G @ Fflat_inv @ G.T
     sigP = np.sqrt(np.diag(C2P))
+    key = f"{probe}{'+cmb' if cmb else ''}|{mdl}|{K0:g}|{truth}" + (f"|gt{gt:g}" if gt != 0.3 and probe != "2x2" else "")
+    key += (f"|w{wc:g}" if abs(wc - 0.2) > 1e-9 else "") + (f"|gb{gb}" if gb else "")
+    if fisher_only:
+        # Fisher only (Kable, Addison & Bennett 2019, arXiv:1908.01626, Eq. 6):
+        # the linearized maximum-likelihood shift from theta_ref, no minimizer
+        key += "|fisher" + (f"|h{hscale:g}" if hscale != 1.0 else "")
+        names = S.names
+        at_ref = [p for p, v, lo, hi in zip(names, ref, S.lo, S.hi)
+                  if np.isfinite(lo) and ((v - lo) < 0.02*(hi - lo) or (hi - v) < 0.02*(hi - lo))]
+        _, s8_ref = S.vector(S.theta(FID, {}, [0.0]*len(iia)))
+        fobP = float(np.sqrt(dlinP @ np.linalg.solve(C2P, dlinP)))
+        row = dict(method="fisher", hscale=hscale, model=mdl, K0=K0, gt=gt, wc=wc, gb=gb, truth=truth,
+                   probe=probe, cmb=cmb, npts=int(S.mask.sum()), names=names,
+                   ref=dict(zip(names, ref.tolist())), chi2_ref=chi2_ref, S8_truth=s8_ref,
+                   sigma=None if Finv is None else sig.tolist(),
+                   corr=None if Finv is None else float(C2[0, 1]/np.prod(sig)),
+                   mu_linear=None if Finv is None else (dlin/sig).tolist(),
+                   fob_linear_gaussF=None if Finv is None else float(np.sqrt(dlin @ np.linalg.solve(C2, dlin))),
+                   no_info=no_info, F_singular=Finv is None,
+                   flatprior=dict(sigma=sigP.tolist(), mu_map=None, fob_map=None,
+                                  shift_mean_linear=dlinP.tolist(), mu_mean_linear=(dlinP/sigP).tolist(),
+                                  fob_mean_linear=fobP),
+                   fob=fobP, mu=(dlinP/sigP).tolist(),
+                   sigma_all=dict(zip(names, np.sqrt(np.diag(Fflat_inv if Finv is None else Finv)).tolist())),
+                   sigma_flatprior=sigP.tolist(), at_bound_ref=at_ref, ref_restart=restart, neval=S.neval, seconds=time.time() - t0)
+        with open(OUT + ".lock", "w") as lk:
+            fcntl.flock(lk, fcntl.LOCK_EX)
+            out = json.load(open(OUT)) if os.path.exists(OUT) else dict(about=__doc__, runs={})
+            out["about"] = __doc__
+            out["runs"][key] = row
+            json.dump(out, open(OUT, "w"), indent=1)
+        iav = ", ".join(f"{p.replace('roman_', '')} {ref[names.index(p)]:+.2f}" for p in IA[mdl]["free"])
+        print(f"{key}: {S.mask.sum()} pts, chi2 ref {chi2_ref:.3f}; flat-prior sigma ({sigP[0]:.4f}, {sigP[1]:.4f}); "
+              f"Fisher mu ({dlinP[0]/sigP[0]:+.3f}, {dlinP[1]/sigP[1]:+.3f}) FoB {fobP:.3f}; ref {iav}"
+              + (f"  REF AT BOUND {at_ref}" if at_ref else "") + (f"  NO INFO {no_info}" if no_info else "")
+              + (" (F singular)" if Finv is None else "")
+              + (f"  RESTART {restart['param']} {restart['first']:+.2f} -> {restart['value']:+.2f}, chi2 "
+                 f"{restart['chi2_first']:.3f} -> {restart['chi2']:.3f}{' used' if restart['used'] else ''}"
+                 if restart else "") + f"  [{time.time() - t0:.0f}s, {S.neval} evals]",
+              flush=True)
+        return
     # minimizer: ref and 2 starts drawn from F^-1, inside the bounds
     rng = np.random.default_rng(1)
     fin = np.isfinite(S.lo)
@@ -442,8 +545,6 @@ def run(mdl, K0, truth, probe="cs", cmb=False, gt=0.3, wc=0.2, gb=None):
                sigma_all=dict(zip(names, np.sqrt(np.diag(Finv)).tolist())),
                sigma_flatprior=np.sqrt(np.diag(G @ Fflat_inv @ G.T)).tolist(),
                at_bound=at_bound, neval=S.neval, seconds=time.time() - t0)
-    key = f"{probe}{'+cmb' if cmb else ''}|{mdl}|{K0:g}|{truth}" + (f"|gt{gt:g}" if gt != 0.3 and probe != "2x2" else "")
-    key += (f"|w{wc:g}" if abs(wc - 0.2) > 1e-9 else "") + (f"|gb{gb}" if gb else "")
     with open(OUT + ".lock", "w") as lk:
         fcntl.flock(lk, fcntl.LOCK_EX)
         out = json.load(open(OUT)) if os.path.exists(OUT) else dict(about=__doc__, runs={})
@@ -529,8 +630,15 @@ def main():
     if "--gbias" in a:
         gb = a.pop(a.index("--gbias") + 1)
         a.remove("--gbias")
+    fisher_only = "--fisher-only" in a
+    if fisher_only:
+        a.remove("--fisher-only")
+    hscale = 1.0
+    if "--hscale" in a:
+        hscale = float(a.pop(a.index("--hscale") + 1))
+        a.remove("--hscale")
     for i in range(0, len(a), 3):
-        run(a[i], float(a[i + 1]), a[i + 2], probe, cmb, gt, wc, gb)
+        run(a[i], float(a[i + 1]), a[i + 2], probe, cmb, gt, wc, gb, fisher_only, hscale)
 
 
 if __name__ == "__main__":

@@ -1,12 +1,15 @@
-"""The bias of NLA and TATT on the stitched truth, and the pieces it is made of.
+"""The bias of NLA and TATT on the CP truth, and the pieces it is made of.
 
-Rows: cosmic shear and 3x2pt (every parameter free, CMB prior); columns: NLA
-and TATT. Black: the figure of bias of the minimizer's MAP. Colored: the
-figure of bias each piece of the model error would cause alone (linear,
-bias_pieces.py "zshape"): green, the amplitude (redshift-evolution) error of
-every snapshot; vermillion, II's scale dependence at k < 0.06, 0.06 to 0.3
-and above 0.3 h/Mpc (dotted, solid, dashed); blue, the same for GI. Pieces
-above the total are cancelling. Dotted gray: the 0.3 threshold.
+Rows: cosmic shear and 3x2pt (gamma_t at 0.3; every parameter free, CMB
+prior); columns: NLA and TATT. Truth CP: the stitched FLAMINGO spectra with
+the close-pair II term kept, E and B. Black: the Fisher figure of bias of
+step 2. Colored: the figure of bias each piece of the model error would
+cause alone (linear, spline_pieces.py): green, the error along the
+amplitude directions (A1, eta1), projected out first; vermillion, II (E
+plus B) at k < 0.06, 0.06 to 0.3 and above 0.3 h/Mpc (dotted, solid,
+dashed), from cubic B-spline nodes in ln k (3 per decade) grouped by their
+centre; blue, the same for GI. Pieces above the total are cancelling.
+Dotted gray: the 0.3 threshold.
 Run from any folder: python plot_cancel_scan.py
 """
 import json
@@ -201,15 +204,15 @@ def shared_ylabel(fig, axes, text, pad_pt=4.0, fontsize=11):
 
 
 PIECE_STYLE = {
-    'z|amplitude': dict(color='#009E73', lw=1.6, ls='-', marker='D', label='amplitude (all $k$)'),
-    'II|0|0.06': dict(color='#D55E00', lw=1.2, ls=':', marker='v', label=r'II, $k<0.06$'),
-    'II|0.06|0.3': dict(color='#D55E00', lw=1.4, ls='-', marker='s', label=r'II, 0.06 to 0.3'),
-    'II|0.3|inf': dict(color='#D55E00', lw=1.2, ls='--', marker='^', label=r'II, $k>0.3$'),
+    'z|amplitude': dict(color='#009E73', lw=1.6, ls='-', marker='D', label=r'amplitude ($A_1$, $\eta_1$)'),
+    'II|0|0.06': dict(color='#D55E00', lw=1.2, ls=':', marker='v', label=r'II E+B, $k<0.06$'),
+    'II|0.06|0.3': dict(color='#D55E00', lw=1.4, ls='-', marker='s', label=r'II E+B, 0.06 to 0.3'),
+    'II|0.3|inf': dict(color='#D55E00', lw=1.2, ls='--', marker='^', label=r'II E+B, $k>0.3$'),
     'GI|0|0.06': dict(color='#0072B2', lw=1.0, ls=':', marker='v', label=r'GI, $k<0.06$'),
     'GI|0.06|0.3': dict(color='#0072B2', lw=1.1, ls='-', marker='s', label=r'GI, 0.06 to 0.3'),
     'GI|0.3|inf': dict(color='#0072B2', lw=1.0, ls='--', marker='^', label=r'GI, $k>0.3$'),
 }
-TOTAL_STYLE = dict(color='black', lw=2.2, ls='-', marker='o', label='total (MAP)')
+TOTAL_STYLE = dict(color='black', lw=2.2, ls='-', marker='o', label='total (Fisher)')
 MODEL_NAME = {'NLA': 'NLA', 'TATT': 'TATT', 'NLAa': r'NLA + $\alpha$', 'TATTa': r'TATT + $\alpha$',
               'NLAf': r'NLA, $\alpha_{\rm F}$', 'TATTf': r'TATT, $\alpha_{\rm F}$'}
 PROBE_NAME = {'cs': 'cosmic shear', '3x2': '3x2pt'}

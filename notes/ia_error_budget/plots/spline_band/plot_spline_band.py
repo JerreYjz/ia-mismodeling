@@ -8,7 +8,7 @@ all scaled until the rms shift of Omega_m or S8 is 0.3 sigma; the bands hold
 68% (light) and 95% (dark) of the resulting errors delta(k), 3 nodes per
 decade (dots on the zero line). Lines: the error of NLA (orange squares) and TATT (blue circles)
 fitted to the truth at the fiducial cosmology, mean over 0.2 <= z <= 2
-(thick) and range (thin). Panels: GI and II. Errors beyond 30% run off.
+(line) and range (shaded). Panels: GI and II. Errors beyond 30% run off.
 
 Run from any folder: python plot_spline_band.py
 """
@@ -207,6 +207,8 @@ TRUTH = 'S1'
 PANELS = (('GI', 'GI'), ('II', 'II'))
 C68, C95 = '0.80', '0.55'
 YMAX = 30.0
+# opacity of the shaded redshift range of each model
+RANGE_ALPHA = 0.18
 
 
 def draw(data):
@@ -228,8 +230,8 @@ def draw(data):
             e = M[m][X]
             ax.plot(km, 100*as_array(e['mean']), color=st['color'], lw=st['lw'], marker=st['marker'],
                     ms=MARKER_SIZE, markevery=6, zorder=5)
-            for q in ('lo', 'hi'):
-                ax.plot(km, 100*as_array(e[q]), color=st['color'], lw=0.7, zorder=4)
+            ax.fill_between(km, 100*as_array(e['lo']), 100*as_array(e['hi']), color=st['color'],
+                            alpha=RANGE_ALPHA, lw=0, zorder=0.5)
         ax.set_xscale('log')
         ax.set_xlim(0.1, 4)
         ax.set_ylim(-YMAX, YMAX)
@@ -241,15 +243,16 @@ def draw(data):
     axes[-1].set_xlabel(r'$k\ [h\,{\rm Mpc}^{-1}]$')
     axes[-1].set_xticks([0.1, 0.2, 0.5, 1, 2])
     axes[-1].set_xticklabels(['0.1', '0.2', '0.5', '1', '2'])
-    handles = [Patch(color=C68), Patch(color=C95),
-               Line2D([], [], color=MODEL_STYLE['NLA']['color'], lw=MODEL_STYLE['NLA']['lw'],
-                      marker=MODEL_STYLE['NLA']['marker'], ms=MARKER_SIZE),
-               Line2D([], [], color=MODEL_STYLE['TATT']['color'], lw=MODEL_STYLE['TATT']['lw'],
-                      marker=MODEL_STYLE['TATT']['marker'], ms=MARKER_SIZE)]
+    handles = [Patch(color=C68), Patch(color=C95)]
+    for m in ('NLA', 'TATT'):
+        st = MODEL_STYLE[m]
+        handles.append((Patch(color=st['color'], alpha=RANGE_ALPHA, lw=0),
+                        Line2D([], [], color=st['color'], lw=st['lw'], marker=st['marker'], ms=MARKER_SIZE)))
     labels = ['budget 68%', 'budget 95%', 'NLA error (mean, range over $z$)',
               'TATT error (mean, range over $z$)']
     leg = axes[0].legend(handles, labels, loc='lower left', bbox_to_anchor=(-0.02, 1.02), ncol=2,
-                         frameon=False, borderaxespad=0.0, fontsize=7.5, columnspacing=1.0)
+                         frameon=False, borderaxespad=0.0, fontsize=7.5, columnspacing=1.0,
+                         handler_map={tuple: HandlerTuple(ndivide=None, pad=0.0)})
     check_clear(fig, list(axes), [leg])
     shared_ylabel(fig, list(axes), r'fractional error')
     return fig

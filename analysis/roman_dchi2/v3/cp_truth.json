@@ -1,0 +1,71 @@
+{
+ "about": "The CP truth: the stitched truth S1 with the close-pair II term kept.\n\nflamingo/bmode_noise showed that N_s, the white P_BB plateau that S1\nsubtracts from P_EE, is the shape correlation of close galaxy pairs, equal in\nE and B. The pair sum (V/N^2) sum c_ij j0(k r_ij) says the term is flat below\nk ~ 1 h/Mpc and falls to N_s only at 5 to 10 h/Mpc, so its low-k level N_low\nis about twice N_s. NBall (v9/bmode_truth_3x2.py) kept N_s at low k; CP keeps\nN_low there instead, with S1's stitch weight w:\n\n  E   R_CP,II  = R_S1,II + w N_s/P_NL + (1 - w) N_low/P_NL\n               = (1 - w) [C1^2 A^2 (linear limit) + N_low/P_NL] + w T_EE/P_NL\n  B   R_CP,BB  = w T_BB/P_NL + (1 - w) N_low/P_NL\n  GI  that of S1 (P_hE has no such term)\n\nN_low(z) is the inverse-variance mean of the measured P_BB over\n0.15 <= k <= 0.6 h/Mpc (v2/fits.npz), where the linear-limit IA has no B\nmodes and the pair term is still flat. It is checked against the pair sum at\nthe four snapshots where that was computed (z = 0, 1, 2, 3).\n\nWrites v3/cp_truth.npz: R_CP and R_CP_B, (13, 2, 26) on the data grid as\nR_<truth> of stitched_truths.npz (column 0 GI, column 1 II; the B table has\nGI = 0), and N_low, N_s, zs. numpy only.\n\n    python cp_truth.py\n",
+ "klow": [
+  0.15,
+  0.6
+ ],
+ "pair": {
+  "0": {
+   "pair_low": 0.06475755512737923,
+   "N_low": 0.06957349910898702,
+   "N_s": 0.019720291102526728
+  },
+  "1": {
+   "pair_low": 0.15625420360531628,
+   "N_low": 0.15881285575050885,
+   "N_s": 0.08844535178783813
+  },
+  "2": {
+   "pair_low": 0.318282944784339,
+   "N_low": 0.33348651666063206,
+   "N_s": 0.18613393775445686
+  },
+  "3": {
+   "pair_low": 0.7718314412950017,
+   "N_low": 0.8966002786971236,
+   "N_s": 0.4104693272305097
+  }
+ },
+ "checks": {
+  "pair_vs_Nlow": {
+   "0": 0.9307790459976203,
+   "1": 0.983888885234756,
+   "2": 0.9544102351467337,
+   "3": 0.8608422946472567
+  },
+  "E_vs_NBall_where_w1": 0.0017130956628896854,
+  "B_vs_TBB_where_w1": 0.0015441711928341206,
+  "GI_equals_S1": 0.0,
+  "Nlow_over_Ns": [
+   3.5280158263015036,
+   3.28223189126752,
+   2.424684882792511,
+   2.3293474995511922,
+   2.264595072121676,
+   2.0776056366398423,
+   1.9612094255666417,
+   1.8480863260498555,
+   1.7956043199586973,
+   1.8217543498383513,
+   1.7916481039613472,
+   2.1843295447837794,
+   3.048149799119659
+  ],
+  "Nlow_snr": [
+   7.26015764832579,
+   15.775405819727323,
+   24.95779872665985,
+   27.126340844157927,
+   28.1316016707521,
+   27.977783325990373,
+   26.845366603394854,
+   26.644820403470817,
+   26.702115361439816,
+   28.61484410068566,
+   28.614222732269827,
+   28.70334164745456,
+   22.511205791405384
+  ],
+  "B_positive": true
+ }
+}

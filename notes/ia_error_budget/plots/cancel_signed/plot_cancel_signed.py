@@ -1,10 +1,11 @@
-"""The signed shifts behind the figures of bias of plot_cancel_scan.py.
+"""The signed shifts behind the figures of bias of plot_cp_cancel_scan.py.
 
 Rows: the shift of Omega_m and of S8 in units of their errors; columns:
-NLA and TATT in cosmic shear and in 3x2pt, stitched truth, every parameter
-free, CMB prior. Black: the MAP; colored: each piece of the model error
-alone (linear), encoded as in plot_cancel_scan.py. Pieces of opposite sign
-that are each larger than the total are a cancellation. Dotted: +-0.3.
+NLA and TATT in cosmic shear and in 3x2pt (gamma_t at 0.3), truth CP, every
+parameter free, CMB prior. Black: the step-2 Fisher shift; colored: each
+piece of the model error alone (linear, spline_pieces.py), encoded as in
+plot_cp_cancel_scan.py. Pieces of opposite sign that are each larger than
+the total are a cancellation. Dotted: +-0.3.
 Run from any folder: python plot_cancel_signed.py
 """
 import json
@@ -199,15 +200,15 @@ def shared_ylabel(fig, axes, text, pad_pt=4.0, fontsize=11):
 
 
 PIECE_STYLE = {
-    'z|amplitude': dict(color='#009E73', lw=1.6, ls='-', marker='D', label='amplitude (all $k$)'),
-    'II|0|0.06': dict(color='#D55E00', lw=1.2, ls=':', marker='v', label=r'II, $k<0.06$'),
-    'II|0.06|0.3': dict(color='#D55E00', lw=1.4, ls='-', marker='s', label=r'II, 0.06 to 0.3'),
-    'II|0.3|inf': dict(color='#D55E00', lw=1.2, ls='--', marker='^', label=r'II, $k>0.3$'),
+    'z|amplitude': dict(color='#009E73', lw=1.6, ls='-', marker='D', label=r'amplitude ($A_1$, $\eta_1$)'),
+    'II|0|0.06': dict(color='#D55E00', lw=1.2, ls=':', marker='v', label=r'II E+B, $k<0.06$'),
+    'II|0.06|0.3': dict(color='#D55E00', lw=1.4, ls='-', marker='s', label=r'II E+B, 0.06 to 0.3'),
+    'II|0.3|inf': dict(color='#D55E00', lw=1.2, ls='--', marker='^', label=r'II E+B, $k>0.3$'),
     'GI|0|0.06': dict(color='#0072B2', lw=1.0, ls=':', marker='v', label=r'GI, $k<0.06$'),
     'GI|0.06|0.3': dict(color='#0072B2', lw=1.1, ls='-', marker='s', label=r'GI, 0.06 to 0.3'),
     'GI|0.3|inf': dict(color='#0072B2', lw=1.0, ls='--', marker='^', label=r'GI, $k>0.3$'),
 }
-TOTAL_STYLE = dict(color='black', lw=2.2, ls='-', marker='o', label='total (MAP)')
+TOTAL_STYLE = dict(color='black', lw=2.2, ls='-', marker='o', label='total (Fisher)')
 MODEL_NAME = {'NLA': 'NLA', 'TATT': 'TATT', 'NLAa': r'NLA + $\alpha$', 'TATTa': r'TATT + $\alpha$',
               'NLAf': r'NLA, $\alpha_{\rm F}$', 'TATTf': r'TATT, $\alpha_{\rm F}$'}
 PROBE_NAME = {'cs': 'cosmic shear', '3x2': '3x2pt'}
@@ -243,9 +244,9 @@ def draw(data):
     for ax in axes[1]:
         ax.set_xlabel(r'$K_0$')
     for ax in axes[0]:
-        ax.set_ylim(-0.65, 0.65)
+        ax.set_ylim(-1.25, 1.25)
     for ax in axes[1]:
-        ax.set_ylim(-0.65, 0.65)
+        ax.set_ylim(-1.25, 1.25)
     h = [Line2D([], [], **kw(TOTAL_STYLE, False))] + [Line2D([], [], **kw(st)) for st in PIECE_STYLE.values()]
     lab = [TOTAL_STYLE['label']] + [st['label'] for st in PIECE_STYLE.values()]
     fig.legend(h, lab, loc='lower center', bbox_to_anchor=(0.5, axes[0, 0].get_position().y1 + 0.06), ncol=4, frameon=False, fontsize=7.5,

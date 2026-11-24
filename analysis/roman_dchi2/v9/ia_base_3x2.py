@@ -47,6 +47,7 @@ import clean_budget as CB                                          # noqa: E402
 from clean_budget import T, B, KW                                  # noqa: E402
 from tolerance_bands import write_set                              # noqa: E402
 import ia_fisher as IF                                             # noqa: E402
+import bmode_tables as BT                                          # noqa: E402
 sys.path.insert(0, T.TB.COCOA)
 from driver3x2 import Cosmolike3x2, B1_FID                         # noqa: E402
 from cosmolike_xi_ia import LN_FLOOR, mask_rows                    # noqa: E402
@@ -195,7 +196,7 @@ def main():
              **{f"w|{k}": m for k, m in w_masks.items()})
     log(f"[{time.time() - t0:.0f}s] cuts: " + ", ".join(f"{c} {int(m.sum())}" for c, m in cuts.items()))
 
-    st = np.load(os.path.join(T.TB.ROOT, "v3", "stitched_truths.npz"))
+    st = BT.load_truths(os.path.join(T.TB.ROOT, "v3", "stitched_truths.npz"))
     Hf = CB.tents_on(KW, CB.FINE)
     x_fid = {**{n: B.FID[n] for n in FREE_T}, "A": 1.0, "eta": 0.0, **{n: B.FID[n] for n in BN}}
     for tr in truths:
@@ -206,6 +207,15 @@ def main():
         PdE, PEE = model.RdE*P, model.REE*P
         zero = np.zeros_like(PdE)
         xi_ia = dv_ia(cl, model, PdE, PEE, gg)
+        withb = BT.has_b(st, tr)
+        full = model
+        if withb:
+            # B-mode II: a knob of II moves E and B together (as ia_base.py)
+            mB = Truth3(cl, st, tr + "_B")
+            PBB = mB.REE*P
+            xi_ia = xi_ia + BT.flip_b(dv_ia(cl, mB, zero, PBB, gg))
+            RB = np.zeros((nz, nf, NDV))
+            full = BT.EBModel(model, mB, Truth3(cl, st, "ZERO"))
         R = {X: np.zeros((nz, nf, NDV)) for X in IF.XS}
         tl = time.time()
         for s in range(nz):
@@ -215,7 +225,15 @@ def main():
                     tab[s] = (PdE if X == "GI" else PEE)[s]*Hf[j]
                     R[X][s, j] = dv_ia(cl, model, tab if X == "GI" else zero,
                                        tab if X == "II" else zero, gg)
-        log(f"[{time.time() - t0:.0f}s] {tr}: {2*nz*nf} columns in {time.time() - tl:.0f}s")
+                if withb:
+                    tab = zero.copy()
+                    tab[s] = PBB[s]*Hf[j]
+                    RB[s, j] = BT.flip_b(dv_ia(cl, mB, zero, tab, gg))
+        log(f"[{time.time() - t0:.0f}s] {tr}: {(3 if withb else 2)*nz*nf} columns in {time.time() - tl:.0f}s")
+        extra = {}
+        if withb:
+            extra = dict(R_II_E=R["II"], R_II_B=RB)
+            R["II"] = R["II"] + RB
         tab = zero.copy()
         tab[nz//2] = PdE[nz//2]*Hf[nf//2]
         again = dv_ia(cl, model, tab, zero, gg)
@@ -232,7 +250,7 @@ def main():
                 x[n] += sg*step
                 p = dict(B.FID)
                 p.update({k: x[k] for k in FREE_T + BN})
-                xs.append(model(p, {k: x[k] for k in IAP}))
+                xs.append(full(p, {k: x[k] for k in IAP}))
             J[:, i] = (xs[0] - xs[1])/(2*step)
         g = np.hstack([T.s8_row(cl, FREE_T, IAP, {k: x_fid[k] for k in FREE_T + IAP}),
                        np.zeros((2, len(BN)))])
@@ -256,7 +274,7 @@ def main():
         log(f"[{time.time() - t0:.0f}s] {tr}: checks " + ", ".join(f"{k} {v:.1e}" for k, v in checks.items()))
         np.savez(os.path.join(HERE, f"ia_base_3x2_{tr}.npz"), truth=tr, zs=zs, fine=CB.FINE,
                  xi0=gg + xi_ia, xi_ia=xi_ia, J=J, names=np.array(names), template=np.array(IF.TEMPLATE),
-                 g_s8=g, R_GI=R["GI"], R_II=R["II"], checks=json.dumps(checks))
+                 g_s8=g, R_GI=R["GI"], R_II=R["II"], checks=json.dumps(checks), **extra)
         log(f"[{time.time() - t0:.0f}s] {tr}: wrote ia_base_3x2_{tr}.npz")
     log(f"done ({time.time() - t0:.0f}s)")
 
