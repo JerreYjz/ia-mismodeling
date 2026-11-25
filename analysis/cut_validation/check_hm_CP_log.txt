@@ -1,0 +1,6 @@
+cs A1 3.5 eta 0.7: chi2 of native NLA IA 2343.5; chi2(native - template) 0.0093; max |diff|/max|IA| 0.006
+cs A1 1.0 eta 0.0: chi2 of native NLA IA 63.4; chi2(native - template) 0.0008; max |diff|/max|IA| 0.006
+cs A1 4.0 eta 2.0: chi2 of native NLA IA 21702.0; chi2(native - template) 37.4113; max |diff|/max|IA| 0.114
+3x2 A1 3.5 eta 0.7: chi2 of native NLA IA 2505.4; chi2(native - template) 0.0096; max |diff|/max|IA| 0.010
+3x2 A1 1.0 eta 0.0: chi2 of native NLA IA 124.9; chi2(native - template) 0.0023; max |diff|/max|IA| 0.011
+3x2 A1 4.0 eta 2.0: chi2 of native NLA IA 18097.4; chi2(native - template) 50.8419; max |diff|/max|IA| 0.016

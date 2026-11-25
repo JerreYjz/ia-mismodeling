@@ -47,6 +47,7 @@ pip install numpy scipy camb fast-pt dark_emulator matplotlib
 |---|---|---|---|
 | beta_NL from Dark Emulator | `python beta_tables.py` | 15 s | `beta_tables.npz` |
 | halo-model integrals | `python halo_nlbias.py > halo_nlbias_log.txt` | 15 s | `nlbias_tables.npz` |
+| the same at the 13 Roman snapshots (z = 0 to 4), for `cut_validation/hm_templates.py` | `python nlbias_roman_tables.py > nlbias_roman_tables_log.txt` | 15 s | `nlbias_roman_tables.npz` |
 | fits, every variant | `python nlbias_fit.py > nlbias_fit_log.txt` | 4 min | `nlbias_fits.json` |
 | quoted numbers and checks | `python nlbias_numbers.py > nlbias_numbers_log.txt` | 1 min | `nlbias_numbers.json` |
 | figure data | `cd plots && python make_figure_data.py` | 10 s | `plots/*/data.json` |
@@ -75,8 +76,17 @@ folder is written. The P_gm check reads
 | `nlbsame_tt` | z = 1.5, 2 only: z = 1.48 table on the same masses | free | 0 | |
 | `alpha_nla`, `nla` | alpha refit, alpha free or 1 | 0 | 0 | |
 | `*_sat` | as the base variant | | | F21 satellites, a_1h free |
+| `tatt` | P_NL, P_NL (TATT reference) | free | free | |
+| `lin_nla` | HMc in the NLA form | 0 | 0 | |
 
 All variants: a_c in [0, 1], free white term W, N_s fixed, P_hE = b(k) P_dE.
+
+On the Mac (25 November 2026) Dark Emulator lives in its own venv,
+`~/cocoa/venvs/darkemu`, and CAMB comes from the cocoa env: run every script as
+`PYTHONPATH=~/cocoa/Cocoa/.local/lib/python3.11/site-packages ~/cocoa/venvs/darkemu/bin/python <script>`.
+The local rerun reproduces the cloud tables to 1e-3 (P_lin, CAMB 1.6.7) and
+the summed chi2/nu to 1e-3. The GOF, parameter checks and the Roman figure of
+bias of every halo model are written up in `notes/halo_ia_models`.
 
 ## Layout
 

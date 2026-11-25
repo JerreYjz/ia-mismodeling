@@ -36,6 +36,17 @@ at all, while the native terms respond fully. The 1-halo and 2-halo
 windows of the FLAMINGO fits (f_1h, f_2h) are not included; f_2h is above
 0.97 below k = 1 h/Mpc.
 
+The same file also holds the templates of the nonlinear-halo-bias model of
+analysis/halo_nlbias (U_GI_nlb, U_II_nlb): the A1 terms on
+P_lin (I_1 + I^beta_cm) (GI) and P_lin (1 + I^beta_cc) (II), from
+halo_nlbias/nlbias_roman_tables.npz, used at weight 1 (no free parameter,
+models NLAb and TATTb of fisher_minimize.py; NLAh and TATTh use U_GI, U_II at
+weight 1, i.e. HMc with alpha = 0).
+
+Truth CP (v3/cp_truth.npz, the close-pair term in E and B): the ratios R_dE,
+R_EE come from cp_truth.npz, and the II templates use the E part of the base
+(R_II_E), since no model here changes the B modes.
+
 Output: hm_templates_<probe>_<truth>.npz (probe cs: the 1080 xi_+- rows of
 v9/ia_base_<truth>.npz; 3x2: the 2115 rows of ia_base_3x2_<truth>.npz,
 gamma_t at the biases B1_FID), with zs, U_GI, U_II, N_GI, N_II and the
@@ -78,8 +89,9 @@ def camb_ratios(zs, k):
 def main():
     st = np.load(os.path.join(RD, "v3", "stitched_truths.npz"))
     ht = np.load(os.path.join(RD, "v6", "halo_central_tables.npz"))
+    nb = np.load(os.path.join(HERE, "..", "halo_nlbias", "nlbias_roman_tables.npz"))
     zs = st["zs"]
-    assert np.allclose(ht["zs"], zs)
+    assert np.allclose(ht["zs"], zs) and np.allclose(nb["zs"], zs)
     for probe, base in (("cs", "ia_base"), ("3x2", "ia_base_3x2")):
         for truth in (sys.argv[1:] or ["prod", "S1"]):
             b = np.load(os.path.join(RD, "v9", f"{base}_{truth}.npz"))
@@ -93,20 +105,38 @@ def main():
             plt = np.array([np.exp(np.interp(np.log(fine), np.log(ht["k_all"]), np.log(ht["Plin"][s])))
                             for s in range(len(zs))])
             i1 = np.array([np.interp(np.log(fine), np.log(ht["k_all"]), ht["I1m"][s]) for s in range(len(zs))])
-            R = st[f"R_{truth}"]
-            RdE = np.array([np.interp(np.log(fine), np.log(st["k"]), R[s, 0]) for s in range(len(zs))])
-            REE = np.array([np.interp(np.log(fine), np.log(st["k"]), R[s, 1]) for s in range(len(zs))])
+            if truth == "CP":
+                # the close-pair truth (v3/cp_truth.py): its II knobs move E and B
+                # together (R_II = R_II_E + R_II_B); the halo-model change is in E
+                # only (NLA has no B modes, and the TATT B terms are unchanged), so
+                # the II templates use the E part of the base and the E ratio
+                cp = np.load(os.path.join(RD, "v3", "cp_truth.npz"))
+                R, kR, RII = cp["R_CP"], cp["k"], b["R_II_E"]
+            else:
+                R, kR, RII = st[f"R_{truth}"], st["k"], b["R_II"]
+            RdE = np.array([np.interp(np.log(fine), np.log(kR), R[s, 0]) for s in range(len(zs))])
+            REE = np.array([np.interp(np.log(fine), np.log(kR), R[s, 1]) for s in range(len(zs))])
             assert np.all(RdE < 0) and np.all(REE > 0), "truth ratio changes sign: division unsafe"
             fgi = C1[:, None]*(1 - i1*pl/pn)/RdE           # dP_GI/P_GI^truth per unit (1-alpha) A_s
             fii = -C1[:, None]**2*(1 - pl/pn)/REE          # dP_II/P_II^truth per unit (1-alpha) A_s^2
             ngi, nii = -C1[:, None]/RdE, C1[:, None]**2/REE  # native NLA at A = 1
             U_GI = np.einsum("sj,sjn->sn", fgi, b["R_GI"])
-            U_II = np.einsum("sj,sjn->sn", fii, b["R_II"])
+            U_II = np.einsum("sj,sjn->sn", fii, RII)
             N_GI = np.einsum("sj,sjn->sn", ngi, b["R_GI"])
-            N_II = np.einsum("sj,sjn->sn", nii, b["R_II"])
+            N_II = np.einsum("sj,sjn->sn", nii, RII)
+            # nonlinear halo bias (analysis/halo_nlbias): the A1 terms on
+            # P_lin (I_1 + I^beta_cm) (GI) and P_lin (1 + I^beta_cc) (II)
+            gcm = np.array([np.interp(np.log(fine), np.log(nb["k"]), nb["Ib_cm"][s]) for s in range(len(zs))])
+            gcc = np.array([np.interp(np.log(fine), np.log(nb["k"]), nb["Ib_cc"][s]) for s in range(len(zs))])
+            fgi_b = C1[:, None]*(1 - (i1 + gcm)*pl/pn)/RdE
+            fii_b = -C1[:, None]**2*(1 - (1 + gcc)*pl/pn)/REE
+            U_GI_nlb = np.einsum("sj,sjn->sn", fgi_b, b["R_GI"])
+            U_II_nlb = np.einsum("sj,sjn->sn", fii_b, RII)
             out = os.path.join(HERE, f"hm_templates_{probe}_{truth}.npz")
             np.savez(out, zs=zs, fine=fine, U_GI=U_GI, U_II=U_II, N_GI=N_GI, N_II=N_II,
+                     U_GI_nlb=U_GI_nlb, U_II_nlb=U_II_nlb,
                      one_minus_I1Plin_over_PNL=1 - i1*pl/pn, one_minus_Plin_over_PNL=1 - pl/pn, I1=i1,
+                     one_minus_nlbGI_over_PNL=1 - (i1 + gcm)*pl/pn, one_minus_nlbII_over_PNL=1 - (1 + gcc)*pl/pn,
                      about=__doc__)
             j = [np.argmin(abs(fine - k)) for k in (0.1, 0.3, 1.0)]
             print(f"{probe} {truth}: P_lin CAMB vs halo tables max |dlnP| {np.max(abs(np.log(pl/plt))):.1e}; "

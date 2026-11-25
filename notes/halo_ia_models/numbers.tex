@@ -1,0 +1,293 @@
+% Written by make_numbers.py; do not edit by hand.
+\newcommand{\gofTattBaseA}{5.68}  % nlbias_fits.json tatt: sum chi2 / sum nu at k_max 0.523
+\newcommand{\gofTattBaseB}{15.39}  % nlbias_fits.json tatt: sum chi2 / sum nu at k_max 0.701
+\newcommand{\gofTattBaseC}{19.39}  % nlbias_fits.json tatt: sum chi2 / sum nu at k_max 0.941
+\newcommand{\cutTattBaseLo}{0.29}  % nlbias_fits.json tatt: min GOF cut over z
+\newcommand{\cutTattBaseHi}{0.70}  % nlbias_fits.json tatt: max GOF cut over z
+\newcommand{\cutTattBaseMed}{0.29}  % nlbias_fits.json tatt: median GOF cut
+\newcommand{\acCapTattBaseA}{1}  % nlbias_fits.json tatt: snapshots (of 9) with a_c at its cap 1, k_max 0.523
+\newcommand{\aOneTattBaseALo}{3.47}  % tatt: min A1 over z, k_max 0.523
+\newcommand{\aOneTattBaseAHi}{5.00}  % tatt: max A1 over z, k_max 0.523
+\newcommand{\btaBaseALo}{0.00}  % tatt: min b_TA over z, k_max 0.523
+\newcommand{\btaBaseAHi}{0.31}  % tatt: max b_TA over z, k_max 0.523
+\newcommand{\acCapTattBaseC}{0}  % nlbias_fits.json tatt: snapshots (of 9) with a_c at its cap 1, k_max 0.941
+\newcommand{\aOneTattBaseCLo}{1.83}  % tatt: min A1 over z, k_max 0.941
+\newcommand{\aOneTattBaseCHi}{5.60}  % tatt: max A1 over z, k_max 0.941
+\newcommand{\btaBaseCLo}{0.00}  % tatt: min b_TA over z, k_max 0.941
+\newcommand{\btaBaseCHi}{0.73}  % tatt: max b_TA over z, k_max 0.941
+\newcommand{\driftTattBaseLo}{0.55}  % tatt: min A1(0.94)/A1(0.29) over z
+\newcommand{\driftTattBaseHi}{1.12}  % tatt: max A1(0.94)/A1(0.29) over z
+\newcommand{\gofTattHmcA}{2.10}  % nlbias_fits.json lin_tatt: sum chi2 / sum nu at k_max 0.523
+\newcommand{\gofTattHmcB}{4.79}  % nlbias_fits.json lin_tatt: sum chi2 / sum nu at k_max 0.701
+\newcommand{\gofTattHmcC}{12.71}  % nlbias_fits.json lin_tatt: sum chi2 / sum nu at k_max 0.941
+\newcommand{\cutTattHmcLo}{0.29}  % nlbias_fits.json lin_tatt: min GOF cut over z
+\newcommand{\cutTattHmcHi}{0.52}  % nlbias_fits.json lin_tatt: max GOF cut over z
+\newcommand{\cutTattHmcMed}{0.39}  % nlbias_fits.json lin_tatt: median GOF cut
+\newcommand{\acCapTattHmcA}{9}  % nlbias_fits.json lin_tatt: snapshots (of 9) with a_c at its cap 1, k_max 0.523
+\newcommand{\aOneTattHmcALo}{2.80}  % lin_tatt: min A1 over z, k_max 0.523
+\newcommand{\aOneTattHmcAHi}{5.17}  % lin_tatt: max A1 over z, k_max 0.523
+\newcommand{\btaHmcALo}{0.41}  % lin_tatt: min b_TA over z, k_max 0.523
+\newcommand{\btaHmcAHi}{1.24}  % lin_tatt: max b_TA over z, k_max 0.523
+\newcommand{\acCapTattHmcC}{9}  % nlbias_fits.json lin_tatt: snapshots (of 9) with a_c at its cap 1, k_max 0.941
+\newcommand{\aOneTattHmcCLo}{2.42}  % lin_tatt: min A1 over z, k_max 0.941
+\newcommand{\aOneTattHmcCHi}{4.74}  % lin_tatt: max A1 over z, k_max 0.941
+\newcommand{\btaHmcCLo}{0.67}  % lin_tatt: min b_TA over z, k_max 0.941
+\newcommand{\btaHmcCHi}{1.71}  % lin_tatt: max b_TA over z, k_max 0.941
+\newcommand{\driftTattHmcLo}{0.85}  % lin_tatt: min A1(0.94)/A1(0.29) over z
+\newcommand{\driftTattHmcHi}{0.95}  % lin_tatt: max A1(0.94)/A1(0.29) over z
+\newcommand{\gofTattAlphaA}{0.97}  % nlbias_fits.json alpha_tatt: sum chi2 / sum nu at k_max 0.523
+\newcommand{\gofTattAlphaB}{1.08}  % nlbias_fits.json alpha_tatt: sum chi2 / sum nu at k_max 0.701
+\newcommand{\gofTattAlphaC}{1.33}  % nlbias_fits.json alpha_tatt: sum chi2 / sum nu at k_max 0.941
+\newcommand{\cutTattAlphaLo}{0.70}  % nlbias_fits.json alpha_tatt: min GOF cut over z
+\newcommand{\cutTattAlphaHi}{1.69}  % nlbias_fits.json alpha_tatt: max GOF cut over z
+\newcommand{\cutTattAlphaMed}{0.94}  % nlbias_fits.json alpha_tatt: median GOF cut
+\newcommand{\acCapTattAlphaA}{6}  % nlbias_fits.json alpha_tatt: snapshots (of 9) with a_c at its cap 1, k_max 0.523
+\newcommand{\aOneTattAlphaALo}{3.02}  % alpha_tatt: min A1 over z, k_max 0.523
+\newcommand{\aOneTattAlphaAHi}{5.30}  % alpha_tatt: max A1 over z, k_max 0.523
+\newcommand{\btaAlphaALo}{0.16}  % alpha_tatt: min b_TA over z, k_max 0.523
+\newcommand{\btaAlphaAHi}{1.03}  % alpha_tatt: max b_TA over z, k_max 0.523
+\newcommand{\alphaTattALo}{0.31}  % alpha_tatt: min alpha over z, k_max 0.523
+\newcommand{\alphaTattAHi}{0.76}  % alpha_tatt: max alpha over z, k_max 0.523
+\newcommand{\acCapTattAlphaC}{7}  % nlbias_fits.json alpha_tatt: snapshots (of 9) with a_c at its cap 1, k_max 0.941
+\newcommand{\aOneTattAlphaCLo}{3.25}  % alpha_tatt: min A1 over z, k_max 0.941
+\newcommand{\aOneTattAlphaCHi}{5.46}  % alpha_tatt: max A1 over z, k_max 0.941
+\newcommand{\btaAlphaCLo}{0.13}  % alpha_tatt: min b_TA over z, k_max 0.941
+\newcommand{\btaAlphaCHi}{0.87}  % alpha_tatt: max b_TA over z, k_max 0.941
+\newcommand{\alphaTattCLo}{0.49}  % alpha_tatt: min alpha over z, k_max 0.941
+\newcommand{\alphaTattCHi}{0.83}  % alpha_tatt: max alpha over z, k_max 0.941
+\newcommand{\driftTattAlphaLo}{1.01}  % alpha_tatt: min A1(0.94)/A1(0.29) over z
+\newcommand{\driftTattAlphaHi}{1.08}  % alpha_tatt: max A1(0.94)/A1(0.29) over z
+\newcommand{\gofTattNlbA}{1.49}  % nlbias_fits.json nlb_tatt: sum chi2 / sum nu at k_max 0.523
+\newcommand{\gofTattNlbB}{4.08}  % nlbias_fits.json nlb_tatt: sum chi2 / sum nu at k_max 0.701
+\newcommand{\gofTattNlbC}{15.85}  % nlbias_fits.json nlb_tatt: sum chi2 / sum nu at k_max 0.941
+\newcommand{\cutTattNlbLo}{0.22}  % nlbias_fits.json nlb_tatt: min GOF cut over z
+\newcommand{\cutTattNlbHi}{0.52}  % nlbias_fits.json nlb_tatt: max GOF cut over z
+\newcommand{\cutTattNlbMed}{0.52}  % nlbias_fits.json nlb_tatt: median GOF cut
+\newcommand{\acCapTattNlbA}{8}  % nlbias_fits.json nlb_tatt: snapshots (of 9) with a_c at its cap 1, k_max 0.523
+\newcommand{\aOneTattNlbALo}{3.05}  % nlb_tatt: min A1 over z, k_max 0.523
+\newcommand{\aOneTattNlbAHi}{5.88}  % nlb_tatt: max A1 over z, k_max 0.523
+\newcommand{\btaNlbALo}{0.21}  % nlb_tatt: min b_TA over z, k_max 0.523
+\newcommand{\btaNlbAHi}{0.38}  % nlb_tatt: max b_TA over z, k_max 0.523
+\newcommand{\acCapTattNlbC}{9}  % nlbias_fits.json nlb_tatt: snapshots (of 9) with a_c at its cap 1, k_max 0.941
+\newcommand{\aOneTattNlbCLo}{2.54}  % nlb_tatt: min A1 over z, k_max 0.941
+\newcommand{\aOneTattNlbCHi}{5.49}  % nlb_tatt: max A1 over z, k_max 0.941
+\newcommand{\btaNlbCLo}{0.48}  % nlb_tatt: min b_TA over z, k_max 0.941
+\newcommand{\btaNlbCHi}{0.74}  % nlb_tatt: max b_TA over z, k_max 0.941
+\newcommand{\driftTattNlbLo}{0.84}  % nlb_tatt: min A1(0.94)/A1(0.29) over z
+\newcommand{\driftTattNlbHi}{0.96}  % nlb_tatt: max A1(0.94)/A1(0.29) over z
+\newcommand{\gofNlaBaseA}{10.31}  % nlbias_fits.json nla: sum chi2 / sum nu at k_max 0.523
+\newcommand{\gofNlaBaseB}{18.66}  % nlbias_fits.json nla: sum chi2 / sum nu at k_max 0.701
+\newcommand{\gofNlaBaseC}{26.11}  % nlbias_fits.json nla: sum chi2 / sum nu at k_max 0.941
+\newcommand{\cutNlaBaseLo}{0.16}  % nlbias_fits.json nla: min GOF cut over z
+\newcommand{\cutNlaBaseHi}{0.39}  % nlbias_fits.json nla: max GOF cut over z
+\newcommand{\cutNlaBaseMed}{0.22}  % nlbias_fits.json nla: median GOF cut
+\newcommand{\acCapNlaBaseA}{2}  % nlbias_fits.json nla: snapshots (of 9) with a_c at its cap 1, k_max 0.523
+\newcommand{\aOneNlaBaseALo}{2.54}  % nla: min A1 over z, k_max 0.523
+\newcommand{\aOneNlaBaseAHi}{6.18}  % nla: max A1 over z, k_max 0.523
+\newcommand{\acCapNlaBaseC}{2}  % nlbias_fits.json nla: snapshots (of 9) with a_c at its cap 1, k_max 0.941
+\newcommand{\aOneNlaBaseCLo}{2.35}  % nla: min A1 over z, k_max 0.941
+\newcommand{\aOneNlaBaseCHi}{6.70}  % nla: max A1 over z, k_max 0.941
+\newcommand{\driftNlaBaseLo}{0.83}  % nla: min A1(0.94)/A1(0.29) over z
+\newcommand{\driftNlaBaseHi}{1.15}  % nla: max A1(0.94)/A1(0.29) over z
+\newcommand{\gofNlaHmcA}{88.82}  % nlbias_fits.json lin_nla: sum chi2 / sum nu at k_max 0.523
+\newcommand{\gofNlaHmcB}{242.92}  % nlbias_fits.json lin_nla: sum chi2 / sum nu at k_max 0.701
+\newcommand{\gofNlaHmcC}{602.96}  % nlbias_fits.json lin_nla: sum chi2 / sum nu at k_max 0.941
+\newcommand{\cutNlaHmcLo}{0.12}  % nlbias_fits.json lin_nla: min GOF cut over z
+\newcommand{\cutNlaHmcHi}{0.16}  % nlbias_fits.json lin_nla: max GOF cut over z
+\newcommand{\cutNlaHmcMed}{0.16}  % nlbias_fits.json lin_nla: median GOF cut
+\newcommand{\acCapNlaHmcA}{9}  % nlbias_fits.json lin_nla: snapshots (of 9) with a_c at its cap 1, k_max 0.523
+\newcommand{\aOneNlaHmcALo}{3.90}  % lin_nla: min A1 over z, k_max 0.523
+\newcommand{\aOneNlaHmcAHi}{7.07}  % lin_nla: max A1 over z, k_max 0.523
+\newcommand{\acCapNlaHmcC}{9}  % nlbias_fits.json lin_nla: snapshots (of 9) with a_c at its cap 1, k_max 0.941
+\newcommand{\aOneNlaHmcCLo}{4.87}  % lin_nla: min A1 over z, k_max 0.941
+\newcommand{\aOneNlaHmcCHi}{8.66}  % lin_nla: max A1 over z, k_max 0.941
+\newcommand{\driftNlaHmcLo}{1.40}  % lin_nla: min A1(0.94)/A1(0.29) over z
+\newcommand{\driftNlaHmcHi}{1.46}  % lin_nla: max A1(0.94)/A1(0.29) over z
+\newcommand{\gofNlaAlphaA}{1.77}  % nlbias_fits.json alpha_nla: sum chi2 / sum nu at k_max 0.523
+\newcommand{\gofNlaAlphaB}{2.58}  % nlbias_fits.json alpha_nla: sum chi2 / sum nu at k_max 0.701
+\newcommand{\gofNlaAlphaC}{3.94}  % nlbias_fits.json alpha_nla: sum chi2 / sum nu at k_max 0.941
+\newcommand{\cutNlaAlphaLo}{0.22}  % nlbias_fits.json alpha_nla: min GOF cut over z
+\newcommand{\cutNlaAlphaHi}{0.70}  % nlbias_fits.json alpha_nla: max GOF cut over z
+\newcommand{\cutNlaAlphaMed}{0.39}  % nlbias_fits.json alpha_nla: median GOF cut
+\newcommand{\acCapNlaAlphaA}{1}  % nlbias_fits.json alpha_nla: snapshots (of 9) with a_c at its cap 1, k_max 0.523
+\newcommand{\aOneNlaAlphaALo}{3.05}  % alpha_nla: min A1 over z, k_max 0.523
+\newcommand{\aOneNlaAlphaAHi}{5.65}  % alpha_nla: max A1 over z, k_max 0.523
+\newcommand{\alphaNlaALo}{0.58}  % alpha_nla: min alpha over z, k_max 0.523
+\newcommand{\alphaNlaAHi}{1.65}  % alpha_nla: max alpha over z, k_max 0.523
+\newcommand{\acCapNlaAlphaC}{5}  % nlbias_fits.json alpha_nla: snapshots (of 9) with a_c at its cap 1, k_max 0.941
+\newcommand{\aOneNlaAlphaCLo}{2.99}  % alpha_nla: min A1 over z, k_max 0.941
+\newcommand{\aOneNlaAlphaCHi}{5.79}  % alpha_nla: max A1 over z, k_max 0.941
+\newcommand{\alphaNlaCLo}{0.64}  % alpha_nla: min alpha over z, k_max 0.941
+\newcommand{\alphaNlaCHi}{1.53}  % alpha_nla: max alpha over z, k_max 0.941
+\newcommand{\driftNlaAlphaLo}{1.00}  % alpha_nla: min A1(0.94)/A1(0.29) over z
+\newcommand{\driftNlaAlphaHi}{1.04}  % alpha_nla: max A1(0.94)/A1(0.29) over z
+\newcommand{\gofNlaNlbA}{9.84}  % nlbias_fits.json nlb_nla: sum chi2 / sum nu at k_max 0.523
+\newcommand{\gofNlaNlbB}{40.16}  % nlbias_fits.json nlb_nla: sum chi2 / sum nu at k_max 0.701
+\newcommand{\gofNlaNlbC}{157.21}  % nlbias_fits.json nlb_nla: sum chi2 / sum nu at k_max 0.941
+\newcommand{\cutNlaNlbLo}{0.22}  % nlbias_fits.json nlb_nla: min GOF cut over z
+\newcommand{\cutNlaNlbHi}{0.39}  % nlbias_fits.json nlb_nla: max GOF cut over z
+\newcommand{\cutNlaNlbMed}{0.29}  % nlbias_fits.json nlb_nla: median GOF cut
+\newcommand{\acCapNlaNlbA}{9}  % nlbias_fits.json nlb_nla: snapshots (of 9) with a_c at its cap 1, k_max 0.523
+\newcommand{\aOneNlaNlbALo}{3.56}  % nlb_nla: min A1 over z, k_max 0.523
+\newcommand{\aOneNlaNlbAHi}{5.82}  % nlb_nla: max A1 over z, k_max 0.523
+\newcommand{\acCapNlaNlbC}{9}  % nlbias_fits.json nlb_nla: snapshots (of 9) with a_c at its cap 1, k_max 0.941
+\newcommand{\aOneNlaNlbCLo}{4.32}  % nlb_nla: min A1 over z, k_max 0.941
+\newcommand{\aOneNlaNlbCHi}{6.33}  % nlb_nla: max A1 over z, k_max 0.941
+\newcommand{\driftNlaNlbLo}{1.10}  % nlb_nla: min A1(0.94)/A1(0.29) over z
+\newcommand{\driftNlaNlbHi}{1.32}  % nlb_nla: max A1(0.94)/A1(0.29) over z
+\newcommand{\lowkSpreadTattLo}{4}  % TATT form: min over z of max |A1/mean - 1| [%] at k_max 0.291
+\newcommand{\lowkSpreadTattHi}{11}  % TATT form: max over z of max |A1/mean - 1| [%] at k_max 0.291
+\newcommand{\lowkSpreadNlaLo}{6}  % NLA form: min over z of max |A1/mean - 1| [%] at k_max 0.291
+\newcommand{\lowkSpreadNlaHi}{10}  % NLA form: max over z of max |A1/mean - 1| [%] at k_max 0.291
+\newcommand{\ibcmA}{-0.03}  % nlbias_roman_tables.npz Ib_cm, z = 1, k = 0.102
+\newcommand{\ibcmLoA}{-0.00}  % nlbias_roman_tables.npz Ib_cm_lo, z = 1, k = 0.102
+\newcommand{\ibcmB}{0.18}  % nlbias_roman_tables.npz Ib_cm, z = 1, k = 0.295
+\newcommand{\ibcmLoB}{0.01}  % nlbias_roman_tables.npz Ib_cm_lo, z = 1, k = 0.295
+\newcommand{\ibcmC}{0.44}  % nlbias_roman_tables.npz Ib_cm, z = 1, k = 0.490
+\newcommand{\ibcmLoC}{0.01}  % nlbias_roman_tables.npz Ib_cm_lo, z = 1, k = 0.490
+\newcommand{\ibcmD}{0.95}  % nlbias_roman_tables.npz Ib_cm, z = 1, k = 0.978
+\newcommand{\ibcmLoD}{0.02}  % nlbias_roman_tables.npz Ib_cm_lo, z = 1, k = 0.978
+\newcommand{\dipLo}{-0.05}  % Ib_cm, z = 0.2 to 2, 0.05 < k < 0.15: min
+\newcommand{\dipHi}{0.00}  % Ib_cm, z = 0.2 to 2, 0.05 < k < 0.15: max
+\newcommand{\lgMElo}{11.9}  % nlbias_roman_tables.npz lgM_E: lowest emulator mass, z = 0.2 to 2
+\newcommand{\lgMEhi}{12.7}  % nlbias_roman_tables.npz lgM_E: lowest emulator mass, z = 0.2 to 2
+\newcommand{\fobCsTattBase}{0.18}  % fob_k0scan/data.json cs|TATT|base at K0 = 0.35
+\newcommand{\ctwoCsTattBase}{1.9}  % fob_k0scan/data.json cs|TATT|base: chi2 of the IA reference fit at K0 = 0.35
+\newcommand{\ctwoTopCsTattBase}{3.2}  % fob_k0scan/data.json cs|TATT|base: chi2 of the IA reference fit at K0 = 0.6
+\newcommand{\fobTopCsTattBase}{0.27}  % fob_k0scan/data.json cs|TATT|base at K0 = 0.6
+\newcommand{\fobMaxCsTattBase}{0.27}  % fob_k0scan/data.json cs|TATT|base: max over K0
+\newcommand{\kmaxCsTattBase}{0.6}  % fob_k0scan/data.json cs|TATT|base: largest K0 with FoB < 0.3 at every smaller K0
+\newcommand{\bndCsTattBase}{A2\_2, BTA\_1}  % fob_k0scan/data.json cs|TATT|base: reference parameters at a bound, any K0
+\newcommand{\fobCsTattHmc}{0.28}  % fob_k0scan/data.json cs|TATT|hmc at K0 = 0.35
+\newcommand{\ctwoCsTattHmc}{2.2}  % fob_k0scan/data.json cs|TATT|hmc: chi2 of the IA reference fit at K0 = 0.35
+\newcommand{\ctwoTopCsTattHmc}{4.6}  % fob_k0scan/data.json cs|TATT|hmc: chi2 of the IA reference fit at K0 = 0.6
+\newcommand{\fobTopCsTattHmc}{0.43}  % fob_k0scan/data.json cs|TATT|hmc at K0 = 0.6
+\newcommand{\fobMaxCsTattHmc}{0.43}  % fob_k0scan/data.json cs|TATT|hmc: max over K0
+\newcommand{\kmaxCsTattHmc}{0.4}  % fob_k0scan/data.json cs|TATT|hmc: largest K0 with FoB < 0.3 at every smaller K0
+\newcommand{\bndCsTattHmc}{none}  % fob_k0scan/data.json cs|TATT|hmc: reference parameters at a bound, any K0
+\newcommand{\fobCsTattAlpha}{0.18}  % fob_k0scan/data.json cs|TATT|alpha at K0 = 0.35
+\newcommand{\ctwoCsTattAlpha}{1.9}  % fob_k0scan/data.json cs|TATT|alpha: chi2 of the IA reference fit at K0 = 0.35
+\newcommand{\ctwoTopCsTattAlpha}{3.5}  % fob_k0scan/data.json cs|TATT|alpha: chi2 of the IA reference fit at K0 = 0.6
+\newcommand{\fobTopCsTattAlpha}{0.25}  % fob_k0scan/data.json cs|TATT|alpha at K0 = 0.6
+\newcommand{\fobMaxCsTattAlpha}{0.25}  % fob_k0scan/data.json cs|TATT|alpha: max over K0
+\newcommand{\kmaxCsTattAlpha}{0.6}  % fob_k0scan/data.json cs|TATT|alpha: largest K0 with FoB < 0.3 at every smaller K0
+\newcommand{\bndCsTattAlpha}{none}  % fob_k0scan/data.json cs|TATT|alpha: reference parameters at a bound, any K0
+\newcommand{\fobCsTattAlphaf}{0.22}  % fob_k0scan/data.json cs|TATT|alphaf at K0 = 0.35
+\newcommand{\ctwoCsTattAlphaf}{1.9}  % fob_k0scan/data.json cs|TATT|alphaf: chi2 of the IA reference fit at K0 = 0.35
+\newcommand{\ctwoTopCsTattAlphaf}{3.6}  % fob_k0scan/data.json cs|TATT|alphaf: chi2 of the IA reference fit at K0 = 0.6
+\newcommand{\fobTopCsTattAlphaf}{0.31}  % fob_k0scan/data.json cs|TATT|alphaf at K0 = 0.6
+\newcommand{\fobMaxCsTattAlphaf}{0.31}  % fob_k0scan/data.json cs|TATT|alphaf: max over K0
+\newcommand{\kmaxCsTattAlphaf}{0.5}  % fob_k0scan/data.json cs|TATT|alphaf: largest K0 with FoB < 0.3 at every smaller K0
+\newcommand{\bndCsTattAlphaf}{none}  % fob_k0scan/data.json cs|TATT|alphaf: reference parameters at a bound, any K0
+\newcommand{\fobCsTattNlb}{0.15}  % fob_k0scan/data.json cs|TATT|nlb at K0 = 0.35
+\newcommand{\ctwoCsTattNlb}{2.1}  % fob_k0scan/data.json cs|TATT|nlb: chi2 of the IA reference fit at K0 = 0.35
+\newcommand{\ctwoTopCsTattNlb}{3.0}  % fob_k0scan/data.json cs|TATT|nlb: chi2 of the IA reference fit at K0 = 0.6
+\newcommand{\fobTopCsTattNlb}{0.20}  % fob_k0scan/data.json cs|TATT|nlb at K0 = 0.6
+\newcommand{\fobMaxCsTattNlb}{0.20}  % fob_k0scan/data.json cs|TATT|nlb: max over K0
+\newcommand{\kmaxCsTattNlb}{0.6}  % fob_k0scan/data.json cs|TATT|nlb: largest K0 with FoB < 0.3 at every smaller K0
+\newcommand{\bndCsTattNlb}{A2\_2, BTA\_1}  % fob_k0scan/data.json cs|TATT|nlb: reference parameters at a bound, any K0
+\newcommand{\fobCsNlaBase}{0.19}  % fob_k0scan/data.json cs|NLA|base at K0 = 0.35
+\newcommand{\ctwoCsNlaBase}{1.9}  % fob_k0scan/data.json cs|NLA|base: chi2 of the IA reference fit at K0 = 0.35
+\newcommand{\ctwoTopCsNlaBase}{3.8}  % fob_k0scan/data.json cs|NLA|base: chi2 of the IA reference fit at K0 = 0.6
+\newcommand{\fobTopCsNlaBase}{0.24}  % fob_k0scan/data.json cs|NLA|base at K0 = 0.6
+\newcommand{\fobMaxCsNlaBase}{0.24}  % fob_k0scan/data.json cs|NLA|base: max over K0
+\newcommand{\kmaxCsNlaBase}{0.6}  % fob_k0scan/data.json cs|NLA|base: largest K0 with FoB < 0.3 at every smaller K0
+\newcommand{\bndCsNlaBase}{none}  % fob_k0scan/data.json cs|NLA|base: reference parameters at a bound, any K0
+\newcommand{\fobCsNlaHmc}{0.14}  % fob_k0scan/data.json cs|NLA|hmc at K0 = 0.35
+\newcommand{\ctwoCsNlaHmc}{2.7}  % fob_k0scan/data.json cs|NLA|hmc: chi2 of the IA reference fit at K0 = 0.35
+\newcommand{\ctwoTopCsNlaHmc}{8.8}  % fob_k0scan/data.json cs|NLA|hmc: chi2 of the IA reference fit at K0 = 0.6
+\newcommand{\fobTopCsNlaHmc}{0.22}  % fob_k0scan/data.json cs|NLA|hmc at K0 = 0.6
+\newcommand{\fobMaxCsNlaHmc}{0.22}  % fob_k0scan/data.json cs|NLA|hmc: max over K0
+\newcommand{\kmaxCsNlaHmc}{0.6}  % fob_k0scan/data.json cs|NLA|hmc: largest K0 with FoB < 0.3 at every smaller K0
+\newcommand{\bndCsNlaHmc}{none}  % fob_k0scan/data.json cs|NLA|hmc: reference parameters at a bound, any K0
+\newcommand{\fobCsNlaAlpha}{0.20}  % fob_k0scan/data.json cs|NLA|alpha at K0 = 0.35
+\newcommand{\ctwoCsNlaAlpha}{1.9}  % fob_k0scan/data.json cs|NLA|alpha: chi2 of the IA reference fit at K0 = 0.35
+\newcommand{\ctwoTopCsNlaAlpha}{3.7}  % fob_k0scan/data.json cs|NLA|alpha: chi2 of the IA reference fit at K0 = 0.6
+\newcommand{\fobTopCsNlaAlpha}{0.26}  % fob_k0scan/data.json cs|NLA|alpha at K0 = 0.6
+\newcommand{\fobMaxCsNlaAlpha}{0.26}  % fob_k0scan/data.json cs|NLA|alpha: max over K0
+\newcommand{\kmaxCsNlaAlpha}{0.6}  % fob_k0scan/data.json cs|NLA|alpha: largest K0 with FoB < 0.3 at every smaller K0
+\newcommand{\bndCsNlaAlpha}{none}  % fob_k0scan/data.json cs|NLA|alpha: reference parameters at a bound, any K0
+\newcommand{\fobCsNlaAlphaf}{0.18}  % fob_k0scan/data.json cs|NLA|alphaf at K0 = 0.35
+\newcommand{\ctwoCsNlaAlphaf}{1.9}  % fob_k0scan/data.json cs|NLA|alphaf: chi2 of the IA reference fit at K0 = 0.35
+\newcommand{\ctwoTopCsNlaAlphaf}{4.1}  % fob_k0scan/data.json cs|NLA|alphaf: chi2 of the IA reference fit at K0 = 0.6
+\newcommand{\fobTopCsNlaAlphaf}{0.27}  % fob_k0scan/data.json cs|NLA|alphaf at K0 = 0.6
+\newcommand{\fobMaxCsNlaAlphaf}{0.27}  % fob_k0scan/data.json cs|NLA|alphaf: max over K0
+\newcommand{\kmaxCsNlaAlphaf}{0.6}  % fob_k0scan/data.json cs|NLA|alphaf: largest K0 with FoB < 0.3 at every smaller K0
+\newcommand{\bndCsNlaAlphaf}{none}  % fob_k0scan/data.json cs|NLA|alphaf: reference parameters at a bound, any K0
+\newcommand{\fobCsNlaNlb}{0.30}  % fob_k0scan/data.json cs|NLA|nlb at K0 = 0.35
+\newcommand{\ctwoCsNlaNlb}{2.5}  % fob_k0scan/data.json cs|NLA|nlb: chi2 of the IA reference fit at K0 = 0.35
+\newcommand{\ctwoTopCsNlaNlb}{5.5}  % fob_k0scan/data.json cs|NLA|nlb: chi2 of the IA reference fit at K0 = 0.6
+\newcommand{\fobTopCsNlaNlb}{0.64}  % fob_k0scan/data.json cs|NLA|nlb at K0 = 0.6
+\newcommand{\fobMaxCsNlaNlb}{0.64}  % fob_k0scan/data.json cs|NLA|nlb: max over K0
+\newcommand{\kmaxCsNlaNlb}{0.3}  % fob_k0scan/data.json cs|NLA|nlb: largest K0 with FoB < 0.3 at every smaller K0
+\newcommand{\bndCsNlaNlb}{none}  % fob_k0scan/data.json cs|NLA|nlb: reference parameters at a bound, any K0
+\newcommand{\fobTxTattBase}{0.17}  % fob_k0scan/data.json 3x2|TATT|base at K0 = 0.2
+\newcommand{\ctwoTxTattBase}{1.2}  % fob_k0scan/data.json 3x2|TATT|base: chi2 of the IA reference fit at K0 = 0.2
+\newcommand{\ctwoTopTxTattBase}{3.6}  % fob_k0scan/data.json 3x2|TATT|base: chi2 of the IA reference fit at K0 = 0.6
+\newcommand{\fobTopTxTattBase}{0.44}  % fob_k0scan/data.json 3x2|TATT|base at K0 = 0.6
+\newcommand{\fobMaxTxTattBase}{0.44}  % fob_k0scan/data.json 3x2|TATT|base: max over K0
+\newcommand{\kmaxTxTattBase}{0.35}  % fob_k0scan/data.json 3x2|TATT|base: largest K0 with FoB < 0.3 at every smaller K0
+\newcommand{\bndTxTattBase}{A2\_2, BTA\_1}  % fob_k0scan/data.json 3x2|TATT|base: reference parameters at a bound, any K0
+\newcommand{\fobTxTattHmc}{0.19}  % fob_k0scan/data.json 3x2|TATT|hmc at K0 = 0.2
+\newcommand{\ctwoTxTattHmc}{1.3}  % fob_k0scan/data.json 3x2|TATT|hmc: chi2 of the IA reference fit at K0 = 0.2
+\newcommand{\ctwoTopTxTattHmc}{4.9}  % fob_k0scan/data.json 3x2|TATT|hmc: chi2 of the IA reference fit at K0 = 0.6
+\newcommand{\fobTopTxTattHmc}{0.39}  % fob_k0scan/data.json 3x2|TATT|hmc at K0 = 0.6
+\newcommand{\fobMaxTxTattHmc}{0.39}  % fob_k0scan/data.json 3x2|TATT|hmc: max over K0
+\newcommand{\kmaxTxTattHmc}{0.35}  % fob_k0scan/data.json 3x2|TATT|hmc: largest K0 with FoB < 0.3 at every smaller K0
+\newcommand{\bndTxTattHmc}{none}  % fob_k0scan/data.json 3x2|TATT|hmc: reference parameters at a bound, any K0
+\newcommand{\fobTxTattAlpha}{0.18}  % fob_k0scan/data.json 3x2|TATT|alpha at K0 = 0.2
+\newcommand{\ctwoTxTattAlpha}{1.2}  % fob_k0scan/data.json 3x2|TATT|alpha: chi2 of the IA reference fit at K0 = 0.2
+\newcommand{\ctwoTopTxTattAlpha}{4.2}  % fob_k0scan/data.json 3x2|TATT|alpha: chi2 of the IA reference fit at K0 = 0.6
+\newcommand{\fobTopTxTattAlpha}{0.48}  % fob_k0scan/data.json 3x2|TATT|alpha at K0 = 0.6
+\newcommand{\fobMaxTxTattAlpha}{0.48}  % fob_k0scan/data.json 3x2|TATT|alpha: max over K0
+\newcommand{\kmaxTxTattAlpha}{0.35}  % fob_k0scan/data.json 3x2|TATT|alpha: largest K0 with FoB < 0.3 at every smaller K0
+\newcommand{\bndTxTattAlpha}{A2\_2}  % fob_k0scan/data.json 3x2|TATT|alpha: reference parameters at a bound, any K0
+\newcommand{\fobTxTattAlphaf}{0.18}  % fob_k0scan/data.json 3x2|TATT|alphaf at K0 = 0.2
+\newcommand{\ctwoTxTattAlphaf}{1.2}  % fob_k0scan/data.json 3x2|TATT|alphaf: chi2 of the IA reference fit at K0 = 0.2
+\newcommand{\ctwoTopTxTattAlphaf}{4.1}  % fob_k0scan/data.json 3x2|TATT|alphaf: chi2 of the IA reference fit at K0 = 0.6
+\newcommand{\fobTopTxTattAlphaf}{0.48}  % fob_k0scan/data.json 3x2|TATT|alphaf at K0 = 0.6
+\newcommand{\fobMaxTxTattAlphaf}{0.48}  % fob_k0scan/data.json 3x2|TATT|alphaf: max over K0
+\newcommand{\kmaxTxTattAlphaf}{0.35}  % fob_k0scan/data.json 3x2|TATT|alphaf: largest K0 with FoB < 0.3 at every smaller K0
+\newcommand{\bndTxTattAlphaf}{none}  % fob_k0scan/data.json 3x2|TATT|alphaf: reference parameters at a bound, any K0
+\newcommand{\fobTxTattNlb}{0.10}  % fob_k0scan/data.json 3x2|TATT|nlb at K0 = 0.2
+\newcommand{\ctwoTxTattNlb}{1.8}  % fob_k0scan/data.json 3x2|TATT|nlb: chi2 of the IA reference fit at K0 = 0.2
+\newcommand{\ctwoTopTxTattNlb}{3.6}  % fob_k0scan/data.json 3x2|TATT|nlb: chi2 of the IA reference fit at K0 = 0.6
+\newcommand{\fobTopTxTattNlb}{0.41}  % fob_k0scan/data.json 3x2|TATT|nlb at K0 = 0.6
+\newcommand{\fobMaxTxTattNlb}{0.41}  % fob_k0scan/data.json 3x2|TATT|nlb: max over K0
+\newcommand{\kmaxTxTattNlb}{0.35}  % fob_k0scan/data.json 3x2|TATT|nlb: largest K0 with FoB < 0.3 at every smaller K0
+\newcommand{\bndTxTattNlb}{A2\_2, BTA\_1}  % fob_k0scan/data.json 3x2|TATT|nlb: reference parameters at a bound, any K0
+\newcommand{\fobTxNlaBase}{0.26}  % fob_k0scan/data.json 3x2|NLA|base at K0 = 0.2
+\newcommand{\ctwoTxNlaBase}{1.7}  % fob_k0scan/data.json 3x2|NLA|base: chi2 of the IA reference fit at K0 = 0.2
+\newcommand{\ctwoTopTxNlaBase}{4.7}  % fob_k0scan/data.json 3x2|NLA|base: chi2 of the IA reference fit at K0 = 0.6
+\newcommand{\fobTopTxNlaBase}{0.49}  % fob_k0scan/data.json 3x2|NLA|base at K0 = 0.6
+\newcommand{\fobMaxTxNlaBase}{0.49}  % fob_k0scan/data.json 3x2|NLA|base: max over K0
+\newcommand{\kmaxTxNlaBase}{0.25}  % fob_k0scan/data.json 3x2|NLA|base: largest K0 with FoB < 0.3 at every smaller K0
+\newcommand{\bndTxNlaBase}{none}  % fob_k0scan/data.json 3x2|NLA|base: reference parameters at a bound, any K0
+\newcommand{\fobTxNlaHmc}{0.13}  % fob_k0scan/data.json 3x2|NLA|hmc at K0 = 0.2
+\newcommand{\ctwoTxNlaHmc}{2.7}  % fob_k0scan/data.json 3x2|NLA|hmc: chi2 of the IA reference fit at K0 = 0.2
+\newcommand{\ctwoTopTxNlaHmc}{12.3}  % fob_k0scan/data.json 3x2|NLA|hmc: chi2 of the IA reference fit at K0 = 0.6
+\newcommand{\fobTopTxNlaHmc}{0.20}  % fob_k0scan/data.json 3x2|NLA|hmc at K0 = 0.6
+\newcommand{\fobMaxTxNlaHmc}{0.20}  % fob_k0scan/data.json 3x2|NLA|hmc: max over K0
+\newcommand{\kmaxTxNlaHmc}{0.6}  % fob_k0scan/data.json 3x2|NLA|hmc: largest K0 with FoB < 0.3 at every smaller K0
+\newcommand{\bndTxNlaHmc}{none}  % fob_k0scan/data.json 3x2|NLA|hmc: reference parameters at a bound, any K0
+\newcommand{\fobTxNlaAlpha}{0.25}  % fob_k0scan/data.json 3x2|NLA|alpha at K0 = 0.2
+\newcommand{\ctwoTxNlaAlpha}{1.7}  % fob_k0scan/data.json 3x2|NLA|alpha: chi2 of the IA reference fit at K0 = 0.2
+\newcommand{\ctwoTopTxNlaAlpha}{4.6}  % fob_k0scan/data.json 3x2|NLA|alpha: chi2 of the IA reference fit at K0 = 0.6
+\newcommand{\fobTopTxNlaAlpha}{0.51}  % fob_k0scan/data.json 3x2|NLA|alpha at K0 = 0.6
+\newcommand{\fobMaxTxNlaAlpha}{0.51}  % fob_k0scan/data.json 3x2|NLA|alpha: max over K0
+\newcommand{\kmaxTxNlaAlpha}{0.25}  % fob_k0scan/data.json 3x2|NLA|alpha: largest K0 with FoB < 0.3 at every smaller K0
+\newcommand{\bndTxNlaAlpha}{none}  % fob_k0scan/data.json 3x2|NLA|alpha: reference parameters at a bound, any K0
+\newcommand{\fobTxNlaAlphaf}{0.29}  % fob_k0scan/data.json 3x2|NLA|alphaf at K0 = 0.2
+\newcommand{\ctwoTxNlaAlphaf}{1.9}  % fob_k0scan/data.json 3x2|NLA|alphaf: chi2 of the IA reference fit at K0 = 0.2
+\newcommand{\ctwoTopTxNlaAlphaf}{5.1}  % fob_k0scan/data.json 3x2|NLA|alphaf: chi2 of the IA reference fit at K0 = 0.6
+\newcommand{\fobTopTxNlaAlphaf}{0.46}  % fob_k0scan/data.json 3x2|NLA|alphaf at K0 = 0.6
+\newcommand{\fobMaxTxNlaAlphaf}{0.46}  % fob_k0scan/data.json 3x2|NLA|alphaf: max over K0
+\newcommand{\kmaxTxNlaAlphaf}{0.2}  % fob_k0scan/data.json 3x2|NLA|alphaf: largest K0 with FoB < 0.3 at every smaller K0
+\newcommand{\bndTxNlaAlphaf}{none}  % fob_k0scan/data.json 3x2|NLA|alphaf: reference parameters at a bound, any K0
+\newcommand{\fobTxNlaNlb}{0.19}  % fob_k0scan/data.json 3x2|NLA|nlb at K0 = 0.2
+\newcommand{\ctwoTxNlaNlb}{2.9}  % fob_k0scan/data.json 3x2|NLA|nlb: chi2 of the IA reference fit at K0 = 0.2
+\newcommand{\ctwoTopTxNlaNlb}{7.3}  % fob_k0scan/data.json 3x2|NLA|nlb: chi2 of the IA reference fit at K0 = 0.6
+\newcommand{\fobTopTxNlaNlb}{0.37}  % fob_k0scan/data.json 3x2|NLA|nlb at K0 = 0.6
+\newcommand{\fobMaxTxNlaNlb}{0.37}  % fob_k0scan/data.json 3x2|NLA|nlb: max over K0
+\newcommand{\kmaxTxNlaNlb}{0.35}  % fob_k0scan/data.json 3x2|NLA|nlb: largest K0 with FoB < 0.3 at every smaller K0
+\newcommand{\bndTxNlaNlb}{none}  % fob_k0scan/data.json 3x2|NLA|nlb: reference parameters at a bound, any K0

@@ -1,0 +1,119 @@
+--probe cs --cmb --fisher-only NLAh 0.2 CP
+--probe cs --cmb --fisher-only NLAh 0.25 CP
+--probe cs --cmb --fisher-only NLAh 0.3 CP
+--probe cs --cmb --fisher-only NLAh 0.35 CP
+--probe cs --cmb --fisher-only NLAh 0.4 CP
+--probe cs --cmb --fisher-only NLAh 0.5 CP
+--probe cs --cmb --fisher-only NLAh 0.6 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAh 0.15 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAh 0.2 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAh 0.25 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAh 0.3 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAh 0.35 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAh 0.4 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAh 0.5 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAh 0.6 CP
+--probe cs --cmb --fisher-only TATTh 0.2 CP
+--probe cs --cmb --fisher-only TATTh 0.25 CP
+--probe cs --cmb --fisher-only TATTh 0.3 CP
+--probe cs --cmb --fisher-only TATTh 0.35 CP
+--probe cs --cmb --fisher-only TATTh 0.4 CP
+--probe cs --cmb --fisher-only TATTh 0.5 CP
+--probe cs --cmb --fisher-only TATTh 0.6 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only TATTh 0.15 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only TATTh 0.2 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only TATTh 0.25 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only TATTh 0.3 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only TATTh 0.35 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only TATTh 0.4 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only TATTh 0.5 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only TATTh 0.6 CP
+--probe cs --cmb --fisher-only NLAa 0.2 CP
+--probe cs --cmb --fisher-only NLAa 0.25 CP
+--probe cs --cmb --fisher-only NLAa 0.3 CP
+--probe cs --cmb --fisher-only NLAa 0.35 CP
+--probe cs --cmb --fisher-only NLAa 0.4 CP
+--probe cs --cmb --fisher-only NLAa 0.5 CP
+--probe cs --cmb --fisher-only NLAa 0.6 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAa 0.15 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAa 0.2 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAa 0.25 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAa 0.3 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAa 0.35 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAa 0.4 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAa 0.5 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAa 0.6 CP
+--probe cs --cmb --fisher-only TATTa 0.2 CP
+--probe cs --cmb --fisher-only TATTa 0.25 CP
+--probe cs --cmb --fisher-only TATTa 0.3 CP
+--probe cs --cmb --fisher-only TATTa 0.35 CP
+--probe cs --cmb --fisher-only TATTa 0.4 CP
+--probe cs --cmb --fisher-only TATTa 0.5 CP
+--probe cs --cmb --fisher-only TATTa 0.6 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only TATTa 0.15 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only TATTa 0.2 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only TATTa 0.25 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only TATTa 0.3 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only TATTa 0.35 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only TATTa 0.4 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only TATTa 0.5 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only TATTa 0.6 CP
+--probe cs --cmb --fisher-only NLAf 0.2 CP
+--probe cs --cmb --fisher-only NLAf 0.25 CP
+--probe cs --cmb --fisher-only NLAf 0.3 CP
+--probe cs --cmb --fisher-only NLAf 0.35 CP
+--probe cs --cmb --fisher-only NLAf 0.4 CP
+--probe cs --cmb --fisher-only NLAf 0.5 CP
+--probe cs --cmb --fisher-only NLAf 0.6 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAf 0.15 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAf 0.2 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAf 0.25 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAf 0.3 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAf 0.35 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAf 0.4 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAf 0.5 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAf 0.6 CP
+--probe cs --cmb --fisher-only TATTf 0.2 CP
+--probe cs --cmb --fisher-only TATTf 0.25 CP
+--probe cs --cmb --fisher-only TATTf 0.3 CP
+--probe cs --cmb --fisher-only TATTf 0.35 CP
+--probe cs --cmb --fisher-only TATTf 0.4 CP
+--probe cs --cmb --fisher-only TATTf 0.5 CP
+--probe cs --cmb --fisher-only TATTf 0.6 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only TATTf 0.15 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only TATTf 0.2 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only TATTf 0.25 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only TATTf 0.3 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only TATTf 0.35 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only TATTf 0.4 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only TATTf 0.5 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only TATTf 0.6 CP
+--probe cs --cmb --fisher-only NLAb 0.2 CP
+--probe cs --cmb --fisher-only NLAb 0.25 CP
+--probe cs --cmb --fisher-only NLAb 0.3 CP
+--probe cs --cmb --fisher-only NLAb 0.35 CP
+--probe cs --cmb --fisher-only NLAb 0.4 CP
+--probe cs --cmb --fisher-only NLAb 0.5 CP
+--probe cs --cmb --fisher-only NLAb 0.6 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAb 0.15 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAb 0.2 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAb 0.25 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAb 0.3 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAb 0.35 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAb 0.4 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAb 0.5 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAb 0.6 CP
+--probe cs --cmb --fisher-only TATTb 0.2 CP
+--probe cs --cmb --fisher-only TATTb 0.25 CP
+--probe cs --cmb --fisher-only TATTb 0.3 CP
+--probe cs --cmb --fisher-only TATTb 0.4 CP
+--probe cs --cmb --fisher-only TATTb 0.5 CP
+--probe cs --cmb --fisher-only TATTb 0.6 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only TATTb 0.15 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only TATTb 0.2 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only TATTb 0.25 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only TATTb 0.3 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only TATTb 0.35 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only TATTb 0.4 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only TATTb 0.5 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only TATTb 0.6 CP

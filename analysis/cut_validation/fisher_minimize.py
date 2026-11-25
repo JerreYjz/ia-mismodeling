@@ -45,8 +45,13 @@ so the two differ. NLAfT is NLA with the TATT-form values, a test of the
 sensitivity to alpha. The snapshots outside the core z = 0.2 to 2,
 unreliable there, take the nearest core value. The correction is
 sum_s (1 - alpha_s) [A_s U_GI[s] + A_s^2 U_II[s]].
-    --check-hm  compares the same template sum for native NLA (N_GI, N_II)
-                with the emulator pipeline's NLA, cs and 3x2, and exits.
+NLAh and TATTh are HMc (alpha = 0, no free halo-model parameter); NLAb and
+TATTb put the A1 terms on P_lin (I_1 + I^beta_cm) and P_lin (1 + I^beta_cc),
+the nonlinear halo bias of analysis/halo_nlbias (templates U_GI_nlb, U_II_nlb
+of hm_templates.py), also with no free halo-model parameter.
+    --check-hm [truth]  compares the same template sum for native NLA (N_GI,
+                N_II) of that truth's templates (default prod) with the
+                emulator pipeline's NLA, cs and 3x2, and exits.
 Probes:
     cs     xi_+- at K0, the example1 covariance (cov_example1_xi.npy)
     3x2    xi_+- at K0, gamma_t of sources behind lenses at K0 = 0.3, w at
@@ -121,6 +126,13 @@ IA["TATTa"] = dict(model=1, evo=3, free={**IA["TATT"]["free"], **ALPHA}, hm=True
 IA["NLAf"] = dict(model=0, evo=3, free=dict(IA["NLA"]["free"]), hm="fixed", alpha="NLA")
 IA["NLAfT"] = dict(model=0, evo=3, free=dict(IA["NLA"]["free"]), hm="fixed", alpha="TATT")
 IA["TATTf"] = dict(model=1, evo=3, free=dict(IA["TATT"]["free"]), hm="fixed", alpha="TATT")
+# HMc (alpha = 0: the A1 terms on I_1 P_lin and P_lin) and the nonlinear halo
+# bias model of analysis/halo_nlbias (A1 terms on P_lin (I_1 + I^beta_cm) and
+# P_lin (1 + I^beta_cc)), both with no free halo-model parameter
+IA["NLAh"] = dict(model=0, evo=3, free=dict(IA["NLA"]["free"]), hm="fixed", alpha="zero")
+IA["TATTh"] = dict(model=1, evo=3, free=dict(IA["TATT"]["free"]), hm="fixed", alpha="zero")
+IA["NLAb"] = dict(model=0, evo=3, free=dict(IA["NLA"]["free"]), hm="fixed", alpha="zero", tpl="nlb")
+IA["TATTb"] = dict(model=1, evo=3, free=dict(IA["TATT"]["free"]), hm="fixed", alpha="zero", tpl="nlb")
 # alpha per snapshot z = 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.75, 1, 1.5, 2, 3, 4 from
 # notes/flamingo_vs_tng300/fits/hmc_alpha_fits.json, variant alpha_cap_nosat at
 # k_max = 0.701 (errors 0.04 to 0.12 in the core); z = 0, 0.1 take z = 0.2, z = 3, 4 take z = 2
@@ -128,12 +140,14 @@ ALPHA_FLAMINGO_TATT = [0.44, 0.44, 0.44, 0.46, 0.44, 0.45, 0.37, 0.44, 0.58, 0.7
 # the NLA form (variant nla_alpha_nosat, errors 0.01 to 0.03 in the core); alpha
 # exceeds its physical range 0 to 1 at z >= 1.5
 ALPHA_FLAMINGO_NLA = [0.61, 0.61, 0.61, 0.61, 0.62, 0.66, 0.71, 0.77, 0.90, 1.20, 1.62, 1.62, 1.62]
-ALPHA_FLAMINGO = {"TATT": ALPHA_FLAMINGO_TATT, "NLA": ALPHA_FLAMINGO_NLA}
+ALPHA_FLAMINGO = {"TATT": ALPHA_FLAMINGO_TATT, "NLA": ALPHA_FLAMINGO_NLA, "zero": [0.0]*13}
 X0 = 1.62
 IA_START = {"NLA": [3.5, 0.7], "NLAz": [3.0]*8, "TATT": [3.4, 0.7, -1.0, -2.0, 0.5],
             "TATTz": [3.0]*8 + [-0.5]*8 + [0.5],
             "NLAf": [3.5, 0.7], "NLAfT": [3.5, 0.7], "TATTf": [3.4, 0.7, -1.0, -2.0, 0.5],
-            "NLAa": [3.5, 0.7, 0.5], "TATTa": [3.4, 0.7, -1.0, -2.0, 0.5, 0.5]}
+            "NLAa": [3.5, 0.7, 0.5], "TATTa": [3.4, 0.7, -1.0, -2.0, 0.5, 0.5],
+            "NLAh": [3.5, 0.7], "TATTh": [3.4, 0.7, -1.0, -2.0, 0.5],
+            "NLAb": [3.5, 0.7], "TATTb": [3.4, 0.7, -1.0, -2.0, 0.5]}
 # Freer redshift evolution, nested in the power law: both amplitudes take the same g(z),
 #   a1(z) = A1 ((1+z)/1.62)^eta1 g(z),   a2(z) = A2 ((1+z)/1.62)^eta2 g(z),   b_TA unchanged,
 # added to the native model through the per-term snapshot templates of tatt_templates.py
@@ -249,7 +263,8 @@ class Setup:
             self.hm = dict(zs=t["zs"], U_GI=t["U_GI"], U_II=t["U_II"])
             if IA[mdl]["hm"] == "fixed":       # (1 - alpha_s) folded into the templates
                 w = 1 - np.array(ALPHA_FLAMINGO[IA[mdl]["alpha"]])[:, None]
-                self.hm = dict(zs=t["zs"], U_GI=w*t["U_GI"], U_II=w*t["U_II"], fixed=True)
+                sfx = "_" + IA[mdl]["tpl"] if IA[mdl].get("tpl") else ""
+                self.hm = dict(zs=t["zs"], U_GI=w*t["U_GI" + sfx], U_II=w*t["U_II" + sfx], fixed=True)
         self.zevo = None
         if IA[mdl].get("zevo"):
             t = np.load(os.path.join(HERE, f"tatt_templates_{probe}_{truth}.npz"))
@@ -563,11 +578,12 @@ def run(mdl, K0, truth, probe="cs", cmb=False, gt=0.3, wc=0.2, gb=None, fisher_o
           flush=True)
 
 
-def check_hm():
-    """Native NLA of the emulator pipeline against the template sum N_GI, N_II."""
+def check_hm(truth="prod"):
+    """Native NLA of the emulator pipeline against the template sum N_GI, N_II
+    of the templates of one truth (--check-hm [truth], default prod)."""
     for probe in ("cs", "3x2"):
-        S = Setup("NLA", 0.4, "prod", probe)
-        t = np.load(os.path.join(HERE, f"hm_templates_{probe}_prod.npz"))
+        S = Setup("NLA", 0.4, truth, probe)
+        t = np.load(os.path.join(HERE, f"hm_templates_{probe}_{truth}.npz"))
         for A1, eta in ((3.5, 0.7), (1.0, 0.0), (4.0, 2.0)):
             th = S.theta(FID, {}, [A1, eta])
             v, _ = S.vector(th)
@@ -608,7 +624,8 @@ def check_tatt():
 def main():
     a = sys.argv[1:]
     if "--check-hm" in a:
-        return check_hm()
+        a.remove("--check-hm")
+        return check_hm(a[0] if a else "prod")
     if "--check-tatt" in a:
         return check_tatt()
     probe = "cs"
