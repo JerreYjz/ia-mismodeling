@@ -1,0 +1,6 @@
+--probe cs --cmb --fisher-only NLAd1 0.4 CP
+--probe cs --cmb --fisher-only NLAd1 0.6 CP
+--probe cs --cmb --fisher-only NLAd1 0.8 CP
+--probe cs --cmb --fisher-only NLAd2 0.4 CP
+--probe cs --cmb --fisher-only NLAd2 0.6 CP
+--probe cs --cmb --fisher-only NLAd2 0.8 CP

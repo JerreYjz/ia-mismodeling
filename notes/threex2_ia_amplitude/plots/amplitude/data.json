@@ -1,0 +1,247 @@
+{
+ "about": "Producer: notes/threex2_ia_amplitude/plots/make_figure_data.py. A_truth: the effective NLA amplitude of the FLAMINGO CP truth per snapshot (A_eff_hmt of analysis/cut_validation/hm_templates_cs_CP.npz: the amplitude at which the truth-shape template reproduces the truth). fits: A(z) at the snapshots of the reference IA fit (fixed cosmology) to the 3x2pt data vector at K0 = 0.3 with the truth's own shape (fisher_minimize.json, models NLAt, NLAt+q, NLAt+m, NLAt+nd). mean_logM: mean log10 M*/Msun of the IA sample per snapshot (sample_mstar_hist.npz); logM_max: its upper edge (97.5th percentile of the target sample). slope_truth: the local slope d ln A / d ln(1+z) of the truth between neighbouring snapshots, at their mid redshifts slope_z.",
+ "zs": [
+  0.0,
+  0.1,
+  0.2,
+  0.3,
+  0.4,
+  0.5,
+  0.6,
+  0.75,
+  1.0,
+  1.5,
+  2.0,
+  3.0,
+  4.0
+ ],
+ "A_truth": [
+  1.795,
+  2.0906,
+  2.7856,
+  3.0564,
+  3.2282,
+  3.3686,
+  3.4238,
+  3.6333,
+  3.9727,
+  4.7443,
+  5.7884,
+  7.9606,
+  9.5612
+ ],
+ "slope_z": [
+  0.05,
+  0.15,
+  0.25,
+  0.35,
+  0.45,
+  0.55,
+  0.675,
+  0.875,
+  1.25,
+  1.75,
+  2.5,
+  3.5
+ ],
+ "slope_truth": [
+  1.599,
+  3.2986,
+  1.159,
+  0.7382,
+  0.6169,
+  0.2521,
+  0.6626,
+  0.6687,
+  0.7955,
+  1.091,
+  1.1076,
+  0.821
+ ],
+ "mean_logM": [
+  10.2058,
+  10.3558,
+  10.5048,
+  10.5179,
+  10.5186,
+  10.5204,
+  10.517,
+  10.5109,
+  10.4991,
+  10.4754,
+  10.454,
+  10.3796,
+  10.3184
+ ],
+ "logM_max": [
+  10.41,
+  10.68,
+  10.99,
+  11.04,
+  11.05,
+  11.07,
+  11.07,
+  11.07,
+  11.07,
+  11.1,
+  11.23,
+  11.35,
+  11.35
+ ],
+ "fits": {
+  "NLAt": {
+   "label": "truth shape (control)",
+   "A": [
+    2.2769,
+    2.4637,
+    2.6476,
+    2.8289,
+    3.0078,
+    3.1845,
+    3.3591,
+    3.6177,
+    4.0403,
+    4.8595,
+    5.6508,
+    7.1694,
+    8.6232
+   ],
+   "chi2_ref": 2.587,
+   "slope": [
+    0.8274,
+    0.8274,
+    0.8274,
+    0.8274,
+    0.8274,
+    0.8274,
+    0.8274,
+    0.8274,
+    0.8274,
+    0.8274,
+    0.8274,
+    0.8274
+   ],
+   "params": {
+    "A1_1": 3.3938,
+    "A1_2": 0.8274
+   }
+  },
+  "NLAt+q": {
+   "label": "truth shape, curved",
+   "A": [
+    2.7426,
+    2.834,
+    2.9352,
+    3.0445,
+    3.161,
+    3.2839,
+    3.4126,
+    3.6159,
+    3.9796,
+    4.7923,
+    5.7128,
+    7.874,
+    10.4775
+   ],
+   "chi2_ref": 0.393,
+   "slope": [
+    0.3441,
+    0.403,
+    0.4569,
+    0.5066,
+    0.5528,
+    0.5959,
+    0.6457,
+    0.7177,
+    0.8328,
+    0.9636,
+    1.1153,
+    1.2802
+   ],
+   "params": {
+    "A1_1": 3.4391,
+    "A1_2": 0.6248,
+    "zevo_eta2": 0.3227
+   }
+  },
+  "NLAt+m": {
+   "label": "truth shape, mass-informed",
+   "A": [
+    4.2068,
+    3.4196,
+    2.8426,
+    2.9361,
+    3.0766,
+    3.2104,
+    3.3653,
+    3.6027,
+    4.0068,
+    4.8318,
+    5.6676,
+    7.6876,
+    9.7527
+   ],
+   "chi2_ref": 1.291,
+   "slope": [
+    -2.1737,
+    -2.1238,
+    0.4043,
+    0.6309,
+    0.6167,
+    0.7304,
+    0.7605,
+    0.7963,
+    0.839,
+    0.8751,
+    1.0596,
+    1.0663
+   ],
+   "params": {
+    "A1_1": 3.3916,
+    "A1_2": 0.6258,
+    "zevo_beta": -0.9483
+   }
+  },
+  "NLAt+nd": {
+   "label": "truth shape, nodes",
+   "A": [
+    1.2522,
+    2.0127,
+    2.8959,
+    3.0536,
+    3.1961,
+    3.3232,
+    3.4651,
+    3.6559,
+    3.9142,
+    4.8333,
+    5.7095,
+    7.9816,
+    10.4074
+   ],
+   "chi2_ref": 0.229,
+   "slope": [
+    4.979,
+    4.1813,
+    0.6625,
+    0.6155,
+    0.5652,
+    0.6478,
+    0.5982,
+    0.5113,
+    0.9452,
+    0.9137,
+    1.1645,
+    1.1893
+   ],
+   "params": {
+    "A1_1": 3.1259,
+    "A1_2": 1.0672,
+    "zevo_n0": -0.3296,
+    "zevo_n02": 0.2762,
+    "zevo_n05": 0.1541,
+    "zevo_n2": -0.0537
+   }
+  }
+ }
+}

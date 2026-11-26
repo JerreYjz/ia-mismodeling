@@ -1,0 +1,92 @@
+{
+ "about": "Producer: notes/halo_kernel_model/plots/make_figure_data.py from analysis/halo_kernel/model/hk_model.json (hk_model.py, kernels_58.npz). FLAMINGO L1_m8 at z = 1, host-halo bins in log10 M200m [Msun/h] (lowest bin: galaxy hosts from 10^9, all halos above 10^11.3; edges clipped to 11.3 and 14.5 for drawing). Nc, Ns: mean sample centrals, satellites per halo. b: large-scale halo bias; bK: large-scale halo-shape bias (P_hE = b bK P_lin at k = 0.02 to 0.08). kappa_obj: per-object regression of galaxy on halo ellipticity; kappa_w: large-scale kernel on the mean-HOD halo fields (k = 0.02 to 0.10); null where Nc < 0.01.",
+ "z": 1.0000000000000004,
+ "lgm_lo": [
+  11.3,
+  11.7,
+  12.1,
+  12.5,
+  12.9,
+  13.4
+ ],
+ "lgm_hi": [
+  11.7,
+  12.1,
+  12.5,
+  12.9,
+  13.4,
+  14.5
+ ],
+ "lgm_mid": [
+  11.5,
+  11.9,
+  12.3,
+  12.7,
+  13.15,
+  13.95
+ ],
+ "Nc": [
+  0.670849,
+  0.979067,
+  0.75823,
+  0.281538,
+  0.030937,
+  0.000136
+ ],
+ "Ns": [
+  0.012786,
+  0.187949,
+  0.892903,
+  2.503884,
+  6.249509,
+  19.974284
+ ],
+ "b": [
+  1.078375,
+  1.201217,
+  1.444458,
+  1.783342,
+  2.364197,
+  3.482091
+ ],
+ "bK": [
+  -0.021697,
+  -0.028723,
+  -0.043452,
+  -0.064429,
+  -0.095683,
+  -0.157711
+ ],
+ "kappa_c_obj": [
+  0.790798,
+  1.040225,
+  1.154482,
+  1.197291,
+  1.143567,
+  1.574405
+ ],
+ "kappa_s_obj": [
+  0.237893,
+  0.341871,
+  0.344266,
+  0.295458,
+  0.220902,
+  0.158337
+ ],
+ "kappa_c_w": [
+  1.245781,
+  1.607336,
+  1.816072,
+  1.856619,
+  1.611947,
+  null
+ ],
+ "kappa_s_w": [
+  0.637861,
+  0.894386,
+  0.52973,
+  0.44404,
+  0.320041,
+  0.233058
+ ]
+}

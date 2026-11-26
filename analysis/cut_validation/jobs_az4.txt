@@ -1,0 +1,10 @@
+--probe cs --cmb --fisher-only NLAt+lz 0.2 CP
+--probe cs --cmb --fisher-only NLAt+lz 0.3 CP
+--probe cs --cmb --fisher-only NLAt+lz 0.4 CP
+--probe cs --cmb --fisher-only NLAt+lz 0.6 CP
+--probe cs --cmb --fisher-only NLAt+lz 0.8 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAt+lz 0.15 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAt+lz 0.2 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAt+lz 0.4 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAt+lz 0.6 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAt+lz 0.8 CP

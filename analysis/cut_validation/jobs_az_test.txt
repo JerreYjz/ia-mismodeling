@@ -1,0 +1,6 @@
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAt+sn 0.3 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAt+lz 0.3 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLA+lz 0.3 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLA+nd 0.3 CP
+--probe cs --cmb --fisher-only NLAt+sn 0.3 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLA+sn 0.3 CP

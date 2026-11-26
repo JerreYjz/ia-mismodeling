@@ -1,0 +1,146 @@
+% Written by make_numbers.py; do not edit by hand.
+\newcommand{\gofWA}{3.27}  % plots/gof/data.json w: sum chi2 / sum nu at k_max 0.52
+\newcommand{\gofWC}{11.68}  % plots/gof/data.json w: sum chi2 / sum nu at k_max 0.94
+\newcommand{\cutWLo}{0.09}  % plots/gof/data.json w: min GOF cut over the core z
+\newcommand{\cutWHi}{0.52}  % plots/gof/data.json w: max GOF cut
+\newcommand{\cutWMed}{0.39}  % plots/gof/data.json w: median GOF cut
+\newcommand{\gofWgA}{1.41}  % plots/gof/data.json wg: sum chi2 / sum nu at k_max 0.52
+\newcommand{\gofWgC}{2.01}  % plots/gof/data.json wg: sum chi2 / sum nu at k_max 0.94
+\newcommand{\cutWgLo}{0.16}  % plots/gof/data.json wg: min GOF cut over the core z
+\newcommand{\cutWgHi}{2.27}  % plots/gof/data.json wg: max GOF cut
+\newcommand{\cutWgMed}{0.52}  % plots/gof/data.json wg: median GOF cut
+\newcommand{\gofVoneA}{1.56}  % plots/gof/data.json v1: sum chi2 / sum nu at k_max 0.52
+\newcommand{\gofVoneC}{2.77}  % plots/gof/data.json v1: sum chi2 / sum nu at k_max 0.94
+\newcommand{\cutVoneLo}{0.22}  % plots/gof/data.json v1: min GOF cut over the core z
+\newcommand{\cutVoneHi}{0.94}  % plots/gof/data.json v1: max GOF cut
+\newcommand{\cutVoneMed}{0.52}  % plots/gof/data.json v1: median GOF cut
+\newcommand{\gofTattA}{5.68}  % plots/gof/data.json tatt: sum chi2 / sum nu at k_max 0.52
+\newcommand{\gofTattC}{19.39}  % plots/gof/data.json tatt: sum chi2 / sum nu at k_max 0.94
+\newcommand{\cutTattLo}{0.29}  % plots/gof/data.json tatt: min GOF cut over the core z
+\newcommand{\cutTattHi}{0.70}  % plots/gof/data.json tatt: max GOF cut
+\newcommand{\cutTattMed}{0.29}  % plots/gof/data.json tatt: median GOF cut
+\newcommand{\gofLinA}{177.09}  % plots/gof/data.json lin: sum chi2 / sum nu at k_max 0.52
+\newcommand{\gofLinC}{810.84}  % plots/gof/data.json lin: sum chi2 / sum nu at k_max 0.94
+\newcommand{\cutLinLo}{0.12}  % plots/gof/data.json lin: min GOF cut over the core z
+\newcommand{\cutLinHi}{0.12}  % plots/gof/data.json lin: max GOF cut
+\newcommand{\cutLinMed}{0.12}  % plots/gof/data.json lin: median GOF cut
+\newcommand{\gofEmuA}{33.27}  % plots/gof/data.json emu: sum chi2 / sum nu at k_max 0.52
+\newcommand{\gofEmuC}{227.93}  % plots/gof/data.json emu: sum chi2 / sum nu at k_max 0.94
+\newcommand{\cutEmuLo}{0.09}  % plots/gof/data.json emu: min GOF cut over the core z
+\newcommand{\cutEmuHi}{0.16}  % plots/gof/data.json emu: max GOF cut
+\newcommand{\cutEmuMed}{0.11}  % plots/gof/data.json emu: median GOF cut
+\newcommand{\gofTabA}{8.52}  % plots/gof/data.json tab: sum chi2 / sum nu at k_max 0.52
+\newcommand{\gofTabC}{20.53}  % plots/gof/data.json tab: sum chi2 / sum nu at k_max 0.94
+\newcommand{\cutTabLo}{0.22}  % plots/gof/data.json tab: min GOF cut over the core z
+\newcommand{\cutTabHi}{0.29}  % plots/gof/data.json tab: max GOF cut
+\newcommand{\cutTabMed}{0.25}  % plots/gof/data.json tab: median GOF cut
+\newcommand{\respShape}{2.5}  % plots/shape_response/data.json z = 1, shape at k = 0.94
+\newcommand{\respDens}{1.6}  % plots/shape_response/data.json z = 1, density at k = 0.94
+\newcommand{\respMatter}{3.0}  % plots/shape_response/data.json z = 1, matter at k = 0.94
+\newcommand{\respEmu}{1.8}  % plots/shape_response/data.json z = 1, emulator at k = 0.94
+\newcommand{\ggBinnedMiss}{16}  % plots/weighting/data.json z = 1: 1 - binned P_GG/P_gg, mean over k = 0.02 to 0.06 [percent]
+\newcommand{\ggMeanMiss}{11}  % plots/weighting/data.json z = 1: 1 - mean-HOD P_GG/P_gg, k = 0.02 to 0.06 [percent]
+\newcommand{\iiFullExcess}{23}  % plots/weighting/data.json: mean of prediction/galaxy II - 1, full halo-shape II, k = 0.1 to 0.5, z = 0.3 and 1 [percent]
+\newcommand{\iiDetDev}{5}  % plots/weighting/data.json: mean |galaxy II/deterministic II - 1|, k = 0.1 to 0.5, z = 0.3 and 1 [percent]
+\newcommand{\ALo}{0.03}  % hk_model.json ws-ls-sat A at k_max 0.94 and 1.26: min over z = 0.2 to 1.5
+\newcommand{\AHi}{0.13}  % the same, max
+\newcommand{\AHighFit}{0.22}  % hk_model.json ws-ls-sat: mean A at k_max 1.26, z = 2 to 4
+\newcommand{\AShiftMid}{0.06}  % hk_model.json ws-ls-sat: max |A(0.52) - A(1.26)|, z = 0.2 to 1.5
+\newcommand{\AShiftHigh}{0.08}  % the same, z = 2 to 4
+\newcommand{\AShiftSig}{4}  % hk_model.json ws-ls-sat: max |A(0.52) - A(1.26)| / sigma(A(0.52)) over all snapshots
+\newcommand{\RLLo}{1.2}  % hk_model.json R_L: min over snapshots (z = 4) [Mpc/h]
+\newcommand{\RLHi}{2.4}  % hk_model.json R_L: max over snapshots (z = 0) [Mpc/h]
+\newcommand{\alphaShiftHigh}{0.20}  % hk_model.json w-ls-grad: min |alpha(0.52) - alpha(1.26)|, z = 2 to 4
+\newcommand{\alphaShiftHighSig}{8}  % the same in sigma, max over z = 2 to 4
+\newcommand{\alphaShiftHighSigK}{7}  % hk_model.json ws-ls-grad (residual II, k^2 gradient): max shift in sigma, z = 2 to 4
+\newcommand{\kcLo}{1.25}  % hk_model.json z = 1 kappa_w_c (bins with Nc >= 0.01): min
+\newcommand{\kcHi}{1.86}  % hk_model.json z = 1 kappa_w_c: max
+\newcommand{\ksLo}{0.23}  % hk_model.json z = 1 kappa_w_s: min
+\newcommand{\ksHi}{0.89}  % hk_model.json z = 1 kappa_w_s: max
+\newcommand{\reproLow}{0.8}  % hk_model.json offset/err: max over snapshots, k = 0.05 to 0.52
+\newcommand{\reproHigh}{4.1}  % hk_model.json repro_maxdev_sigma: max over snapshots (k <= 1.26)
+\newcommand{\AeffLo}{1.7}  % hm_templates_cs_CP.npz A_eff_hms at z = 0
+\newcommand{\AeffHi}{9.9}  % hm_templates_cs_CP.npz A_eff_hms at z = 4
+\newcommand{\krcZero}{0.53}  % plots/residual/data.json ratio_c (kappa_r/kappa_d, centrals) at z = 0
+\newcommand{\krcOne}{0.64}  % plots/residual/data.json ratio_c (kappa_r/kappa_d, centrals) at z = 1
+\newcommand{\krcTwo}{0.84}  % plots/residual/data.json ratio_c (kappa_r/kappa_d, centrals) at z = 2
+\newcommand{\krcFour}{0.92}  % plots/residual/data.json ratio_c (kappa_r/kappa_d, centrals) at z = 4
+\newcommand{\krsOne}{0.58}  % plots/residual/data.json ratio_s at z = 1
+\newcommand{\negIIMax}{4}  % plots/residual/data.json neg_ii_max [percent of model P_EE]
+\newcommand{\negBBMax}{11}  % plots/residual/data.json neg_bb_max [percent of model P_BB]
+\newcommand{\iiDetExcessTwo}{23}  % plots/residual/data.json z = 2: mean galaxy 2h II / deterministic II - 1, k = 0.1 to 0.55 [percent]
+\newcommand{\iiResExcessTwo}{13}  % the same over deterministic + residual II [percent]
+\newcommand{\iiFullExcessTwo}{8}  % the same over kappa_d^2 x full halo-shape II [percent]
+\newcommand{\cutVoneZTwo}{0.22}  % hk_model.json w-ls-grad GOF cut at z = 2
+\newcommand{\cutWgZTwo}{0.70}  % hk_model.json ws-ls-sat GOF cut at z = 2
+\newcommand{\gofWgZTwo}{1.7}  % hk_model.json ws-ls-sat chi2/nu at k_max 0.94, z = 2
+\newcommand{\gofVoneZTwo}{7.0}  % hk_model.json w-ls-grad chi2/nu at k_max 0.94, z = 2
+\newcommand{\cutVoneZThree}{0.16}  % hk_model.json w-ls-grad GOF cut at z = 3
+\newcommand{\cutWgZThree}{1.69}  % hk_model.json ws-ls-sat GOF cut at z = 3
+\newcommand{\gofWgZThree}{1.3}  % hk_model.json ws-ls-sat chi2/nu at k_max 0.94, z = 3
+\newcommand{\gofVoneZThree}{9.5}  % hk_model.json w-ls-grad chi2/nu at k_max 0.94, z = 3
+\newcommand{\cutVoneZFour}{nan}  % hk_model.json w-ls-grad GOF cut at z = 4
+\newcommand{\cutWgZFour}{0.70}  % hk_model.json ws-ls-sat GOF cut at z = 4
+\newcommand{\gofWgZFour}{2.1}  % hk_model.json ws-ls-sat chi2/nu at k_max 0.94, z = 4
+\newcommand{\gofVoneZFour}{13.7}  % hk_model.json w-ls-grad chi2/nu at k_max 0.94, z = 4
+\newcommand{\fobCsNlaEight}{0.46}  % plots/fob_k0scan/data.json cs|NLA: FoB at K0 = 0.8
+\newcommand{\fobCsNlaLo}{0.09}  % plots/fob_k0scan/data.json cs|NLA: min FoB over K0
+\newcommand{\fobCsNlaHi}{0.46}  % plots/fob_k0scan/data.json cs|NLA: max FoB over K0
+\newcommand{\KzeroCsNla}{0.6}  % plots/fob_k0scan/data.json cs|NLA: largest K0 with FoB < 0.3 at every smaller K0
+\newcommand{\fobCsTattEight}{0.32}  % plots/fob_k0scan/data.json cs|TATT: FoB at K0 = 0.8
+\newcommand{\fobCsTattLo}{0.07}  % plots/fob_k0scan/data.json cs|TATT: min FoB over K0
+\newcommand{\fobCsTattHi}{0.32}  % plots/fob_k0scan/data.json cs|TATT: max FoB over K0
+\newcommand{\KzeroCsTatt}{0.6}  % plots/fob_k0scan/data.json cs|TATT: largest K0 with FoB < 0.3 at every smaller K0
+\newcommand{\fobCsWEight}{0.32}  % plots/fob_k0scan/data.json cs|hms0: FoB at K0 = 0.8
+\newcommand{\fobCsWLo}{0.11}  % plots/fob_k0scan/data.json cs|hms0: min FoB over K0
+\newcommand{\fobCsWHi}{0.32}  % plots/fob_k0scan/data.json cs|hms0: max FoB over K0
+\newcommand{\KzeroCsW}{0.6}  % plots/fob_k0scan/data.json cs|hms0: largest K0 with FoB < 0.3 at every smaller K0
+\newcommand{\fobCsWgEight}{0.33}  % plots/fob_k0scan/data.json cs|hms: FoB at K0 = 0.8
+\newcommand{\fobCsWgLo}{0.11}  % plots/fob_k0scan/data.json cs|hms: min FoB over K0
+\newcommand{\fobCsWgHi}{0.33}  % plots/fob_k0scan/data.json cs|hms: max FoB over K0
+\newcommand{\KzeroCsWg}{0.6}  % plots/fob_k0scan/data.json cs|hms: largest K0 with FoB < 0.3 at every smaller K0
+\newcommand{\fobCsKzEight}{0.32}  % plots/fob_k0scan/data.json cs|hmsz: FoB at K0 = 0.8
+\newcommand{\fobCsKzLo}{0.12}  % plots/fob_k0scan/data.json cs|hmsz: min FoB over K0
+\newcommand{\fobCsKzHi}{0.32}  % plots/fob_k0scan/data.json cs|hmsz: max FoB over K0
+\newcommand{\KzeroCsKz}{0.6}  % plots/fob_k0scan/data.json cs|hmsz: largest K0 with FoB < 0.3 at every smaller K0
+\newcommand{\fobCsVoneEight}{0.59}  % plots/fob_k0scan/data.json cs|hmk: FoB at K0 = 0.8
+\newcommand{\fobCsVoneLo}{0.12}  % plots/fob_k0scan/data.json cs|hmk: min FoB over K0
+\newcommand{\fobCsVoneHi}{0.59}  % plots/fob_k0scan/data.json cs|hmk: max FoB over K0
+\newcommand{\KzeroCsVone}{0.5}  % plots/fob_k0scan/data.json cs|hmk: largest K0 with FoB < 0.3 at every smaller K0
+\newcommand{\fobCsCtrlEight}{0.21}  % plots/fob_k0scan/data.json cs|ctrl: FoB at K0 = 0.8
+\newcommand{\fobCsCtrlLo}{0.10}  % plots/fob_k0scan/data.json cs|ctrl: min FoB over K0
+\newcommand{\fobCsCtrlHi}{0.21}  % plots/fob_k0scan/data.json cs|ctrl: max FoB over K0
+\newcommand{\KzeroCsCtrl}{0.8}  % plots/fob_k0scan/data.json cs|ctrl: largest K0 with FoB < 0.3 at every smaller K0
+\newcommand{\fobTxNlaEight}{0.70}  % plots/fob_k0scan/data.json 3x2|NLA: FoB at K0 = 0.8
+\newcommand{\fobTxNlaLo}{0.23}  % plots/fob_k0scan/data.json 3x2|NLA: min FoB over K0
+\newcommand{\fobTxNlaHi}{0.70}  % plots/fob_k0scan/data.json 3x2|NLA: max FoB over K0
+\newcommand{\KzeroTxNla}{0.25}  % plots/fob_k0scan/data.json 3x2|NLA: largest K0 with FoB < 0.3 at every smaller K0
+\newcommand{\fobTxTattEight}{0.66}  % plots/fob_k0scan/data.json 3x2|TATT: FoB at K0 = 0.8
+\newcommand{\fobTxTattLo}{0.10}  % plots/fob_k0scan/data.json 3x2|TATT: min FoB over K0
+\newcommand{\fobTxTattHi}{0.66}  % plots/fob_k0scan/data.json 3x2|TATT: max FoB over K0
+\newcommand{\KzeroTxTatt}{0.35}  % plots/fob_k0scan/data.json 3x2|TATT: largest K0 with FoB < 0.3 at every smaller K0
+\newcommand{\fobTxWEight}{0.46}  % plots/fob_k0scan/data.json 3x2|hms0: FoB at K0 = 0.8
+\newcommand{\fobTxWLo}{0.16}  % plots/fob_k0scan/data.json 3x2|hms0: min FoB over K0
+\newcommand{\fobTxWHi}{0.46}  % plots/fob_k0scan/data.json 3x2|hms0: max FoB over K0
+\newcommand{\KzeroTxW}{0.35}  % plots/fob_k0scan/data.json 3x2|hms0: largest K0 with FoB < 0.3 at every smaller K0
+\newcommand{\fobTxWgEight}{0.50}  % plots/fob_k0scan/data.json 3x2|hms: FoB at K0 = 0.8
+\newcommand{\fobTxWgLo}{0.17}  % plots/fob_k0scan/data.json 3x2|hms: min FoB over K0
+\newcommand{\fobTxWgHi}{0.50}  % plots/fob_k0scan/data.json 3x2|hms: max FoB over K0
+\newcommand{\KzeroTxWg}{0.35}  % plots/fob_k0scan/data.json 3x2|hms: largest K0 with FoB < 0.3 at every smaller K0
+\newcommand{\fobTxKzEight}{0.54}  % plots/fob_k0scan/data.json 3x2|hmsz: FoB at K0 = 0.8
+\newcommand{\fobTxKzLo}{0.22}  % plots/fob_k0scan/data.json 3x2|hmsz: min FoB over K0
+\newcommand{\fobTxKzHi}{0.54}  % plots/fob_k0scan/data.json 3x2|hmsz: max FoB over K0
+\newcommand{\KzeroTxKz}{0.25}  % plots/fob_k0scan/data.json 3x2|hmsz: largest K0 with FoB < 0.3 at every smaller K0
+\newcommand{\fobTxVoneEight}{0.90}  % plots/fob_k0scan/data.json 3x2|hmk: FoB at K0 = 0.8
+\newcommand{\fobTxVoneLo}{0.34}  % plots/fob_k0scan/data.json 3x2|hmk: min FoB over K0
+\newcommand{\fobTxVoneHi}{0.90}  % plots/fob_k0scan/data.json 3x2|hmk: max FoB over K0
+\newcommand{\KzeroTxVone}{0.15}  % plots/fob_k0scan/data.json 3x2|hmk: largest K0 with FoB < 0.3 at every smaller K0
+\newcommand{\fobTxCtrlEight}{0.53}  % plots/fob_k0scan/data.json 3x2|ctrl: FoB at K0 = 0.8
+\newcommand{\fobTxCtrlLo}{0.24}  % plots/fob_k0scan/data.json 3x2|ctrl: min FoB over K0
+\newcommand{\fobTxCtrlHi}{0.53}  % plots/fob_k0scan/data.json 3x2|ctrl: max FoB over K0
+\newcommand{\KzeroTxCtrl}{0.3}  % plots/fob_k0scan/data.json 3x2|ctrl: first K0 with FoB >= 0.3
+\newcommand{\fobVoneCsWgEight}{1.14}  % analysis/halo_kernel/model/fisher_hmk_v1.json cs NLAk K0 0.8 (first template construction)
+\newcommand{\fobVoneCsWgTwo}{0.25}  % the same at K0 0.2
+\newcommand{\fobCsVoneKzEight}{0.26}  % analysis/cut_validation/fisher_minimize.json cs NLAkz K0 0.8 (diagnostic, truth shape above z = 1.5)
+\newcommand{\fobCsDiagSatEight}{0.26}  % analysis/cut_validation/fisher_minimize.json cs NLAd1 K0 0.8 (diagnostic, truth shape above z = 1.5)
+\newcommand{\fobCsDiagResEight}{0.31}  % analysis/cut_validation/fisher_minimize.json cs NLAd2 K0 0.8 (diagnostic, truth shape above z = 1.5)

@@ -1,0 +1,344 @@
+% Why the Roman 3x2pt figure of bias is much larger than that of cosmic shear,
+% and the IA redshift-evolution models that fix it.
+% Build with assets/build_note.sh of the summary-notes skill.
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[font=small,labelfont=bf,labelsep=period]{caption}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{3em}
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\textfraction}{0.07}
+\renewcommand{\floatpagefraction}{0.8}
+
+\newcommand{\hMpc}{\,h\,{\rm Mpc}^{-1}}
+\newcommand{\Om}{\Omega_m}
+
+% =====================================================================
+% Numbers
+% =====================================================================
+% Part 1: results, all in numbers.tex, written by make_numbers.py from the
+% plots/*/data.json files, analysis/cut_validation/fisher_minimize.json and
+% check_hm_CP.log. Every macro carries its source in a comment. Set
+% \numbersfinalfalse to print them in red.
+%
+% Statements of the text that rest on Part 1 (re-check after a refresh):
+%   - every IA model, the exact shape included, shifts Omega_m by about the
+%     same amount in 3x2pt (sections "Summary", "Diagnosis");
+%   - a free amplitude per snapshot removes the bias (section "Diagnosis");
+%   - the curved power law keeps 3x2pt below 0.3 to K0 = 0.8 at a percent
+%     cost in sigma; with the HMk shape it stays below 0.2 (sections
+%     "Summary", "Results").
+\newif\ifnumbersfinal
+\numbersfinaltrue
+\newcommand{\refresh}[1]{\ifnumbersfinal#1\else\textcolor{red}{#1}\fi}
+\input{numbers.tex}
+
+\title{The 3x2pt figure of bias is the IA amplitude's redshift evolution:\\
+diagnosis and fixes}
+\author{IA mismodeling project, Roman notes}
+\date{\today}
+
+\begin{document}
+\maketitle
+\ifnumbersfinal\else
+\begin{center}\textcolor{red}{Numbers in red are being refreshed.}\end{center}
+\fi
+
+% =====================================================================
+\section*{Summary}
+% =====================================================================
+
+\paragraph{The question.} The Roman 3x2pt figure of bias (FoB) on the
+FLAMINGO CP truth is 1.5 to 3 times that of cosmic shear for every IA
+model, the exact IA shape included: with NLA it crosses 0.3 at
+$K_0=0.3\hMpc$ and reaches $\refresh{\fobTxNlaEight}$ at 0.8. Is that an IA
+problem, and can it be fixed?
+
+\paragraph{The answer.} It is the IA amplitude's redshift evolution, and a
+one-parameter extension fixes it. The truth's IA amplitude is not a power
+law in $1+z$: $\ln A$ is convex in $\ln(1+z)$, with a slope of
+$\refresh{\slopeLow}$ from $z=0.2$ to 1 and $\refresh{\slopeHigh}$ from 1
+to 4. A single power law ($\eta_1=\refresh{\etaPl}$) splits the difference
+and sits up to $\refresh{\plDevMid}$ percent below the truth at $z=0.2$ to 0.5,
+where the low-redshift lens bins of $\gamma_t$ sit, and $\refresh{\plDevHigh}$ percent below at
+$z=3$ to 4. $\gamma_t$ and $w$ turn that into an $\Om$ shift. A curved power law,
+$A(z)=A_1x^{\eta_1+\eta_2\ln x}$ with $x=(1+z)/1.62$, brings NLA in 3x2pt
+from $\refresh{\fobTxNlaSix}$ to $\refresh{\fobTxQSix}$ at $K_0=0.6$ and from
+$\refresh{\fobTxNlaEight}$ to $\refresh{\fobTxQEight}$ at 0.8. With the HMk
+shape of the halo-model note the FoB stays at or below
+$\refresh{\fobTxHmkQMax}$ in 3x2pt and $\refresh{\fobCsHmkQMax}$ in cosmic
+shear for every $K_0$ to 0.8. The extra parameter widens $\sigma(S_8)$ and
+$\sigma(\Om)$ by at most $\refresh{\costTxQSMax}$ and
+$\refresh{\costTxQOMax}$ percent.
+
+\paragraph{How we know.} Five tests (Section~\ref{sec:diag}). (1) Every IA
+model shifts $\Om$ by about the same amount in 3x2pt, so the cause is
+common to all shapes. (2) The fit and truth pipelines agree on the native
+IA to $\chi^2=\refresh{\checkChiTx}$. (3) With the truth's own shape and a
+free amplitude at every snapshot the FoB is at most
+$\refresh{\fobTxOracleMax}$: the shape carries no bias, the amplitude law
+carries all of it. (4) One amplitude per source bin, the usual freer
+model, makes 3x2pt worse (up to $\refresh{\fobTxNlazMax}$), because
+$\gamma_t$ sees the low-redshift tail of each source bin and $\xi_\pm$ the
+whole bin; the amplitude must be a function of $z$, not of the bin. (5)
+Freedom at $z\le0.2$ alone, where the sample's stellar-mass window makes
+the truth's amplitude dip, does not help (up to
+$\refresh{\fobTxCtrlLzMax}$ with the truth's shape); the curvature over
+$z=0.2$ to 4 is what matters.
+
+\paragraph{Limits.} One simulation, one sample definition: how strongly a
+real Roman sample's IA amplitude departs from a power law depends on its
+own selection. The Fisher shifts are linear; minimizer checks agree
+(Section~\ref{sec:results}). The A(z) corrections are held at the
+fiducial cosmology, as all the templates of these notes.
+
+% =====================================================================
+\section{Fiducial setup}
+% =====================================================================
+
+The setup of the halo-model note: Roman $\xi_\pm$ with the cut
+$k_{\rm UV}=K_0/D(z)$; 3x2pt adds $\gamma_t$ of sources behind lenses at
+$K_0=0.5$ and $w$ at 0.2, eight lens bins sharing the source $n(z)$ with
+free linear biases; CMB prior; every parameter free; the CP truth
+(stitched FLAMINGO with the close-pair II term, 13 snapshots $z=0$ to 4);
+the data vector is the model's own $\Lambda$CDM vector plus the truth's
+IA, so a bias can only come from the IA modelling. FoB is the 2D Fisher
+shift of $(\Om, S_8)$ in units of the marginalized errors, against 0.3.
+
+Every redshift-evolution model below multiplies the power-law amplitude
+by a function $g(z)$,
+\begin{equation}
+A(z)=A_1\,x^{\eta_1}\,g(z),\qquad x=\frac{1+z}{1.62},
+\label{eq:g}
+\end{equation}
+applied exactly through the per-snapshot IA templates (GI linear, II
+quadratic in $A$; $\gamma_t$ rows scaled with the lens bias). The
+templates are piecewise linear in $z$ between the 13 snapshots.
+
+% =====================================================================
+\section{Diagnosis}
+\label{sec:diag}
+% =====================================================================
+
+\paragraph{1. The bias is common to all IA shapes.} In 3x2pt at $K_0=0.8$
+NLA shifts $\Om$ by $\refresh{\muOmTxNlaEight}\,\sigma$, TATT by
+$\refresh{\muOmTxTattEight}$, HMk by $\refresh{\muOmTxHmkEight}$ and the
+truth's own shape (the control) by $\refresh{\muOmTxCtrlEight}$. In cosmic
+shear the control moves $\Om$ by $\refresh{\shiftOmCs}$; in 3x2pt by
+$\refresh{\shiftOmTx}$, while $\sigma(\Om)$ shrinks only from
+$\refresh{\sigOmCs}$ to $\refresh{\sigOmTx}$. 3x2pt is not just more
+precise: the same IA error moves $\Om$ more in it.
+
+\paragraph{2. The pipelines agree.} The truth's IA is built by a separate
+driver from the FLAMINGO spectra per snapshot, the fit uses cosmolike's
+native NLA. Summed over snapshots, the truth driver's NLA templates
+reproduce the native NLA to $\chi^2=\refresh{\checkChiCs}$ (cosmic shear)
+and $\refresh{\checkChiTx}$ (3x2pt) at $A_1=3.5$, $\eta_1=0.7$. $\gamma_t$
+and $\xi_\pm$ share the same GI, $b_i P_{\delta I}$ at the lens redshifts
+and $P_{\delta I}$ in the lensing kernels.
+
+\paragraph{3. The amplitude law carries all of it.} The control template
+reproduces the truth exactly at the truth's per-snapshot amplitudes. With
+that shape and a free $g$ at every snapshot (the oracle, 13 amplitudes),
+the FoB is at most $\refresh{\fobTxOracleMax}$ in 3x2pt and
+$\refresh{\fobCsOracleMax}$ in cosmic shear over every $K_0$; with $g$ on
+four free nodes it is at most $\refresh{\fobTxCtrlNdMax}$ and
+$\refresh{\fobCsCtrlNdMax}$. With the power law it is
+$\refresh{\fobTxCtrlEight}$ in 3x2pt at $K_0=0.8$. Nothing in the IA
+shape biases 3x2pt; the power law in $1+z$ does.
+
+\paragraph{4. The amplitude must depend on $z$, not on the bin.} The usual
+freer model, one $A_1$ per source bin, fits $\gamma_t$ and $w$ alone
+perfectly (2x2pt FoB at most $\refresh{\fobTwoNlazMax}$, against
+$\refresh{\fobTwoNlaMax}$ for NLA) but gives up to
+$\refresh{\fobTxNlazMax}$ in 3x2pt. The GI of $\gamma_t$ comes from the part
+of each source bin that overlaps the lenses, its low-redshift tail; the GI
+and II of $\xi_\pm$ come from the whole bin. With an amplitude that rises
+with $z$, the two want different constants for the same bin, and the
+compromise leaks into $\Om$. A continuous $A(z)$ serves both.
+
+\paragraph{5. Which part of the amplitude law fails.} The truth's
+amplitude has two departures from a power law (Fig.~\ref{fig:amp}). (a)
+A dip at $z\le0.1$: the FLAMINGO IA sample is
+$10<\log_{10}M_*/M_\odot<\log M_{\rm max}(z)$, the upper edge the 97.5th
+percentile of the Roman-like target at each $z$, which is
+$\refresh{\logMmaxZero}$ at $z=0$, $\refresh{\logMmaxOne}$ at 0.1 and
+$\refresh{\logMmaxTwo}$ at 0.2; the sample's mean $\log M_*$ is
+$\refresh{\logMmeanZero}$ at $z=0$ against $\refresh{\logMmeanMid}$ at
+$z=0.2$ to 1, and its amplitude drops with it. (b) A curvature: the local
+slope $d\ln A/d\ln(1+z)$ rises from about 0.7 at $z<1$ to about 1 above
+(Fig.~\ref{fig:amp}, bottom). Only (b) matters. With the truth's own shape
+and free tents at $z=0$ and 0.2, the FoB is $\refresh{\fobTxCtrlLzThree}$
+in 3x2pt at $K_0=0.3$ against $\refresh{\fobTxCtrlThree}$ for the power
+law: the Roman sources and lenses at $z\le0.1$ carry too little weight. The
+fits of Fig.~\ref{fig:amp} show the same: the curved power law matches the
+truth within 5 percent from $z=0.2$ to 3 and is free to miss $z\le0.1$
+by 50 percent. What sets the curvature in FLAMINGO (the evolution of the
+host-halo masses at fixed stellar mass, the central fraction, the upper
+mass edge rising to $\log M_*=11.35$ at $z=3$) has not been separated.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.55\linewidth]{plots/amplitude/amplitude.pdf}
+\caption{Top: the effective NLA amplitude of the FLAMINGO truth per
+snapshot (points) and four $A(z)$ forms fitted to the 3x2pt data vector
+($K_0=0.3$, fixed cosmology) with the truth's own shape. Middle: fit over
+truth (the mass-informed fit leaves the panel at $z\le0.1$). Bottom: the
+local slope $d\ln A/d\ln(1+z)$ between neighbouring snapshots.}
+\label{fig:amp}
+\end{figure}
+
+% =====================================================================
+\section{Strategies}
+% =====================================================================
+
+\begin{center}
+\small
+\begin{tabular}{llc}
+\toprule
+name & $g(z)$ in Eq.~\eqref{eq:g} & extra parameters \\
+\midrule
+curved power law & $x^{\eta_2\ln x}$ & 1 \\
+mass-informed & $\langle(M_*/10^{10.5})^\beta\rangle_z/\langle\cdot\rangle_{z=0.6}$ over the sample & 1 \\
+mass-informed + curvature & product of the two & 2 \\
+low and high tents & $1+\sum c_iT_i(z)$, tents at $z=0$, 0.2, 2, 3 & 4 \\
+nodes & piecewise linear, free at $z=0$, 0.2, 0.5, 2; 1 at $z=1$, 4 & 4 \\
+per snapshot & free at every snapshot but $z=1$, 4 & 11 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The curved power law is the smallest change that bends $\ln A$ in
+$\ln(1+z)$. The mass-informed form uses what a survey measures, its
+sample's stellar-mass distribution per redshift, with an amplitude-mass
+slope $\beta$; it was built for the low-redshift dip before test 5 showed
+the dip does not matter. Nodes and the per-snapshot form are the flexible
+bounds. Each is run on several IA shapes: native NLA, TATT, the HMk
+template of the halo-model note, and the truth's own shape.
+
+% =====================================================================
+\section{Results}
+\label{sec:results}
+% =====================================================================
+
+Figure~\ref{fig:fob} shows the FoB against $K_0$. In 3x2pt:
+\begin{itemize}
+\item NLA with the curved power law gives at most
+$\refresh{\fobTxQMaxSix}$ to $K_0=0.6$ and $\refresh{\fobTxQEight}$ at 0.8
+(NLA: $\refresh{\fobTxNlaSix}$ and $\refresh{\fobTxNlaEight}$). Nodes give
+$\refresh{\fobTxNdMaxSix}$ and $\refresh{\fobTxNdEight}$, one amplitude per
+snapshot $\refresh{\fobTxSnMaxSix}$ and $\refresh{\fobTxSnEight}$: one
+parameter does as well as eleven.
+\item The mass-informed form helps less ($\refresh{\fobTxMMaxSix}$ to 0.6,
+$\refresh{\fobTxMEight}$ at 0.8) and fails its physical check: its
+slope comes out $\beta=\refresh{\betaCtrl}$ (with the truth's shape), i.e.\
+more massive galaxies less aligned, the opposite of what is observed. It
+bends $A(z)$ at low redshift and stands in for the curvature, poorly. With
+the curvature added it reaches $\refresh{\fobTxMqMaxSix}$ to 0.6, no
+better than the curvature alone.
+\item HMk with the curved power law gives at most
+$\refresh{\fobTxHmkQMax}$ at every $K_0$ to 0.8 ($\refresh{\fobTxHmkQEight}$
+at 0.8), HMk with nodes $\refresh{\fobTxHmkNdMax}$. With the A(z) fixed,
+the better shape pays off at high $K_0$, where NLA's shape error grows.
+\item TATT with nodes gives $\refresh{\fobTxTattNdEight}$ at 0.8.
+\end{itemize}
+In cosmic shear the same strategies also help: at $K_0=0.8$ NLA goes from
+$\refresh{\fobCsNlaEight}$ to $\refresh{\fobCsQEight}$, HMk from
+$\refresh{\fobCsHmkEight}$ to $\refresh{\fobCsHmkQEight}$, and the control
+from $\refresh{\fobCsCtrlEight}$ to $\refresh{\fobCsCtrlNdEight}$ with
+nodes: the residual cosmic-shear bias of the control was the amplitude
+law too.
+
+\paragraph{Cost.} The curved power law widens $\sigma(S_8)$ in 3x2pt by
+$\refresh{\costTxQS}$ percent and $\sigma(\Om)$ by $\refresh{\costTxQO}$
+percent at $K_0=0.6$ (at most $\refresh{\costTxQSMax}$ percent for any
+$K_0$); nodes by $\refresh{\costTxNdS}$ and $\refresh{\costTxNdO}$; one
+amplitude per snapshot by $\refresh{\costTxSnS}$ and $\refresh{\costTxSnO}$
+(Fig.~\ref{fig:cost}).
+
+\paragraph{Minimizer check.} The full minimizer (no linear approximation)
+gives, in 3x2pt, $\refresh{\minFobQSix}$ and $\refresh{\minFobQEight}$ for
+NLA with the curved power law at $K_0=0.6$ and 0.8,
+$\refresh{\minFobHmkQSix}$ and $\refresh{\minFobHmkQEight}$ for HMk with it,
+and $\refresh{\minFobNlaEight}$ for NLA at 0.8; in cosmic shear
+$\refresh{\minFobCsHmkQEight}$ for HMk with it at 0.8.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{plots/fob/fob.pdf}
+\caption{Roman figure of bias against the $\xi_\pm$ cut $K_0$ (CP truth,
+CMB prior, Fisher shift of $\Om$, $S_8$), cosmic shear (left) and 3x2pt
+(right, $\gamma_t$ at 0.5, $w$ at 0.2), for the power laws (NLA, TATT),
+one $A_1$ per source bin, NLA with three freer $A(z)$, HMk with the curved
+power law, and the truth's own shape with the power law, free nodes and a
+free amplitude per snapshot. Dotted: 0.3.}
+\label{fig:fob}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.55\linewidth]{plots/cost/cost.pdf}
+\caption{The price of the freer $A(z)$ in 3x2pt: marginalized
+$\sigma(\Om)$ (top) and $\sigma(S_8)$ (bottom) of NLA with each form over
+NLA with the power law.}
+\label{fig:cost}
+\end{figure}
+
+% =====================================================================
+\section{Recommendation}
+% =====================================================================
+
+Fit the IA amplitude with at least a curved power law in 3x2pt, or a
+continuous $A(z)$ with nodes; never one amplitude per source bin when
+$\gamma_t$ is in the data vector. With the HMk shape and the curved power
+law, this simulation supports $K_0=0.8$ in both probes.
+
+\clearpage
+\appendix
+
+% =====================================================================
+\section{Numerical checks and code}
+% =====================================================================
+
+\paragraph{Template interpolation.} The snapshot templates reproduce the
+native NLA to $\chi^2\approx0.01$ for $\eta_1\le0.7$, but miss it by
+$\chi^2\approx40$ at $\eta_1=2$, where $A(z)$ changes too fast for linear
+interpolation between snapshots (check\_hm\_CP.log). The curved power law
+fitted with the truth's shape has $g$ within $\refresh{\gQmax}$ percent of 1
+at $z\le2$, a gentle bend the interpolation follows.
+
+\paragraph{Where things are.} The runs:
+\texttt{analysis/cut\_validation/fisher\_minimize.py}, models named shape
+plus form (\texttt{NLA+q}, \texttt{NLAs+nd}, \texttt{NLAt+sn}, \ldots), $g(z)$
+in \texttt{zevo\_g} (forms q, m, mq, lz, lzhz, nd, sn), job files
+\texttt{jobs\_az*.txt};
+\texttt{sample\_mstar\_hist.npz} (the sample's $\log M_*$ per snapshot); the
+figures in \texttt{notes/threex2\_ia\_amplitude/plots}.
+
+% =====================================================================
+\section{Open issues}
+% =====================================================================
+
+\paragraph{Origin of the curvature.} The convex $\ln A(\ln(1+z))$ of the
+FLAMINGO sample is measured, not explained; host-halo mass at fixed
+$M_*$, the central fraction and the rising upper mass edge are candidates.
+A physical model of it (for instance the HMk amplitude $A_{
+m eff}(z)$ from the
+HOD and the halo-shape bias, which the halo-model note predicts per
+snapshot) would replace the free $\eta_2$.
+
+\paragraph{Mass-informed form.} With $\beta<0$ it is unphysical; a slope
+per central and satellite, or the host-halo mass in place of $M_*$, has
+not been tried.
+
+\paragraph{Other samples.} How far a sample's amplitude departs from a
+power law depends on its selection. The curved power law has not been
+tested on other selections or on TNG300.
+
+\end{document}

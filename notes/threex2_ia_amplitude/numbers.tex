@@ -1,0 +1,464 @@
+% Written by make_numbers.py; do not edit by hand.
+\newcommand{\fobCsNlaThree}{0.17}  % plots/fob/data.json cs|NLA: FoB at K0 = 0.3
+\newcommand{\fobCsNlaSix}{0.24}  % plots/fob/data.json cs|NLA: FoB at K0 = 0.6
+\newcommand{\fobCsNlaEight}{0.46}  % plots/fob/data.json cs|NLA: FoB at K0 = 0.8
+\newcommand{\fobCsNlaMax}{0.46}  % plots/fob/data.json cs|NLA: max FoB over K0
+\newcommand{\fobCsNlaMaxSix}{0.24}  % plots/fob/data.json cs|NLA: max FoB over K0 <= 0.6
+\newcommand{\KzeroCsNla}{0.6}  % plots/fob/data.json cs|NLA: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmCsNlaEight}{+0.18}  % plots/fob/data.json cs|NLA: mu(Omega_m) at the largest K0
+\newcommand{\fobCsTattThree}{0.15}  % plots/fob/data.json cs|TATT: FoB at K0 = 0.3
+\newcommand{\fobCsTattSix}{0.27}  % plots/fob/data.json cs|TATT: FoB at K0 = 0.6
+\newcommand{\fobCsTattEight}{0.32}  % plots/fob/data.json cs|TATT: FoB at K0 = 0.8
+\newcommand{\fobCsTattMax}{0.32}  % plots/fob/data.json cs|TATT: max FoB over K0
+\newcommand{\fobCsTattMaxSix}{0.27}  % plots/fob/data.json cs|TATT: max FoB over K0 <= 0.6
+\newcommand{\KzeroCsTatt}{0.6}  % plots/fob/data.json cs|TATT: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmCsTattEight}{-0.10}  % plots/fob/data.json cs|TATT: mu(Omega_m) at the largest K0
+\newcommand{\fobCsNlazThree}{0.09}  % plots/fob/data.json cs|NLAz: FoB at K0 = 0.3
+\newcommand{\fobCsNlazSix}{0.24}  % plots/fob/data.json cs|NLAz: FoB at K0 = 0.6
+\newcommand{\fobCsNlazEight}{--}  % plots/fob/data.json cs|NLAz: FoB at K0 = 0.8
+\newcommand{\fobCsNlazMax}{0.24}  % plots/fob/data.json cs|NLAz: max FoB over K0
+\newcommand{\fobCsNlazMaxSix}{0.24}  % plots/fob/data.json cs|NLAz: max FoB over K0 <= 0.6
+\newcommand{\KzeroCsNlaz}{0.8}  % plots/fob/data.json cs|NLAz: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmCsNlazEight}{--}  % plots/fob/data.json cs|NLAz: mu(Omega_m) at the largest K0
+\newcommand{\fobCsQThree}{0.05}  % plots/fob/data.json cs|NLA+q: FoB at K0 = 0.3
+\newcommand{\fobCsQSix}{0.12}  % plots/fob/data.json cs|NLA+q: FoB at K0 = 0.6
+\newcommand{\fobCsQEight}{0.29}  % plots/fob/data.json cs|NLA+q: FoB at K0 = 0.8
+\newcommand{\fobCsQMax}{0.29}  % plots/fob/data.json cs|NLA+q: max FoB over K0
+\newcommand{\fobCsQMaxSix}{0.12}  % plots/fob/data.json cs|NLA+q: max FoB over K0 <= 0.6
+\newcommand{\KzeroCsQ}{0.8}  % plots/fob/data.json cs|NLA+q: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmCsQEight}{+0.20}  % plots/fob/data.json cs|NLA+q: mu(Omega_m) at the largest K0
+\newcommand{\fobCsMThree}{0.07}  % plots/fob/data.json cs|NLA+m: FoB at K0 = 0.3
+\newcommand{\fobCsMSix}{0.13}  % plots/fob/data.json cs|NLA+m: FoB at K0 = 0.6
+\newcommand{\fobCsMEight}{0.31}  % plots/fob/data.json cs|NLA+m: FoB at K0 = 0.8
+\newcommand{\fobCsMMax}{0.31}  % plots/fob/data.json cs|NLA+m: max FoB over K0
+\newcommand{\fobCsMMaxSix}{0.13}  % plots/fob/data.json cs|NLA+m: max FoB over K0 <= 0.6
+\newcommand{\KzeroCsM}{0.6}  % plots/fob/data.json cs|NLA+m: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmCsMEight}{+0.21}  % plots/fob/data.json cs|NLA+m: mu(Omega_m) at the largest K0
+\newcommand{\fobCsMqThree}{0.12}  % plots/fob/data.json cs|NLA+mq: FoB at K0 = 0.3
+\newcommand{\fobCsMqSix}{0.19}  % plots/fob/data.json cs|NLA+mq: FoB at K0 = 0.6
+\newcommand{\fobCsMqEight}{0.35}  % plots/fob/data.json cs|NLA+mq: FoB at K0 = 0.8
+\newcommand{\fobCsMqMax}{0.35}  % plots/fob/data.json cs|NLA+mq: max FoB over K0
+\newcommand{\fobCsMqMaxSix}{0.19}  % plots/fob/data.json cs|NLA+mq: max FoB over K0 <= 0.6
+\newcommand{\KzeroCsMq}{0.6}  % plots/fob/data.json cs|NLA+mq: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmCsMqEight}{+0.14}  % plots/fob/data.json cs|NLA+mq: mu(Omega_m) at the largest K0
+\newcommand{\fobCsLzThree}{0.08}  % plots/fob/data.json cs|NLA+lzhz: FoB at K0 = 0.3
+\newcommand{\fobCsLzSix}{0.12}  % plots/fob/data.json cs|NLA+lzhz: FoB at K0 = 0.6
+\newcommand{\fobCsLzEight}{0.30}  % plots/fob/data.json cs|NLA+lzhz: FoB at K0 = 0.8
+\newcommand{\fobCsLzMax}{0.30}  % plots/fob/data.json cs|NLA+lzhz: max FoB over K0
+\newcommand{\fobCsLzMaxSix}{0.12}  % plots/fob/data.json cs|NLA+lzhz: max FoB over K0 <= 0.6
+\newcommand{\KzeroCsLz}{0.8}  % plots/fob/data.json cs|NLA+lzhz: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmCsLzEight}{+0.19}  % plots/fob/data.json cs|NLA+lzhz: mu(Omega_m) at the largest K0
+\newcommand{\fobCsNdThree}{0.11}  % plots/fob/data.json cs|NLA+nd: FoB at K0 = 0.3
+\newcommand{\fobCsNdSix}{0.17}  % plots/fob/data.json cs|NLA+nd: FoB at K0 = 0.6
+\newcommand{\fobCsNdEight}{0.34}  % plots/fob/data.json cs|NLA+nd: FoB at K0 = 0.8
+\newcommand{\fobCsNdMax}{0.34}  % plots/fob/data.json cs|NLA+nd: max FoB over K0
+\newcommand{\fobCsNdMaxSix}{0.17}  % plots/fob/data.json cs|NLA+nd: max FoB over K0 <= 0.6
+\newcommand{\KzeroCsNd}{0.6}  % plots/fob/data.json cs|NLA+nd: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmCsNdEight}{+0.14}  % plots/fob/data.json cs|NLA+nd: mu(Omega_m) at the largest K0
+\newcommand{\fobCsSnThree}{0.08}  % plots/fob/data.json cs|NLA+sn: FoB at K0 = 0.3
+\newcommand{\fobCsSnSix}{0.15}  % plots/fob/data.json cs|NLA+sn: FoB at K0 = 0.6
+\newcommand{\fobCsSnEight}{0.30}  % plots/fob/data.json cs|NLA+sn: FoB at K0 = 0.8
+\newcommand{\fobCsSnMax}{0.30}  % plots/fob/data.json cs|NLA+sn: max FoB over K0
+\newcommand{\fobCsSnMaxSix}{0.15}  % plots/fob/data.json cs|NLA+sn: max FoB over K0 <= 0.6
+\newcommand{\KzeroCsSn}{0.6}  % plots/fob/data.json cs|NLA+sn: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmCsSnEight}{+0.14}  % plots/fob/data.json cs|NLA+sn: mu(Omega_m) at the largest K0
+\newcommand{\fobCsTattNdThree}{0.10}  % plots/fob/data.json cs|TATT+nd: FoB at K0 = 0.3
+\newcommand{\fobCsTattNdSix}{0.22}  % plots/fob/data.json cs|TATT+nd: FoB at K0 = 0.6
+\newcommand{\fobCsTattNdEight}{0.35}  % plots/fob/data.json cs|TATT+nd: FoB at K0 = 0.8
+\newcommand{\fobCsTattNdMax}{0.35}  % plots/fob/data.json cs|TATT+nd: max FoB over K0
+\newcommand{\fobCsTattNdMaxSix}{0.22}  % plots/fob/data.json cs|TATT+nd: max FoB over K0 <= 0.6
+\newcommand{\KzeroCsTattNd}{0.6}  % plots/fob/data.json cs|TATT+nd: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmCsTattNdEight}{-0.17}  % plots/fob/data.json cs|TATT+nd: mu(Omega_m) at the largest K0
+\newcommand{\fobCsTattQThree}{0.06}  % plots/fob/data.json cs|TATT+q: FoB at K0 = 0.3
+\newcommand{\fobCsTattQSix}{0.11}  % plots/fob/data.json cs|TATT+q: FoB at K0 = 0.6
+\newcommand{\fobCsTattQEight}{0.18}  % plots/fob/data.json cs|TATT+q: FoB at K0 = 0.8
+\newcommand{\fobCsTattQMax}{0.18}  % plots/fob/data.json cs|TATT+q: max FoB over K0
+\newcommand{\fobCsTattQMaxSix}{0.11}  % plots/fob/data.json cs|TATT+q: max FoB over K0 <= 0.6
+\newcommand{\KzeroCsTattQ}{0.8}  % plots/fob/data.json cs|TATT+q: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmCsTattQEight}{-0.07}  % plots/fob/data.json cs|TATT+q: mu(Omega_m) at the largest K0
+\newcommand{\fobCsHmkThree}{0.13}  % plots/fob/data.json cs|NLAs: FoB at K0 = 0.3
+\newcommand{\fobCsHmkSix}{0.22}  % plots/fob/data.json cs|NLAs: FoB at K0 = 0.6
+\newcommand{\fobCsHmkEight}{0.33}  % plots/fob/data.json cs|NLAs: FoB at K0 = 0.8
+\newcommand{\fobCsHmkMax}{0.33}  % plots/fob/data.json cs|NLAs: max FoB over K0
+\newcommand{\fobCsHmkMaxSix}{0.22}  % plots/fob/data.json cs|NLAs: max FoB over K0 <= 0.6
+\newcommand{\KzeroCsHmk}{0.6}  % plots/fob/data.json cs|NLAs: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmCsHmkEight}{-0.09}  % plots/fob/data.json cs|NLAs: mu(Omega_m) at the largest K0
+\newcommand{\fobCsHmkQThree}{0.10}  % plots/fob/data.json cs|NLAs+q: FoB at K0 = 0.3
+\newcommand{\fobCsHmkQSix}{0.07}  % plots/fob/data.json cs|NLAs+q: FoB at K0 = 0.6
+\newcommand{\fobCsHmkQEight}{0.10}  % plots/fob/data.json cs|NLAs+q: FoB at K0 = 0.8
+\newcommand{\fobCsHmkQMax}{0.12}  % plots/fob/data.json cs|NLAs+q: max FoB over K0
+\newcommand{\fobCsHmkQMaxSix}{0.12}  % plots/fob/data.json cs|NLAs+q: max FoB over K0 <= 0.6
+\newcommand{\KzeroCsHmkQ}{0.8}  % plots/fob/data.json cs|NLAs+q: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmCsHmkQEight}{-0.07}  % plots/fob/data.json cs|NLAs+q: mu(Omega_m) at the largest K0
+\newcommand{\fobCsHmkMThree}{0.10}  % plots/fob/data.json cs|NLAs+m: FoB at K0 = 0.3
+\newcommand{\fobCsHmkMSix}{0.06}  % plots/fob/data.json cs|NLAs+m: FoB at K0 = 0.6
+\newcommand{\fobCsHmkMEight}{0.10}  % plots/fob/data.json cs|NLAs+m: FoB at K0 = 0.8
+\newcommand{\fobCsHmkMMax}{0.11}  % plots/fob/data.json cs|NLAs+m: max FoB over K0
+\newcommand{\fobCsHmkMMaxSix}{0.11}  % plots/fob/data.json cs|NLAs+m: max FoB over K0 <= 0.6
+\newcommand{\KzeroCsHmkM}{0.8}  % plots/fob/data.json cs|NLAs+m: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmCsHmkMEight}{-0.06}  % plots/fob/data.json cs|NLAs+m: mu(Omega_m) at the largest K0
+\newcommand{\fobCsHmkNdThree}{0.08}  % plots/fob/data.json cs|NLAs+nd: FoB at K0 = 0.3
+\newcommand{\fobCsHmkNdSix}{0.14}  % plots/fob/data.json cs|NLAs+nd: FoB at K0 = 0.6
+\newcommand{\fobCsHmkNdEight}{0.21}  % plots/fob/data.json cs|NLAs+nd: FoB at K0 = 0.8
+\newcommand{\fobCsHmkNdMax}{0.21}  % plots/fob/data.json cs|NLAs+nd: max FoB over K0
+\newcommand{\fobCsHmkNdMaxSix}{0.14}  % plots/fob/data.json cs|NLAs+nd: max FoB over K0 <= 0.6
+\newcommand{\KzeroCsHmkNd}{0.8}  % plots/fob/data.json cs|NLAs+nd: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmCsHmkNdEight}{-0.10}  % plots/fob/data.json cs|NLAs+nd: mu(Omega_m) at the largest K0
+\newcommand{\fobCsCtrlThree}{0.10}  % plots/fob/data.json cs|NLAt: FoB at K0 = 0.3
+\newcommand{\fobCsCtrlSix}{0.14}  % plots/fob/data.json cs|NLAt: FoB at K0 = 0.6
+\newcommand{\fobCsCtrlEight}{0.21}  % plots/fob/data.json cs|NLAt: FoB at K0 = 0.8
+\newcommand{\fobCsCtrlMax}{0.21}  % plots/fob/data.json cs|NLAt: max FoB over K0
+\newcommand{\fobCsCtrlMaxSix}{0.18}  % plots/fob/data.json cs|NLAt: max FoB over K0 <= 0.6
+\newcommand{\KzeroCsCtrl}{0.8}  % plots/fob/data.json cs|NLAt: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmCsCtrlEight}{+0.05}  % plots/fob/data.json cs|NLAt: mu(Omega_m) at the largest K0
+\newcommand{\fobCsCtrlQThree}{0.06}  % plots/fob/data.json cs|NLAt+q: FoB at K0 = 0.3
+\newcommand{\fobCsCtrlQSix}{0.10}  % plots/fob/data.json cs|NLAt+q: FoB at K0 = 0.6
+\newcommand{\fobCsCtrlQEight}{0.09}  % plots/fob/data.json cs|NLAt+q: FoB at K0 = 0.8
+\newcommand{\fobCsCtrlQMax}{0.10}  % plots/fob/data.json cs|NLAt+q: max FoB over K0
+\newcommand{\fobCsCtrlQMaxSix}{0.10}  % plots/fob/data.json cs|NLAt+q: max FoB over K0 <= 0.6
+\newcommand{\KzeroCsCtrlQ}{0.8}  % plots/fob/data.json cs|NLAt+q: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmCsCtrlQEight}{+0.07}  % plots/fob/data.json cs|NLAt+q: mu(Omega_m) at the largest K0
+\newcommand{\fobCsCtrlMThree}{0.03}  % plots/fob/data.json cs|NLAt+m: FoB at K0 = 0.3
+\newcommand{\fobCsCtrlMSix}{0.09}  % plots/fob/data.json cs|NLAt+m: FoB at K0 = 0.6
+\newcommand{\fobCsCtrlMEight}{0.08}  % plots/fob/data.json cs|NLAt+m: FoB at K0 = 0.8
+\newcommand{\fobCsCtrlMMax}{0.09}  % plots/fob/data.json cs|NLAt+m: max FoB over K0
+\newcommand{\fobCsCtrlMMaxSix}{0.09}  % plots/fob/data.json cs|NLAt+m: max FoB over K0 <= 0.6
+\newcommand{\KzeroCsCtrlM}{0.8}  % plots/fob/data.json cs|NLAt+m: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmCsCtrlMEight}{+0.08}  % plots/fob/data.json cs|NLAt+m: mu(Omega_m) at the largest K0
+\newcommand{\fobCsCtrlNdThree}{0.02}  % plots/fob/data.json cs|NLAt+nd: FoB at K0 = 0.3
+\newcommand{\fobCsCtrlNdSix}{0.06}  % plots/fob/data.json cs|NLAt+nd: FoB at K0 = 0.6
+\newcommand{\fobCsCtrlNdEight}{0.08}  % plots/fob/data.json cs|NLAt+nd: FoB at K0 = 0.8
+\newcommand{\fobCsCtrlNdMax}{0.08}  % plots/fob/data.json cs|NLAt+nd: max FoB over K0
+\newcommand{\fobCsCtrlNdMaxSix}{0.07}  % plots/fob/data.json cs|NLAt+nd: max FoB over K0 <= 0.6
+\newcommand{\KzeroCsCtrlNd}{0.8}  % plots/fob/data.json cs|NLAt+nd: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmCsCtrlNdEight}{+0.04}  % plots/fob/data.json cs|NLAt+nd: mu(Omega_m) at the largest K0
+\newcommand{\fobCsOracleThree}{0.03}  % plots/fob/data.json cs|NLAt+sn: FoB at K0 = 0.3
+\newcommand{\fobCsOracleSix}{0.03}  % plots/fob/data.json cs|NLAt+sn: FoB at K0 = 0.6
+\newcommand{\fobCsOracleEight}{0.03}  % plots/fob/data.json cs|NLAt+sn: FoB at K0 = 0.8
+\newcommand{\fobCsOracleMax}{0.03}  % plots/fob/data.json cs|NLAt+sn: max FoB over K0
+\newcommand{\fobCsOracleMaxSix}{0.03}  % plots/fob/data.json cs|NLAt+sn: max FoB over K0 <= 0.6
+\newcommand{\KzeroCsOracle}{0.8}  % plots/fob/data.json cs|NLAt+sn: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmCsOracleEight}{+0.03}  % plots/fob/data.json cs|NLAt+sn: mu(Omega_m) at the largest K0
+\newcommand{\fobCsCtrlLzThree}{0.09}  % plots/fob/data.json cs|NLAt+lz: FoB at K0 = 0.3
+\newcommand{\fobCsCtrlLzSix}{0.17}  % plots/fob/data.json cs|NLAt+lz: FoB at K0 = 0.6
+\newcommand{\fobCsCtrlLzEight}{0.24}  % plots/fob/data.json cs|NLAt+lz: FoB at K0 = 0.8
+\newcommand{\fobCsCtrlLzMax}{0.24}  % plots/fob/data.json cs|NLAt+lz: max FoB over K0
+\newcommand{\fobCsCtrlLzMaxSix}{0.19}  % plots/fob/data.json cs|NLAt+lz: max FoB over K0 <= 0.6
+\newcommand{\KzeroCsCtrlLz}{0.8}  % plots/fob/data.json cs|NLAt+lz: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmCsCtrlLzEight}{+0.08}  % plots/fob/data.json cs|NLAt+lz: mu(Omega_m) at the largest K0
+\newcommand{\fobTxNlaThree}{0.34}  % plots/fob/data.json 3x2|NLA: FoB at K0 = 0.3
+\newcommand{\fobTxNlaSix}{0.49}  % plots/fob/data.json 3x2|NLA: FoB at K0 = 0.6
+\newcommand{\fobTxNlaEight}{0.70}  % plots/fob/data.json 3x2|NLA: FoB at K0 = 0.8
+\newcommand{\fobTxNlaMax}{0.70}  % plots/fob/data.json 3x2|NLA: max FoB over K0
+\newcommand{\fobTxNlaMaxSix}{0.49}  % plots/fob/data.json 3x2|NLA: max FoB over K0 <= 0.6
+\newcommand{\KzeroTxNla}{0.25}  % plots/fob/data.json 3x2|NLA: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmTxNlaEight}{-0.44}  % plots/fob/data.json 3x2|NLA: mu(Omega_m) at the largest K0
+\newcommand{\fobTxTattThree}{0.27}  % plots/fob/data.json 3x2|TATT: FoB at K0 = 0.3
+\newcommand{\fobTxTattSix}{0.44}  % plots/fob/data.json 3x2|TATT: FoB at K0 = 0.6
+\newcommand{\fobTxTattEight}{0.66}  % plots/fob/data.json 3x2|TATT: FoB at K0 = 0.8
+\newcommand{\fobTxTattMax}{0.66}  % plots/fob/data.json 3x2|TATT: max FoB over K0
+\newcommand{\fobTxTattMaxSix}{0.44}  % plots/fob/data.json 3x2|TATT: max FoB over K0 <= 0.6
+\newcommand{\KzeroTxTatt}{0.35}  % plots/fob/data.json 3x2|TATT: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmTxTattEight}{-0.35}  % plots/fob/data.json 3x2|TATT: mu(Omega_m) at the largest K0
+\newcommand{\fobTxNlazThree}{0.89}  % plots/fob/data.json 3x2|NLAz: FoB at K0 = 0.3
+\newcommand{\fobTxNlazSix}{0.98}  % plots/fob/data.json 3x2|NLAz: FoB at K0 = 0.6
+\newcommand{\fobTxNlazEight}{--}  % plots/fob/data.json 3x2|NLAz: FoB at K0 = 0.8
+\newcommand{\fobTxNlazMax}{0.98}  % plots/fob/data.json 3x2|NLAz: max FoB over K0
+\newcommand{\fobTxNlazMaxSix}{0.98}  % plots/fob/data.json 3x2|NLAz: max FoB over K0 <= 0.6
+\newcommand{\KzeroTxNlaz}{--}  % plots/fob/data.json 3x2|NLAz: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmTxNlazEight}{--}  % plots/fob/data.json 3x2|NLAz: mu(Omega_m) at the largest K0
+\newcommand{\fobTxQThree}{0.03}  % plots/fob/data.json 3x2|NLA+q: FoB at K0 = 0.3
+\newcommand{\fobTxQSix}{0.11}  % plots/fob/data.json 3x2|NLA+q: FoB at K0 = 0.6
+\newcommand{\fobTxQEight}{0.30}  % plots/fob/data.json 3x2|NLA+q: FoB at K0 = 0.8
+\newcommand{\fobTxQMax}{0.30}  % plots/fob/data.json 3x2|NLA+q: max FoB over K0
+\newcommand{\fobTxQMaxSix}{0.11}  % plots/fob/data.json 3x2|NLA+q: max FoB over K0 <= 0.6
+\newcommand{\KzeroTxQ}{0.6}  % plots/fob/data.json 3x2|NLA+q: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmTxQEight}{-0.01}  % plots/fob/data.json 3x2|NLA+q: mu(Omega_m) at the largest K0
+\newcommand{\fobTxMThree}{0.14}  % plots/fob/data.json 3x2|NLA+m: FoB at K0 = 0.3
+\newcommand{\fobTxMSix}{0.22}  % plots/fob/data.json 3x2|NLA+m: FoB at K0 = 0.6
+\newcommand{\fobTxMEight}{0.44}  % plots/fob/data.json 3x2|NLA+m: FoB at K0 = 0.8
+\newcommand{\fobTxMMax}{0.44}  % plots/fob/data.json 3x2|NLA+m: max FoB over K0
+\newcommand{\fobTxMMaxSix}{0.22}  % plots/fob/data.json 3x2|NLA+m: max FoB over K0 <= 0.6
+\newcommand{\KzeroTxM}{0.6}  % plots/fob/data.json 3x2|NLA+m: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmTxMEight}{-0.17}  % plots/fob/data.json 3x2|NLA+m: mu(Omega_m) at the largest K0
+\newcommand{\fobTxMqThree}{0.07}  % plots/fob/data.json 3x2|NLA+mq: FoB at K0 = 0.3
+\newcommand{\fobTxMqSix}{0.15}  % plots/fob/data.json 3x2|NLA+mq: FoB at K0 = 0.6
+\newcommand{\fobTxMqEight}{0.30}  % plots/fob/data.json 3x2|NLA+mq: FoB at K0 = 0.8
+\newcommand{\fobTxMqMax}{0.30}  % plots/fob/data.json 3x2|NLA+mq: max FoB over K0
+\newcommand{\fobTxMqMaxSix}{0.15}  % plots/fob/data.json 3x2|NLA+mq: max FoB over K0 <= 0.6
+\newcommand{\KzeroTxMq}{0.6}  % plots/fob/data.json 3x2|NLA+mq: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmTxMqEight}{-0.06}  % plots/fob/data.json 3x2|NLA+mq: mu(Omega_m) at the largest K0
+\newcommand{\fobTxLzThree}{0.02}  % plots/fob/data.json 3x2|NLA+lzhz: FoB at K0 = 0.3
+\newcommand{\fobTxLzSix}{0.12}  % plots/fob/data.json 3x2|NLA+lzhz: FoB at K0 = 0.6
+\newcommand{\fobTxLzEight}{0.28}  % plots/fob/data.json 3x2|NLA+lzhz: FoB at K0 = 0.8
+\newcommand{\fobTxLzMax}{0.28}  % plots/fob/data.json 3x2|NLA+lzhz: max FoB over K0
+\newcommand{\fobTxLzMaxSix}{0.12}  % plots/fob/data.json 3x2|NLA+lzhz: max FoB over K0 <= 0.6
+\newcommand{\KzeroTxLz}{0.8}  % plots/fob/data.json 3x2|NLA+lzhz: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmTxLzEight}{-0.01}  % plots/fob/data.json 3x2|NLA+lzhz: mu(Omega_m) at the largest K0
+\newcommand{\fobTxNdThree}{0.05}  % plots/fob/data.json 3x2|NLA+nd: FoB at K0 = 0.3
+\newcommand{\fobTxNdSix}{0.16}  % plots/fob/data.json 3x2|NLA+nd: FoB at K0 = 0.6
+\newcommand{\fobTxNdEight}{0.33}  % plots/fob/data.json 3x2|NLA+nd: FoB at K0 = 0.8
+\newcommand{\fobTxNdMax}{0.33}  % plots/fob/data.json 3x2|NLA+nd: max FoB over K0
+\newcommand{\fobTxNdMaxSix}{0.16}  % plots/fob/data.json 3x2|NLA+nd: max FoB over K0 <= 0.6
+\newcommand{\KzeroTxNd}{0.6}  % plots/fob/data.json 3x2|NLA+nd: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmTxNdEight}{-0.06}  % plots/fob/data.json 3x2|NLA+nd: mu(Omega_m) at the largest K0
+\newcommand{\fobTxSnThree}{0.04}  % plots/fob/data.json 3x2|NLA+sn: FoB at K0 = 0.3
+\newcommand{\fobTxSnSix}{0.15}  % plots/fob/data.json 3x2|NLA+sn: FoB at K0 = 0.6
+\newcommand{\fobTxSnEight}{0.29}  % plots/fob/data.json 3x2|NLA+sn: FoB at K0 = 0.8
+\newcommand{\fobTxSnMax}{0.29}  % plots/fob/data.json 3x2|NLA+sn: max FoB over K0
+\newcommand{\fobTxSnMaxSix}{0.15}  % plots/fob/data.json 3x2|NLA+sn: max FoB over K0 <= 0.6
+\newcommand{\KzeroTxSn}{0.8}  % plots/fob/data.json 3x2|NLA+sn: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmTxSnEight}{-0.02}  % plots/fob/data.json 3x2|NLA+sn: mu(Omega_m) at the largest K0
+\newcommand{\fobTxTattNdThree}{0.05}  % plots/fob/data.json 3x2|TATT+nd: FoB at K0 = 0.3
+\newcommand{\fobTxTattNdSix}{0.21}  % plots/fob/data.json 3x2|TATT+nd: FoB at K0 = 0.6
+\newcommand{\fobTxTattNdEight}{0.38}  % plots/fob/data.json 3x2|TATT+nd: FoB at K0 = 0.8
+\newcommand{\fobTxTattNdMax}{0.38}  % plots/fob/data.json 3x2|TATT+nd: max FoB over K0
+\newcommand{\fobTxTattNdMaxSix}{0.21}  % plots/fob/data.json 3x2|TATT+nd: max FoB over K0 <= 0.6
+\newcommand{\KzeroTxTattNd}{0.6}  % plots/fob/data.json 3x2|TATT+nd: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmTxTattNdEight}{-0.10}  % plots/fob/data.json 3x2|TATT+nd: mu(Omega_m) at the largest K0
+\newcommand{\fobTxTattQThree}{0.03}  % plots/fob/data.json 3x2|TATT+q: FoB at K0 = 0.3
+\newcommand{\fobTxTattQSix}{0.17}  % plots/fob/data.json 3x2|TATT+q: FoB at K0 = 0.6
+\newcommand{\fobTxTattQEight}{0.35}  % plots/fob/data.json 3x2|TATT+q: FoB at K0 = 0.8
+\newcommand{\fobTxTattQMax}{0.35}  % plots/fob/data.json 3x2|TATT+q: max FoB over K0
+\newcommand{\fobTxTattQMaxSix}{0.17}  % plots/fob/data.json 3x2|TATT+q: max FoB over K0 <= 0.6
+\newcommand{\KzeroTxTattQ}{0.6}  % plots/fob/data.json 3x2|TATT+q: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmTxTattQEight}{-0.01}  % plots/fob/data.json 3x2|TATT+q: mu(Omega_m) at the largest K0
+\newcommand{\fobTxHmkThree}{0.26}  % plots/fob/data.json 3x2|NLAs: FoB at K0 = 0.3
+\newcommand{\fobTxHmkSix}{0.38}  % plots/fob/data.json 3x2|NLAs: FoB at K0 = 0.6
+\newcommand{\fobTxHmkEight}{0.50}  % plots/fob/data.json 3x2|NLAs: FoB at K0 = 0.8
+\newcommand{\fobTxHmkMax}{0.50}  % plots/fob/data.json 3x2|NLAs: max FoB over K0
+\newcommand{\fobTxHmkMaxSix}{0.38}  % plots/fob/data.json 3x2|NLAs: max FoB over K0 <= 0.6
+\newcommand{\KzeroTxHmk}{0.35}  % plots/fob/data.json 3x2|NLAs: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmTxHmkEight}{-0.44}  % plots/fob/data.json 3x2|NLAs: mu(Omega_m) at the largest K0
+\newcommand{\fobTxHmkQThree}{0.16}  % plots/fob/data.json 3x2|NLAs+q: FoB at K0 = 0.3
+\newcommand{\fobTxHmkQSix}{0.13}  % plots/fob/data.json 3x2|NLAs+q: FoB at K0 = 0.6
+\newcommand{\fobTxHmkQEight}{0.05}  % plots/fob/data.json 3x2|NLAs+q: FoB at K0 = 0.8
+\newcommand{\fobTxHmkQMax}{0.18}  % plots/fob/data.json 3x2|NLAs+q: max FoB over K0
+\newcommand{\fobTxHmkQMaxSix}{0.18}  % plots/fob/data.json 3x2|NLAs+q: max FoB over K0 <= 0.6
+\newcommand{\KzeroTxHmkQ}{0.8}  % plots/fob/data.json 3x2|NLAs+q: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmTxHmkQEight}{+0.02}  % plots/fob/data.json 3x2|NLAs+q: mu(Omega_m) at the largest K0
+\newcommand{\fobTxHmkMThree}{0.13}  % plots/fob/data.json 3x2|NLAs+m: FoB at K0 = 0.3
+\newcommand{\fobTxHmkMSix}{0.12}  % plots/fob/data.json 3x2|NLAs+m: FoB at K0 = 0.6
+\newcommand{\fobTxHmkMEight}{0.12}  % plots/fob/data.json 3x2|NLAs+m: FoB at K0 = 0.8
+\newcommand{\fobTxHmkMMax}{0.14}  % plots/fob/data.json 3x2|NLAs+m: max FoB over K0
+\newcommand{\fobTxHmkMMaxSix}{0.14}  % plots/fob/data.json 3x2|NLAs+m: max FoB over K0 <= 0.6
+\newcommand{\KzeroTxHmkM}{0.8}  % plots/fob/data.json 3x2|NLAs+m: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmTxHmkMEight}{-0.11}  % plots/fob/data.json 3x2|NLAs+m: mu(Omega_m) at the largest K0
+\newcommand{\fobTxHmkNdThree}{0.12}  % plots/fob/data.json 3x2|NLAs+nd: FoB at K0 = 0.3
+\newcommand{\fobTxHmkNdSix}{0.09}  % plots/fob/data.json 3x2|NLAs+nd: FoB at K0 = 0.6
+\newcommand{\fobTxHmkNdEight}{0.02}  % plots/fob/data.json 3x2|NLAs+nd: FoB at K0 = 0.8
+\newcommand{\fobTxHmkNdMax}{0.15}  % plots/fob/data.json 3x2|NLAs+nd: max FoB over K0
+\newcommand{\fobTxHmkNdMaxSix}{0.15}  % plots/fob/data.json 3x2|NLAs+nd: max FoB over K0 <= 0.6
+\newcommand{\KzeroTxHmkNd}{0.8}  % plots/fob/data.json 3x2|NLAs+nd: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmTxHmkNdEight}{-0.02}  % plots/fob/data.json 3x2|NLAs+nd: mu(Omega_m) at the largest K0
+\newcommand{\fobTxCtrlThree}{0.32}  % plots/fob/data.json 3x2|NLAt: FoB at K0 = 0.3
+\newcommand{\fobTxCtrlSix}{0.43}  % plots/fob/data.json 3x2|NLAt: FoB at K0 = 0.6
+\newcommand{\fobTxCtrlEight}{0.53}  % plots/fob/data.json 3x2|NLAt: FoB at K0 = 0.8
+\newcommand{\fobTxCtrlMax}{0.53}  % plots/fob/data.json 3x2|NLAt: max FoB over K0
+\newcommand{\fobTxCtrlMaxSix}{0.43}  % plots/fob/data.json 3x2|NLAt: max FoB over K0 <= 0.6
+\newcommand{\KzeroTxCtrl}{0.25}  % plots/fob/data.json 3x2|NLAt: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmTxCtrlEight}{-0.43}  % plots/fob/data.json 3x2|NLAt: mu(Omega_m) at the largest K0
+\newcommand{\fobTxCtrlQThree}{0.02}  % plots/fob/data.json 3x2|NLAt+q: FoB at K0 = 0.3
+\newcommand{\fobTxCtrlQSix}{0.01}  % plots/fob/data.json 3x2|NLAt+q: FoB at K0 = 0.6
+\newcommand{\fobTxCtrlQEight}{0.04}  % plots/fob/data.json 3x2|NLAt+q: FoB at K0 = 0.8
+\newcommand{\fobTxCtrlQMax}{0.06}  % plots/fob/data.json 3x2|NLAt+q: max FoB over K0
+\newcommand{\fobTxCtrlQMaxSix}{0.06}  % plots/fob/data.json 3x2|NLAt+q: max FoB over K0 <= 0.6
+\newcommand{\KzeroTxCtrlQ}{0.8}  % plots/fob/data.json 3x2|NLAt+q: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmTxCtrlQEight}{+0.01}  % plots/fob/data.json 3x2|NLAt+q: mu(Omega_m) at the largest K0
+\newcommand{\fobTxCtrlMThree}{0.11}  % plots/fob/data.json 3x2|NLAt+m: FoB at K0 = 0.3
+\newcommand{\fobTxCtrlMSix}{0.15}  % plots/fob/data.json 3x2|NLAt+m: FoB at K0 = 0.6
+\newcommand{\fobTxCtrlMEight}{0.23}  % plots/fob/data.json 3x2|NLAt+m: FoB at K0 = 0.8
+\newcommand{\fobTxCtrlMMax}{0.23}  % plots/fob/data.json 3x2|NLAt+m: max FoB over K0
+\newcommand{\fobTxCtrlMMaxSix}{0.15}  % plots/fob/data.json 3x2|NLAt+m: max FoB over K0 <= 0.6
+\newcommand{\KzeroTxCtrlM}{0.8}  % plots/fob/data.json 3x2|NLAt+m: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmTxCtrlMEight}{-0.16}  % plots/fob/data.json 3x2|NLAt+m: mu(Omega_m) at the largest K0
+\newcommand{\fobTxCtrlNdThree}{0.03}  % plots/fob/data.json 3x2|NLAt+nd: FoB at K0 = 0.3
+\newcommand{\fobTxCtrlNdSix}{0.05}  % plots/fob/data.json 3x2|NLAt+nd: FoB at K0 = 0.6
+\newcommand{\fobTxCtrlNdEight}{0.07}  % plots/fob/data.json 3x2|NLAt+nd: FoB at K0 = 0.8
+\newcommand{\fobTxCtrlNdMax}{0.07}  % plots/fob/data.json 3x2|NLAt+nd: max FoB over K0
+\newcommand{\fobTxCtrlNdMaxSix}{0.07}  % plots/fob/data.json 3x2|NLAt+nd: max FoB over K0 <= 0.6
+\newcommand{\KzeroTxCtrlNd}{0.8}  % plots/fob/data.json 3x2|NLAt+nd: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmTxCtrlNdEight}{-0.04}  % plots/fob/data.json 3x2|NLAt+nd: mu(Omega_m) at the largest K0
+\newcommand{\fobTxOracleThree}{0.01}  % plots/fob/data.json 3x2|NLAt+sn: FoB at K0 = 0.3
+\newcommand{\fobTxOracleSix}{0.01}  % plots/fob/data.json 3x2|NLAt+sn: FoB at K0 = 0.6
+\newcommand{\fobTxOracleEight}{0.01}  % plots/fob/data.json 3x2|NLAt+sn: FoB at K0 = 0.8
+\newcommand{\fobTxOracleMax}{0.01}  % plots/fob/data.json 3x2|NLAt+sn: max FoB over K0
+\newcommand{\fobTxOracleMaxSix}{0.01}  % plots/fob/data.json 3x2|NLAt+sn: max FoB over K0 <= 0.6
+\newcommand{\KzeroTxOracle}{0.8}  % plots/fob/data.json 3x2|NLAt+sn: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmTxOracleEight}{+0.01}  % plots/fob/data.json 3x2|NLAt+sn: mu(Omega_m) at the largest K0
+\newcommand{\fobTxCtrlLzThree}{0.30}  % plots/fob/data.json 3x2|NLAt+lz: FoB at K0 = 0.3
+\newcommand{\fobTxCtrlLzSix}{0.37}  % plots/fob/data.json 3x2|NLAt+lz: FoB at K0 = 0.6
+\newcommand{\fobTxCtrlLzEight}{0.43}  % plots/fob/data.json 3x2|NLAt+lz: FoB at K0 = 0.8
+\newcommand{\fobTxCtrlLzMax}{0.43}  % plots/fob/data.json 3x2|NLAt+lz: max FoB over K0
+\newcommand{\fobTxCtrlLzMaxSix}{0.38}  % plots/fob/data.json 3x2|NLAt+lz: max FoB over K0 <= 0.6
+\newcommand{\KzeroTxCtrlLz}{0.25}  % plots/fob/data.json 3x2|NLAt+lz: largest K0 with FoB < 0.3 at every K0 up to it
+\newcommand{\muOmTxCtrlLzEight}{-0.35}  % plots/fob/data.json 3x2|NLAt+lz: mu(Omega_m) at the largest K0
+\newcommand{\costCsNlazS}{6}  % plots/cost/data.json cs|NLAz s8: sigma / sigma(NLA) - 1 at K0 = 0.6 [percent]
+\newcommand{\costCsNlazSMax}{13}  % the same, max over K0 [percent]
+\newcommand{\costCsNlazO}{2}  % plots/cost/data.json cs|NLAz om: sigma / sigma(NLA) - 1 at K0 = 0.6 [percent]
+\newcommand{\costCsNlazOMax}{3}  % the same, max over K0 [percent]
+\newcommand{\costCsQS}{1}  % plots/cost/data.json cs|NLA+q s8: sigma / sigma(NLA) - 1 at K0 = 0.6 [percent]
+\newcommand{\costCsQSMax}{4}  % the same, max over K0 [percent]
+\newcommand{\costCsQO}{3}  % plots/cost/data.json cs|NLA+q om: sigma / sigma(NLA) - 1 at K0 = 0.6 [percent]
+\newcommand{\costCsQOMax}{4}  % the same, max over K0 [percent]
+\newcommand{\costCsMS}{1}  % plots/cost/data.json cs|NLA+m s8: sigma / sigma(NLA) - 1 at K0 = 0.6 [percent]
+\newcommand{\costCsMSMax}{3}  % the same, max over K0 [percent]
+\newcommand{\costCsMO}{4}  % plots/cost/data.json cs|NLA+m om: sigma / sigma(NLA) - 1 at K0 = 0.6 [percent]
+\newcommand{\costCsMOMax}{4}  % the same, max over K0 [percent]
+\newcommand{\costCsMqS}{2}  % plots/cost/data.json cs|NLA+mq s8: sigma / sigma(NLA) - 1 at K0 = 0.6 [percent]
+\newcommand{\costCsMqSMax}{6}  % the same, max over K0 [percent]
+\newcommand{\costCsMqO}{2}  % plots/cost/data.json cs|NLA+mq om: sigma / sigma(NLA) - 1 at K0 = 0.6 [percent]
+\newcommand{\costCsMqOMax}{4}  % the same, max over K0 [percent]
+\newcommand{\costCsLzS}{4}  % plots/cost/data.json cs|NLA+lzhz s8: sigma / sigma(NLA) - 1 at K0 = 0.6 [percent]
+\newcommand{\costCsLzSMax}{10}  % the same, max over K0 [percent]
+\newcommand{\costCsLzO}{3}  % plots/cost/data.json cs|NLA+lzhz om: sigma / sigma(NLA) - 1 at K0 = 0.6 [percent]
+\newcommand{\costCsLzOMax}{5}  % the same, max over K0 [percent]
+\newcommand{\costCsNdS}{3}  % plots/cost/data.json cs|NLA+nd s8: sigma / sigma(NLA) - 1 at K0 = 0.6 [percent]
+\newcommand{\costCsNdSMax}{8}  % the same, max over K0 [percent]
+\newcommand{\costCsNdO}{3}  % plots/cost/data.json cs|NLA+nd om: sigma / sigma(NLA) - 1 at K0 = 0.6 [percent]
+\newcommand{\costCsNdOMax}{4}  % the same, max over K0 [percent]
+\newcommand{\costCsSnS}{18}  % plots/cost/data.json cs|NLA+sn s8: sigma / sigma(NLA) - 1 at K0 = 0.6 [percent]
+\newcommand{\costCsSnSMax}{29}  % the same, max over K0 [percent]
+\newcommand{\costCsSnO}{4}  % plots/cost/data.json cs|NLA+sn om: sigma / sigma(NLA) - 1 at K0 = 0.6 [percent]
+\newcommand{\costCsSnOMax}{10}  % the same, max over K0 [percent]
+\newcommand{\costCsTattNdS}{3}  % plots/cost/data.json cs|TATT+nd s8: sigma / sigma(TATT) - 1 at K0 = 0.6 [percent]
+\newcommand{\costCsTattNdSMax}{7}  % the same, max over K0 [percent]
+\newcommand{\costCsTattNdO}{2}  % plots/cost/data.json cs|TATT+nd om: sigma / sigma(TATT) - 1 at K0 = 0.6 [percent]
+\newcommand{\costCsTattNdOMax}{17}  % the same, max over K0 [percent]
+\newcommand{\costCsTattQS}{3}  % plots/cost/data.json cs|TATT+q s8: sigma / sigma(TATT) - 1 at K0 = 0.6 [percent]
+\newcommand{\costCsTattQSMax}{5}  % the same, max over K0 [percent]
+\newcommand{\costCsTattQO}{9}  % plots/cost/data.json cs|TATT+q om: sigma / sigma(TATT) - 1 at K0 = 0.6 [percent]
+\newcommand{\costCsTattQOMax}{12}  % the same, max over K0 [percent]
+\newcommand{\costCsHmkQS}{1}  % plots/cost/data.json cs|NLAs+q s8: sigma / sigma(NLAs) - 1 at K0 = 0.6 [percent]
+\newcommand{\costCsHmkQSMax}{4}  % the same, max over K0 [percent]
+\newcommand{\costCsHmkQO}{3}  % plots/cost/data.json cs|NLAs+q om: sigma / sigma(NLAs) - 1 at K0 = 0.6 [percent]
+\newcommand{\costCsHmkQOMax}{4}  % the same, max over K0 [percent]
+\newcommand{\costCsHmkMS}{1}  % plots/cost/data.json cs|NLAs+m s8: sigma / sigma(NLAs) - 1 at K0 = 0.6 [percent]
+\newcommand{\costCsHmkMSMax}{3}  % the same, max over K0 [percent]
+\newcommand{\costCsHmkMO}{4}  % plots/cost/data.json cs|NLAs+m om: sigma / sigma(NLAs) - 1 at K0 = 0.6 [percent]
+\newcommand{\costCsHmkMOMax}{5}  % the same, max over K0 [percent]
+\newcommand{\costCsHmkNdS}{3}  % plots/cost/data.json cs|NLAs+nd s8: sigma / sigma(NLAs) - 1 at K0 = 0.6 [percent]
+\newcommand{\costCsHmkNdSMax}{7}  % the same, max over K0 [percent]
+\newcommand{\costCsHmkNdO}{3}  % plots/cost/data.json cs|NLAs+nd om: sigma / sigma(NLAs) - 1 at K0 = 0.6 [percent]
+\newcommand{\costCsHmkNdOMax}{4}  % the same, max over K0 [percent]
+\newcommand{\costCsCtrlQS}{1}  % plots/cost/data.json cs|NLAt+q s8: sigma / sigma(NLAt) - 1 at K0 = 0.6 [percent]
+\newcommand{\costCsCtrlQSMax}{4}  % the same, max over K0 [percent]
+\newcommand{\costCsCtrlQO}{3}  % plots/cost/data.json cs|NLAt+q om: sigma / sigma(NLAt) - 1 at K0 = 0.6 [percent]
+\newcommand{\costCsCtrlQOMax}{4}  % the same, max over K0 [percent]
+\newcommand{\costCsCtrlMS}{1}  % plots/cost/data.json cs|NLAt+m s8: sigma / sigma(NLAt) - 1 at K0 = 0.6 [percent]
+\newcommand{\costCsCtrlMSMax}{3}  % the same, max over K0 [percent]
+\newcommand{\costCsCtrlMO}{4}  % plots/cost/data.json cs|NLAt+m om: sigma / sigma(NLAt) - 1 at K0 = 0.6 [percent]
+\newcommand{\costCsCtrlMOMax}{4}  % the same, max over K0 [percent]
+\newcommand{\costCsCtrlNdS}{3}  % plots/cost/data.json cs|NLAt+nd s8: sigma / sigma(NLAt) - 1 at K0 = 0.6 [percent]
+\newcommand{\costCsCtrlNdSMax}{8}  % the same, max over K0 [percent]
+\newcommand{\costCsCtrlNdO}{3}  % plots/cost/data.json cs|NLAt+nd om: sigma / sigma(NLAt) - 1 at K0 = 0.6 [percent]
+\newcommand{\costCsCtrlNdOMax}{4}  % the same, max over K0 [percent]
+\newcommand{\costCsOracleS}{20}  % plots/cost/data.json cs|NLAt+sn s8: sigma / sigma(NLAt) - 1 at K0 = 0.6 [percent]
+\newcommand{\costCsOracleSMax}{27}  % the same, max over K0 [percent]
+\newcommand{\costCsOracleO}{6}  % plots/cost/data.json cs|NLAt+sn om: sigma / sigma(NLAt) - 1 at K0 = 0.6 [percent]
+\newcommand{\costCsOracleOMax}{14}  % the same, max over K0 [percent]
+\newcommand{\costCsCtrlLzS}{0}  % plots/cost/data.json cs|NLAt+lz s8: sigma / sigma(NLAt) - 1 at K0 = 0.6 [percent]
+\newcommand{\costCsCtrlLzSMax}{1}  % the same, max over K0 [percent]
+\newcommand{\costCsCtrlLzO}{0}  % plots/cost/data.json cs|NLAt+lz om: sigma / sigma(NLAt) - 1 at K0 = 0.6 [percent]
+\newcommand{\costCsCtrlLzOMax}{0}  % the same, max over K0 [percent]
+\newcommand{\costTxNlazS}{0}  % plots/cost/data.json 3x2|NLAz s8: sigma / sigma(NLA) - 1 at K0 = 0.6 [percent]
+\newcommand{\costTxNlazSMax}{1}  % the same, max over K0 [percent]
+\newcommand{\costTxNlazO}{3}  % plots/cost/data.json 3x2|NLAz om: sigma / sigma(NLA) - 1 at K0 = 0.6 [percent]
+\newcommand{\costTxNlazOMax}{3}  % the same, max over K0 [percent]
+\newcommand{\costTxQS}{0}  % plots/cost/data.json 3x2|NLA+q s8: sigma / sigma(NLA) - 1 at K0 = 0.6 [percent]
+\newcommand{\costTxQSMax}{2}  % the same, max over K0 [percent]
+\newcommand{\costTxQO}{3}  % plots/cost/data.json 3x2|NLA+q om: sigma / sigma(NLA) - 1 at K0 = 0.6 [percent]
+\newcommand{\costTxQOMax}{3}  % the same, max over K0 [percent]
+\newcommand{\costTxMS}{0}  % plots/cost/data.json 3x2|NLA+m s8: sigma / sigma(NLA) - 1 at K0 = 0.6 [percent]
+\newcommand{\costTxMSMax}{2}  % the same, max over K0 [percent]
+\newcommand{\costTxMO}{1}  % plots/cost/data.json 3x2|NLA+m om: sigma / sigma(NLA) - 1 at K0 = 0.6 [percent]
+\newcommand{\costTxMOMax}{3}  % the same, max over K0 [percent]
+\newcommand{\costTxMqS}{1}  % plots/cost/data.json 3x2|NLA+mq s8: sigma / sigma(NLA) - 1 at K0 = 0.6 [percent]
+\newcommand{\costTxMqSMax}{4}  % the same, max over K0 [percent]
+\newcommand{\costTxMqO}{3}  % plots/cost/data.json 3x2|NLA+mq om: sigma / sigma(NLA) - 1 at K0 = 0.6 [percent]
+\newcommand{\costTxMqOMax}{5}  % the same, max over K0 [percent]
+\newcommand{\costTxLzS}{1}  % plots/cost/data.json 3x2|NLA+lzhz s8: sigma / sigma(NLA) - 1 at K0 = 0.6 [percent]
+\newcommand{\costTxLzSMax}{5}  % the same, max over K0 [percent]
+\newcommand{\costTxLzO}{5}  % plots/cost/data.json 3x2|NLA+lzhz om: sigma / sigma(NLA) - 1 at K0 = 0.6 [percent]
+\newcommand{\costTxLzOMax}{5}  % the same, max over K0 [percent]
+\newcommand{\costTxNdS}{0}  % plots/cost/data.json 3x2|NLA+nd s8: sigma / sigma(NLA) - 1 at K0 = 0.6 [percent]
+\newcommand{\costTxNdSMax}{4}  % the same, max over K0 [percent]
+\newcommand{\costTxNdO}{5}  % plots/cost/data.json 3x2|NLA+nd om: sigma / sigma(NLA) - 1 at K0 = 0.6 [percent]
+\newcommand{\costTxNdOMax}{5}  % the same, max over K0 [percent]
+\newcommand{\costTxSnS}{6}  % plots/cost/data.json 3x2|NLA+sn s8: sigma / sigma(NLA) - 1 at K0 = 0.6 [percent]
+\newcommand{\costTxSnSMax}{16}  % the same, max over K0 [percent]
+\newcommand{\costTxSnO}{6}  % plots/cost/data.json 3x2|NLA+sn om: sigma / sigma(NLA) - 1 at K0 = 0.6 [percent]
+\newcommand{\costTxSnOMax}{7}  % the same, max over K0 [percent]
+\newcommand{\costTxTattNdS}{1}  % plots/cost/data.json 3x2|TATT+nd s8: sigma / sigma(TATT) - 1 at K0 = 0.6 [percent]
+\newcommand{\costTxTattNdSMax}{3}  % the same, max over K0 [percent]
+\newcommand{\costTxTattNdO}{5}  % plots/cost/data.json 3x2|TATT+nd om: sigma / sigma(TATT) - 1 at K0 = 0.6 [percent]
+\newcommand{\costTxTattNdOMax}{6}  % the same, max over K0 [percent]
+\newcommand{\costTxTattQS}{1}  % plots/cost/data.json 3x2|TATT+q s8: sigma / sigma(TATT) - 1 at K0 = 0.6 [percent]
+\newcommand{\costTxTattQSMax}{1}  % the same, max over K0 [percent]
+\newcommand{\costTxTattQO}{2}  % plots/cost/data.json 3x2|TATT+q om: sigma / sigma(TATT) - 1 at K0 = 0.6 [percent]
+\newcommand{\costTxTattQOMax}{2}  % the same, max over K0 [percent]
+\newcommand{\costTxHmkQS}{0}  % plots/cost/data.json 3x2|NLAs+q s8: sigma / sigma(NLAs) - 1 at K0 = 0.6 [percent]
+\newcommand{\costTxHmkQSMax}{2}  % the same, max over K0 [percent]
+\newcommand{\costTxHmkQO}{3}  % plots/cost/data.json 3x2|NLAs+q om: sigma / sigma(NLAs) - 1 at K0 = 0.6 [percent]
+\newcommand{\costTxHmkQOMax}{3}  % the same, max over K0 [percent]
+\newcommand{\costTxHmkMS}{0}  % plots/cost/data.json 3x2|NLAs+m s8: sigma / sigma(NLAs) - 1 at K0 = 0.6 [percent]
+\newcommand{\costTxHmkMSMax}{2}  % the same, max over K0 [percent]
+\newcommand{\costTxHmkMO}{1}  % plots/cost/data.json 3x2|NLAs+m om: sigma / sigma(NLAs) - 1 at K0 = 0.6 [percent]
+\newcommand{\costTxHmkMOMax}{3}  % the same, max over K0 [percent]
+\newcommand{\costTxHmkNdS}{0}  % plots/cost/data.json 3x2|NLAs+nd s8: sigma / sigma(NLAs) - 1 at K0 = 0.6 [percent]
+\newcommand{\costTxHmkNdSMax}{4}  % the same, max over K0 [percent]
+\newcommand{\costTxHmkNdO}{5}  % plots/cost/data.json 3x2|NLAs+nd om: sigma / sigma(NLAs) - 1 at K0 = 0.6 [percent]
+\newcommand{\costTxHmkNdOMax}{5}  % the same, max over K0 [percent]
+\newcommand{\costTxCtrlQS}{0}  % plots/cost/data.json 3x2|NLAt+q s8: sigma / sigma(NLAt) - 1 at K0 = 0.6 [percent]
+\newcommand{\costTxCtrlQSMax}{2}  % the same, max over K0 [percent]
+\newcommand{\costTxCtrlQO}{3}  % plots/cost/data.json 3x2|NLAt+q om: sigma / sigma(NLAt) - 1 at K0 = 0.6 [percent]
+\newcommand{\costTxCtrlQOMax}{3}  % the same, max over K0 [percent]
+\newcommand{\costTxCtrlMS}{0}  % plots/cost/data.json 3x2|NLAt+m s8: sigma / sigma(NLAt) - 1 at K0 = 0.6 [percent]
+\newcommand{\costTxCtrlMSMax}{2}  % the same, max over K0 [percent]
+\newcommand{\costTxCtrlMO}{1}  % plots/cost/data.json 3x2|NLAt+m om: sigma / sigma(NLAt) - 1 at K0 = 0.6 [percent]
+\newcommand{\costTxCtrlMOMax}{3}  % the same, max over K0 [percent]
+\newcommand{\costTxCtrlNdS}{0}  % plots/cost/data.json 3x2|NLAt+nd s8: sigma / sigma(NLAt) - 1 at K0 = 0.6 [percent]
+\newcommand{\costTxCtrlNdSMax}{4}  % the same, max over K0 [percent]
+\newcommand{\costTxCtrlNdO}{5}  % plots/cost/data.json 3x2|NLAt+nd om: sigma / sigma(NLAt) - 1 at K0 = 0.6 [percent]
+\newcommand{\costTxCtrlNdOMax}{5}  % the same, max over K0 [percent]
+\newcommand{\costTxOracleS}{6}  % plots/cost/data.json 3x2|NLAt+sn s8: sigma / sigma(NLAt) - 1 at K0 = 0.6 [percent]
+\newcommand{\costTxOracleSMax}{16}  % the same, max over K0 [percent]
+\newcommand{\costTxOracleO}{6}  % plots/cost/data.json 3x2|NLAt+sn om: sigma / sigma(NLAt) - 1 at K0 = 0.6 [percent]
+\newcommand{\costTxOracleOMax}{7}  % the same, max over K0 [percent]
+\newcommand{\costTxCtrlLzS}{0}  % plots/cost/data.json 3x2|NLAt+lz s8: sigma / sigma(NLAt) - 1 at K0 = 0.6 [percent]
+\newcommand{\costTxCtrlLzSMax}{0}  % the same, max over K0 [percent]
+\newcommand{\costTxCtrlLzO}{0}  % plots/cost/data.json 3x2|NLAt+lz om: sigma / sigma(NLAt) - 1 at K0 = 0.6 [percent]
+\newcommand{\costTxCtrlLzOMax}{1}  % the same, max over K0 [percent]
+\newcommand{\plDevZero}{+27}  % plots/amplitude/data.json: power-law fit (NLAt, 3x2pt, K0 = 0.3) / truth - 1 at z = 0 [percent]
+\newcommand{\plDevOne}{+18}  % the same at z = 0.1
+\newcommand{\plDevMid}{7}  % the same, largest shortfall at z = 0.2 to 0.5 [percent below]
+\newcommand{\plDevHigh}{10}  % the same, largest shortfall at z = 3 and 4 [percent below]
+\newcommand{\slopeLow}{0.69}  % plots/amplitude/data.json: d ln A_truth / d ln(1+z) from z = 0.2 to 1
+\newcommand{\slopeHigh}{0.96}  % the same from z = 1 to 4
+\newcommand{\etaPl}{0.83}  % plots/amplitude/data.json NLAt: eta1 of the power-law reference fit
+\newcommand{\ampDevQ}{53}  % plots/amplitude/data.json NLAt+q: max |fit / truth - 1| at z <= 2 [percent]
+\newcommand{\ampDevM}{134}  % plots/amplitude/data.json NLAt+m: max |fit / truth - 1| at z <= 2 [percent]
+\newcommand{\ampDevNd}{30}  % plots/amplitude/data.json NLAt+nd: max |fit / truth - 1| at z <= 2 [percent]
+\newcommand{\ampDevPl}{27}  % plots/amplitude/data.json NLAt: the same for the power law
+\newcommand{\etaTwoCtrl}{0.32}  % plots/amplitude/data.json NLAt+q: eta2 of the reference fit
+\newcommand{\gQmax}{13}  % plots/amplitude/data.json NLAt+q: max |g - 1| at z <= 2 [percent]
+\newcommand{\betaCtrl}{-0.95}  % plots/amplitude/data.json NLAt+m: beta of the reference fit
+\newcommand{\logMmaxZero}{10.41}  % plots/amplitude/data.json logM_max at z = 0
+\newcommand{\logMmaxOne}{10.68}  % plots/amplitude/data.json logM_max at z = 0.1
+\newcommand{\logMmaxTwo}{10.99}  % plots/amplitude/data.json logM_max at z = 0.2
+\newcommand{\logMmeanZero}{10.21}  % plots/amplitude/data.json mean_logM at z = 0
+\newcommand{\logMmeanMid}{10.51}  % the same, mean over z = 0.2 to 1
+\newcommand{\fobTwoNlaMax}{0.37}  % fisher_minimize.json 2x2+cmb|NLA|*|CP|fisher: max FoB over K0
+\newcommand{\fobTwoNlazMax}{0.06}  % fisher_minimize.json 2x2+cmb|NLAz|*|CP|fisher: max FoB over K0
+\newcommand{\shiftOmCs}{+0.0004}  % fisher_minimize.json cs NLAt K0 0.8: Omega_m shift
+\newcommand{\shiftOmTx}{-0.0023}  % the same, 3x2pt
+\newcommand{\sigOmCs}{0.0071}  % cs NLAt K0 0.8: sigma(Omega_m)
+\newcommand{\sigOmTx}{0.0052}  % 3x2pt NLAt K0 0.8: sigma(Omega_m)
+\newcommand{\minFobQSix}{0.11}  % fisher_minimize.json 3x2+cmb|NLA+q|0.6|CP|gt0.5: minimizer FoB
+\newcommand{\minFobQEight}{0.30}  % fisher_minimize.json 3x2+cmb|NLA+q|0.8|CP|gt0.5: minimizer FoB
+\newcommand{\minFobHmkQSix}{0.13}  % fisher_minimize.json 3x2+cmb|NLAs+q|0.6|CP|gt0.5: minimizer FoB
+\newcommand{\minFobHmkQEight}{0.05}  % fisher_minimize.json 3x2+cmb|NLAs+q|0.8|CP|gt0.5: minimizer FoB
+\newcommand{\minFobNlaEight}{0.70}  % fisher_minimize.json 3x2+cmb|NLA|0.8|CP|gt0.5: minimizer FoB
+\newcommand{\minFobCsHmkQEight}{0.10}  % fisher_minimize.json cs+cmb|NLAs+q|0.8|CP: minimizer FoB
+\newcommand{\checkChiCs}{0.01}  % analysis/cut_validation/check_hm_CP.log cs A1 3.5 eta 0.7
+\newcommand{\checkChiTx}{0.01}  % analysis/cut_validation/check_hm_CP.log 3x2 A1 3.5 eta 0.7

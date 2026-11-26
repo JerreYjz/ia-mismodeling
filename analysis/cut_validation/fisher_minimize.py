@@ -133,6 +133,24 @@ IA["NLAh"] = dict(model=0, evo=3, free=dict(IA["NLA"]["free"]), hm="fixed", alph
 IA["TATTh"] = dict(model=1, evo=3, free=dict(IA["TATT"]["free"]), hm="fixed", alpha="zero")
 IA["NLAb"] = dict(model=0, evo=3, free=dict(IA["NLA"]["free"]), hm="fixed", alpha="zero", tpl="nlb")
 IA["TATTb"] = dict(model=1, evo=3, free=dict(IA["TATT"]["free"]), hm="fixed", alpha="zero", tpl="nlb")
+# the kernel-calibrated halo model of analysis/halo_kernel (HMk): native NLA plus the
+# template that turns NLA into the HMk shape, including its close-pair E and B terms
+IA["NLAk"] = dict(model=0, evo=3, free=dict(IA["NLA"]["free"]), hm="fixed", alpha="zero", tpl="hmk")
+# the same without the kernel gradient (no parameter fitted to the spectra), and the
+# matched control: the template of the CP truth's own shape (hk_templates.py truth)
+IA["NLAk0"] = dict(model=0, evo=3, free=dict(IA["NLA"]["free"]), hm="fixed", alpha="zero", tpl="hmk0")
+IA["NLAt"] = dict(model=0, evo=3, free=dict(IA["NLA"]["free"]), hm="fixed", alpha="zero", tpl="hmt")
+# diagnostic: HMk (with the kernel gradient) at z <= 1.5, the truth's own shape above
+IA["NLAkz"] = dict(model=0, evo=3, free=dict(IA["NLA"]["free"]), hm="fixed", alpha="zero", tpl="hmkz")
+# HMk with the residual halo-shape term (hk_stoch.py, variant ws-ls-grad at k_max 1.26)
+IA["NLAs"] = dict(model=0, evo=3, free=dict(IA["NLA"]["free"]), hm="fixed", alpha="zero", tpl="hms")
+IA["NLAs0"] = dict(model=0, evo=3, free=dict(IA["NLA"]["free"]), hm="fixed", alpha="zero", tpl="hms0")
+# diagnostic: the same at z <= 1.5, the truth's own shape above
+IA["NLAsz"] = dict(model=0, evo=3, free=dict(IA["NLA"]["free"]), hm="fixed", alpha="zero", tpl="hmsz")
+# diagnostics at z <= 1.5 (truth above): saturating gradient without the residual term (d1),
+# residual term with the k^2 gradient (d2)
+IA["NLAd1"] = dict(model=0, evo=3, free=dict(IA["NLA"]["free"]), hm="fixed", alpha="zero", tpl="hmd1")
+IA["NLAd2"] = dict(model=0, evo=3, free=dict(IA["NLA"]["free"]), hm="fixed", alpha="zero", tpl="hmd2")
 # alpha per snapshot z = 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.75, 1, 1.5, 2, 3, 4 from
 # notes/flamingo_vs_tng300/fits/hmc_alpha_fits.json, variant alpha_cap_nosat at
 # k_max = 0.701 (errors 0.04 to 0.12 in the core); z = 0, 0.1 take z = 0.2, z = 3, 4 take z = 2
@@ -147,7 +165,7 @@ IA_START = {"NLA": [3.5, 0.7], "NLAz": [3.0]*8, "TATT": [3.4, 0.7, -1.0, -2.0, 0
             "NLAf": [3.5, 0.7], "NLAfT": [3.5, 0.7], "TATTf": [3.4, 0.7, -1.0, -2.0, 0.5],
             "NLAa": [3.5, 0.7, 0.5], "TATTa": [3.4, 0.7, -1.0, -2.0, 0.5, 0.5],
             "NLAh": [3.5, 0.7], "TATTh": [3.4, 0.7, -1.0, -2.0, 0.5],
-            "NLAb": [3.5, 0.7], "TATTb": [3.4, 0.7, -1.0, -2.0, 0.5]}
+            "NLAb": [3.5, 0.7], "TATTb": [3.4, 0.7, -1.0, -2.0, 0.5], "NLAk": [3.5, 0.7], "NLAk0": [3.5, 0.7], "NLAt": [3.5, 0.7], "NLAkz": [3.5, 0.7], "NLAs": [3.5, 0.7], "NLAs0": [3.5, 0.7], "NLAsz": [3.5, 0.7], "NLAd1": [3.5, 0.7], "NLAd2": [3.5, 0.7]}
 # Freer redshift evolution, nested in the power law: both amplitudes take the same g(z),
 #   a1(z) = A1 ((1+z)/1.62)^eta1 g(z),   a2(z) = A2 ((1+z)/1.62)^eta2 g(z),   b_TA unchanged,
 # added to the native model through the per-term snapshot templates of tatt_templates.py
@@ -169,6 +187,38 @@ IA["TATThz"] = dict(model=1, evo=3, free={**IA["TATT"]["free"], "zevo_d2": ZEVO[
                                           "zevo_d3": ZEVO["zevo_d3"]}, zevo="hz")
 IA_START.update(NLAbk=[3.5, 0.7, 0.0], TATTbk=[3.4, 0.7, -1.0, -2.0, 0.5, 0.0],
                 NLAhz=[3.5, 0.7, 0.0, 0.0], TATThz=[3.4, 0.7, -1.0, -2.0, 0.5, 0.0, 0.0])
+# Freer low-redshift evolution (the 3x2pt study, notes/threex2_ia_amplitude). The truth's
+# amplitude per snapshot is not a power law in 1 + z: 15 percent low at z <= 0.1 and 10
+# percent high at z = 0.2 to 0.4, where the lens bins of gamma_t sit. Same g(z) mechanism:
+#   lz     g = 1 + zevo_l0 T(z; 0, 0.2) + zevo_l1 T(z; 0, 0.2, 0.5)   (tents at z = 0, 0.2)
+#   lzhz   lz and hz together
+#   nd     g piecewise linear on the nodes z = 0, 0.2, 0.5, 1, 2, 4, g = 1 at z = 1 and 4 (the
+#          power law fixes those two), free at the other four
+#   q      g = x^(zevo_eta2 ln x), x = (1+z)/1.62: a curved power law, A1 x^(eta1 + eta2 ln x)
+#   m      mass-informed: g_s = <(M*/10^10.5)^beta>_s / <...>_{z=0.6}, the mean over the sample's
+#          stellar masses at snapshot s (sample_mstar_hist.npz), one free beta: the IA amplitude
+#          follows the sample's mass mix, which a survey measures (the FLAMINGO sample is cut at the
+#          97.5th percentile of the target sample's M*, which drops at z <= 0.1)
+#   sn     one free g per snapshot except z = 1 and 4: with (A1, eta1) a free amplitude at every
+#          snapshot, the most freedom a continuous A(z) on the snapshot grid can have
+# For a model with a template (hm), the template's part of each snapshot scales with g too.
+Z_NODES = (0.0, 0.2, 0.5, 1.0, 2.0, 4.0)
+_mh = np.load(os.path.join(HERE, "sample_mstar_hist.npz"))
+MSTAR_HIST = dict(zs=_mh["zs"], hist=_mh["hist"].astype(float), lm=0.5*(_mh["edges"][1:] + _mh["edges"][:-1]))
+ND_FREE = {0.0: "zevo_n0", 0.2: "zevo_n02", 0.5: "zevo_n05", 2.0: "zevo_n2"}
+SN_FIXED = (8, 12)                     # snapshot indices of z = 1 and z = 4
+ZEVO.update({"zevo_l0": (-0.9, 3, 0.02), "zevo_l1": (-0.9, 3, 0.02), "zevo_eta2": (-5, 5, 0.03),
+             "zevo_beta": (-2, 4, 0.05)})
+ZEVO.update({q: (-0.9, 3, 0.02) for q in ND_FREE.values()})
+SN_NAMES = [f"zevo_s{i}" for i in range(13) if i not in SN_FIXED]
+ZEVO.update({q: (-0.9, 3, 0.02) for q in SN_NAMES})
+GKIND_PARAMS = {"q": ["zevo_eta2"], "m": ["zevo_beta"], "mq": ["zevo_beta", "zevo_eta2"], "lz": ["zevo_l0", "zevo_l1"], "lzhz": ["zevo_l0", "zevo_l1", "zevo_d2", "zevo_d3"],
+                "nd": list(ND_FREE.values()), "sn": SN_NAMES}
+for base in ("NLA", "TATT", "NLAt", "NLAs"):
+    for kind, extra in GKIND_PARAMS.items():
+        m = dict(IA[base], free={**IA[base]["free"], **{q: ZEVO[q] for q in extra}}, zevo=kind)
+        IA[f"{base}+{kind}"] = m
+        IA_START[f"{base}+{kind}"] = list(IA_START[base]) + [0.0]*len(extra)
 
 
 def zevo_g(kind, zs, p):
@@ -176,10 +226,36 @@ def zevo_g(kind, zs, p):
     zs = np.asarray(zs, float)
     if kind == "break":
         return np.where(zs > Z_BREAK, ((1 + zs)/(1 + Z_BREAK))**p["zevo_deta"], 1.0)
-    if kind == "hz":
+    if kind in ("hz", "lzhz"):
         t2 = np.interp(zs, [Z_BREAK, 2.0, 3.0], [0.0, 1.0, 0.0])
         t3 = np.interp(zs, [2.0, 3.0], [0.0, 1.0])
-        return 1 + p["zevo_d2"]*t2 + p["zevo_d3"]*t3
+        g = 1 + p["zevo_d2"]*t2 + p["zevo_d3"]*t3
+        if kind == "hz":
+            return g
+        return g + zevo_g("lz", zs, p) - 1
+    if kind == "q":
+        lx = np.log((1 + zs)/X0)
+        return np.exp(p["zevo_eta2"]*lx**2)
+    if kind in ("m", "mq"):
+        h = MSTAR_HIST
+        assert np.allclose(h["zs"], zs, atol=1e-3)
+        w = (h["hist"]*10**(p["zevo_beta"]*(h["lm"] - 10.5))).sum(1)/h["hist"].sum(1)
+        g = w/w[6]                       # snapshot 6: z = 0.6, near the pivot 1 + z = 1.62
+        if kind == "mq":
+            g = g*np.exp(p["zevo_eta2"]*np.log((1 + zs)/X0)**2)
+        return g
+    if kind == "lz":
+        t0 = np.interp(zs, [0.0, 0.2], [1.0, 0.0])
+        t1 = np.interp(zs, [0.0, 0.2, 0.5], [0.0, 1.0, 0.0])
+        return 1 + p["zevo_l0"]*t0 + p["zevo_l1"]*t1
+    if kind == "nd":
+        c = [p[ND_FREE[z]] if z in ND_FREE else 0.0 for z in Z_NODES]
+        return 1 + np.interp(zs, Z_NODES, c)
+    if kind == "sn":
+        assert len(zs) == 13
+        c = np.zeros(13)
+        c[[i for i in range(13) if i not in SN_FIXED]] = [p[q] for q in SN_NAMES]
+        return 1 + c
     raise ValueError(kind)
 
 
@@ -267,7 +343,9 @@ class Setup:
                 self.hm = dict(zs=t["zs"], U_GI=w*t["U_GI" + sfx], U_II=w*t["U_II" + sfx], fixed=True)
         self.zevo = None
         if IA[mdl].get("zevo"):
-            t = np.load(os.path.join(HERE, f"tatt_templates_{probe}_{truth}.npz"))
+            # the native monomial templates do not depend on the truth (S1 for the truths without them)
+            f = os.path.join(HERE, f"tatt_templates_{probe}_{truth}.npz")
+            t = np.load(f if os.path.isfile(f) else os.path.join(HERE, f"tatt_templates_{probe}_S1.npz"))
             assert np.allclose(t["zs"], self.zs_hm)
             self.zevo = dict(kind=IA[mdl]["zevo"], T_GI=t["T_GI"], T_II=t["T_II"])
         if probe == "3x2":       # lens bin of every gamma_t row (15 angles per pair)
@@ -332,6 +410,11 @@ class Setup:
     def zevo_correction(self, p, zp):
         """sum_s (g_s - 1) GI_s + (g_s^2 - 1) II_s, gamma_t rows times b_i/B1_FID_i."""
         gi, ii = self.tatt_parts(p, self.zevo["T_GI"], self.zevo["T_II"])
+        if self.hm is not None:              # the template's part scales with g as well
+            assert self.hm.get("fixed")
+            a = p["roman_A1_1"]*((1 + self.zs_hm)/X0)**p["roman_A1_2"]
+            gi = gi + a[:, None]*self.hm["U_GI"]
+            ii = ii + (a**2)[:, None]*self.hm["U_II"]
         g = zevo_g(self.zevo["kind"], self.zs_hm, zp)
         t = (g - 1) @ gi + (g**2 - 1) @ ii
         if self.probe == "3x2":

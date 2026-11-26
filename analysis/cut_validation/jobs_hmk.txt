@@ -1,0 +1,34 @@
+--probe cs --cmb --fisher-only NLAk0 0.2 CP
+--probe cs --cmb --fisher-only NLAk0 0.25 CP
+--probe cs --cmb --fisher-only NLAk0 0.3 CP
+--probe cs --cmb --fisher-only NLAk0 0.35 CP
+--probe cs --cmb --fisher-only NLAk0 0.4 CP
+--probe cs --cmb --fisher-only NLAk0 0.5 CP
+--probe cs --cmb --fisher-only NLAk0 0.6 CP
+--probe cs --cmb --fisher-only NLAk0 0.8 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAk0 0.15 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAk0 0.2 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAk0 0.25 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAk0 0.3 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAk0 0.35 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAk0 0.4 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAk0 0.5 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAk0 0.6 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAk0 0.8 CP
+--probe cs --cmb --fisher-only NLAk 0.2 CP
+--probe cs --cmb --fisher-only NLAk 0.25 CP
+--probe cs --cmb --fisher-only NLAk 0.3 CP
+--probe cs --cmb --fisher-only NLAk 0.35 CP
+--probe cs --cmb --fisher-only NLAk 0.4 CP
+--probe cs --cmb --fisher-only NLAk 0.5 CP
+--probe cs --cmb --fisher-only NLAk 0.6 CP
+--probe cs --cmb --fisher-only NLAk 0.8 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAk 0.15 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAk 0.2 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAk 0.25 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAk 0.3 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAk 0.35 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAk 0.4 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAk 0.5 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAk 0.6 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLAk 0.8 CP

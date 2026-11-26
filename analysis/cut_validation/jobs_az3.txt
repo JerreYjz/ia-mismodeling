@@ -1,0 +1,6 @@
+--probe 3x2 --cmb --gt 0.5 NLA+q 0.6 CP
+--probe 3x2 --cmb --gt 0.5 NLA+q 0.8 CP
+--probe 3x2 --cmb --gt 0.5 NLAs+q 0.6 CP
+--probe 3x2 --cmb --gt 0.5 NLAs+q 0.8 CP
+--probe 3x2 --cmb --gt 0.5 NLA 0.8 CP
+--probe cs --cmb NLAs+q 0.8 CP

@@ -1,0 +1,8 @@
+weighted fields done Thu Nov 26 01:03:17 EST 2026
+hk_model done Thu Nov 26 01:03:34 EST 2026
+cs (hmk0 = w-ls): A_eff per snapshot [1.85 2.16 3.   3.24 3.43 3.56 3.6  3.78 4.08 4.62 5.45 7.19 8.42]; |U_GI|/|N_GI| summed 0.377; wrote /Users/yijiezhu/cocoa/.claude/worktrees/online-env-code-dev-16edd0/ia_mismodeling/analysis/cut_validation/hm_templates_cs_CP.npz
+3x2 (hmk0 = w-ls): A_eff per snapshot [1.85 2.16 3.   3.24 3.43 3.56 3.6  3.78 4.08 4.62 5.45 7.19 8.42]; |U_GI|/|N_GI| summed 0.489; wrote /Users/yijiezhu/cocoa/.claude/worktrees/online-env-code-dev-16edd0/ia_mismodeling/analysis/cut_validation/hm_templates_3x2_CP.npz
+cs (hmk = w-ls-grad@1.26): A_eff per snapshot [1.85 2.16 3.   3.24 3.43 3.56 3.61 3.78 4.08 4.63 5.45 7.2  8.42]; |U_GI|/|N_GI| summed 0.428; wrote /Users/yijiezhu/cocoa/.claude/worktrees/online-env-code-dev-16edd0/ia_mismodeling/analysis/cut_validation/hm_templates_cs_CP.npz
+3x2 (hmk = w-ls-grad@1.26): A_eff per snapshot [1.85 2.16 3.   3.24 3.43 3.56 3.61 3.78 4.08 4.63 5.45 7.2  8.42]; |U_GI|/|N_GI| summed 0.583; wrote /Users/yijiezhu/cocoa/.claude/worktrees/online-env-code-dev-16edd0/ia_mismodeling/analysis/cut_validation/hm_templates_3x2_CP.npz
+templates done Thu Nov 26 01:03:39 EST 2026
+fisher done Thu Nov 26 01:07:54 EST 2026

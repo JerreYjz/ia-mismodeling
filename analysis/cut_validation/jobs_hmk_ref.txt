@@ -1,0 +1,4 @@
+--probe cs --cmb --fisher-only NLA 0.8 CP
+--probe cs --cmb --fisher-only TATT 0.8 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only NLA 0.8 CP
+--probe 3x2 --cmb --gt 0.5 --fisher-only TATT 0.8 CP
